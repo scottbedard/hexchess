@@ -17,7 +17,8 @@ function run() {
   copy('README.md', 'dist/README.md')
 
   // build wasm package
-  execSync(`${resolve('node_modules/.bin/wasm-pack')} build --target web --out-dir ${resolve('dist/wasm')} --out-name index`)
+  execSync(`${resolve('node_modules/.bin/wasm-pack')} build --out-dir ${resolve('dist/wasm')} --out-name index`)
+  execSync(`${resolve('node_modules/.bin/wasm-pack')} build --out-dir ${resolve('dist/wasm/web')} --out-name index --target web`)
 
   write(
     'dist/wasm/index.d.ts',
@@ -29,6 +30,11 @@ function run() {
     'dist/wasm/.gitignore',
     'dist/wasm/LICENSE',
     'dist/wasm/package.json',
+    'dist/wasm/web/README.md',
+    'dist/wasm/web/.gitignore',
+    'dist/wasm/web/LICENSE',
+    'dist/wasm/web/package.json',
+
   ].forEach(file => execSync(`rm ${resolve(file)}`))
 
   // set version numbers
