@@ -13,7 +13,7 @@ struct GraphEntry {
 
 #[test]
 fn test_graph_traversal() {
-    let path = env::current_dir().unwrap().join("./tests/graph.json");
+    let path = env::current_dir().unwrap().join("./tests/graph-traversal.json");
     let json = fs::read_to_string(path).expect("Failed to read graph.json file");
     let entries: Vec<GraphEntry> = serde_json::from_str(&json)
         .expect("Failed to parse graph.json into Graph structs");

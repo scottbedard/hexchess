@@ -19,7 +19,7 @@ function resolve(file) {
 describe('graph', () => {
   const hexchess = new Hexchess()
 
-  JSON.parse(read('../tests/graph.json')).forEach(spec => {
+  JSON.parse(read('../tests/graph-traversal.json')).forEach(spec => {
     test(`${spec.from} -> ${spec.direction}`, () => {
       expect(walk(hexchess, index(spec.from), spec.direction, 'w')).toEqual(spec.result.map(index))
     })
