@@ -68,6 +68,11 @@ export function isTarget(hexchess: Hexchess, position: number | undefined, color
   )
 }
 
+/** get the position name of an index */
+export function position(index: number): Position {
+  return positions[index]
+}
+
 /** step along the hexboard graph */
 export function step(from: number, direction: Direction): number | undefined {
   return graph[from][direction]

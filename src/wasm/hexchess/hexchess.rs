@@ -21,7 +21,7 @@ use crate::hexchess::utils::{
     is_legal_en_passant,
     step,
     index,
-    to_position,
+    position,
 };
 
 /// Hexchess game state
@@ -457,7 +457,7 @@ impl Hexchess {
                 Color::White => 'w',
             },
             match self.ep {
-                Some(ep) => to_position(&ep),
+                Some(ep) => position(&ep),
                 None => "-",
             },
             self.halfmove,

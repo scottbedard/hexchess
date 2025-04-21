@@ -8,7 +8,7 @@ use crate::hexchess::utils::{
     index,
 };
 
-use super::utils::to_position;
+use super::utils::position;
 
 /// Struct representing a single move.
 #[derive(Clone, Copy, Debug, Deserialize, PartialEq, Serialize, Tsify)]
@@ -93,7 +93,7 @@ impl San {
                 _ => return Err("invalid to rank".to_string()),
             }
         };
-    
+
         // assemble and validate from and to positions
         let from_source = from_file.to_string() + &from_rank;
 
@@ -150,7 +150,7 @@ impl San {
 
 impl fmt::Display for San {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        let mut value = to_position(&self.from).to_string() + &to_position(&self.to).to_string();
+        let mut value = position(&self.from).to_string() + &position(&self.to).to_string();
 
         match self.promotion {
             Some(promotion) => {
