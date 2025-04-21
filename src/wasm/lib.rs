@@ -2,9 +2,9 @@ pub mod constants;
 pub mod hexchess;
 pub mod macros;
 
+pub use hexchess::hexchess::Hexchess;
+pub use hexchess::san::San;
 use constants::Color;
-use hexchess::hexchess::Hexchess;
-use hexchess::san::San;
 use wasm_bindgen::prelude::*;
 
 fn set_panic_hook() {
