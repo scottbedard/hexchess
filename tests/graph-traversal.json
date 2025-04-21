@@ -12,7 +12,7 @@
   { "from": "a1", "direction": 10, "result": [] },
   { "from": "a1", "direction": 11, "result": [] },
 
-  { "from": "a2", "direction": 0, "result": ["a4", "a4", "a5", "a6"] },
+  { "from": "a2", "direction": 0, "result": ["a3", "a4", "a5", "a6"] },
   { "from": "a2", "direction": 1, "result": ["b4", "c6", "d8", "e10"] },
   { "from": "a2", "direction": 2, "result": ["b3", "c4", "d5", "e6", "f7", "g7", "h7", "i7", "k7"] },
   { "from": "a2", "direction": 3, "result": ["c3", "e4", "g4", "i3", "l2"] },

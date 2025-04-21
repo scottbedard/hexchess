@@ -22,16 +22,15 @@ fn test_graph_traversal() {
 
     for entry in entries {
         let i = index(entry.from.as_str()).unwrap();
-
         let direction = entry.direction;
-
         let result = entry.result
             .iter()
-            .map(|s| index(s.as_str()).unwrap()).collect::<Vec<u8>>();
+            .map(|s| index(s.as_str()).unwrap())
+            .collect::<Vec<u8>>();
 
         assert_eq!(
             walk(&hexchess, i, direction, &Color::White),
             result
-        );     
+        );
     }
 }
