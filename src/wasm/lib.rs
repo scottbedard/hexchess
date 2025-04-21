@@ -5,7 +5,6 @@ pub mod macros;
 use constants::Color;
 use hexchess::hexchess::Hexchess;
 use hexchess::san::San;
-use hexchess::utils::index;
 use wasm_bindgen::prelude::*;
 
 fn set_panic_hook() {
