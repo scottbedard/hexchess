@@ -17,7 +17,7 @@ function run() {
   copy('README.md', 'dist/README.md')
 
   // build wasm package
-  execSync(`${resolve('node_modules/.bin/wasm-pack')} build --out-dir ${resolve('dist/wasm')} --out-name index`)
+  execSync(`${resolve('node_modules/.bin/wasm-pack')} build --target web --out-dir ${resolve('dist/wasm')} --out-name index`)
 
   write(
     'dist/wasm/index.d.ts',
