@@ -23,7 +23,7 @@ import {
   parseSan,
   stringifyHexchess,
   stringifySan
-} from '../dist/wasm?init'
+} from '../dist/wasm'
 
 test('apply', () => {
   const hexchess = apply(initHexchess(), 'g4g6 f7g6 f5f7 g6f6')
