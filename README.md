@@ -231,9 +231,7 @@ hexchess.toString() // 'b/qbk/n1b1n/r5r/ppppppppp/11/5P5/4P1P4/3P1B1P3/2P2B2P2/1
 
 ## Wasm Bindings
 
-The Rust crate for this library is exposed via WebAssembly. If your environment permits it, these are the functions you should use when writing engines or evaluators.
-
-All APIs are the same as above, but with a functional syntax that accepts a `Hexchess` as the first argument, and returns a new `Hexchess` instance. The following methods are available to create and serialize objects.
+The Rust crate for this library is exposed via WebAssembly. All APIs are the same as above, but with a functional syntax that accepts a `HexchessStruct`, and returns a new `HexchessStruct`.
 
 ```ts
 import {
@@ -247,7 +245,9 @@ const hexchess = apply(initHexchess(), 'g4g6 f7g6 f5f7 g6f6')
 stringifyHexchess(hexchess) // 'b/qbk/n1b1n/r5r/pppp1pppp/5p5/11/4P6/3P1B1P3/2P2B2P2/1PRNQBKNRP1 w - 0 3'
 ```
 
-Below is a list of the available bindings.
+A [native web target](https://rustwasm.github.io/docs/wasm-pack/commands/build.html#target) is also available at `@bedard/hexchess/wasm/web`.
+
+Below are the available bindings,
 
 - `apply`
 - `applyMove`
