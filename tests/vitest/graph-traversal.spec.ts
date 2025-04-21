@@ -1,25 +1,12 @@
 import { describe, expect, test } from 'vitest'
-import { fileURLToPath } from 'url'
 import { Hexchess } from '../../src'
 import { index, walk } from '../../src/utils'
-import fs from 'node:fs'
-import path from 'node:path'
+import { json } from './utils'
 
-function read(file) {
-  return fs.readFileSync(resolve(file), 'utf-8')
-}
-
-function resolve(file) {
-  const __filename = fileURLToPath(import.meta.url)
-  const __dirname = path.dirname(__filename)
-
-  return path.resolve(__dirname, '..', file)
-}
-
-describe('graph', () => {
+describe('graph traversal', () => {
   const hexchess = new Hexchess()
 
-  JSON.parse(read('../tests/graph-traversal.json')).forEach(spec => {
+  json('graph-traversal.json').forEach(spec => {
     test(`${spec.from} -> ${spec.direction}`, () => {
       expect(walk(hexchess, index(spec.from), spec.direction, 'w')).toEqual(spec.result.map(index))
     })

@@ -1,11 +1,10 @@
 use hexchess::{Color, Hexchess};
 use hexchess::hexchess::utils::{index, walk};
 use serde::{Deserialize, Serialize};
-use std::env;
-use std::fs;
+use crate::json;
 
 #[derive(Debug, Serialize, Deserialize)]
-struct GraphEntry {
+struct Test {
     from: String,
     direction: u8,
     result: Vec<String>,
@@ -13,17 +12,16 @@ struct GraphEntry {
 
 #[test]
 fn test_graph_traversal() {
-    let path = env::current_dir().unwrap().join("./tests/graph-traversal.json");
-    let json = fs::read_to_string(path).expect("Failed to read graph.json file");
-    let entries: Vec<GraphEntry> = serde_json::from_str(&json)
-        .expect("Failed to parse graph.json into Graph structs");
+    let tests = json::<Test>("graph-traversal.json");
 
     let hexchess = Hexchess::new();
 
-    for entry in entries {
-        let i = index(entry.from.as_str()).unwrap();
-        let direction = entry.direction;
-        let result = entry.result
+    for test in tests {
+        let i = index(test.from.as_str()).unwrap();
+        
+        let direction = test.direction;
+
+        let result = test.result
             .iter()
             .map(|s| index(s.as_str()).unwrap())
             .collect::<Vec<u8>>();
