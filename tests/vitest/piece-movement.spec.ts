@@ -7,6 +7,7 @@ describe('piece movement', () => {
   [
     'king-moves.json',
     'knight-moves.json',
+    'pawn-moves.json',
     'straight-line-moves.json',
   ].forEach(fixture => {
     const suite = json(fixture)

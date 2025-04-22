@@ -2,62 +2,6 @@ import { describe, expect, test } from 'vitest'
 import { Hexchess, index } from '../../src'
 
 describe('pawn', () => {
-  test('black starting pawns', () => {
-    const b7 = Hexchess.parse('1/3/5/7/ppppppppp/11/11/11/11/11/11 b - 0 1').movesFrom('b7')
-    expect(b7).toEqual([
-      { from: index('b7'), promotion: null, to: index('b6') },
-      { from: index('b7'), promotion: null, to: index('b5') },
-    ])
-
-    const c7 = Hexchess.parse('1/3/5/7/ppppppppp/11/11/11/11/11/11 b - 0 1').movesFrom(index('c7'))
-    expect(c7).toEqual([
-      { from: index('c7'), promotion: null, to: index('c6') },
-      { from: index('c7'), promotion: null, to: index('c5') },
-    ])
-
-    const d7 = Hexchess.parse('1/3/5/7/ppppppppp/11/11/11/11/11/11 b - 0 1').movesFrom(index('d7'))
-    expect(d7).toEqual([
-      { from: index('d7'), promotion: null, to: index('d6') },
-      { from: index('d7'), promotion: null, to: index('d5') },
-    ])
-
-    const e7 = Hexchess.parse('1/3/5/7/ppppppppp/11/11/11/11/11/11 b - 0 1').movesFrom(index('e7'))
-    expect(e7).toEqual([
-      { from: index('e7'), promotion: null, to: index('e6') },
-      { from: index('e7'), promotion: null, to: index('e5') },
-    ])
-
-    const f7 = Hexchess.parse('1/3/5/7/ppppppppp/11/11/11/11/11/11 b - 0 1').movesFrom(index('f7'))
-    expect(f7).toEqual([
-      { from: index('f7'), promotion: null, to: index('f6') },
-      { from: index('f7'), promotion: null, to: index('f5') },
-    ])
-
-    const g7 = Hexchess.parse('1/3/5/7/ppppppppp/11/11/11/11/11/11 b - 0 1').movesFrom(index('g7'))
-    expect(g7).toEqual([
-      { from: index('g7'), promotion: null, to: index('g6') },
-      { from: index('g7'), promotion: null, to: index('g5') },
-    ])
-
-    const h7 = Hexchess.parse('1/3/5/7/ppppppppp/11/11/11/11/11/11 b - 0 1').movesFrom(index('h7'))
-    expect(h7).toEqual([
-      { from: index('h7'), promotion: null, to: index('h6') },
-      { from: index('h7'), promotion: null, to: index('h5') },
-    ])
-
-    const i7 = Hexchess.parse('1/3/5/7/ppppppppp/11/11/11/11/11/11 b - 0 1').movesFrom(index('i7'))
-    expect(i7).toEqual([
-      { from: index('i7'), promotion: null, to: index('i6') },
-      { from: index('i7'), promotion: null, to: index('i5') },
-    ])
-
-    const k7 = Hexchess.parse('1/3/5/7/ppppppppp/11/11/11/11/11/11 b - 0 1').movesFrom(index('k7'))
-    expect(k7).toEqual([
-      { from: index('k7'), promotion: null, to: index('k6') },
-      { from: index('k7'), promotion: null, to: index('k5') },
-    ])
-  })
-
   test('black blocked friendly', () => {
     const f7 = Hexchess.parse('1/3/5/7/4p4/5p5/11/11/11/11/11 b - 0 1').movesFrom(index('f7'))
     expect(f7.length).toEqual(0)

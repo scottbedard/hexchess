@@ -173,45 +173,6 @@ mod tests {
     use super::*;
 
     #[test]
-    fn black_starting_pawns() {
-        let b7 = Hexchess::parse("1/3/5/7/ppppppppp/11/11/11/11/11/11 b - 0 1").unwrap().moves_from(h!("b7"));
-        assert_eq!(b7[0], San { from: h!("b7"), promotion: None, to: h!("b6") });
-        assert_eq!(b7[1], San { from: h!("b7"), promotion: None, to: h!("b5") });
-
-        let c7: Vec<San> = Hexchess::parse("1/3/5/7/ppppppppp/11/11/11/11/11/11 b - 0 1").unwrap().moves_from(h!("c7"));
-        assert_eq!(c7[0], San { from: h!("c7"), promotion: None, to: h!("c6") });
-        assert_eq!(c7[1], San { from: h!("c7"), promotion: None, to: h!("c5") });
-
-        let d7: Vec<San> = Hexchess::parse("1/3/5/7/ppppppppp/11/11/11/11/11/11 b - 0 1").unwrap().moves_from(h!("d7"));
-        assert_eq!(d7[0], San { from: h!("d7"), promotion: None, to: h!("d6") });
-        assert_eq!(d7[1], San { from: h!("d7"), promotion: None, to: h!("d5") });
-
-        let e7: Vec<San> = Hexchess::parse("1/3/5/7/ppppppppp/11/11/11/11/11/11 b - 0 1").unwrap().moves_from(h!("e7"));
-        assert_eq!(e7[0], San { from: h!("e7"), promotion: None, to: h!("e6") });
-        assert_eq!(e7[1], San { from: h!("e7"), promotion: None, to: h!("e5") });
-
-        let f7: Vec<San> = Hexchess::parse("1/3/5/7/ppppppppp/11/11/11/11/11/11 b - 0 1").unwrap().moves_from(h!("f7"));
-        assert_eq!(f7[0], San { from: h!("f7"), promotion: None, to: h!("f6") });
-        assert_eq!(f7[1], San { from: h!("f7"), promotion: None, to: h!("f5") });
-
-        let g7: Vec<San> = Hexchess::parse("1/3/5/7/ppppppppp/11/11/11/11/11/11 b - 0 1").unwrap().moves_from(h!("g7"));
-        assert_eq!(g7[0], San { from: h!("g7"), promotion: None, to: h!("g6") });
-        assert_eq!(g7[1], San { from: h!("g7"), promotion: None, to: h!("g5") });
-
-        let h7: Vec<San> = Hexchess::parse("1/3/5/7/ppppppppp/11/11/11/11/11/11 b - 0 1").unwrap().moves_from(h!("h7"));
-        assert_eq!(h7[0], San { from: h!("h7"), promotion: None, to: h!("h6") });
-        assert_eq!(h7[1], San { from: h!("h7"), promotion: None, to: h!("h5") });
-
-        let i7: Vec<San> = Hexchess::parse("1/3/5/7/ppppppppp/11/11/11/11/11/11 b - 0 1").unwrap().moves_from(h!("i7"));
-        assert_eq!(i7[0], San { from: h!("i7"), promotion: None, to: h!("i6") });
-        assert_eq!(i7[1], San { from: h!("i7"), promotion: None, to: h!("i5") });
-
-        let k7: Vec<San> = Hexchess::parse("1/3/5/7/ppppppppp/11/11/11/11/11/11 b - 0 1").unwrap().moves_from(h!("k7"));
-        assert_eq!(k7[0], San { from: h!("k7"), promotion: None, to: h!("k6") });
-        assert_eq!(k7[1], San { from: h!("k7"), promotion: None, to: h!("k5") });
-    }
-
-    #[test]
     fn black_blocked_friendly() {
         let result: Vec<San> = Hexchess::parse("1/3/5/7/4p4/5p5/11/11/11/11/11 b - 0 1")
             .unwrap()

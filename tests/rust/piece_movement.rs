@@ -16,6 +16,7 @@ fn test_piece_movement() {
     let suites = [
         json::<Test>("king-moves.json"),
         json::<Test>("knight-moves.json"),
+        json::<Test>("pawn-moves.json"),
         json::<Test>("straight-line-moves.json"),
     ];
 
