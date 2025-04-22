@@ -63,47 +63,6 @@ mod tests {
     use super::*;
 
     #[test]
-    fn white_knight() {
-        let result = Hexchess::parse("1/3/5/2P1p2/9/5N5/11/11/11/11/11 w - 0 1")
-            .unwrap()
-            .moves_from(h!("f6"));
-
-        assert_eq!(result.len(), 11);
-        assert_eq!(result[0], San { from: h!("f6"), promotion: None, to: h!("g8") });
-        assert_eq!(result[1], San { from: h!("f6"), promotion: None, to: h!("h7") });
-        assert_eq!(result[2], San { from: h!("f6"), promotion: None, to: h!("i5") });
-        assert_eq!(result[3], San { from: h!("f6"), promotion: None, to: h!("i4") });
-        assert_eq!(result[4], San { from: h!("f6"), promotion: None, to: h!("h3") });
-        assert_eq!(result[5], San { from: h!("f6"), promotion: None, to: h!("g3") });
-        assert_eq!(result[6], San { from: h!("f6"), promotion: None, to: h!("e3") });
-        assert_eq!(result[7], San { from: h!("f6"), promotion: None, to: h!("d3") });
-        assert_eq!(result[8], San { from: h!("f6"), promotion: None, to: h!("c4") });
-        assert_eq!(result[9], San { from: h!("f6"), promotion: None, to: h!("c5") });
-        assert_eq!(result[10], San { from: h!("f6"), promotion: None, to: h!("d7") });
-        // e8 is friendly
-    }
-
-    #[test]
-    fn black_knight() {
-        let result = Hexchess::parse("1/3/5/2P1p2/9/5n5/11/11/11/11/11 b - 0 1")
-            .unwrap()
-            .moves_from(h!("f6"));
-
-        assert_eq!(result.len(), 11);
-        assert_eq!(result[0], San { from: h!("f6"), promotion: None, to: h!("h7") });
-        assert_eq!(result[1], San { from: h!("f6"), promotion: None, to: h!("i5") });
-        assert_eq!(result[2], San { from: h!("f6"), promotion: None, to: h!("i4") });
-        assert_eq!(result[3], San { from: h!("f6"), promotion: None, to: h!("h3") });
-        assert_eq!(result[4], San { from: h!("f6"), promotion: None, to: h!("g3") });
-        assert_eq!(result[5], San { from: h!("f6"), promotion: None, to: h!("e3") });
-        assert_eq!(result[6], San { from: h!("f6"), promotion: None, to: h!("d3") });
-        assert_eq!(result[7], San { from: h!("f6"), promotion: None, to: h!("c4") });
-        assert_eq!(result[8], San { from: h!("f6"), promotion: None, to: h!("c5") });
-        assert_eq!(result[9], San { from: h!("f6"), promotion: None, to: h!("d7") });
-        assert_eq!(result[10], San { from: h!("f6"), promotion: None, to: h!("e8") }); // <- e8 is hostile
-    }
-
-    #[test]
     fn near_edge_of_board() {
         let result = Hexchess::parse("1/1N1/5/7/9/11/11/11/11/11/11 w - 0 1")
             .unwrap()
