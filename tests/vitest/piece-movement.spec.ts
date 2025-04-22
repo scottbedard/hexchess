@@ -5,16 +5,21 @@ import { json } from './utils'
 
 describe('piece movement', () => {
   [
-    json('knight-moves.json'),
-    json('straight-line-moves.json'),
-  ].forEach(suite => {
-    suite.forEach(spec => {
-      test(spec.description, () => {
-        const hexchess = Hexchess.parse(spec.hexchess)
-        const results = hexchess.movesFrom(index(spec.from)).map(String)
+    'knight-moves.json',
+    'straight-line-moves.json',
+  ].forEach(fixture => {
+    const suite = json(fixture)
 
-        expect(results, spec.description).toEqual(spec.result)
+    suite.forEach(spec => {
+      describe(fixture.replaceAll('-', ' ').slice(0, -5), () => {
+        test(spec.description, () => {
+          const hexchess = Hexchess.parse(spec.hexchess)
+          const results = hexchess.movesFrom(index(spec.from)).map(String)
+
+          expect(results, `${fixture} : ${spec.description}`).toEqual(spec.result)
+        })
       })
     })
   })
 })
+
