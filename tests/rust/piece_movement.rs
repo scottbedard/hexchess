@@ -14,8 +14,9 @@ struct Test {
 #[test]
 fn test_piece_movement() {
     let suites = [
-        json::<Test>("straight-line-moves.json"),
+        json::<Test>("king-moves.json"),
         json::<Test>("knight-moves.json"),
+        json::<Test>("straight-line-moves.json"),
     ];
 
     for suite in suites {

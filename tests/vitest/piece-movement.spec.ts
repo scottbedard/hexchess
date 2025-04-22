@@ -5,6 +5,7 @@ import { json } from './utils'
 
 describe('piece movement', () => {
   [
+    'king-moves.json',
     'knight-moves.json',
     'straight-line-moves.json',
   ].forEach(fixture => {
