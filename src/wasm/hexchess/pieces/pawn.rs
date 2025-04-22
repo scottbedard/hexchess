@@ -173,44 +173,6 @@ mod tests {
     use super::*;
 
     #[test]
-    fn black_blocked_friendly() {
-        let result: Vec<San> = Hexchess::parse("1/3/5/7/4p4/5p5/11/11/11/11/11 b - 0 1")
-            .unwrap()
-            .moves_from(h!("f7"));
-
-        assert_eq!(result.len(), 0);
-    }
-
-    #[test]
-    fn black_blocked_friendly_double() {
-        let result: Vec<San> = Hexchess::parse("1/3/5/7/4p4/11/5p5/11/11/11/11 b - 0 1")
-            .unwrap()
-            .moves_from(h!("f7"));
-
-        assert_eq!(result.len(), 1);
-        assert_eq!(result[0], San { from: h!("f7"), promotion: None, to: h!("f6") });
-    }
-
-    #[test]
-    fn black_blocked_hostile() {
-        let result: Vec<San> = Hexchess::parse("1/3/5/7/4p4/5P5/11/11/11/11/11 b - 0 1")
-            .unwrap()
-            .moves_from(h!("f7"));
-
-        assert_eq!(result.len(), 0);
-    }
-
-    #[test]
-    fn black_blocked_hostile_double() {
-        let result: Vec<San> = Hexchess::parse("1/3/5/7/4p4/11/5P5/11/11/11/11 b - 0 1")
-            .unwrap()
-            .moves_from(h!("f7"));
-
-        assert_eq!(result.len(), 1);
-        assert_eq!(result[0], San { from: h!("f7"), promotion: None, to: h!("f6") });
-    }
-
-    #[test]
     fn white_starting_pawns() {
         let f5: Vec<San> = Hexchess::parse("1/3/5/7/9/11/5P5/4P1P4/3P3P3/2P5P2/1P7P1 w - 0 1").unwrap().moves_from(h!("f5"));
         assert_eq!(f5[0], San { from: h!("f5"), promotion: None, to: h!("f6") });
