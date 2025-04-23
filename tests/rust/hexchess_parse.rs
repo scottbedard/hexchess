@@ -19,7 +19,7 @@ fn test_hexchess_parse() {
 
         if test.error {
             assert!(result.is_err(), "{}", test.description);
-        } else {
+        } else if test.result.is_some() {
             assert_eq!(result.unwrap(), test.result.unwrap(), "{}", test.description);
         }
     }

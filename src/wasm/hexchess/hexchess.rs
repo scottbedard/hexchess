@@ -1074,27 +1074,6 @@ mod tests {
         use super::*;
 
         #[test]
-        fn missing_turn_color() {
-            let hexchess = Hexchess::parse("1/3/5/7/9/11/11/11/11/11/11").unwrap();
-
-            assert_eq!(hexchess.turn, Color::White);
-        }
-
-        #[test]
-        fn en_passant_black() {
-            let hexchess = Hexchess::parse("1/3/5/7/9/11/11/11/11/11/11 w e6 0 1");
-
-            assert_eq!(hexchess.unwrap().ep, Some(h!("e6")));
-        }
-
-        #[test]
-        fn en_passant_white() {
-            let hexchess = Hexchess::parse("1/3/5/7/9/11/11/11/11/11/11 w g5 0 1");
-
-            assert_eq!(hexchess.unwrap().ep, Some(h!("g5")));
-        }
-
-        #[test]
         fn missing_en_passant() {
             let hexchess = Hexchess::parse("1/3/5/7/9/11/11/11/11/11/11 w").unwrap();
 

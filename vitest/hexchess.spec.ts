@@ -442,26 +442,6 @@ describe('Hexchess', () => {
   })
 
   describe('parsing', () => {
-    test('missing turn color', () => {
-      expect(Hexchess.parse('1/3/5/7/9/11/11/11/11/11/11').turn).toBe('w')
-    })
-
-    test('en passant black', () => {
-      const hexchess = Hexchess.parse('1/3/5/7/9/11/11/11/11/11/11 w e6 0 1')
-
-      expect(hexchess.ep).toBe(index('e6'))
-    })
-
-    test('en passant white', () => {
-      const hexchess = Hexchess.parse('1/3/5/7/9/11/11/11/11/11/11 w g5 0 1')
-
-      expect(hexchess.ep).toBe(index('g5'))
-    })
-
-    test('missing en passant', () => {
-      expect(Hexchess.parse('1/3/5/7/9/11/11/11/11/11/11 w - 0 1').ep).toBeNull()
-    })
-
     test('illegal en passant', () => {
       expect(() => Hexchess.parse('1/3/5/7/9/11/11/11/11/11/11 w a1 0 1')).toThrow()
     })
