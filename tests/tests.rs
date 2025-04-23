@@ -6,7 +6,7 @@ use serde::Deserialize;
 
 /// read and parse json test fixture
 pub fn json<T: for<'de> Deserialize<'de>>(file: &str) -> Vec<T> {
-    let path = env::current_dir().unwrap().join(format!("./tests/{}", file));
+    let path = env::current_dir().unwrap().join(format!("./tests/fixtures/{}", file));
 
     let json = fs::read_to_string(path)
         .expect(format!("Failed to read json file: {}", file).as_str());
