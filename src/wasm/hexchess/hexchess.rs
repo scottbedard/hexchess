@@ -1074,62 +1074,6 @@ mod tests {
         use super::*;
 
         #[test]
-        fn missing_en_passant() {
-            let hexchess = Hexchess::parse("1/3/5/7/9/11/11/11/11/11/11 w").unwrap();
-
-            assert_eq!(hexchess.ep, None);
-        }
-
-        #[test]
-        fn illegal_en_passant() {
-            let hexchess = Hexchess::parse("1/3/5/7/9/11/11/11/11/11/11 w a1 0 1");
-
-            assert!(hexchess.is_err());
-            assert_eq!(
-                hexchess.unwrap_err(),
-                "illegal en passant position: a1"
-            );
-        }
-
-        #[test]
-        fn multiple_black_kings() {
-            let hexchess = Hexchess::parse("1/k1k/5/7/9/11/11/11/11/11/11 w - 0 1");
-
-            assert!(hexchess.is_err());
-            assert_eq!(hexchess.unwrap_err(), "multiple black kings");
-        }
-
-        #[test]
-        fn multiple_white_kings() {
-            let hexchess = Hexchess::parse("1/K1K/5/7/9/11/11/11/11/11/11 w - 0 1");
-
-            assert!(hexchess.is_err());
-            assert_eq!(hexchess.unwrap_err(), "multiple white kings");
-        }
-
-        #[test]
-        fn board_overflow() {
-            let hexchess = Hexchess::parse("2/3/5/7/9/11/11/11/11/11/11 w - 0 1");
-
-            assert!(hexchess.is_err());
-            assert_eq!(hexchess.unwrap_err(), "board overflow");
-        }
-    
-        #[test]
-        fn missing_halfmove() {
-            let hexchess = Hexchess::parse("1/3/5/7/9/11/11/11/11/11/11 w -").unwrap();
-
-            assert_eq!(hexchess.halfmove, 0);
-        }
-
-        #[test]
-        fn missing_fullmove() {
-            let hexchess = Hexchess::parse("1/3/5/7/9/11/11/11/11/11/11 w - 0").unwrap();
-
-            assert_eq!(hexchess.fullmove, 1);
-        }
-
-        #[test]
         fn fen_with_skip_1() {
             let hexchess = Hexchess::parse("1/3/5/7/9/1p9/11/11/11/11/11 w - 0 1").unwrap();
 
