@@ -5,10 +5,10 @@ import { json } from './utils'
 
 describe('piece movement', () => {
   [
-    'piece-moves-king.json',
-    'piece-moves-knight.json',
-    'piece-moves-pawn.json',
-    'piece-moves-straight-line.json',
+    'moves-king.json',
+    'moves-knight.json',
+    'moves-pawn.json',
+    'moves-straight-line.json',
   ].forEach(fixture => {
     const suite = json(fixture)
 

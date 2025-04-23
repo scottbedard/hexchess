@@ -13,15 +13,17 @@ struct Test {
 
 #[test]
 fn test_piece_movement() {
-    let suites = [
-        json::<Test>("piece-moves-king.json"),
-        json::<Test>("piece-moves-knight.json"),
-        json::<Test>("piece-moves-pawn.json"),
-        json::<Test>("piece-moves-straight-line.json"),
+    let files = [
+        "moves-king.json",
+        "moves-knight.json",
+        "moves-pawn.json",
+        "moves-straight-line.json",
     ];
 
-    for suite in suites {
-        for test in suite {
+    for file in files {
+        let tests = json::<Test>(file);
+
+        for test in tests {
             let from = index(&test.from).unwrap();
 
             let result = Hexchess::parse(&test.hexchess)
