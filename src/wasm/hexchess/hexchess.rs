@@ -1074,46 +1074,6 @@ mod tests {
         use super::*;
 
         #[test]
-        fn empty_string() {
-            let hexchess = Hexchess::parse("");
-
-            assert!(hexchess.is_err());
-            assert_eq!(
-                hexchess.unwrap_err(),
-                "board not found"
-            );
-        }
-
-        #[test]
-        fn invalid() {
-            let hexchess = Hexchess::parse("whoops");
-
-            assert!(hexchess.is_err());
-        }
-
-        #[test]
-        fn turn_color() {
-            let white = Hexchess::parse("1/3/5/7/9/11/11/11/11/11/11 w - 0 1").unwrap();
-
-            assert_eq!(white.turn, Color::White);
-
-            let black = Hexchess::parse("1/3/5/7/9/11/11/11/11/11/11 b - 0 1").unwrap();
-
-            assert_eq!(black.turn, Color::Black);
-        }
-
-        #[test]
-        fn invalid_turn_color() {
-            let hexchess = Hexchess::parse("1/3/5/7/9/11/11/11/11/11/11 x - 0 1");
-
-            assert!(hexchess.is_err());
-            assert_eq!(
-                hexchess.unwrap_err(),
-                "invalid turn color: x"
-            );
-        }
-
-        #[test]
         fn missing_turn_color() {
             let hexchess = Hexchess::parse("1/3/5/7/9/11/11/11/11/11/11").unwrap();
 
@@ -1132,17 +1092,6 @@ mod tests {
             let hexchess = Hexchess::parse("1/3/5/7/9/11/11/11/11/11/11 w g5 0 1");
 
             assert_eq!(hexchess.unwrap().ep, Some(h!("g5")));
-        }
-    
-        #[test]
-        fn invalid_en_passant() {
-            let hexchess = Hexchess::parse("1/3/5/7/9/11/11/11/11/11/11 w x 0 1");
-
-            assert!(hexchess.is_err());
-            assert_eq!(
-                hexchess.unwrap_err(),
-                "invalid en passant position: x"
-            );
         }
 
         #[test]
@@ -1164,17 +1113,6 @@ mod tests {
         }
 
         #[test]
-        fn invalid_halfmove() {
-            let hexchess = Hexchess::parse("1/3/5/7/9/11/11/11/11/11/11 w - x 1");
-
-            assert!(hexchess.is_err());
-            assert_eq!(
-                hexchess.unwrap_err(),
-                "invalid halfmove: x"
-            );
-        }
-
-        #[test]
         fn multiple_black_kings() {
             let hexchess = Hexchess::parse("1/k1k/5/7/9/11/11/11/11/11/11 w - 0 1");
 
@@ -1191,14 +1129,6 @@ mod tests {
         }
 
         #[test]
-        fn invalid_character() {
-            let hexchess = Hexchess::parse("x/3/5/7/9/11/11/11/11/11/11 w - 0 1");
-
-            assert!(hexchess.is_err());
-            assert_eq!(hexchess.unwrap_err(), "invalid character at index 0: x");
-        }
-
-        #[test]
         fn board_overflow() {
             let hexchess = Hexchess::parse("2/3/5/7/9/11/11/11/11/11/11 w - 0 1");
 
@@ -1211,17 +1141,6 @@ mod tests {
             let hexchess = Hexchess::parse("1/3/5/7/9/11/11/11/11/11/11 w -").unwrap();
 
             assert_eq!(hexchess.halfmove, 0);
-        }
-
-        #[test]
-        fn invalid_fullmove() {
-            let invalid1 = Hexchess::parse("1/3/5/7/9/11/11/11/11/11/11 w - 0 x");
-            assert!(invalid1.is_err());
-            assert_eq!(invalid1.unwrap_err(), "invalid fullmove: x");
-
-            let invalid2 = Hexchess::parse("1/3/5/7/9/11/11/11/11/11/11 w - 0 0");
-            assert!(invalid2.is_err());
-            assert_eq!(invalid2.unwrap_err(), "invalid fullmove: 0");
         }
 
         #[test]

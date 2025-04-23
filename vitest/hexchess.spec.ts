@@ -442,23 +442,6 @@ describe('Hexchess', () => {
   })
 
   describe('parsing', () => {
-    test('empty string', () => {
-      expect(() => Hexchess.parse('')).toThrow()
-    })
-
-    test('invalid', () => {
-      expect(() => Hexchess.parse('whoops')).toThrow()
-    })
-
-    test('turn color', () => {
-      expect(Hexchess.parse('1/3/5/7/9/11/11/11/11/11/11 w - 0 1').turn).toBe('w')
-      expect(Hexchess.parse('1/3/5/7/9/11/11/11/11/11/11 b - 0 1').turn).toBe('b')
-    })
-
-    test('invalid turn color', () => {
-      expect(() => Hexchess.parse('1/3/5/7/9/11/11/11/11/11/11 x - 0 1')).toThrow()
-    })
-
     test('missing turn color', () => {
       expect(Hexchess.parse('1/3/5/7/9/11/11/11/11/11/11').turn).toBe('w')
     })
@@ -475,10 +458,6 @@ describe('Hexchess', () => {
       expect(hexchess.ep).toBe(index('g5'))
     })
 
-    test('invalid en passant', () => {
-      expect(() => Hexchess.parse('1/3/5/7/9/11/11/11/11/11/11 w x 0 1')).toThrow()
-    })
-
     test('missing en passant', () => {
       expect(Hexchess.parse('1/3/5/7/9/11/11/11/11/11/11 w - 0 1').ep).toBeNull()
     })
@@ -491,20 +470,12 @@ describe('Hexchess', () => {
       expect(Hexchess.parse('1/3/5/7/9/11/11/11/11/11/11 w -').halfmove).toBe(0)
     })
 
-    test('invalid halfmove', () => {
-      expect(() => Hexchess.parse('1/3/5/7/9/11/11/11/11/11/11 w - x 1')).toThrow()
-    })
-
     test('multiple black kings', () => {
       expect(() => Hexchess.parse('1/k1k/5/7/9/11/11/11/11/11/11 w - 0 1')).toThrow()
     })
 
     test('multiple white kings', () => {
       expect(() => Hexchess.parse('1/K1K/5/7/9/11/11/11/11/11/11 w - 0 1')).toThrow()
-    })
-
-    test('invalid character', () => {
-      expect(() => Hexchess.parse('x/3/5/7/9/11/11/11/11/11/11 w - 0 1')).toThrow()
     })
 
     test('board overflow', () => {

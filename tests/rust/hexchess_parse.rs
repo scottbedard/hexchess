@@ -5,8 +5,9 @@ use serde::{Deserialize, Serialize};
 #[derive(Debug, Serialize, Deserialize)]
 struct Test {
     description: String,
+    error: bool,
     fen: String,
-    result: Hexchess,
+    result: Option<Hexchess>,
 }
 
 #[test]
@@ -14,8 +15,12 @@ fn test_hexchess_parse() {
     let tests = json::<Test>("hexchess-parse.json");
 
     for test in tests {
-        let result = Hexchess::parse(&test.fen).unwrap();
+        let result = Hexchess::parse(&test.fen);
 
-        assert_eq!(result, test.result, "{}", test.description);
+        if test.error {
+            assert!(result.is_err(), "{}", test.description);
+        } else {
+            assert_eq!(result.unwrap(), test.result.unwrap(), "{}", test.description);
+        }
     }
 }

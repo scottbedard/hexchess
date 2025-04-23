@@ -5,9 +5,11 @@ import { json } from './utils'
 describe('hexchess parse', () => {
   for (const spec of json('hexchess-parse.json')) {
     test(spec.description, () => {
-      const hexchess = Hexchess.parse(spec.fen)
-
-      expect(hexchess).toEqual(spec.result)
+      if (spec.error) {
+        expect(() => Hexchess.parse(spec.fen), spec.description).toThrow()
+      } else {
+        expect(Hexchess.parse(spec.fen), spec.description).toEqual(spec.result)
+      }
     })
   }
 })
