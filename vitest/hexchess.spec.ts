@@ -19,38 +19,6 @@ describe('Hexchess', () => {
     expect(clone).not.toBe(hexchess)
   })
 
-  describe('isCheck', () => {
-    test('no king', () => {
-      const hexchess = new Hexchess()
-
-      expect(hexchess.isCheck()).toBe(false)
-    })
-
-    test('not in check', () => {
-      const hexchess = Hexchess.init()
-
-      expect(hexchess.isCheck()).toBe(false)
-    })
-
-    test('in check', () => {
-      const hexchess = Hexchess.parse('K/3/5/7/9/5r5/11/11/11/11/11 w - 0 1')
-
-      expect(hexchess.isCheck()).toBe(true)
-    })
-  })
-
-  describe('isCheckmate', () => {
-    test('checkmate', () => {
-      const hexchess = Hexchess.parse('K/3/5/3q3/2q6/11/11/11/11/11/11 b - 0 1')
-
-      expect(hexchess.isCheckmate()).toBe(false)
-
-      hexchess.applyMove('d7f9')
-
-      expect(hexchess.isCheckmate()).toBe(true)
-    })
-  })
-
   describe('isStalemate', () => {
     test('stalemate', () => {
       const hexchess = Hexchess.parse('k/1P1/5/3K3/9/11/11/11/11/11/11 w - 0 1')

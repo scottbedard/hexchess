@@ -1,4 +1,5 @@
 mod board_traversal;
+mod check_checkmate_stalemate;
 mod current_moves;
 mod find_king;
 mod get_color;

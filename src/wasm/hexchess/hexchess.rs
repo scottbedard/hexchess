@@ -614,53 +614,6 @@ mod tests {
         assert_eq!(clone.fullmove, hexchess.fullmove);
     }
 
-    mod is_check {
-        use super::*;
-
-        #[test]
-        fn no_king() {
-            let hexchess = Hexchess::new();
-
-            assert_eq!(hexchess.is_check(), false);
-        }
-
-        #[test]
-        fn not_in_check() {
-            let hexchess = Hexchess::parse("1/3/5/7/9/11/11/11/11/11/11 w - 0 1").unwrap();
-
-            assert_eq!(hexchess.is_check(), false);
-        }
-
-        #[test]
-        fn in_check() {
-            let hexchess = Hexchess::parse("K/3/5/7/9/5r5/11/11/11/11/11 w - 0 1").unwrap();
-
-            assert_eq!(hexchess.is_check(), true);
-        }
-    }
-
-    #[test]
-    fn is_checkmate() {
-        let mut hexchess = Hexchess::parse("K/3/5/3q3/2q6/11/11/11/11/11/11 b - 0 1").unwrap();
-
-        assert_eq!(hexchess.is_checkmate(), false);
-  
-        let _ = hexchess.apply_move(&s!("d7f9"));
-  
-        assert_eq!(hexchess.is_checkmate(), true);
-    }
-
-    #[test]
-    fn is_stalemate() {
-        let mut hexchess = Hexchess::parse("k/1P1/5/3K3/9/11/11/11/11/11/11 w - 0 1").unwrap();
-
-        assert_eq!(hexchess.is_stalemate(), false);
-  
-        let _ = hexchess.apply_move(&s!("f8f9"));
-  
-        assert_eq!(hexchess.is_stalemate(), true);
-    }
-
     mod is_threatened {
         use super::*;
 
