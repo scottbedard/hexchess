@@ -14,3 +14,5 @@ mod move_legality;
 mod moves_from_unsafe;
 mod moves;
 mod positions;
+mod san_parse;
+mod san_to_string;

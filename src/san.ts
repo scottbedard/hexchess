@@ -11,12 +11,12 @@ export class San {
 
   /** create san instance */
   constructor(obj: {
-    from: number | Position
-    to: number | Position
+    from?: number | Position
+    to?: number | Position
     promotion?: PromotionPiece | null
-  }) {
-    this.from = typeof obj.from === 'string' ? index(obj.from) : obj.from
-    this.to = typeof obj.to === 'string' ? index(obj.to) : obj.to
+  } = {}) {
+    this.from = typeof obj.from === 'string' ? index(obj.from) : obj.from ?? 0
+    this.to = typeof obj.to === 'string' ? index(obj.to) : obj.to ?? 0
     this.promotion = obj.promotion ?? null
   }
 

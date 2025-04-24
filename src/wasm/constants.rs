@@ -1471,6 +1471,18 @@ pub enum PromotionPiece {
     Rook,
 }
 
+impl fmt::Display for PromotionPiece {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        let printable = match *self {
+            PromotionPiece::Bishop => 'b',
+            PromotionPiece::Knight => 'n',
+            PromotionPiece::Queen => 'q',
+            PromotionPiece::Rook => 'r',
+        };
+        write!(f, "{}", printable)
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
