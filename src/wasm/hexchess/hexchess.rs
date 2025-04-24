@@ -45,7 +45,7 @@ pub struct Hexchess {
 
 impl Hexchess {
     /// apply a whitespace separated sequence of moves
-    pub fn apply(&mut self, sequence: &str) -> Result<(), String> {
+    pub fn apply(&mut self, sequence: &str) -> Result<Self, String> {
         let mut clone = self.clone();
         let mut i: u32 = 0;
 
@@ -70,7 +70,7 @@ impl Hexchess {
         self.fullmove = clone.fullmove;
         self.halfmove = clone.halfmove;
 
-        Ok(())
+        Ok(*self)
     }
 
     /// apply legal move
@@ -603,35 +603,7 @@ fn to_piece(source: char) -> Result<Piece, &'static str> {
 mod tests {
     use crate::{h, s};
     use super::*;
-
-    mod apply {
-        use super::*;
-
-        #[test]
-        fn test_applying_a_sequence_of_moves() {
-            let mut hexchess = Hexchess::init();
-            let _ = hexchess.apply("g4g6 f7g6 f5f7 g6f6");
-
-            assert_eq!(hexchess.to_string(), "b/qbk/n1b1n/r5r/pppp1pppp/5p5/11/4P6/3P1B1P3/2P2B2P2/1PRNQBKNRP1 w - 0 3");
-        }
-
-        #[test]
-        fn test_apply_with_invalid_san() {
-            let mut hexchess = Hexchess::init();
-            let result = hexchess.apply("whoops");
-
-            assert_eq!(result, Err("invalid san at index 0: whoops".to_string()));
-        }
-
-        #[test]
-        fn test_apply_with_illegal_move() {
-            let mut hexchess = Hexchess::init();
-            let result = hexchess.apply("g4g5 a6a5");
-
-            assert_eq!(result, Err("illegal move at index 1: a6a5".to_string()));
-        }
-    }
-
+    
     mod apply_move {
         use super::*;
 

@@ -1,0 +1,23 @@
+[
+  {
+    "description": "applying a sequence of moves",
+    "error": false,
+    "from": "b/qbk/n1b1n/r5r/ppppppppp/11/5P5/4P1P4/3P1B1P3/2P2B2P2/1PRNQBKNRP1 w - 0 1",
+    "sequence": "g4g6 f7g6 f5f7 g6f6",
+    "to": "b/qbk/n1b1n/r5r/pppp1pppp/5p5/11/4P6/3P1B1P3/2P2B2P2/1PRNQBKNRP1 w - 0 3"
+  },
+  {
+    "description": "apply with invalid san",
+    "error": true,
+    "from": "b/qbk/n1b1n/r5r/ppppppppp/11/5P5/4P1P4/3P1B1P3/2P2B2P2/1PRNQBKNRP1 w - 0 1",
+    "sequence": "whoops",
+    "to": null
+  },
+  {
+    "description": "apply with illegal move",
+    "error": true,
+    "from": "b/qbk/n1b1n/r5r/ppppppppp/11/5P5/4P1P4/3P1B1P3/2P2B2P2/1PRNQBKNRP1 w - 0 1",
+    "sequence": "g4g5 a6a5",
+    "to": null
+  }
+]
