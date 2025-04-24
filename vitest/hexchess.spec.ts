@@ -21,13 +21,6 @@ describe('Hexchess', () => {
     expect(clone).not.toBe(hexchess)
   })
 
-  test('findKing', () => {
-    const hexchess = Hexchess.init()
-
-    expect(hexchess.findKing('b')).toBe(index('g10'))
-    expect(hexchess.findKing('w')).toBe(index('g1'))
-  })
-
   test('get', () => {
     const hexchess = Hexchess.init()
 

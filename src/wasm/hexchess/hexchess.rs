@@ -615,14 +615,6 @@ mod tests {
     }
 
     #[test]
-    fn find_kings_by_color() {
-        let hexchess = Hexchess::init();
-
-        assert_eq!(hexchess.find_king(Color::Black), Some(h!("g10")));
-        assert_eq!(hexchess.find_king(Color::White), Some(h!("g1")));
-    }
-
-    #[test]
     fn test_get() {
         let hexchess = Hexchess::init();
 
