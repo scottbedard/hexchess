@@ -4,25 +4,25 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize)]
 struct Test {
-    color: Color,
     description: String,
     from: String,
+    position: String,
     result: Option<String>,
 }
 
 #[test]
-fn test_find_king() {
-    let tests = json::<Test>("find-king.json");
+fn test_get() {
+    let tests = json::<Test>("get.json");
 
     for test in tests {
         let hexchess = Hexchess::parse(&test.from).unwrap();
 
-        let king = hexchess.find_king(test.color);
+        let result = hexchess.get(&test.position);
 
-        if let Some(king) = king {
-            assert_eq!(position(&king), test.result.unwrap(), "{}", test.description);
+        if result.is_some() {
+            assert_eq!(result.unwrap().to_string(), test.result.unwrap(), "{}", test.description);
         } else {
-            assert_eq!(king, None, "{}", test.description);
+            assert!(test.result.is_none(), "{}", test.description);
         }
     }
 }

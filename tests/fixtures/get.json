@@ -1,0 +1,26 @@
+[
+  {
+    "description": "g10",
+    "from": "b/qbk/n1b1n/r5r/ppppppppp/11/5P5/4P1P4/3P1B1P3/2P2B2P2/1PRNQBKNRP1 w - 0 1",
+    "position": "g10",
+    "result": "k"
+  },
+  {
+    "description": "g1",
+    "from": "b/qbk/n1b1n/r5r/ppppppppp/11/5P5/4P1P4/3P1B1P3/2P2B2P2/1PRNQBKNRP1 w - 0 1",
+    "position": "g1",
+    "result": "K"
+  },
+  {
+    "description": "empty position",
+    "from": "b/qbk/n1b1n/r5r/ppppppppp/11/5P5/4P1P4/3P1B1P3/2P2B2P2/1PRNQBKNRP1 w - 0 1",
+    "position": "",
+    "result": null
+  },
+  {
+    "description": "error",
+    "from": "b/qbk/n1b1n/r5r/ppppppppp/11/5P5/4P1P4/3P1B1P3/2P2B2P2/1PRNQBKNRP1 w - 0 1",
+    "position": "whoops",
+    "result": null
+  }
+]
