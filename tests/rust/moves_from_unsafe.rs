@@ -12,12 +12,9 @@ struct Test {
 }
 
 #[test]
-fn test_piece_movement() {
+fn test_moves_from_unsafe() {
     let files = [
-        "moves-king.json",
-        "moves-knight.json",
-        "moves-pawn.json",
-        "moves-straight-line.json",
+        "moves-from-unsafe.json",
     ];
 
     for file in files {
@@ -28,7 +25,7 @@ fn test_piece_movement() {
 
             let result = Hexchess::parse(&test.hexchess)
                 .unwrap()
-                .moves_from(from)
+                .moves_from_unsafe(from)
                 .into_iter()
                 .map(|san| san.to_string())
                 .collect::<Vec<String>>();

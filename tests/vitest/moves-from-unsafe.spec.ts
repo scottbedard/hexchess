@@ -5,10 +5,7 @@ import { json } from './utils'
 
 describe('piece movement', () => {
   [
-    'moves-king.json',
-    'moves-knight.json',
-    'moves-pawn.json',
-    'moves-straight-line.json',
+    'moves-from-unsafe.json',
   ].forEach(fixture => {
     const suite = json(fixture)
 
@@ -16,7 +13,7 @@ describe('piece movement', () => {
       describe(fixture.replaceAll('-', ' ').slice(0, -5), () => {
         test(spec.description, () => {
           const hexchess = Hexchess.parse(spec.hexchess)
-          const results = hexchess.movesFrom(index(spec.from)).map(String)
+          const results = hexchess.movesFromUnsafe(index(spec.from)).map(String)
 
           expect(results, `${fixture} : ${spec.description}`).toEqual(spec.result)
         })

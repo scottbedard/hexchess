@@ -9,5 +9,6 @@ mod hexchess_apply_move_unsafe;
 mod hexchess_apply;
 mod hexchess_parse;
 mod move_legality;
+mod moves_from_unsafe;
 mod moves;
 mod positions;
