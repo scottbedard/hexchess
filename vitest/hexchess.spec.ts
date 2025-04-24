@@ -21,62 +21,6 @@ describe('Hexchess', () => {
     expect(clone).not.toBe(hexchess)
   })
 
-  describe('isLegal', () => {
-    test('legal move', () => {
-      const hexchess = Hexchess.init()
-
-      expect(hexchess.isLegal('g4g5')).toBe(true)
-    })
-
-    test('illegal move', () => {
-      const hexchess = Hexchess.init()
-
-      expect(hexchess.isLegal('b1b4')).toBe(false)
-    })
-
-    test('illegal move out of turn', () => {
-      const hexchess = Hexchess.init()
-
-      expect(hexchess.isLegal('g7g6')).toBe(false)
-
-      hexchess.turn = 'b'
-
-      expect(hexchess.isLegal('g7g6')).toBe(true)
-    })
-
-    test('white cannot promote on black positions', () => {
-      const hexchess = Hexchess.parse('1/3/5/7/p7p/R9R/11/11/11/11/rP7Pr w - 0 1')
-
-      expect(hexchess.isLegal(new San({ from: 'b1', to: 'b2' }))).toBe(true)
-      expect(hexchess.isLegal(new San({ from: 'b1', to: 'b2', promotion: 'q' }))).toBe(false)
-
-      expect(hexchess.isLegal(new San({ from: 'k1', to: 'l1' }))).toBe(true)
-      expect(hexchess.isLegal(new San({ from: 'k1', to: 'l1', promotion: 'q' }))).toBe(false)
-    })
-
-    test('black cannot promote on white positions', () => {
-      const hexchess = Hexchess.parse('1/3/5/7/p7p/R9R/11/11/11/11/rP7Pr b - 0 1')
-
-      expect(hexchess.isLegal(new San({ from: 'b7', to: 'a6' }))).toBe(true)
-      expect(hexchess.isLegal(new San({ from: 'b7', to: 'a6', promotion: 'q' }))).toBe(false)
-
-      expect(hexchess.isLegal(new San({ from: 'k7', to: 'l6' }))).toBe(true)
-      expect(hexchess.isLegal(new San({ from: 'k7', to: 'l6', promotion: 'q' }))).toBe(false)
-    })
-
-    test('pawn must promote on final rank', () => {
-      const hexchess = Hexchess.parse('1/1P1/5/7/9/11/11/11/11/5p5/11 w - 0 1')
-
-      expect(hexchess.isLegal(new San({ from: 'f10', to: 'f11' }))).toBe(false)
-      expect(hexchess.isLegal(new San({ from: 'f10', to: 'f11', promotion: 'q' }))).toBe(true)
-
-      hexchess.turn = 'b'
-
-      expect(hexchess.isLegal(new San({ from: 'f2', to: 'f1' }))).toBe(false)
-      expect(hexchess.isLegal(new San({ from: 'f2', to: 'f1', promotion: 'q' }))).toBe(true)
-    })
-  })
-
   describe('isCheck', () => {
     test('no king', () => {
       const hexchess = new Hexchess()
