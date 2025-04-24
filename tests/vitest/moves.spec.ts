@@ -5,6 +5,7 @@ import { json } from './utils'
 
 describe('piece movement', () => {
   [
+    'moves-from.json',
     'moves-king.json',
     'moves-knight.json',
     'moves-pawn.json',
