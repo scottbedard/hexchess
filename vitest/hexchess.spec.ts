@@ -1,9 +1,7 @@
 import { describe, expect, test } from 'vitest'
 import {
   Hexchess,
-  index,
-  positions,
-  San
+  positions
 } from '../src'
 
 describe('Hexchess', () => {
