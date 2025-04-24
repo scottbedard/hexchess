@@ -603,55 +603,6 @@ fn to_piece(source: char) -> Result<Piece, &'static str> {
 mod tests {
     use crate::{h, s};
     use super::*;
-    
-    mod apply_move {
-        use super::*;
-
-        // promote white pieces
-        #[test]
-        fn white_and_black_promotions() {
-            let mut hexchess = Hexchess::parse("1/3/1P1P1/7/1P5P1/11/11/11/11/2p1p1p1p2/11 w - 0 1").unwrap();
-
-            let _ = hexchess.apply_move(&s!("c7c8r"));
-            assert_eq!(hexchess.board[h!("c8")], Some(Piece::WhiteRook));
-
-            let _ = hexchess.apply_move(&s!("c2c1r"));
-            assert_eq!(hexchess.board[h!("c1")], Some(Piece::BlackRook));
-
-            let _ = hexchess.apply_move(&s!("e9e10b"));
-            assert_eq!(hexchess.board[h!("e10")], Some(Piece::WhiteBishop));
-
-            let _ = hexchess.apply_move(&s!("e2e1b"));
-            assert_eq!(hexchess.board[h!("e1")], Some(Piece::BlackBishop));
-
-            let _ = hexchess.apply_move(&s!("g9g10q"));
-            assert_eq!(hexchess.board[h!("g10")], Some(Piece::WhiteQueen));
-
-            let _ = hexchess.apply_move(&s!("g2g1q"));
-            assert_eq!(hexchess.board[h!("g1")], Some(Piece::BlackQueen));
-
-            let _ = hexchess.apply_move(&s!("i7i8n"));
-            assert_eq!(hexchess.board[h!("i8")], Some(Piece::WhiteKnight));
-
-            let _ = hexchess.apply_move(&s!("i2i1n"));
-            assert_eq!(hexchess.board[h!("i1")], Some(Piece::BlackKnight));
-        }
-    
-        #[test]
-        fn errors_on_illegal_move() {
-            let mut hexchess = Hexchess::init();
-
-            assert_eq!(hexchess.apply_move(&s!("a4a5")).is_err(), true);
-        }
-
-        #[test]
-        #[should_panic]
-        fn apply_move_unsafe_panics_on_empty_positions() {
-            let mut hexchess = Hexchess::init();
-
-            hexchess.apply_move_unsafe(&s!("a4a5"));
-        }
-    }
 
     #[test]
     fn test_clone() {

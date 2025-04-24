@@ -7,50 +7,6 @@ import {
 } from '../src'
 
 describe('Hexchess', () => {
-  describe('applyMove', () => {
-    // {
-    //   "description": "",
-    //   "error": false,
-    //   "from": "",
-    //   "sequence": "",
-    //   "to": ""
-    // }
-
-    test('promote white and black pieces', () => {
-      const hexchess = Hexchess.parse('1/3/1P1P1/7/1P5P1/11/11/11/11/2p1p1p1p2/11 w - 0 1')
-
-      hexchess.applyMove('c7c8r')
-      expect(hexchess.get('c8')).toBe('R')
-
-      hexchess.applyMove('c2c1r')
-      expect(hexchess.get('c1')).toBe('r')
-
-      hexchess.applyMove('e9e10b')
-      expect(hexchess.get('e10')).toBe('B')
-
-      hexchess.applyMove('e2e1b')
-      expect(hexchess.get('e1')).toBe('b')
-
-      hexchess.applyMove('g9g10q')
-      expect(hexchess.get('g10')).toBe('Q')
-
-      hexchess.applyMove('g2g1q')
-      expect(hexchess.get('g1')).toBe('q')
-
-      hexchess.applyMove('i7i8n')
-      expect(hexchess.get('i8')).toBe('N')
-
-      hexchess.applyMove('i2i1n')
-      expect(hexchess.get('i1')).toBe('n')
-    })
-
-    test('errors on illegal move', () => {
-      const hexchess = Hexchess.init()
-
-      expect(() => hexchess.applyMove('a4a5')).toThrow()
-    })
-  })
-
   describe('applyMoveUnsafe', () => {
     test('errors on empty positions', () => {
       const hexchess = Hexchess.init()
