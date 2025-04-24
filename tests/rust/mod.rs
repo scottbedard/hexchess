@@ -7,6 +7,7 @@ mod get;
 mod graph_traversal;
 mod hexchess_apply_move_unsafe;
 mod hexchess_apply;
+mod hexchess_is_threatened;
 mod hexchess_parse;
 mod hexchess_to_string;
 mod move_legality;
