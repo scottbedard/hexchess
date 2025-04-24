@@ -1,8 +1,5 @@
 import { describe, expect, test } from 'vitest'
-import {
-  Hexchess,
-  positions
-} from '../src'
+import { Hexchess } from '../src'
 
 describe('Hexchess', () => {
   test('clone', () => {
