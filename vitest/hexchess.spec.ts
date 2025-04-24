@@ -21,31 +21,6 @@ describe('Hexchess', () => {
     expect(clone).not.toBe(hexchess)
   })
 
-  test('getColor', () => {
-    const hexchess = Hexchess.init()
-    const results = hexchess.getColor('b')
-
-    expect(results.length).toBe(18)
-    expect(results[0]).toBe(index('f11'))
-    expect(results[1]).toBe(index('e10'))
-    expect(results[2]).toBe(index('f10'))
-    expect(results[3]).toBe(index('g10'))
-    expect(results[4]).toBe(index('d9'))
-    expect(results[5]).toBe(index('f9'))
-    expect(results[6]).toBe(index('h9'))
-    expect(results[7]).toBe(index('c8'))
-    expect(results[8]).toBe(index('i8'))
-    expect(results[9]).toBe(index('b7'))
-    expect(results[10]).toBe(index('c7'))
-    expect(results[11]).toBe(index('d7'))
-    expect(results[12]).toBe(index('e7'))
-    expect(results[13]).toBe(index('f7'))
-    expect(results[14]).toBe(index('g7'))
-    expect(results[15]).toBe(index('h7'))
-    expect(results[16]).toBe(index('i7'))
-    expect(results[17]).toBe(index('k7'))
-  })
-
   describe('isLegal', () => {
     test('legal move', () => {
       const hexchess = Hexchess.init()

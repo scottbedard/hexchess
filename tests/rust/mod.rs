@@ -1,6 +1,7 @@
 mod board_traversal;
 mod current_moves;
 mod find_king;
+mod get_color;
 mod get;
 mod graph_traversal;
 mod hexchess_apply_move_unsafe;
