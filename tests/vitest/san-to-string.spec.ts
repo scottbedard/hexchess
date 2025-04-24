@@ -4,7 +4,7 @@ import { json } from './utils'
 
 const data = json('san-to-string.json')
 
-describe.only('san to string', () => {
+describe('san to string', () => {
   for (const spec of data) {
     test(spec.description, () => {
       const san = new San({
