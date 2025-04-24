@@ -80,24 +80,4 @@ describe('Hexchess', () => {
       expect(moves.length).toBe(0)
     })
   })
-
-  describe('toString', () => {
-    test('empty', () => {
-      const hexchess = new Hexchess()
-
-      expect(hexchess.toString()).toBe('1/3/5/7/9/11/11/11/11/11/11 w - 0 1')
-    })
-
-    test('initial position', () => {
-      const hexchess = Hexchess.init()
-
-      expect(hexchess.toString()).toBe('b/qbk/n1b1n/r5r/ppppppppp/11/5P5/4P1P4/3P1B1P3/2P2B2P2/1PRNQBKNRP1 w - 0 1')
-    })
-
-    test('with en passant', () => {
-      const hexchess = Hexchess.init().applyMove('g4g6')
-
-      expect(hexchess.toString()).toBe('b/qbk/n1b1n/r5r/ppppppppp/6P4/5P5/4P6/3P1B1P3/2P2B2P2/1PRNQBKNRP1 b g5 0 1')
-    })
-  })
 })

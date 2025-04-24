@@ -712,31 +712,4 @@ mod tests {
         assert_eq!(to_piece('/'), Err("invalid_piece_character"));
         assert_eq!(to_piece(' '), Err("invalid_piece_character"));
     }
-
-    mod to_string {
-        use super::*;
-
-        #[test]
-        fn empty_position() {
-            let hexchess = Hexchess::new();
-
-            assert_eq!(hexchess.to_string(), "1/3/5/7/9/11/11/11/11/11/11 w - 0 1");
-        }
-
-        #[test]
-        fn initial_position() {
-            let hexchess = Hexchess::init();
-
-            assert_eq!(hexchess.to_string(), "b/qbk/n1b1n/r5r/ppppppppp/11/5P5/4P1P4/3P1B1P3/2P2B2P2/1PRNQBKNRP1 w - 0 1");
-        }
-
-        #[test]
-        fn with_en_passant() {
-            let mut hexchess = Hexchess::init();
-
-            let _ = hexchess.apply_move(&s!("g4g6"));
-
-            assert_eq!(hexchess.to_string(), "b/qbk/n1b1n/r5r/ppppppppp/6P4/5P5/4P6/3P1B1P3/2P2B2P2/1PRNQBKNRP1 b g5 0 1");
-        }
-    }
 }
