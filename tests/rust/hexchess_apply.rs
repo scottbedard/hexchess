@@ -18,7 +18,7 @@ fn test_hexchess_apply() {
     for test in tests {
         let mut result = match Hexchess::parse(&test.from) {
             Ok(hexchess) => hexchess,
-            Err(e) => {
+            Err(_) => {
                 assert!(test.error, "{}", test.description);
                 continue;
             }
