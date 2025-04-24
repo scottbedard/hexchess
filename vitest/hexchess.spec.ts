@@ -8,90 +8,13 @@ import {
 
 describe('Hexchess', () => {
   describe('applyMove', () => {
-    test('sets to and from positions', () => {
-      const hexchess = Hexchess.init()
-
-      hexchess.applyMove('g4g5')
-      hexchess.applyMove('e7e6')
-      expect(hexchess.get('g5')).toBe('P')
-      expect(hexchess.get('g4')).toBe(null)
-      expect(hexchess.get('e6')).toBe('p')
-      expect(hexchess.get('e7')).toBe(null)
-    })
-
-    test('clears en passant capture white', () => {
-      const hexchess = Hexchess.parse('b/qbk/n1b1n/r5r/ppppp1ppp/5P5/6p4/4P1P4/3P1B1P3/2P2B2P2/1PRNQBKNRP1 w g6 0 2')
-
-      hexchess.applyMove('f6g6')
-      expect(hexchess.get('g5')).toBe(null)
-    })
-
-    test('clears en passant capture black', () => {
-      const hexchess = Hexchess.parse('b/qbk/n1b1n/r5r/pppp1pppp/5pP4/4PP5/11/3P1B1P3/2P2B2P2/1PRNQBKNRP1 b g5 0 2')
-
-      hexchess.applyMove('f6g5')
-      expect(hexchess.get('g6')).toBe(null)
-    })
-
-    test('only pawns capture en passant', () => {
-      const hexchess = Hexchess.parse('b/qbk/n1b1n/r5r/ppppp1ppp/11/5Pp4/4P1PB3/3P1B1P3/2P5P2/1PRNQBKNRP1 w g6 0 2')
-
-      hexchess.applyMove('h4g6') // <- bishop to en passant
-      expect(hexchess.get('g5')).toBe('p')
-    })
-
-    test('alternate color back and forth', () => {
-      const hexchess = Hexchess.init()
-      expect(hexchess.turn).toBe('w')
-
-      hexchess.applyMove('g4g5')
-      expect(hexchess.turn).toBe('b')
-
-      hexchess.applyMove('e7e6')
-      expect(hexchess.turn).toBe('w')
-
-      hexchess.applyMove('f5f6')
-      expect(hexchess.turn).toBe('b')
-    })
-
-    test('sets and unsets en passant', () => {
-      const hexchess = Hexchess.init()
-
-      hexchess.applyMove('g4g6')
-      expect(hexchess.ep).toBe(index('g5'))
-
-      hexchess.applyMove('e7e5')
-      expect(hexchess.ep).toBe(index('e6'))
-
-      hexchess.applyMove('b1b2')
-      expect(hexchess.ep).toBe(null)
-    })
-
-    test('sets halfmove and fullmove', () => {
-      const hexchess = Hexchess.init()
-      expect(hexchess.halfmove).toBe(0)
-      expect(hexchess.fullmove).toBe(1)
-
-      hexchess.applyMove('e4e5')
-      expect(hexchess.halfmove).toBe(0)
-      expect(hexchess.fullmove).toBe(1)
-
-      hexchess.applyMove('f7f6')
-      expect(hexchess.halfmove).toBe(0)
-      expect(hexchess.fullmove).toBe(2)
-
-      hexchess.applyMove('f3c6')
-      expect(hexchess.halfmove).toBe(1)
-      expect(hexchess.fullmove).toBe(2)
-
-      hexchess.applyMove('i8h8')
-      expect(hexchess.halfmove).toBe(2)
-      expect(hexchess.fullmove).toBe(3)
-
-      hexchess.applyMove('c6e10')
-      expect(hexchess.halfmove).toBe(0)
-      expect(hexchess.fullmove).toBe(3)
-    })
+    // {
+    //   "description": "",
+    //   "error": false,
+    //   "from": "",
+    //   "sequence": "",
+    //   "to": ""
+    // }
 
     test('promote white and black pieces', () => {
       const hexchess = Hexchess.parse('1/3/1P1P1/7/1P5P1/11/11/11/11/2p1p1p1p2/11 w - 0 1')
