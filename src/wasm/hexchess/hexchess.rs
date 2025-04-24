@@ -657,18 +657,6 @@ mod tests {
         }
     }
 
-    mod moves_from {
-        use super::*;
-
-        #[test]
-        fn returns_empty_vector_for_empty_position() {
-            let hexchess = Hexchess::init();
-
-            assert_eq!(hexchess.moves_from(h!("a4")).len(), 0);
-            assert_eq!(hexchess.moves_from_unsafe(h!("a4")).len(), 0);
-        }
-    }
-
     mod self_check {
         use super::*;
 

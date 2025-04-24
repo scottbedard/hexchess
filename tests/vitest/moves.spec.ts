@@ -7,6 +7,7 @@ describe('piece movement', () => {
   [
     'moves-king.json',
     'moves-knight.json',
+    'moves-misc.json',
     'moves-pawn.json',
     'moves-straight-line.json',
   ].forEach(fixture => {

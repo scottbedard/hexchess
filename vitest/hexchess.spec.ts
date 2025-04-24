@@ -19,18 +19,6 @@ describe('Hexchess', () => {
     expect(clone).not.toBe(hexchess)
   })
 
-  describe('isStalemate', () => {
-    test('stalemate', () => {
-      const hexchess = Hexchess.parse('k/1P1/5/3K3/9/11/11/11/11/11/11 w - 0 1')
-
-      expect(hexchess.isStalemate()).toBe(false)
-
-      hexchess.applyMove('f8f9')
-
-      expect(hexchess.isStalemate()).toBe(true)
-    })
-  })
-
   describe('isThreatened', () => {
     test('unattacked position is not threatened', () => {
       const hexchess = Hexchess.parse('1/2K/5/7/9/11/11/11/11/11/11 w - 0 1')
@@ -70,13 +58,6 @@ describe('Hexchess', () => {
   })
 
   describe('movesFrom', () => {
-    test('returns empty array for empty position', () => {
-      const hexchess = Hexchess.init()
-
-      expect(hexchess.movesFrom('a4').length).toBe(0)
-      expect(hexchess.movesFromUnsafe('a4').length).toBe(0)
-    })
-
     test('cannot step out of a pin', () => {
       const hexchess = Hexchess.parse('1/3/5/7/4K4/5R5/5q5/11/11/11/11 w - 0 1')
       const moves = hexchess.movesFrom('f6')

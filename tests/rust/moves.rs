@@ -16,6 +16,7 @@ fn test_piece_movement() {
     let files = [
         "moves-king.json",
         "moves-knight.json",
+        "moves-misc.json",
         "moves-pawn.json",
         "moves-straight-line.json",
     ];
