@@ -228,7 +228,7 @@ impl Hexchess {
                 // prevent self check
                 let mut clone = self.clone();
 
-                clone.apply_move_unsafe(san);
+                let _ = clone.apply_move_unsafe(san);
                 
                 match clone.find_king(color) {
                     Some(king) => !clone.is_threatened(king),
