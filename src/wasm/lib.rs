@@ -49,7 +49,10 @@ pub fn apply_move(hexchess: Hexchess, san: San) -> Hexchess {
 pub fn apply_move_unsafe(hexchess: Hexchess, san: San) -> Hexchess {
     set_panic_hook();
 
-    *hexchess.clone().apply_move_unsafe(&san)
+    match hexchess.clone().apply_move_unsafe(&san) {
+        Ok(hexchess) => *hexchess,
+        Err(err) => panic!("hexchess error: {:?}", err),
+    }
 }
 
 /// Create a blank `Hexchess` object.

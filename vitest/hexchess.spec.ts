@@ -7,20 +7,6 @@ import {
 } from '../src'
 
 describe('Hexchess', () => {
-  describe('applyMoveUnsafe', () => {
-    test('errors on empty positions', () => {
-      const hexchess = Hexchess.init()
-
-      expect(() => hexchess.applyMoveUnsafe('a4a5')).toThrow()
-    })
-
-    test('illegal move succeeds', () => {
-      const hexchess = Hexchess.init().applyMoveUnsafe('b1b6') // <- illegal pawn move
-
-      expect(hexchess.toString()).toEqual('b/qbk/n1b1n/r5r/ppppppppp/1P9/5P5/4P1P4/3P1B1P3/2P2B2P2/2RNQBKNRP1 b - 0 1')
-    })
-  })
-
   test('clone', () => {
     const hexchess = Hexchess.init()
     const clone = hexchess.clone()

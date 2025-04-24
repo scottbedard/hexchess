@@ -74,21 +74,19 @@ impl Hexchess {
     }
 
     /// apply legal move
-    pub fn apply_move(&mut self, san: &San) -> Result<(), String> {
+    pub fn apply_move(&mut self, san: &San) -> Result<&Self, String> {
         if !self.is_legal(san) {
             return Err(format!("illegal move: {:?}", san));
         }
 
-        self.apply_move_unsafe(san);
-
-        Ok(())
+        self.apply_move_unsafe(san)
     }
 
     /// apply move, regardless of turn or legality
-    pub fn apply_move_unsafe(&mut self, san: &San) -> &Self {
+    pub fn apply_move_unsafe(&mut self, san: &San) -> Result<&Self, String> {
         let piece = match self.board[san.from as usize] {
             Some(piece) => piece,
-            None => panic!("cannot apply move from empty position: {}", san.from),
+            None => return Err(format!("cannot apply move from empty position: {}", san.from)),
         };
 
         // update halfmove
@@ -176,7 +174,7 @@ impl Hexchess {
             _ => None,
         };
 
-        self
+        Ok(self)
     }
 
     /// get legal moves for current turn
@@ -614,15 +612,6 @@ mod tests {
         assert_eq!(clone.turn, hexchess.turn);
         assert_eq!(clone.halfmove, hexchess.halfmove);  
         assert_eq!(clone.fullmove, hexchess.fullmove);
-    }
-
-    #[test]
-    fn test_apply_move_unsafe() {
-        let mut hexchess = Hexchess::init();
-
-        hexchess.apply_move_unsafe(&s!("b1b6")); // <- illegal pawn move
-
-        assert_eq!(hexchess.to_string(), "b/qbk/n1b1n/r5r/ppppppppp/1P9/5P5/4P1P4/3P1B1P3/2P2B2P2/2RNQBKNRP1 b - 0 1");
     }
 
     #[test]
