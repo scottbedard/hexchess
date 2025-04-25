@@ -1,6 +1,6 @@
 [
   {
-    "description": "success promotion - b",
+    "description": "single digit promotion - b",
     "san": "a5a6b",
     "error": false,
     "expect": {
@@ -10,7 +10,7 @@
     }
   },
   {
-    "description": "success promotion - n",
+    "description": "single digit promotion - n",
     "san": "a5a6n",
     "error": false,
     "expect": {
@@ -20,7 +20,7 @@
     }
   },
   {
-    "description": "success promotion - r",
+    "description": "single digit promotion - r",
     "san": "a5a6r",
     "error": false,
     "expect": {
@@ -30,7 +30,7 @@
     }
   },
   {
-    "description": "success promotion - q",
+    "description": "single digit promotion - q",
     "san": "a5a6q",
     "error": false,
     "expect": {
@@ -40,7 +40,7 @@
     }
   },
   {
-    "description": "singit digit promotion rank",
+    "description": "singit digit no promotion",
     "san": "a1b2",
     "error": false,
     "expect": {
@@ -76,6 +76,16 @@
     "expect": {
       "from": "f10",
       "promotion": "q",
+      "to": "f11"
+    }
+  },
+  {
+    "description": "two digit promotion rank - r",
+    "san": "f10f11r",
+    "error": false,
+    "expect": {
+      "from": "f10",
+      "promotion": "r",
       "to": "f11"
     }
   },
