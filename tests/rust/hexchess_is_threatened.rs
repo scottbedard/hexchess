@@ -1,5 +1,5 @@
 use crate::json;
-use hexchess::{Color, index, Hexchess, position};
+use hexchess::{index, Hexchess};
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize)]
