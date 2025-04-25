@@ -208,6 +208,12 @@
     "san": "f10f6q",
     "error": true,
     "expect": null
+  },
+  {
+    "description": "overflow promotion character",
+    "san": "f11f11qX",
+    "error": true,
+    "expect": null
   }
 ]
 
