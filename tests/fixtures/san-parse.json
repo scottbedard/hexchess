@@ -192,6 +192,12 @@
     "expect": null
   },
   {
+    "description": "duplicate promotion character",
+    "san": "f10f11qq",
+    "error": true,
+    "expect": null
+  },
+  {
     "description": "invalid to and from",
     "san": "x1x2",
     "error": true,
@@ -206,12 +212,6 @@
   {
     "description": "post promotion character",
     "san": "f10f6q",
-    "error": true,
-    "expect": null
-  },
-  {
-    "description": "overflow promotion character",
-    "san": "f11f11qX",
     "error": true,
     "expect": null
   }
