@@ -1,0 +1,372 @@
+[
+  {
+    "description": "black starting b7",
+    "from": "1/3/5/7/ppppppppp/11/11/11/11/11/11 b - 0 1",
+    "position": "b7",
+    "expect": [
+      "b7b6",
+      "b7b5"
+    ]
+  },
+  {
+    "description": "black starting c7",
+    "from": "1/3/5/7/ppppppppp/11/11/11/11/11/11 b - 0 1",
+    "position": "c7",
+    "expect": [
+      "c7c6",
+      "c7c5"
+    ]
+  },
+  {
+    "description": "black starting d7",
+    "from": "1/3/5/7/ppppppppp/11/11/11/11/11/11 b - 0 1",
+    "position": "d7",
+    "expect": [
+      "d7d6",
+      "d7d5"
+    ]
+  },
+  {
+    "description": "black starting e7",
+    "from": "1/3/5/7/ppppppppp/11/11/11/11/11/11 b - 0 1",
+    "position": "e7",
+    "expect": [
+      "e7e6",
+      "e7e5"
+    ]
+  },
+  {
+    "description": "black starting f7",
+    "from": "1/3/5/7/ppppppppp/11/11/11/11/11/11 b - 0 1",
+    "position": "f7",
+    "expect": [
+      "f7f6",
+      "f7f5"
+    ]
+  },
+  {
+    "description": "black starting g7",
+    "from": "1/3/5/7/ppppppppp/11/11/11/11/11/11 b - 0 1",
+    "position": "g7",
+    "expect": [
+      "g7g6",
+      "g7g5"
+    ]
+  },
+  {
+    "description": "black starting h7",
+    "from": "1/3/5/7/ppppppppp/11/11/11/11/11/11 b - 0 1",
+    "position": "h7", 
+    "expect": [
+      "h7h6",
+      "h7h5"
+    ]
+  },
+  {
+    "description": "black starting i7",
+    "from": "1/3/5/7/ppppppppp/11/11/11/11/11/11 b - 0 1",
+    "position": "i7",
+    "expect": [
+      "i7i6",
+      "i7i5"
+    ]
+  },
+  {
+    "description": "black starting k7",
+    "from": "1/3/5/7/ppppppppp/11/11/11/11/11/11 b - 0 1",
+    "position": "k7",
+    "expect": [
+      "k7k6",
+      "k7k5"
+    ]
+  },
+  {
+    "description": "black blocked friendly",
+    "from": "1/3/5/7/4p4/5p5/11/11/11/11/11 b - 0 1",
+    "position": "f7",
+    "expect": []
+  },
+  {
+    "description": "black blocked friendly double",
+    "from": "1/3/5/7/4p4/11/5P5/11/11/11/11 b - 0 1",
+    "position": "f7",
+    "expect": [
+      "f7f6"
+    ]
+  },
+  {
+    "description": "black blocked hostile",
+    "from": "1/3/5/7/4p4/5P5/11/11/11/11/11 b - 0 1",
+    "position": "f7",
+    "expect": []
+  },
+  {
+    "description": "black blocked hostile double",
+    "from": "1/3/5/7/4p4/11/5P5/11/11/11/11 b - 0 1",
+    "position": "f7",
+    "expect": [
+      "f7f6"
+    ]
+  },
+  {
+    "description": "white starting b1",
+    "from": "1/3/5/7/9/11/5P5/4P1P4/3P3P3/2P5P2/1P7P1 w - 0 1",
+    "position": "b1",
+    "expect": [
+      "b1b2",
+      "b1b3"
+    ]
+  },
+  {
+    "description": "white starting c2",
+    "from": "1/3/5/7/9/11/5P5/4P1P4/3P3P3/2P5P2/1P7P1 w - 0 1",
+    "position": "c2",
+    "expect": [
+      "c2c3",
+      "c2c4"
+    ]
+  },
+  {
+    "description": "white starting d3",
+    "from": "1/3/5/7/9/11/5P5/4P1P4/3P3P3/2P5P2/1P7P1 w - 0 1",
+    "position": "d3",
+    "expect": [
+      "d3d4",
+      "d3d5"
+    ]
+  },
+  {
+    "description": "white starting e4",
+    "from": "1/3/5/7/9/11/5P5/4P1P4/3P3P3/2P5P2/1P7P1 w - 0 1",
+    "position": "e4",
+    "expect": [
+      "e4e5",
+      "e4e6"
+    ]
+  },
+  {
+    "description": "white starting f5",
+    "from": "1/3/5/7/9/11/5P5/4P1P4/3P3P3/2P5P2/1P7P1 w - 0 1",
+    "position": "f5",
+    "expect": [
+      "f5f6",
+      "f5f7"
+    ]
+  },
+  {
+    "description": "white starting g4",
+    "from": "1/3/5/7/9/11/5P5/4P1P4/3P3P3/2P5P2/1P7P1 w - 0 1",
+    "position": "g4",
+    "expect": [
+      "g4g5",
+      "g4g6"
+    ]
+  },
+  {
+    "description": "white starting h3",
+    "from": "1/3/5/7/9/11/5P5/4P1P4/3P3P3/2P5P2/1P7P1 w - 0 1",
+    "position": "h3",
+    "expect": [
+      "h3h4",
+      "h3h5"
+    ]
+  },
+  {
+    "description": "white starting i2",
+    "from": "1/3/5/7/9/11/5P5/4P1P4/3P3P3/2P5P2/1P7P1 w - 0 1",
+    "position": "i2",
+    "expect": [
+      "i2i3",
+      "i2i4"
+    ]
+  },
+  {
+    "description": "white starting k1",
+    "from": "1/3/5/7/9/11/5P5/4P1P4/3P3P3/2P5P2/1P7P1 w - 0 1",
+    "position": "k1",
+    "expect": [
+      "k1k2",
+      "k1k3"
+    ]
+  },
+  {
+    "description": "white blocked friendly",
+    "from": "1/3/5/7/9/5P5/5P5/11/11/11/11 w - 0 1",
+    "position": "f5",
+    "expect": []
+  },
+  {
+    "description": "white blocked friendly double",
+    "from": "1/3/5/7/4P4/11/5P5/11/11/11/11 w - 0 1",
+    "position": "f5",
+    "expect": [
+      "f5f6"
+    ]
+  },
+  {
+    "description": "white blocked hostile",
+    "from": "1/3/5/7/9/5p5/5P5/11/11/11/11 w - 0 1",
+    "position": "f5",
+    "expect": []
+  },
+  {
+    "description": "white blocked hostile double",
+    "from": "1/3/5/7/4p4/11/5P5/11/11/11/11 w - 0 1",
+    "position": "f5",
+    "expect": [
+      "f5f6"
+    ]
+  },
+  {
+    "description": "black capture",
+    "from": "1/3/5/7/9/5p5/4P1P4/11/11/11/11 b - 0 1",
+    "position": "f6",
+    "expect": [
+      "f6f5",
+      "f6g5",
+      "f6e5"
+    ]
+  },
+  {
+    "description": "black capture blocked",
+    "from": "1/3/5/7/9/5p5/4p1p4/11/11/11/11 b - 0 1",
+    "position": "f6",
+    "expect": [
+      "f6f5"
+    ]
+  },
+  {
+    "description": "white capture",
+    "from": "1/3/5/7/9/4pPp4/11/11/11/11/11 w - 0 1",
+    "position": "f6",
+    "expect": [
+      "f6f7",
+      "f6e6",
+      "f6g6"
+    ]
+  },
+  {
+    "description": "white capture blocked",
+    "from": "1/3/5/7/9/4PPP4/11/11/11/11/11 w - 0 1",
+    "position": "f6",
+    "expect": [
+      "f6f7"
+    ]
+  },
+  {
+    "description": "capture near left edge of board",
+    "from": "1/3/5/7/9/11/Rr9/P8Rp/10r/11/11 w - 0 1",
+    "position": "a4",
+    "expect": [
+      "a4b5"
+    ]
+  },
+  {
+    "description": "capture near right edge of board",
+    "from": "1/3/5/7/9/11/Rr9/P8Rp/10r/11/11 w - 0 1",
+    "position": "l4",
+    "expect": [
+      "l4k4"
+    ]
+  },
+  {
+    "description": "black en passant portside",
+    "from": "1/3/5/7/4P4/4p6/11/11/11/11/11 b f6 0 1",
+    "position": "e6",
+    "expect": [
+      "e6e5",
+      "e6f6"
+    ]
+  },
+  {
+    "description": "black en passant portside out of turn",
+    "from": "1/3/5/7/4P4/4p6/11/11/11/11/11 w f6 0 1",
+    "position": "e6",
+    "expect": [
+      "e6e5"
+    ]
+  },
+  {
+    "description": "black en passant starboard",
+    "from": "1/3/5/7/4P4/6p4/11/11/11/11/11 b f6 0 1",
+    "position": "g6",
+    "expect": [
+      "g6g5",
+      "g6f6"
+    ]
+  },
+  {
+    "description": "black en passant starboard out of turn",
+    "from": "1/3/5/7/4P4/6p4/11/11/11/11/11 w f6 0 1",
+    "position": "g6",
+    "expect": [
+      "g6g5"
+    ]
+  },
+  {
+    "description": "black promote forward",
+    "from": "1/3/5/7/9/11/11/11/11/5p5/11 b - 0 1",
+    "position": "f2",
+    "expect": [
+      "f2f1b",
+      "f2f1n",
+      "f2f1q",
+      "f2f1r"
+    ]
+  },
+  {
+    "description": "black promote capture portside",
+    "from": "1/3/5/7/9/11/11/11/11/5p5/4rrK4 w - 0 1",
+    "position": "f2",
+    "expect": [
+      "f2g1b",
+      "f2g1n",
+      "f2g1q",
+      "f2g1r"
+    ]
+  },
+  {
+    "description": "black promote capture starboard",
+    "from": "1/3/5/7/9/11/11/11/11/5p5/4Krr4 w - 0 1",
+    "position": "f2",
+    "expect": [
+      "f2e1b",
+      "f2e1n",
+      "f2e1q",
+      "f2e1r"
+    ]    
+  },
+  {
+    "description": "white promote forward",
+    "from": "1/1P1/5/7/9/11/11/11/11/11/11 w - 0 1",
+    "position": "f10",
+    "expect": [
+      "f10f11b",
+      "f10f11n",
+      "f10f11q",
+      "f10f11r"
+    ]
+  },
+  {
+    "description": "white promote capture portside",
+    "from": "R/kPR/5/7/9/11/11/11/11/11/11 w - 0 1",
+    "position": "f10",
+    "expect": [
+      "f10e10b",
+      "f10e10n",
+      "f10e10q",
+      "f10e10r"
+    ]
+  },
+  {
+    "description": "white promote capture starboard",
+    "from": "R/RPk/5/7/9/11/11/11/11/11/11 w - 0 1",
+    "position": "f10",
+    "expect": [
+      "f10g10b",
+      "f10g10n",
+      "f10g10q",
+      "f10g10r"
+    ]
+  }
+]

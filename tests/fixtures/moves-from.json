@@ -1,0 +1,30 @@
+[
+  {
+    "description": "empty position",
+    "from": "b/qbk/n1b1n/r5r/ppppppppp/11/5P5/4P1P4/3P1B1P3/2P2B2P2/1PRNQBKNRP1 w - 0 1",
+    "position": "a4",
+    "expect": []
+  },
+  {
+    "description": "cannot step out of a pin",
+    "from": "1/3/5/7/4K4/5R5/5q5/11/11/11/11 w - 0 1",
+    "position": "f6",
+    "expect": [
+      "f6f5"
+    ]
+  },
+  {
+    "description": "cannot self check on opponents turn",
+    "from": "1/3/5/7/4K4/5R5/5q5/11/11/11/11 b - 0 1",
+    "position": "f6",
+    "expect": [
+      "f6f5"
+    ]
+  },
+  {
+    "description": "cannot step into check",
+    "from": "K/3/2q2/7/9/11/11/11/11/11/11 w - 0 1",
+    "position": "f11",
+    "expect": []
+  }
+]

@@ -2,9 +2,10 @@ pub mod constants;
 pub mod hexchess;
 pub mod macros;
 
+pub use constants::{Color, Piece};
 pub use hexchess::hexchess::Hexchess;
 pub use hexchess::san::San;
-use constants::Color;
+pub use hexchess::utils::{index, position};
 use wasm_bindgen::prelude::*;
 
 fn set_panic_hook() {
@@ -49,7 +50,10 @@ pub fn apply_move(hexchess: Hexchess, san: San) -> Hexchess {
 pub fn apply_move_unsafe(hexchess: Hexchess, san: San) -> Hexchess {
     set_panic_hook();
 
-    *hexchess.clone().apply_move_unsafe(&san)
+    match hexchess.clone().apply_move_unsafe(&san) {
+        Ok(hexchess) => *hexchess,
+        Err(err) => panic!("hexchess error: {:?}", err),
+    }
 }
 
 /// Create a blank `Hexchess` object.

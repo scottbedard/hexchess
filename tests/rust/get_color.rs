@@ -1,0 +1,27 @@
+use crate::json;
+use hexchess::{Color, Hexchess, position};
+use serde::{Deserialize, Serialize};
+
+#[derive(Debug, Serialize, Deserialize)]
+struct Test {
+    color: Color,
+    description: String,
+    from: String,
+    result: Vec<String>,
+}
+
+#[test]
+fn test_get_color() {
+    let tests = json::<Test>("get-color.json");
+
+    for test in tests {
+        let hexchess = Hexchess::parse(&test.from).unwrap();
+
+        let result = hexchess.get_color(test.color)
+            .iter()
+            .map(|p| position(p).to_string())
+            .collect::<Vec<String>>();
+
+        assert_eq!(result, test.result);
+    }
+}

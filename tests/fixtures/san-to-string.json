@@ -1,0 +1,47 @@
+[
+  {
+    "description": "a1a2",
+    "san": {
+      "from": "a1",
+      "promotion": null,
+      "to": "a2"
+    },
+    "expect": "a1a2"
+  },
+  {
+    "description": "f10f11q",
+    "san": {
+      "from": "f10",
+      "promotion": "q",
+      "to": "f11"
+    },
+    "expect": "f10f11q"
+  },
+  {
+    "description": "f10f11r",
+    "san": {
+      "from": "f10",
+      "promotion": "r",
+      "to": "f11"
+    },
+    "expect": "f10f11r"
+  },
+  {
+    "description": "f10f11b",
+    "san": {
+      "from": "f10",
+      "promotion": "b",
+      "to": "f11"
+    },
+    "expect": "f10f11b"
+  },
+  {
+    "description": "f10f11n",
+    "san": {
+      "from": "f10",
+      "promotion": "n",
+      "to": "f11"
+    },
+    "expect": "f10f11n"
+  }
+]

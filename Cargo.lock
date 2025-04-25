@@ -173,6 +173,7 @@ version = "2.0.0-beta.7"
 dependencies = [
  "console_error_panic_hook",
  "serde",
+ "serde_json",
  "serde_with",
  "tsify-next",
  "wasm-bindgen",

@@ -1,0 +1,184 @@
+[
+  {
+    "description": "applying a sequence of moves",
+    "error": false,
+    "from": "b/qbk/n1b1n/r5r/ppppppppp/11/5P5/4P1P4/3P1B1P3/2P2B2P2/1PRNQBKNRP1 w - 0 1",
+    "sequence": "g4g6 f7g6 f5f7 g6f6",
+    "to": "b/qbk/n1b1n/r5r/pppp1pppp/5p5/11/4P6/3P1B1P3/2P2B2P2/1PRNQBKNRP1 w - 0 3"
+  },
+  {
+    "description": "apply with invalid san",
+    "error": true,
+    "from": "b/qbk/n1b1n/r5r/ppppppppp/11/5P5/4P1P4/3P1B1P3/2P2B2P2/1PRNQBKNRP1 w - 0 1",
+    "sequence": "whoops",
+    "to": null
+  },
+  {
+    "description": "apply with illegal move",
+    "error": true,
+    "from": "b/qbk/n1b1n/r5r/ppppppppp/11/5P5/4P1P4/3P1B1P3/2P2B2P2/1PRNQBKNRP1 w - 0 1",
+    "sequence": "g4g5 a6a5",
+    "to": null
+  },
+  {
+    "description": "sets to and from positions",
+    "error": false,
+    "from": "b/qbk/n1b1n/r5r/ppppppppp/11/5P5/4P1P4/3P1B1P3/2P2B2P2/1PRNQBKNRP1 w - 0 1",
+    "sequence": "g4g5 e7e6",
+    "to": "b/qbk/n1b1n/r5r/ppp1ppppp/4p6/5PP4/4P6/3P1B1P3/2P2B2P2/1PRNQBKNRP1 w - 0 2"
+  },
+  {
+    "description": "clears en passant capture white",
+    "error": false,
+    "from": "b/qbk/n1b1n/r5r/ppppp1ppp/5P5/6p4/4P1P4/3P1B1P3/2P2B2P2/1PRNQBKNRP1 w g6 0 2",
+    "sequence": "f6g6",
+    "to": "b/qbk/n1b1n/r5r/ppppp1ppp/6P4/11/4P1P4/3P1B1P3/2P2B2P2/1PRNQBKNRP1 b - 0 2"
+  },
+  {
+    "description": "clears en passant capture black",
+    "error": false,
+    "from": "b/qbk/n1b1n/r5r/pppp1pppp/5pP4/4PP5/11/3P1B1P3/2P2B2P2/1PRNQBKNRP1 b g5 0 2",
+    "sequence": "f6g5",
+    "to": "b/qbk/n1b1n/r5r/pppp1pppp/11/4PPp4/11/3P1B1P3/2P2B2P2/1PRNQBKNRP1 w - 0 3"
+  },
+  {
+    "description": "only pawns capture en passant",
+    "error": false,
+    "from": "b/qbk/n1b1n/r5r/ppppp1ppp/11/5Pp4/4P1PB3/3P1B1P3/2P5P2/1PRNQBKNRP1 w g6 0 2",
+    "sequence": "h4g6",
+    "to": "b/qbk/n1b1n/r5r/ppppp1ppp/6B4/5Pp4/4P1P4/3P1B1P3/2P5P2/1PRNQBKNRP1 b - 1 2"
+  },
+  {
+    "description": "alternate color - 1",
+    "error": false,
+    "from": "b/qbk/n1b1n/r5r/ppppppppp/11/5P5/4P1P4/3P1B1P3/2P2B2P2/1PRNQBKNRP1 w - 0 1",
+    "sequence": "g4g5",
+    "to": "b/qbk/n1b1n/r5r/ppppppppp/11/5PP4/4P6/3P1B1P3/2P2B2P2/1PRNQBKNRP1 b - 0 1"
+  },
+  {
+    "description": "alternate color - 2",
+    "error": false,
+    "from": "b/qbk/n1b1n/r5r/ppppppppp/11/5PP4/4P6/3P1B1P3/2P2B2P2/1PRNQBKNRP1 b - 0 1",
+    "sequence": "e7e6",
+    "to": "b/qbk/n1b1n/r5r/ppp1ppppp/4p6/5PP4/4P6/3P1B1P3/2P2B2P2/1PRNQBKNRP1 w - 0 2"
+  },
+  {
+    "description": "sets en passant - 1",
+    "error": false,
+    "from": "b/qbk/n1b1n/r5r/ppppppppp/11/5P5/4P1P4/3P1B1P3/2P2B2P2/1PRNQBKNRP1 w - 0 1",
+    "sequence": "g4g6",
+    "to": "b/qbk/n1b1n/r5r/ppppppppp/6P4/5P5/4P6/3P1B1P3/2P2B2P2/1PRNQBKNRP1 b g5 0 1"
+  },
+  {
+    "description": "sets en passant - 2",
+    "error": false,
+    "from": "b/qbk/n1b1n/r5r/ppppppppp/6P4/5P5/4P6/3P1B1P3/2P2B2P2/1PRNQBKNRP1 b g5 0 1",
+    "sequence": "e7e5",
+    "to": "b/qbk/n1b1n/r5r/ppp1ppppp/6P4/4pP5/4P6/3P1B1P3/2P2B2P2/1PRNQBKNRP1 w e6 0 2"
+  },
+  {
+    "description": "sets en passant - 3",
+    "error": false,
+    "from": "b/qbk/n1b1n/r5r/ppp1ppppp/6P4/4pP5/4P6/3P1B1P3/2P2B2P2/1PRNQBKNRP1 w e6 0 2",
+    "sequence": "b1b2",
+    "to": "b/qbk/n1b1n/r5r/ppp1ppppp/6P4/4pP5/4P6/3P1B1P3/1PP2B2P2/2RNQBKNRP1 b - 0 2"
+  },
+  {
+    "description": "sets halfmove and fullmove - 1",
+    "error": false,
+    "from": "b/qbk/n1b1n/r5r/ppppppppp/11/5P5/4P1P4/3P1B1P3/2P2B2P2/1PRNQBKNRP1 w - 0 1",
+    "sequence": "e4e5",
+    "to": "b/qbk/n1b1n/r5r/ppppppppp/11/4PP5/6P4/3P1B1P3/2P2B2P2/1PRNQBKNRP1 b - 0 1"
+  },
+  {
+    "description": "sets halfmove and fullmove - 2",
+    "error": false,
+    "from": "b/qbk/n1b1n/r5r/ppppppppp/11/4PP5/6P4/3P1B1P3/2P2B2P2/1PRNQBKNRP1 b - 0 1",
+    "sequence": "f7f6",
+    "to": "b/qbk/n1b1n/r5r/pppp1pppp/5p5/4PP5/6P4/3P1B1P3/2P2B2P2/1PRNQBKNRP1 w - 0 2"
+  },
+  {
+    "description": "sets halfmove and fullmove - 3",
+    "error": false,
+    "from": "b/qbk/n1b1n/r5r/pppp1pppp/5p5/4PP5/6P4/3P1B1P3/2P2B2P2/1PRNQBKNRP1 w - 0 2",
+    "sequence": "f3c6",
+    "to": "b/qbk/n1b1n/r5r/pppp1pppp/2B2p5/4PP5/6P4/3P3P3/2P2B2P2/1PRNQBKNRP1 b - 1 2"
+  },
+  {
+    "description": "sets halfmove and fullmove - 4",
+    "error": false,
+    "from": "b/qbk/n1b1n/r5r/pppp1pppp/2B2p5/4PP5/6P4/3P3P3/2P2B2P2/1PRNQBKNRP1 b - 1 2",
+    "sequence": "i8h8",
+    "to": "b/qbk/n1b1n/r4r1/pppp1pppp/2B2p5/4PP5/6P4/3P3P3/2P2B2P2/1PRNQBKNRP1 w - 2 3"
+  },
+  {
+    "description": "sets halfmove and fullmove - 5",
+    "error": false,
+    "from": "b/qbk/n1b1n/r4r1/pppp1pppp/2B2p5/4PP5/6P4/3P3P3/2P2B2P2/1PRNQBKNRP1 w - 2 3",
+    "sequence": "c6e10",
+    "to": "b/Bbk/n1b1n/r4r1/pppp1pppp/5p5/4PP5/6P4/3P3P3/2P2B2P2/1PRNQBKNRP1 b - 0 3"
+  },
+  {
+    "description": "promote pieces - 1",
+    "error": false,
+    "from": "1/3/1P1P1/7/1P5P1/11/11/11/11/2p1p1p1p2/11 w - 0 1",
+    "sequence": "c7c8r",
+    "to": "1/3/1P1P1/R6/7P1/11/11/11/11/2p1p1p1p2/11 b - 0 1"
+  },
+  {
+    "description": "promote pieces - 2",
+    "error": false,
+    "from": "1/3/1P1P1/R6/7P1/11/11/11/11/2p1p1p1p2/11 b - 0 1",
+    "sequence": "c2c1r",
+    "to": "1/3/1P1P1/R6/7P1/11/11/11/11/4p1p1p2/2r8 w - 0 2"
+  },
+  {
+    "description": "promote pieces - 3",
+    "error": false,
+    "from": "1/3/1P1P1/R6/7P1/11/11/11/11/4p1p1p2/2r8 w - 0 2",
+    "sequence": "e9e10b",
+    "to": "1/B2/3P1/R6/7P1/11/11/11/11/4p1p1p2/2r8 b - 0 2"
+  },
+  {
+    "description": "promote pieces - 4",
+    "error": false,
+    "from": "1/B2/3P1/R6/7P1/11/11/11/11/4p1p1p2/2r8 b - 0 2",
+    "sequence": "e2e1b",
+    "to": "1/B2/3P1/R6/7P1/11/11/11/11/6p1p2/2r1b6 w - 0 3"
+  },
+  {
+    "description": "promote pieces - 5",
+    "error": false,
+    "from": "1/B2/3P1/R6/7P1/11/11/11/11/6p1p2/2r1b6 w - 0 3",
+    "sequence": "g9g10q",
+    "to": "1/B1Q/5/R6/7P1/11/11/11/11/6p1p2/2r1b6 b - 0 3"
+  },
+  {
+    "description": "promote pieces - 6",
+    "error": false,
+    "from": "1/B1Q/5/R6/7P1/11/11/11/11/6p1p2/2r1b6 b - 0 3",
+    "sequence": "g2g1q",
+    "to": "1/B1Q/5/R6/7P1/11/11/11/11/8p2/2r1b1q4 w - 0 4"
+  },
+  {
+    "description": "promote pieces - 7",
+    "error": false,
+    "from": "1/B1Q/5/R6/7P1/11/11/11/11/8p2/2r1b1q4 w - 0 4",
+    "sequence": "i7i8n",
+    "to": "1/B1Q/5/R5N/9/11/11/11/11/8p2/2r1b1q4 b - 0 4"
+  },
+  {
+    "description": "promote pieces - 8",
+    "error": false,
+    "from": "1/B1Q/5/R5N/9/11/11/11/11/8p2/2r1b1q4 b - 0 4",
+    "sequence": "i2i1n",
+    "to": "1/B1Q/5/R5N/9/11/11/11/11/11/2r1b1q1n2 w - 0 5"
+  },
+  {
+    "description": "errors on illegal move",
+    "error": true,
+    "from": "1/3/1P1P1/R6/7P1/11/11/11/11/2p1p1p1p2/11 b - 0 1",
+    "sequence": "a4a5",
+    "to": null
+  }
+]

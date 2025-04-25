@@ -1,0 +1,219 @@
+[
+  {
+    "description": "success promotion - b",
+    "san": "a5a6b",
+    "error": false,
+    "expect": {
+      "from": "a5",
+      "promotion": "b",
+      "to": "a6"
+    }
+  },
+  {
+    "description": "success promotion - n",
+    "san": "a5a6n",
+    "error": false,
+    "expect": {
+      "from": "a5",
+      "promotion": "n",
+      "to": "a6"
+    }
+  },
+  {
+    "description": "success promotion - r",
+    "san": "a5a6r",
+    "error": false,
+    "expect": {
+      "from": "a5",
+      "promotion": "r",
+      "to": "a6"
+    }
+  },
+  {
+    "description": "success promotion - q",
+    "san": "a5a6q",
+    "error": false,
+    "expect": {
+      "from": "a5",
+      "promotion": "q",
+      "to": "a6"
+    }
+  },
+  {
+    "description": "singit digit promotion rank",
+    "san": "a1b2",
+    "error": false,
+    "expect": {
+      "from": "a1",
+      "promotion": null,
+      "to": "b2"
+    }
+  },
+  {
+    "description": "two digit promotion rank - b",
+    "san": "f10f11b",
+    "error": false,
+    "expect": {
+      "from": "f10",
+      "promotion": "b",
+      "to": "f11"
+    }
+  },
+  {
+    "description": "two digit promotion rank - n",
+    "san": "f10f11n",
+    "error": false,
+    "expect": {
+      "from": "f10",
+      "promotion": "n",
+      "to": "f11"
+    }
+  },
+  {
+    "description": "two digit promotion rank - q",
+    "san": "f10f11q",
+    "error": false,
+    "expect": {
+      "from": "f10",
+      "promotion": "q",
+      "to": "f11"
+    }
+  },
+  {
+    "description": "success to 10th rank without promotion",
+    "san": "f9f10",
+    "error": false,
+    "expect": {
+      "from": "f9",
+      "promotion": null,
+      "to": "f10"
+    }
+  },
+  {
+    "description": "empty string",
+    "san": "",
+    "error": true,
+    "expect": null
+  },
+  {
+    "description": "missing rank",
+    "san": "a",
+    "error": true,
+    "expect": null
+  },
+  {
+    "description": "missing third character",
+    "san": "a1",
+    "error": true,
+    "expect": null
+  },
+  {
+    "description": "invalid second character",
+    "san": "ax",
+    "error": true,
+    "expect": null
+  },
+  {
+    "description": "invalid to file - 1",
+    "san": "a1x",
+    "error": true,
+    "expect": null
+  },
+  {
+    "description": "invalid to file - 2",
+    "san": "a10x",
+    "error": true,
+    "expect": null
+  },
+  {
+    "description": "invalid to file - 3",
+    "san": "a11x",
+    "error": true,
+    "expect": null
+  },
+  {
+    "description": "invalid to second character",
+    "san": "a1ax",
+    "error": true,
+    "expect": null
+  },
+  {
+    "description": "missing to file",
+    "san": "a10",
+    "error": true,
+    "expect": null
+  },
+  {
+    "description": "missing to second character - 1",
+    "san": "f1f",
+    "error": true,
+    "expect": null
+  },
+  {
+    "description": "missing to second character - 2",
+    "san": "f10f",
+    "error": true,
+    "expect": null
+  },
+  {
+    "description": "missing to second character - 3",
+    "san": "f11f",
+    "error": true,
+    "expect": null
+  },
+  {
+    "description": "invalid to rank",
+    "san": "a1f12",
+    "error": true,
+    "expect": null
+  },
+  {
+    "description": "invalid to second character",
+    "san": "a1abc2",
+    "error": true,
+    "expect": null
+  },
+  {
+    "description": "invalid from position",
+    "san": "a9a1",
+    "error": true,
+    "expect": null
+  },
+  {
+    "description": "invalid to position",
+    "san": "a1a9",
+    "error": true,
+    "expect": null
+  },
+  {
+    "description": "invalid promotion character",
+    "san": "f10f11x",
+    "error": true,
+    "expect": null
+  },
+  {
+    "description": "invalid to and from",
+    "san": "x1x2",
+    "error": true,
+    "expect": null
+  },
+  {
+    "description": "identical to and from",
+    "san": "a1a1",
+    "error": true,
+    "expect": null
+  },
+  {
+    "description": "post promotion character",
+    "san": "f10f6q",
+    "error": true,
+    "expect": null
+  },
+  {
+    "description": "overflow promotion character",
+    "san": "f11f11qX",
+    "error": true,
+    "expect": null
+  }
+]
+
