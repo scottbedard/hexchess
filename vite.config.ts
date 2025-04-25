@@ -9,7 +9,7 @@ export default defineConfig({
     topLevelAwait(),
   ],
   test: {
-    exclude: ['node_modules', 'temp'],
+    exclude: ['node_modules'],
     typecheck: {
       enabled: true,
     },
