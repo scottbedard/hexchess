@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.0
+
+The main difference in 2.x is storing game state as an array of values rather than a map. The main goal of this was to improve performance, and become more interoperable with game engines.
+
+Additionally, the Rust and TypeScript libraries now execute the same series of tests, and will be versioned together.
+
 ## 2.0.0-beta.3
 
 - Fix module compatibility
