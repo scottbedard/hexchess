@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.1
+
+- Add [`Eq`](https://doc.rust-lang.org/std/cmp/trait.Eq.html) and [`Hash`](https://doc.rust-lang.org/std/hash/trait.Hash.html) support to `Hexchess` instances.
+
 ## 2.0.0
 
 The main difference in 2.x is storing game state as an array of values rather than a map. The main goal of this was to improve performance, and become more interoperable with game engines.
