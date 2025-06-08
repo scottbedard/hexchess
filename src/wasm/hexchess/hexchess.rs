@@ -6,6 +6,7 @@ use crate::hexchess::pieces::straight_line::straight_line_moves_unsafe;
 use crate::hexchess::san::San;
 use serde_with::serde_as;
 use serde::{Deserialize, Serialize};
+use std::hash::Hash;
 use tsify_next::Tsify;
 use wasm_bindgen::prelude::*;
 
@@ -26,7 +27,7 @@ use crate::hexchess::utils::{
 
 /// Hexchess game state
 #[serde_as]
-#[derive(Clone, Copy, Debug, Deserialize, PartialEq, Serialize, Tsify)]
+#[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, PartialEq, Serialize, Tsify)]
 #[tsify(into_wasm_abi, from_wasm_abi, type_suffix = "Struct")]
 pub struct Hexchess {
     #[tsify(type = "Board")]
@@ -599,8 +600,8 @@ fn to_piece(source: char) -> Result<Piece, &'static str> {
 
 #[cfg(test)]
 mod tests {
-    use crate::{h, s};
     use super::*;
+    use std::hash::{DefaultHasher, Hasher};
 
     #[test]
     fn test_clone() {
@@ -612,6 +613,21 @@ mod tests {
         assert_eq!(clone.turn, hexchess.turn);
         assert_eq!(clone.halfmove, hexchess.halfmove);  
         assert_eq!(clone.fullmove, hexchess.fullmove);
+    }
+
+    #[test]
+    fn test_hash_equality() {
+        let hexchess1 = Hexchess::init();
+        let hexchess2 = Hexchess::init();
+
+        assert_eq!(hexchess1, hexchess2);
+
+        let mut hasher1 = DefaultHasher::new();
+        let mut hasher2 = DefaultHasher::new();
+        hexchess1.hash(&mut hasher1);
+        hexchess2.hash(&mut hasher2);
+
+        assert_eq!(hasher1.finish(), hasher2.finish());
     }
 
     #[test]

@@ -1384,7 +1384,7 @@ pub const HEXBOARD_GRAPH: [[Option<u8>; 12]; 91] = [
 ];
 
 /// Piece color
-#[derive(Clone, Copy, Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Copy, Debug, Eq, Deserialize, Hash, PartialEq, Serialize)]
 #[wasm_bindgen(skip_typescript)]
 pub enum Color {
     #[serde(rename(deserialize = "b", serialize = "b"))]
@@ -1394,7 +1394,7 @@ pub enum Color {
 }
 
 /// Piece symbols
-#[derive(Clone, Copy, Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, PartialEq, Serialize)]
 #[wasm_bindgen(skip_typescript)]
 pub enum Piece {
     #[serde(rename(deserialize = "P", serialize = "P"))]
