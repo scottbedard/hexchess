@@ -17,6 +17,11 @@ harness = true
 name = "knight"
 path = "crate/benches/knight.rs"
 
+[[bench]]
+harness = true
+name = "initial_position"
+path = "crate/benches/initial_position.rs"
+
 [features]
 default = []
 
@@ -24,6 +29,9 @@ default = []
 serde = { version = "1.0.219", features = ["derive"] }
 serde_with = "3.12.0"
 serde_json = "1.0.140"
+
+[profile.bench]
+opt-level = 3
 
 [profile.release]
 # Tell `rustc` to optimize for small code size.
