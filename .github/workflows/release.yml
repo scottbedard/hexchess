@@ -38,20 +38,14 @@ jobs:
         version: 9
         run_install: false
 
-    - uses: jetli/wasm-pack-action@v0.4.0
-      with:
-        version: 'latest'
-
     - name: Install dependencies
       run: pnpm install
 
-    - name: Build wasm package
+    - name: Build package
       run: pnpm build
     
     - name: TypeScript tests
       run: pnpm test
-
-  
 
   versions:
     name: Check versions
@@ -95,14 +89,10 @@ jobs:
 
       - uses: dtolnay/rust-toolchain@stable
   
-      - uses: jetli/wasm-pack-action@v0.4.0
-        with:
-          version: 'latest'
-  
       - name: Install dependencies
         run: pnpm install
   
-      - name: Build wasm package
+      - name: Build package
         run: pnpm build
 
       - name: Publish to NPM
