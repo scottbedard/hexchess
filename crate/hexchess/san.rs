@@ -1,7 +1,6 @@
 use crate::constants::PromotionPiece;
 use serde::{Deserialize, Serialize};
 use std::fmt;
-use tsify_next::Tsify;
 
 use crate::hexchess::utils::{
     is_promotion_position,
@@ -11,14 +10,12 @@ use crate::hexchess::utils::{
 use super::utils::position;
 
 /// Struct representing a single move.
-#[derive(Clone, Copy, Debug, Deserialize, PartialEq, Serialize, Tsify)]
-#[tsify(into_wasm_abi, from_wasm_abi, type_suffix = "Struct")]
+#[derive(Clone, Copy, Debug, Deserialize, PartialEq, Serialize)]
 pub struct San {
     /// From position index, 0..91
     pub from: u8,
 
     /// Promotion piece
-    #[tsify(type = "PromotionPiece | null")]
     pub promotion: Option<PromotionPiece>,
 
     /// Target position index, 0..91

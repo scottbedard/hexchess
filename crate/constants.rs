@@ -1,7 +1,6 @@
 use crate::h;
 use serde::{Deserialize, Serialize};
 use std::fmt;
-use wasm_bindgen::prelude::*;
 
 /// Initial game position
 pub const INITIAL_POSITION: &str = "b/qbk/n1b1n/r5r/ppppppppp/11/5P5/4P1P4/3P1B1P3/2P2B2P2/1PRNQBKNRP1 w - 0 1";
@@ -1385,7 +1384,6 @@ pub const HEXBOARD_GRAPH: [[Option<u8>; 12]; 91] = [
 
 /// Piece color
 #[derive(Clone, Copy, Debug, Eq, Deserialize, Hash, PartialEq, Serialize)]
-#[wasm_bindgen(skip_typescript)]
 pub enum Color {
     #[serde(rename(deserialize = "b", serialize = "b"))]
     Black,
@@ -1395,7 +1393,6 @@ pub enum Color {
 
 /// Piece symbols
 #[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, PartialEq, Serialize)]
-#[wasm_bindgen(skip_typescript)]
 pub enum Piece {
     #[serde(rename(deserialize = "P", serialize = "P"))]
     WhitePawn,
@@ -1456,7 +1453,6 @@ impl fmt::Display for Piece {
 
 /// Promotion pieces
 #[derive(Clone, Copy, Debug, Deserialize, PartialEq, Serialize)]
-#[wasm_bindgen(skip_typescript)]
 pub enum PromotionPiece {
     #[serde(rename(deserialize = "b", serialize = "b"))]
     Bishop,

@@ -7,8 +7,6 @@ use crate::hexchess::san::San;
 use serde_with::serde_as;
 use serde::{Deserialize, Serialize};
 use std::hash::Hash;
-use tsify_next::Tsify;
-use wasm_bindgen::prelude::*;
 
 use crate::constants::{
     Color,
@@ -27,10 +25,8 @@ use crate::hexchess::utils::{
 
 /// Hexchess game state
 #[serde_as]
-#[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, PartialEq, Serialize, Tsify)]
-#[tsify(into_wasm_abi, from_wasm_abi, type_suffix = "Struct")]
+#[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, PartialEq, Serialize)]
 pub struct Hexchess {
-    #[tsify(type = "Board")]
     #[serde_as(as = "[_; 91]")]
     pub board: [Option<Piece>; 91],
 
@@ -40,7 +36,6 @@ pub struct Hexchess {
 
     pub halfmove: u8,
 
-    #[tsify(type = "Color")]
     pub turn: Color,
 }
 
