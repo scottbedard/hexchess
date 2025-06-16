@@ -10,11 +10,12 @@ version = "2.0.1"
 
 [lib]
 crate-type = ["cdylib", "rlib"]
-path = "crate/lib.rs"
+path = "crate/src/lib.rs"
 
 [[bench]]
-name = "knight"
 harness = true
+name = "knight"
+path = "crate/benches/knight.rs"
 
 [features]
 default = []
