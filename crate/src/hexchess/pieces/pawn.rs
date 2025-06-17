@@ -12,157 +12,1315 @@ use crate::hexchess::utils::{
     step,
 };
 
+/** pre-computed position pawn graph */
+struct PawnGraph {
+    forward_1: u8,
+    forward_2: u8,
+    capture_portside: u8,
+    capture_starboard: u8,
+    promote_forward: bool,
+    promote_portside: bool,
+    promote_starboard: bool,
+}
 
+/** pre-computed positions for white pawns */
+const WHITE_PAWN_GRAPH: [Option<PawnGraph>; 91] = [
+    None,
+    None,
+    Some(PawnGraph {
+        forward_1: 0,
+        forward_2: 255,
+        capture_portside: 1,
+        capture_starboard: 3,
+        promote_forward: true,
+        promote_portside: true,
+        promote_starboard: true
+    }),
+    None,
+    None,
+    Some(PawnGraph {
+        forward_1: 1,
+        forward_2: 255,
+        capture_portside: 4,
+        capture_starboard: 2,
+        promote_forward: true,
+        promote_portside: true,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 2,
+        forward_2: 255,
+        capture_portside: 5,
+        capture_starboard: 7,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 3,
+        forward_2: 255,
+        capture_portside: 2,
+        capture_starboard: 8,
+        promote_forward: true,
+        promote_portside: false,
+        promote_starboard: true
+    }),
+    None,
+    None,
+    Some(PawnGraph {
+        forward_1: 4,
+        forward_2: 255,
+        capture_portside: 9,
+        capture_starboard: 5,
+        promote_forward: true,
+        promote_portside: true,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 5,
+        forward_2: 255,
+        capture_portside: 10,
+        capture_starboard: 6,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 6,
+        forward_2: 255,
+        capture_portside: 11,
+        capture_starboard: 13,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 7,
+        forward_2: 255,
+        capture_portside: 6,
+        capture_starboard: 14,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 8,
+        forward_2: 255,
+        capture_portside: 7,
+        capture_starboard: 15,
+        promote_forward: true,
+        promote_portside: false,
+        promote_starboard: true
+    }),
+    None,
+    None,
+    Some(PawnGraph {
+        forward_1: 9,
+        forward_2: 255,
+        capture_portside: 16,
+        capture_starboard: 10,
+        promote_forward: true,
+        promote_portside: true,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 10,
+        forward_2: 255,
+        capture_portside: 17,
+        capture_starboard: 11,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 11,
+        forward_2: 255,
+        capture_portside: 18,
+        capture_starboard: 12,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 12,
+        forward_2: 255,
+        capture_portside: 19,
+        capture_starboard: 21,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 13,
+        forward_2: 255,
+        capture_portside: 12,
+        capture_starboard: 22,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 14,
+        forward_2: 255,
+        capture_portside: 13,
+        capture_starboard: 23,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 15,
+        forward_2: 255,
+        capture_portside: 14,
+        capture_starboard: 24,
+        promote_forward: true,
+        promote_portside: false,
+        promote_starboard: true
+    }),
+    None,
+    None,
+    Some(PawnGraph {
+        forward_1: 16,
+        forward_2: 255,
+        capture_portside: 25,
+        capture_starboard: 17,
+        promote_forward: true,
+        promote_portside: true,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 17,
+        forward_2: 255,
+        capture_portside: 26,
+        capture_starboard: 18,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 18,
+        forward_2: 255,
+        capture_portside: 27,
+        capture_starboard: 19,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 19,
+        forward_2: 255,
+        capture_portside: 28,
+        capture_starboard: 20,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 20,
+        forward_2: 255,
+        capture_portside: 29,
+        capture_starboard: 31,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 21,
+        forward_2: 255,
+        capture_portside: 20,
+        capture_starboard: 32,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 22,
+        forward_2: 255,
+        capture_portside: 21,
+        capture_starboard: 33,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 23,
+        forward_2: 255,
+        capture_portside: 22,
+        capture_starboard: 34,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 24,
+        forward_2: 255,
+        capture_portside: 23,
+        capture_starboard: 35,
+        promote_forward: true,
+        promote_portside: false,
+        promote_starboard: true
+    }),
+    None,
+    Some(PawnGraph {
+        forward_1: 25,
+        forward_2: 255,
+        capture_portside: 255,
+        capture_starboard: 26,
+        promote_forward: true,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 26,
+        forward_2: 255,
+        capture_portside: 36,
+        capture_starboard: 27,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 27,
+        forward_2: 255,
+        capture_portside: 37,
+        capture_starboard: 28,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 28,
+        forward_2: 255,
+        capture_portside: 38,
+        capture_starboard: 29,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 29,
+        forward_2: 255,
+        capture_portside: 39,
+        capture_starboard: 30,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 30,
+        forward_2: 20,
+        capture_portside: 40,
+        capture_starboard: 42,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 31,
+        forward_2: 255,
+        capture_portside: 30,
+        capture_starboard: 43,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 32,
+        forward_2: 255,
+        capture_portside: 31,
+        capture_starboard: 44,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 33,
+        forward_2: 255,
+        capture_portside: 32,
+        capture_starboard: 45,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 34,
+        forward_2: 255,
+        capture_portside: 33,
+        capture_starboard: 46,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 35,
+        forward_2: 255,
+        capture_portside: 34,
+        capture_starboard: 255,
+        promote_forward: true,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 36,
+        forward_2: 255,
+        capture_portside: 255,
+        capture_starboard: 37,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 37,
+        forward_2: 255,
+        capture_portside: 47,
+        capture_starboard: 38,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 38,
+        forward_2: 255,
+        capture_portside: 48,
+        capture_starboard: 39,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 39,
+        forward_2: 255,
+        capture_portside: 49,
+        capture_starboard: 40,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 40,
+        forward_2: 29,
+        capture_portside: 50,
+        capture_starboard: 41,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    None,
+    Some(PawnGraph {
+        forward_1: 42,
+        forward_2: 31,
+        capture_portside: 41,
+        capture_starboard: 54,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 43,
+        forward_2: 255,
+        capture_portside: 42,
+        capture_starboard: 55,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 44,
+        forward_2: 255,
+        capture_portside: 43,
+        capture_starboard: 56,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 45,
+        forward_2: 255,
+        capture_portside: 44,
+        capture_starboard: 57,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 46,
+        forward_2: 255,
+        capture_portside: 45,
+        capture_starboard: 255,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 47,
+        forward_2: 255,
+        capture_portside: 255,
+        capture_starboard: 48,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 48,
+        forward_2: 255,
+        capture_portside: 58,
+        capture_starboard: 49,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 49,
+        forward_2: 255,
+        capture_portside: 59,
+        capture_starboard: 50,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 50,
+        forward_2: 39,
+        capture_portside: 60,
+        capture_starboard: 51,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    None,
+    None,
+    None,
+    Some(PawnGraph {
+        forward_1: 54,
+        forward_2: 43,
+        capture_portside: 53,
+        capture_starboard: 66,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 55,
+        forward_2: 255,
+        capture_portside: 54,
+        capture_starboard: 67,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 56,
+        forward_2: 255,
+        capture_portside: 55,
+        capture_starboard: 68,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 57,
+        forward_2: 255,
+        capture_portside: 56,
+        capture_starboard: 255,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 58,
+        forward_2: 255,
+        capture_portside: 255,
+        capture_starboard: 59,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 59,
+        forward_2: 255,
+        capture_portside: 69,
+        capture_starboard: 60,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 60,
+        forward_2: 49,
+        capture_portside: 70,
+        capture_starboard: 61,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    None,
+    None,
+    None,
+    None,
+    None,
+    Some(PawnGraph {
+        forward_1: 66,
+        forward_2: 55,
+        capture_portside: 65,
+        capture_starboard: 78,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 67,
+        forward_2: 255,
+        capture_portside: 66,
+        capture_starboard: 79,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 68,
+        forward_2: 255,
+        capture_portside: 67,
+        capture_starboard: 255,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 69,
+        forward_2: 255,
+        capture_portside: 255,
+        capture_starboard: 70,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 70,
+        forward_2: 59,
+        capture_portside: 80,
+        capture_starboard: 71,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    Some(PawnGraph {
+        forward_1: 78,
+        forward_2: 67,
+        capture_portside: 77,
+        capture_starboard: 90,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 79,
+        forward_2: 255,
+        capture_portside: 78,
+        capture_starboard: 255,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+];
+
+/** pre-computed positions for black pawns */
+const BLACK_PAWN_GRAPH: [Option<PawnGraph>; 91] = [
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    Some(PawnGraph {
+        forward_1: 26,
+        forward_2: 37,
+        capture_portside: 17,
+        capture_starboard: 25,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 27,
+        forward_2: 38,
+        capture_portside: 18,
+        capture_starboard: 26,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 28,
+        forward_2: 39,
+        capture_portside: 19,
+        capture_starboard: 27,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 29,
+        forward_2: 40,
+        capture_portside: 20,
+        capture_starboard: 28,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 30,
+        forward_2: 41,
+        capture_portside: 31,
+        capture_starboard: 29,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 31,
+        forward_2: 42,
+        capture_portside: 32,
+        capture_starboard: 20,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 32,
+        forward_2: 43,
+        capture_portside: 33,
+        capture_starboard: 21,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 33,
+        forward_2: 44,
+        capture_portside: 34,
+        capture_starboard: 22,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 34,
+        forward_2: 45,
+        capture_portside: 35,
+        capture_starboard: 23,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 36,
+        forward_2: 255,
+        capture_portside: 26,
+        capture_starboard: 255,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 37,
+        forward_2: 255,
+        capture_portside: 27,
+        capture_starboard: 36,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 38,
+        forward_2: 255,
+        capture_portside: 28,
+        capture_starboard: 37,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 39,
+        forward_2: 255,
+        capture_portside: 29,
+        capture_starboard: 38,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 40,
+        forward_2: 255,
+        capture_portside: 30,
+        capture_starboard: 39,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 41,
+        forward_2: 255,
+        capture_portside: 42,
+        capture_starboard: 40,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 42,
+        forward_2: 255,
+        capture_portside: 43,
+        capture_starboard: 30,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 43,
+        forward_2: 255,
+        capture_portside: 44,
+        capture_starboard: 31,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 44,
+        forward_2: 255,
+        capture_portside: 45,
+        capture_starboard: 32,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 45,
+        forward_2: 255,
+        capture_portside: 46,
+        capture_starboard: 33,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 46,
+        forward_2: 255,
+        capture_portside: 255,
+        capture_starboard: 34,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 47,
+        forward_2: 255,
+        capture_portside: 37,
+        capture_starboard: 255,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 48,
+        forward_2: 255,
+        capture_portside: 38,
+        capture_starboard: 47,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 49,
+        forward_2: 255,
+        capture_portside: 39,
+        capture_starboard: 48,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 50,
+        forward_2: 255,
+        capture_portside: 40,
+        capture_starboard: 49,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 51,
+        forward_2: 255,
+        capture_portside: 41,
+        capture_starboard: 50,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 52,
+        forward_2: 255,
+        capture_portside: 53,
+        capture_starboard: 51,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 53,
+        forward_2: 255,
+        capture_portside: 54,
+        capture_starboard: 41,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 54,
+        forward_2: 255,
+        capture_portside: 55,
+        capture_starboard: 42,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 55,
+        forward_2: 255,
+        capture_portside: 56,
+        capture_starboard: 43,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 56,
+        forward_2: 255,
+        capture_portside: 57,
+        capture_starboard: 44,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 57,
+        forward_2: 255,
+        capture_portside: 255,
+        capture_starboard: 45,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 58,
+        forward_2: 255,
+        capture_portside: 48,
+        capture_starboard: 255,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 59,
+        forward_2: 255,
+        capture_portside: 49,
+        capture_starboard: 58,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 60,
+        forward_2: 255,
+        capture_portside: 50,
+        capture_starboard: 59,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 61,
+        forward_2: 255,
+        capture_portside: 51,
+        capture_starboard: 60,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 62,
+        forward_2: 255,
+        capture_portside: 52,
+        capture_starboard: 61,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 63,
+        forward_2: 255,
+        capture_portside: 64,
+        capture_starboard: 62,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 64,
+        forward_2: 255,
+        capture_portside: 65,
+        capture_starboard: 52,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 65,
+        forward_2: 255,
+        capture_portside: 66,
+        capture_starboard: 53,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 66,
+        forward_2: 255,
+        capture_portside: 67,
+        capture_starboard: 54,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 67,
+        forward_2: 255,
+        capture_portside: 68,
+        capture_starboard: 55,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 68,
+        forward_2: 255,
+        capture_portside: 255,
+        capture_starboard: 56,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 69,
+        forward_2: 255,
+        capture_portside: 59,
+        capture_starboard: 255,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 70,
+        forward_2: 255,
+        capture_portside: 60,
+        capture_starboard: 69,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 71,
+        forward_2: 255,
+        capture_portside: 61,
+        capture_starboard: 70,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 72,
+        forward_2: 255,
+        capture_portside: 62,
+        capture_starboard: 71,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 73,
+        forward_2: 255,
+        capture_portside: 63,
+        capture_starboard: 72,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 74,
+        forward_2: 255,
+        capture_portside: 75,
+        capture_starboard: 73,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 75,
+        forward_2: 255,
+        capture_portside: 76,
+        capture_starboard: 63,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 76,
+        forward_2: 255,
+        capture_portside: 77,
+        capture_starboard: 64,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 77,
+        forward_2: 255,
+        capture_portside: 78,
+        capture_starboard: 65,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 78,
+        forward_2: 255,
+        capture_portside: 79,
+        capture_starboard: 66,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 79,
+        forward_2: 255,
+        capture_portside: 255,
+        capture_starboard: 67,
+        promote_forward: false,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 80,
+        forward_2: 255,
+        capture_portside: 70,
+        capture_starboard: 255,
+        promote_forward: true,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 81,
+        forward_2: 255,
+        capture_portside: 71,
+        capture_starboard: 80,
+        promote_forward: true,
+        promote_portside: false,
+        promote_starboard: true
+    }),
+    Some(PawnGraph {
+        forward_1: 82,
+        forward_2: 255,
+        capture_portside: 72,
+        capture_starboard: 81,
+        promote_forward: true,
+        promote_portside: false,
+        promote_starboard: true
+    }),
+    Some(PawnGraph {
+        forward_1: 83,
+        forward_2: 255,
+        capture_portside: 73,
+        capture_starboard: 82,
+        promote_forward: true,
+        promote_portside: false,
+        promote_starboard: true
+    }),
+    Some(PawnGraph {
+        forward_1: 84,
+        forward_2: 255,
+        capture_portside: 74,
+        capture_starboard: 83,
+        promote_forward: true,
+        promote_portside: false,
+        promote_starboard: true
+    }),
+    Some(PawnGraph {
+        forward_1: 85,
+        forward_2: 255,
+        capture_portside: 86,
+        capture_starboard: 84,
+        promote_forward: true,
+        promote_portside: true,
+        promote_starboard: true
+    }),
+    Some(PawnGraph {
+        forward_1: 86,
+        forward_2: 255,
+        capture_portside: 87,
+        capture_starboard: 74,
+        promote_forward: true,
+        promote_portside: true,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 87,
+        forward_2: 255,
+        capture_portside: 88,
+        capture_starboard: 75,
+        promote_forward: true,
+        promote_portside: true,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 88,
+        forward_2: 255,
+        capture_portside: 89,
+        capture_starboard: 76,
+        promote_forward: true,
+        promote_portside: true,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 89,
+        forward_2: 255,
+        capture_portside: 90,
+        capture_starboard: 77,
+        promote_forward: true,
+        promote_portside: true,
+        promote_starboard: false,
+    }),
+    Some(PawnGraph {
+        forward_1: 90,
+        forward_2: 255,
+        capture_portside: 255,
+        capture_starboard: 78,
+        promote_forward: true,
+        promote_portside: false,
+        promote_starboard: false,
+    }),
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+];
+
+/** unsafe pawn moves */
 pub fn pawn_moves_unsafe(
     hexchess: &Hexchess,
     from: u8,
     color: &Color,
 ) -> Vec<San> {
-    let mut result: Vec<San> = vec![];
-
-    let (
-      forward_direction, 
-      portside_direction, 
-      starboard_direction
-    ) = match color {
-      Color::White => (0u8, 10u8, 2u8),
-      Color::Black => (6u8, 4u8, 8u8),
+    let pawn_graph = match color {
+        Color::White => &WHITE_PAWN_GRAPH,
+        Color::Black => &BLACK_PAWN_GRAPH,
     };
+
+    let pawn = match &pawn_graph[from as usize] {
+        Some(graph) => graph,
+        None => return vec![],
+    };
+
+    let mut sans = vec![];
 
     // advance forward one position
-    match advance(hexchess, from, from, forward_direction) {
-        None => {},
-        Some(san) => {
-            push_moves(&mut result, san, *color);
+    if
+        pawn.forward_1 != 255 &&
+        hexchess.board[pawn.forward_1 as usize] == None
+    {
+        push_sans(&mut sans, from, pawn.forward_1, pawn.promote_forward);
 
-            // advance forward another position if possible
-            if is_starting_position(from, *color) {
-                match advance(hexchess, from, san.to, forward_direction) {
-                    None => {}
-                    Some(san) => result.push(san),
-                };
-            }
-        },
-    };
+        // advance forward another position if possible
+        if pawn.forward_2 != 255 && hexchess.board[pawn.forward_2 as usize] == None {
+            sans.push(San { from, promotion: None, to: pawn.forward_2 });
+        }
+    }
 
     // capture portside
-    match capture(hexchess, from, portside_direction, *color) {
-        None => {},
-        Some(san) => push_moves(&mut result, san, *color),
-    };
+    match pawn.capture_portside {
+        255 => {},
+        capture_portside => match hexchess.board[capture_portside as usize] {
+            None => if hexchess.turn == *color && hexchess.ep == Some(pawn.capture_portside) {
+                sans.push(San { from, promotion: None, to: capture_portside });
+            },
+            Some(occupying_piece) => if get_color(&occupying_piece) != *color {
+                push_sans(&mut sans, from, capture_portside, pawn.promote_portside);
+            }
+        }
+    }
 
     // capture starboard
-    match capture(hexchess, from, starboard_direction, *color) {
-        None => {},
-        Some(san) => push_moves(&mut result, san, *color),
-    };
-        
-    result
-}
-
-fn advance(hexchess: &Hexchess, start: u8, from: u8, forward_direction: u8) -> Option<San> {
-    // we don't need to verify the step exists, because pawns cannot exist
-    // on the final rank without promoting. there will always be one more step.
-    let to = step(from, forward_direction).unwrap();
-
-    match hexchess.board[to as usize] {
-        None => Some(San { from: start, promotion: None, to }),
-        Some(_) => None,
-    }
-}
-
-fn capture(hexchess: &Hexchess, from: u8, capture_direction: u8, friendly_color: Color) -> Option<San> {
-    match step(from, capture_direction) {
-        None => None,
-        Some(to) => match hexchess.board[to as usize] {
-            None => match hexchess.ep {
-                None => None,
-                Some(ep) => match to == ep && hexchess.turn == friendly_color {
-                    true => Some(San { from, promotion: None, to }),
-                    false => None,
-                },
+    match pawn.capture_starboard {
+        255 => {},
+        capture_starboard => match hexchess.board[capture_starboard as usize] {
+            None => if hexchess.turn == *color && hexchess.ep == Some(pawn.capture_starboard) {
+                sans.push(San { from, promotion: None, to: capture_starboard });
             },
-            Some(piece) => match get_color(&piece) != friendly_color {
-                true => Some(San { from, promotion: None, to }),
-                false => None,
-            },
+            Some(occupying_piece) => if get_color(&occupying_piece) != *color {
+                push_sans(&mut sans, from, capture_starboard, pawn.promote_starboard);
+            }
         }
     }
+
+    sans
 }
 
-fn is_promotion_position(position: u8, color: Color) -> bool {
-    match color {
-        Color::Black => match position {
-            h!("a1") |
-            h!("b1") |
-            h!("c1") |
-            h!("d1") |
-            h!("e1") |
-            h!("f1") |
-            h!("g1") |
-            h!("h1") |
-            h!("i1") |
-            h!("k1") |
-            h!("l1") => true,
-            _ => false,
-        },
-        Color::White => match position {
-            h!("a6") |
-            h!("b7") |
-            h!("c8") |
-            h!("d9") |
-            h!("e10") |
-            h!("f11") |
-            h!("g10") |
-            h!("h9") |
-            h!("i8") |
-            h!("k7") |
-            h!("l6") => true,
-            _ => false,
-        }
-    }
-}
-
-fn is_starting_position(position: u8, color: Color) -> bool {
-    match color {
-        Color::Black => match position {
-            h!("b7") |
-            h!("c7") |
-            h!("d7") |
-            h!("e7") |
-            h!("f7") |
-            h!("g7") |
-            h!("h7") |
-            h!("i7") |
-            h!("k7") => true,
-            _ => false,
-        },
-        Color::White => match position {
-            h!("b1") |
-            h!("c2") |
-            h!("d3") |
-            h!("e4") |
-            h!("f5") |
-            h!("g4") |
-            h!("h3") |
-            h!("i2") |
-            h!("k1") => true,
-            _ => false,
-        }
-    }
-}
-
-fn push_moves(
-    result: &mut Vec<San>,
-    san: San,
-    color: Color,
+fn push_sans(
+    sans: &mut Vec<San>,
+    from: u8,
+    to: u8,
+    promotion: bool,
 ) {
-    if is_promotion_position(san.to, color) {
-        result.push(San { from: san.from, promotion: Some(PromotionPiece::Bishop), to: san.to });
-        result.push(San { from: san.from, promotion: Some(PromotionPiece::Knight), to: san.to });
-        result.push(San { from: san.from, promotion: Some(PromotionPiece::Queen), to: san.to });
-        result.push(San { from: san.from, promotion: Some(PromotionPiece::Rook), to: san.to });
+    if promotion {
+        sans.push(San { from, promotion: Some(PromotionPiece::Bishop), to });
+        sans.push(San { from, promotion: Some(PromotionPiece::Knight), to });
+        sans.push(San { from, promotion: Some(PromotionPiece::Queen), to });
+        sans.push(San { from, promotion: Some(PromotionPiece::Rook), to });
     } else {
-        result.push(san);
+        sans.push(San { from, promotion: None, to });
     }
 }
+
+// #[cfg(test)]
+// mod tests {
+//     use super::*;
+//
+//     #[test]
+//     fn test_pawn_moves_unsafe() {
+//         let hexchess = Hexchess::init();
+//
+//         // ...
+//     }
+// }
