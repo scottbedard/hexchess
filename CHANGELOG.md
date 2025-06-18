@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.1.0
+
+- Removed wasm bindings. Engines should import the crate directly
+- Changed directory structure to separate crate and npm package
+- Use pre-computed values for crate pawn and knight moves
+
 ## 2.0.1
 
 - Add [`Eq`](https://doc.rust-lang.org/std/cmp/trait.Eq.html) and [`Hash`](https://doc.rust-lang.org/std/hash/trait.Hash.html) support to `Hexchess` instances.
