@@ -6,7 +6,7 @@ license = "MIT"
 name = "hexchess"
 readme = "README.md"
 repository = "https://github.com/scottbedard/hexchess"
-version = "2.0.1"
+version = "2.1.0"
 
 [lib]
 crate-type = ["cdylib", "rlib"]
@@ -34,5 +34,4 @@ serde_json = "1.0.140"
 opt-level = 3
 
 [profile.release]
-# Tell `rustc` to optimize for small code size.
-opt-level = "s"
+opt-level = 3
