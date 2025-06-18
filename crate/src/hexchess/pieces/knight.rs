@@ -1,7 +1,6 @@
 use crate::constants::Color;
 use crate::hexchess::hexchess::Hexchess;
 use crate::hexchess::san::San;
-
 use crate::hexchess::utils::get_color;
 
 pub fn knight_moves_unsafe(
