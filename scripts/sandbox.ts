@@ -2,6 +2,6 @@ import {
   index,
   graph,
   Hexchess
-} from '../src/index'
+} from '../pkg/index'
 
 // ...

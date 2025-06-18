@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest'
-import { Hexchess } from '../../src'
+import { Hexchess } from '../../pkg'
 import { json } from './utils'
 
 describe('hexchess parse', () => {

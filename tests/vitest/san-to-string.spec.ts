@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest'
-import { San } from '../../src'
+import { San } from '../../pkg'
 import { json } from './utils'
 
 const data = json('san-to-string.json')
