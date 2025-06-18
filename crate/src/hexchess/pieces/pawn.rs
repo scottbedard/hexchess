@@ -1,4 +1,3 @@
-use crate::h;
 use crate::hexchess::hexchess::Hexchess;
 use crate::hexchess::san::San;
 
@@ -7,10 +6,7 @@ use crate::constants::{
     PromotionPiece,
 };
 
-use crate::hexchess::utils::{
-    get_color,
-    step,
-};
+use crate::hexchess::utils::get_color;
 
 /** pre-computed position pawn graph */
 struct PawnGraph {
