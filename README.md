@@ -233,44 +233,6 @@ const hexchess = Hexchess.init()
 hexchess.toString() // 'b/qbk/n1b1n/r5r/ppppppppp/11/5P5/4P1P4/3P1B1P3/2P2B2P2/1PRNQBKNRP1 w - 0 1'
 ```
 
-## Wasm Bindings
-
-The Rust crate for this library is exposed via WebAssembly. All APIs are the same as above, but with a functional syntax that accepts a `HexchessStruct`, and returns a new `HexchessStruct`.
-
-```ts
-import {
-  apply,
-  initHexchess,
-  stringifyHexchess,
-} from '@bedard/hexchess/wasm' // <- note the import path
-
-const hexchess = apply(initHexchess(), 'g4g6 f7g6 f5f7 g6f6')
-
-stringifyHexchess(hexchess) // 'b/qbk/n1b1n/r5r/pppp1pppp/5p5/11/4P6/3P1B1P3/2P2B2P2/1PRNQBKNRP1 w - 0 3'
-```
-
-A [native web target](https://rustwasm.github.io/docs/wasm-pack/commands/build.html#target) is also available at `@bedard/hexchess/wasm/web`.
-
-Below are the available bindings,
-
-- `apply`
-- `applyMove`
-- `applyMoveUnsafe`
-- `createHexchess`
-- `currentMoves`
-- `findKing`
-- `get`
-- `initHexchess`
-- `isCheck`
-- `isCheckmate`
-- `isStalemate`
-- `movesFrom`
-- `movesFromUnsafe`
-- `parseHexchess`
-- `parseSan`
-- `stringifyHexchess`
-- `stringifySan`
-
 ## License
 
 [MIT](https://github.com/scottbedard/hexchess/blob/main/LICENSE)

@@ -5,6 +5,4 @@ Cargo.lock
 coverage
 dist
 node_modules
-pkg
 target
-wasm-pack.log

@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest'
-import { index, position } from '../../src/utils'
+import { index, position } from '../../pkg/utils'
 import { json } from './utils'
 
 test('position', () => {

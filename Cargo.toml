@@ -10,26 +10,28 @@ version = "2.0.1"
 
 [lib]
 crate-type = ["cdylib", "rlib"]
-path = "src/wasm/lib.rs"
+path = "crate/src/lib.rs"
+
+[[bench]]
+harness = true
+name = "knight"
+path = "crate/benches/knight.rs"
+
+[[bench]]
+harness = true
+name = "initial_position"
+path = "crate/benches/initial_position.rs"
 
 [features]
-default = ["console_error_panic_hook"]
+default = []
 
 [dependencies]
-wasm-bindgen = "0.2.84"
-
-# The `console_error_panic_hook` crate provides better debugging of panics by
-# logging them with `console.error`. This is great for development, but requires
-# all the `std::fmt` and `std::panicking` infrastructure, so isn't great for
-# code size when deploying.
-console_error_panic_hook = { version = "0.1.7", optional = true }
 serde = { version = "1.0.219", features = ["derive"] }
-tsify-next = "0.5.5"
 serde_with = "3.12.0"
 serde_json = "1.0.140"
 
-[dev-dependencies]
-wasm-bindgen-test = "0.3.34"
+[profile.bench]
+opt-level = 3
 
 [profile.release]
 # Tell `rustc` to optimize for small code size.

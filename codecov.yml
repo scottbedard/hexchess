@@ -1,3 +1,2 @@
 ignore:
   - "scripts"
-  - "src/wasm/lib.rs"  # <- covered by vitest integration tests

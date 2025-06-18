@@ -1,6 +1,6 @@
-import { error } from './utils'
-import { index, positions } from './index'
+import { error, index} from './utils'
 import { Position, PromotionPiece } from './types'
+import { positions } from './constants'
 
 export class San {
   public from: number = 0

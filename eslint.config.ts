@@ -9,7 +9,7 @@ export default tseslint.config(
       'dist',
       'node_modules',
       'pkg',
-      'src/wasm',
+      'scripts/sandbox.ts',
       'target',
     ],
   },

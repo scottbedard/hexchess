@@ -16,27 +16,6 @@ function run() {
   copy('package.json', 'dist/package.json')
   copy('README.md', 'dist/README.md')
 
-  // build wasm package
-  execSync(`${resolve('node_modules/.bin/wasm-pack')} build --out-dir ${resolve('dist/wasm')} --out-name index`)
-  execSync(`${resolve('node_modules/.bin/wasm-pack')} build --out-dir ${resolve('dist/wasm/web')} --out-name index --target web`)
-
-  write(
-    'dist/wasm/index.d.ts',
-    `${read('src/wasm/prepend.post-build')}\n${read('dist/wasm/index.d.ts')}`
-  )
-
-  ;[
-    'dist/wasm/README.md',
-    'dist/wasm/.gitignore',
-    'dist/wasm/LICENSE',
-    'dist/wasm/package.json',
-    'dist/wasm/web/README.md',
-    'dist/wasm/web/.gitignore',
-    'dist/wasm/web/LICENSE',
-    'dist/wasm/web/package.json',
-
-  ].forEach(file => execSync(`rm ${resolve(file)}`))
-
   // set version numbers
   const pkg = JSON.parse(read('package.json'))
   write('dist/index.mjs', read('dist/index.mjs').replace('x.y.z', pkg.version))

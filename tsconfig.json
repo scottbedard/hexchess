@@ -10,14 +10,14 @@
     "noImplicitAny": true,
     "outDir": "dist",
     "paths": {
-      "@/*": ["src/*"],
+      "@/*": ["pkg/*"],
     },
-    "rootDir": "src",
+    "rootDir": "pkg",
     "strict": true,
     "strictNullChecks": true,
     "target": "es2016",
   },
   "include": [
-    "src/**/*",
+    "pkg/**/*",
   ]
 }
