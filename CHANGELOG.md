@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.1.1
+
+- Increase Rust performance of `moves_from` ~22x by finding unsafe moves from king's perspective, and simplifying the knight graph.
+
 ## 2.1.0
 
 - Removed wasm bindings. Engines should import the crate directly
