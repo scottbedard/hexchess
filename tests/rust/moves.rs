@@ -27,14 +27,20 @@ fn test_piece_movement() {
         for test in tests {
             let from = index(&test.position).unwrap();
 
-            let result = Hexchess::parse(&test.from)
+            let mut result = Hexchess::parse(&test.from)
                 .unwrap()
                 .moves_from(from)
                 .into_iter()
                 .map(|san| san.to_string())
                 .collect::<Vec<String>>();
+            
+            result.sort();
 
-            assert_eq!(result, test.expect, "{}", test.description);
+            let mut expected = test.expect.clone();
+
+            expected.sort();
+
+            assert_eq!(result, expected, "{}", test.description);
         }
     }
 }

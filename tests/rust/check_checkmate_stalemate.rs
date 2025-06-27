@@ -18,8 +18,8 @@ fn test_check_checkmate_stalemate() {
     for test in tests {
         let hexchess = Hexchess::parse(&test.from).unwrap();
 
-        assert_eq!(hexchess.is_check(), test.check);
-        assert_eq!(hexchess.is_checkmate(), test.checkmate);
-        assert_eq!(hexchess.is_stalemate(), test.stalemate);
+        assert_eq!(hexchess.is_check(), test.check, "check assertion failed: {}", test.description);
+        assert_eq!(hexchess.is_checkmate(), test.checkmate, "checkmate assertion failed: {}", test.description);
+        assert_eq!(hexchess.is_stalemate(), test.stalemate, "stalemate assertion failed: {}", test.description);
     }
 }

@@ -10,7 +10,9 @@ use std::hash::Hash;
 
 use crate::constants::{
     Color,
+    HEXBOARD_GRAPH,
     INITIAL_POSITION,
+    KNIGHT_GRAPH,
     Piece,
     PromotionPiece,
 };
@@ -21,6 +23,7 @@ use crate::hexchess::utils::{
     step,
     index,
     position,
+    walk_until_piece,
 };
 
 /// Hexchess game state
@@ -221,15 +224,27 @@ impl Hexchess {
         self.moves_from_unsafe(from)
             .into_iter()
             .filter(|san| {
-                // prevent self check
+                // clone the board and apply an unsafe move
                 let mut clone = self.clone();
-
-                let _ = clone.apply_move_unsafe(san);
                 
-                match clone.find_king(color) {
-                    Some(king) => !clone.is_threatened(king),
-                    None => true,
+                let _ = clone.apply_move_unsafe(san);
+
+                let king_position = match clone.find_king(color) {
+                    Some(king) => king,
+                    None => return true,
+                };
+
+                // filter self-check moves
+                if
+                    is_king_threat(&clone, &color, king_position) ||
+                    is_knight_threat(&clone, &color, king_position) ||
+                    is_pawn_threat(&clone, &color, king_position) ||
+                    is_straight_line_threat(&clone, &color, king_position)
+                {
+                    return false;
                 }
+
+                true
             })
             .collect()
     }
@@ -458,6 +473,107 @@ impl Hexchess {
             self.fullmove,
         )
     }
+}
+
+/// test if knight threatens a position
+fn is_knight_threat(hexchess: &Hexchess, color: &Color, position: u8) -> bool {
+    let hostile_knight = match color {
+        Color::Black => Piece::WhiteKnight,
+        Color::White => Piece::BlackKnight,
+    };
+    
+    for n in KNIGHT_GRAPH[position as usize].iter() {
+        if hexchess.board[*n as usize] == Some(hostile_knight) {
+            return true
+        }
+    }
+
+    false
+}
+
+/// test if position touches the hostile king
+fn is_king_threat(hexchess: &Hexchess, color: &Color, position: u8) -> bool {
+    let hostile_king = match color {
+        Color::Black => Piece::WhiteKing,
+        Color::White => Piece::BlackKing,
+    };
+
+    for n in HEXBOARD_GRAPH[position as usize] {
+        if n.is_some() && hexchess.board[n.unwrap() as usize] == Some(hostile_king) {
+            return true
+        }
+    }
+
+    false
+}
+
+/// test if pawn threatens a position
+fn is_pawn_threat(hexchess: &Hexchess, color: &Color, position: u8) -> bool {
+    // portside and starboard are reversed from the pawn's perspective because
+    // we only know the king's position. so we must move the king like friendly
+    // pawn to see if it encounters a hostile pawn
+    let (
+        hostile_pawn,
+        reverse_portside,
+        reverse_starboard,
+    ) = match color {
+        Color::Black => (Piece::WhitePawn, 4, 8),
+        Color::White => (Piece::BlackPawn, 10, 2),
+    };
+
+    match step(position, reverse_portside) {
+        Some(index) => if hexchess.board[index as usize] == Some(hostile_pawn) {
+            return true
+        },
+        None => {},
+    }
+
+    match step(position, reverse_starboard) {
+        Some(index) => if hexchess.board[index as usize] == Some(hostile_pawn) {
+            return true
+        },
+        None => {},
+    }
+
+    false
+}
+
+/// test if straight line piece threatens a position
+fn is_straight_line_threat(hexchess: &Hexchess, color: &Color, position: u8) -> bool {
+    let hostile_bishop = match color {
+        Color::Black => Piece::WhiteBishop,
+        Color::White => Piece::BlackBishop,
+    };
+
+    let hostile_queen = match color {
+        Color::Black => Piece::WhiteQueen,
+        Color::White => Piece::BlackQueen,
+    };
+
+    let hostile_rook = match color {
+        Color::Black => Piece::WhiteRook,
+        Color::White => Piece::BlackRook,
+    };
+
+    // check for diagonal threats
+    for diagonal_direction in &[1u8, 3, 5, 7, 9, 11] {
+        let piece = walk_until_piece(hexchess, position, *diagonal_direction);
+
+        if piece == Some(hostile_bishop) || piece == Some(hostile_queen) {
+            return true;
+        }
+    }
+
+    // check for orthogonal threats
+    for orthogonal_direction in &[0u8, 2, 4, 6, 8, 10] {
+        let piece = walk_until_piece(hexchess, position, *orthogonal_direction);
+
+        if piece == Some(hostile_rook) || piece == Some(hostile_queen) {
+            return true;
+        }
+    }
+
+    false
 }
 
 /// parse the board segment of fen

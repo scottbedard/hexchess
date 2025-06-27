@@ -333,6 +333,17 @@ pub fn walk(hexchess: &Hexchess, from: u8, direction: u8, color: &Color) -> Vec<
     }
 }
 
+/// walk along the board until a piece is found
+pub fn walk_until_piece(hexchess: &Hexchess, from: u8, direction: u8) -> Option<Piece> {
+    match step(from, direction) {
+        Some(next) => match hexchess.board[next as usize] {
+            Some(piece) => Some(piece),
+            None => walk_until_piece(hexchess, next, direction), // unoccupied, continue walking
+        },
+        None => None, // end of board
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -341,5 +352,12 @@ mod tests {
     #[should_panic]
     fn test_position_panics_on_out_of_bounds() {
         position(&91);
+    }
+
+    #[test]
+    fn test_walk_until_piece() {
+        let hexchess = Hexchess::parse("1/3/2r2/7/9/11/11/11/5R5/11/11 w - 0 1").unwrap();
+        assert_eq!(walk_until_piece(&hexchess, h!("f3"), 0), Some(Piece::BlackRook));
+        assert_eq!(walk_until_piece(&hexchess, h!("f3"), 2), None);
     }
 }

@@ -16,12 +16,18 @@ fn test_hexchess_apply_move_unsafe() {
     for test in tests {
         let hexchess = Hexchess::parse(&test.from).unwrap();
 
-        let moves = hexchess
+        let mut moves_strings: Vec<String> = hexchess
             .current_moves()
             .iter()
             .map(|san| san.to_string())
-            .collect::<Vec<String>>();
+            .collect();
+        
+        moves_strings.sort();
 
-        assert_eq!(moves, test.result);
+        let mut expected_result = test.result.clone();
+
+        expected_result.sort();
+        
+        assert_eq!(moves_strings, expected_result);
     }
 }
