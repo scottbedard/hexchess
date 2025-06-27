@@ -1,11 +1,7 @@
-use crate::constants::Color;
+use crate::constants::{Color, HEXBOARD_GRAPH};
 use crate::hexchess::hexchess::Hexchess;
 use crate::hexchess::san::San;
-
-use crate::hexchess::utils::{
-    get_color,
-    step,
-};
+use crate::hexchess::utils:: get_color;
 
 
 pub fn king_moves_unsafe(
@@ -15,11 +11,9 @@ pub fn king_moves_unsafe(
 ) -> Vec<San> {
     let mut result: Vec<San> = vec![];
 
-    let directions: [u8; 12] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
-
-    for n in directions {
-        let to = match step(from, n) {
-            Some(to) => to,
+    for position in HEXBOARD_GRAPH[from as usize] {
+        let to = match position {
+            Some(t) => t,
             None => continue,
         };
 
