@@ -16,7 +16,7 @@
 
 ## 2.0.0
 
-Board state is now stored as an array of values rather than a key-value store.
+Board state is now an array of values, and no longer as key-value pairs.
 
 ```js
 // before
@@ -36,7 +36,7 @@ San.parse('a1b2') // { from: 'a1', to: 'b2', promotion: null }
 San.parse('a1b2') // { from: 80, to: 70, promotion: null }
 ```
 
-The Rust and TypeScript libraries have also reunited. APIs and feature sets may diverge over time, but will be versioned together to ensure compatibility.
+Additionally, the Rust and TypeScript libraries have been reunited. Their APIs and feature sets may diverge, but they will be versioned together to ensure compatibility.
 
 ## 2.0.0-beta.3
 
