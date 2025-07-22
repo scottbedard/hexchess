@@ -9,7 +9,6 @@ export default tseslint.config(
       'dist',
       'node_modules',
       'npm',
-      'scripts/sandbox.ts',
       'target',
     ],
   },
