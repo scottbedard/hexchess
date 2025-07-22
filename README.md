@@ -51,7 +51,7 @@ Across libraries, Hexchess instances generally assume the following shape.
 }
 ```
 
-The following constants are also available, represending the "empty" and "initial" game states. See library docs for export information.
+The following constants are also available to represent the "empty" and "initial" states. See the library docs for more information.
 
 ```
 1/3/5/7/9/11/11/11/11/11/11 w - 0 1
