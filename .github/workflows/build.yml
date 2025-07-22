@@ -24,17 +24,17 @@ jobs:
           pnpm install --no-frozen-lockfile
 
       - name: Build package
-        run:
+        run: |
           cd js
           pnpm build
 
       - name: Lint
-        run:
+        run: |
           cd js
           pnpm lint
 
       - name: Vitest
-        run:
+        run: |
           cd js
           pnpm test:coverage
 
