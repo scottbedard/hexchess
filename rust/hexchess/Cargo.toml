@@ -1,6 +1,6 @@
 [package]
 authors = ["Scott Bedard"]
-description = "A Rust / TypeScript library for Gliński's hexagonal chess, and the brain of hexchess.club"
+description = "A library for Gliński's hexagonal chess, and the brain of hexchess.club"
 edition = "2021"
 license = "MIT"
 name = "hexchess"
@@ -10,17 +10,17 @@ version = "2.1.1"
 
 [lib]
 crate-type = ["cdylib", "rlib"]
-path = "crate/src/lib.rs"
+path = "src/lib.rs"
 
 [[bench]]
 harness = true
 name = "knight"
-path = "crate/benches/knight.rs"
+path = "bench/knight.rs"
 
 [[bench]]
 harness = true
 name = "initial_position"
-path = "crate/benches/initial_position.rs"
+path = "bench/initial_position.rs"
 
 [features]
 default = []
