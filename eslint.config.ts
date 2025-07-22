@@ -8,7 +8,7 @@ export default tseslint.config(
     ignores: [
       'dist',
       'node_modules',
-      'pkg',
+      'npm',
       'scripts/sandbox.ts',
       'target',
     ],

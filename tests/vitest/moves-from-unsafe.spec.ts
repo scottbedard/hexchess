@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest'
-import { Hexchess } from '../../pkg'
-import { index } from '../../pkg/utils'
+import { Hexchess } from '../../js'
+import { index } from '../../js/utils'
 import { json } from './utils'
 
 describe('piece movement', () => {

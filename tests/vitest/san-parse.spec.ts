@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest'
-import { position, San } from '../../pkg'
+import { position, San } from '../../js'
 import { json } from './utils'
 
 const data = json('san-parse.json')

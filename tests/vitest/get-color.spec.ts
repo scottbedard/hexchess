@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest'
-import { Hexchess, position } from '../../pkg'
+import { Hexchess, position } from '../../js'
 import { json } from './utils'
 
 const data = json('get-color.json')

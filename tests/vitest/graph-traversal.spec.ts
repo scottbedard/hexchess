@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest'
-import { Hexchess, type Direction } from '../../pkg'
-import { index, walk } from '../../pkg/utils'
+import { Hexchess, type Direction } from '../../js'
+import { index, walk } from '../../js/utils'
 import { json } from './utils'
 
 describe('graph traversal', () => {

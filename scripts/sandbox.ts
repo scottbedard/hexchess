@@ -2,7 +2,7 @@ import {
   index,
   graph,
   Hexchess
-} from '../pkg/index'
+} from '../js/index'
 
 let output: any[] = []
 

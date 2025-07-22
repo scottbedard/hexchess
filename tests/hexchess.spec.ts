@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest'
-import { Hexchess } from '../pkg'
+import { Hexchess } from '../js'
 
 describe('Hexchess', () => {
   test('clone', () => {

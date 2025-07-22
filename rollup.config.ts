@@ -4,7 +4,7 @@ import typescript from '@rollup/plugin-typescript'
 
 export default defineConfig([
   {
-    input: 'pkg/index.ts',
+    input: 'js/index.ts',
     output: [
       {
         file: 'dist/index.mjs',
