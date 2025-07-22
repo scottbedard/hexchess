@@ -19,8 +19,6 @@ A Rust / TypeScript library for [Gliński's hexagonal chess](https://en.wikipedi
 
 Install this package via NPM.
 
-> Depending on your bundler and target, you may need plugins for [Web Assembly](https://developer.mozilla.org/en-US/docs/WebAssembly) and [top-level await](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/await#top_level_await) to utilize WASM bindings.
-
 ```
 npm install @bedard/hexchess
 
@@ -29,7 +27,7 @@ pnpm install @bedard/hexchess
 yarn add @bedard/hexchess
 ```
 
-This JaveScript portions of this library may also be accessed using a CDN.
+Or include the script globally via a CDN.
 
 ```html
 <script src="https://unpkg.com/@bedard/hexchess"></script>

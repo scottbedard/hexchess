@@ -16,9 +16,27 @@
 
 ## 2.0.0
 
-The main difference in 2.x is storing game state as an array of values rather than a map. The main goal of this was to improve performance, and become more interoperable with game engines.
+Board state is now an array of values, and no longer as key-value pairs.
 
-Additionally, the Rust and TypeScript libraries now execute the same series of tests, and will be versioned together.
+```js
+// before
+hexchess.board // { f11: null, e10: null, ... }
+
+// after
+hexchess.board // [null, null, ...]
+```
+
+Similarly, all `Position` values now represent the index of their position in a FEN.
+
+```js
+// before
+San.parse('a1b2') // { from: 'a1', to: 'b2', promotion: null }
+
+// after
+San.parse('a1b2') // { from: 80, to: 70, promotion: null }
+```
+
+Additionally, the Rust and TypeScript libraries have been reunited. Their APIs and feature sets may diverge, but they will be versioned together to ensure compatibility.
 
 ## 2.0.0-beta.3
 
