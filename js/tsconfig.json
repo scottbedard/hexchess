@@ -10,14 +10,14 @@
     "noImplicitAny": true,
     "outDir": "dist",
     "paths": {
-      "@/*": ["js/*"],
+      "@/*": ["src/*"],
     },
-    "rootDir": "js",
+    "rootDir": "src",
     "strict": true,
     "strictNullChecks": true,
     "target": "es2016",
   },
   "include": [
-    "js/**/*",
+    "src/**/*",
   ]
 }

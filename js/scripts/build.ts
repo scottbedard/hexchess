@@ -12,7 +12,7 @@ function run() {
 
   // build npm package
   execSync('rollup --config rollup.config.ts --configPlugin @rollup/plugin-typescript')
-  copy('LICENSE', 'dist/LICENSE')
+  copy('../LICENSE', 'dist/LICENSE')
   copy('package.json', 'dist/package.json')
   copy('README.md', 'dist/README.md')
 

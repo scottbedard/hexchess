@@ -1,7 +1,7 @@
 import { describe, expect, test } from 'vitest'
-import { Hexchess, type Direction } from '../../js'
-import { index, walk } from '../../js/utils'
-import { json } from './utils'
+import { Hexchess, type Direction } from '../../src'
+import { index, walk } from '../../src/utils'
+import { json } from '../utils'
 
 describe('graph traversal', () => {
   const hexchess = new Hexchess()

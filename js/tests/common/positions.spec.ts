@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest'
-import { index, position } from '../../js/utils'
-import { json } from './utils'
+import { index, position } from '../../src/utils'
+import { json } from '../utils'
 
 test('position', () => {
   const positions = json('positions.json')

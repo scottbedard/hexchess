@@ -1,4 +1,4 @@
-import eslint from '@eslint/js'
+import eslint from '@eslint/js/src'
 import globals from 'globals'
 import stylistic from '@stylistic/eslint-plugin'
 import tseslint from 'typescript-eslint'

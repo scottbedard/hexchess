@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest'
-import { Hexchess } from '../../js'
-import { json } from './utils'
+import { Hexchess } from '../../src'
+import { json } from '../utils'
 
 const data = json('hexchess-is-threatened.json')
 

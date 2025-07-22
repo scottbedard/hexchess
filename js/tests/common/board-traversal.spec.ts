@@ -1,7 +1,7 @@
 import { describe, expect, test } from 'vitest'
-import { Hexchess } from '../../js'
-import { index, walk } from '../../js/utils'
-import { json } from './utils'
+import { Hexchess } from '../../src'
+import { index, walk } from '../../src/utils'
+import { json } from '../utils'
 
 describe('board traversal', () => {
   json('board-traversal.json').forEach(spec => {
