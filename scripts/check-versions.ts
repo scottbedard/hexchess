@@ -2,8 +2,8 @@ import { dim, green, read } from './utils'
 import toml from 'smol-toml'
 
 function run() {
-  const cargo = toml.parse(read('Cargo.toml'))
-  const pkg = JSON.parse(read('package.json'))
+  const cargo = toml.parse(read('rust/hexchess/Cargo.toml'))
+  const pkg = JSON.parse(read('js/package.json'))
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const cargoVersion = (cargo.package as any).version
@@ -41,4 +41,3 @@ function run() {
 }
 
 run()
-
