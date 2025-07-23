@@ -1,3 +1,4 @@
+import { exec } from 'child_process'
 import { fileURLToPath } from 'url'
 import fs from 'node:fs'
 import path from 'node:path'
@@ -10,6 +11,19 @@ export function copy(from, to) {
 /** colorize text in dim */
 export function dim(text) {
   return `\x1b[2m${text}\x1b[0m`
+}
+
+/** execute a command asynchronously */
+export function execAsync(cmd: string, options: Parameters<typeof exec>[1]) {
+  return new Promise((resolve, reject) => {
+    exec(cmd, options, (error, stdout, stderr) => {
+      if (error) {
+        reject(error);
+        return;
+      }
+      resolve({ stdout, stderr });
+    });
+  });
 }
 
 /** colorize text in green */
