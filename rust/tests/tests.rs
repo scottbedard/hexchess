@@ -8,7 +8,6 @@ use std::fs;
 pub fn json<T: for<'de> Deserialize<'de>>(file: &str) -> Vec<T> {
     let mut path = env::current_dir().expect("Failed to get current directory");
     path.pop();
-    path.pop();
     path.push(format!("tests/{}", file));
 
     let json = fs::read_to_string(path)
