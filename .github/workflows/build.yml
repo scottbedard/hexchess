@@ -82,6 +82,9 @@ jobs:
         run: |
           cd php
           composer install
+      - name: Lint
+        working-directory: ./php
+        run: ./vendor/bin/php-cs-fixer fix . --dry-run --diff --format=txt
       - name: Test
         working-directory: ./php
         run: ./vendor/bin/pest --log-junit ./junit.xml --cache-directory=./.pest/cache --coverage-clover coverage.xml 

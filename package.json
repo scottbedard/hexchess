@@ -4,6 +4,7 @@
     "build:rs": "jiti scripts/build.ts --rs",
     "build": "jiti scripts/build.ts",
     "check-versions": "jiti scripts/check-versions.ts",
+    "lint:php": "( cd php && ./vendor/bin/php-cs-fixer fix . )",
     "set-version": "jiti scripts/set-version.ts",
     "test:js": "(cd js && pnpm test )",
     "test:php": "( cd php && ./vendor/bin/pest )",

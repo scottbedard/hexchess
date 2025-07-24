@@ -2,12 +2,15 @@
 
 namespace Bedard\Hexchess;
 
-class Hexchess {
-    public function add(int $a, int $b): int {
+class Hexchess
+{
+    public function add(int $a, int $b): int
+    {
         return $a + $b;
     }
 
-    public function subtract(int $a, int $b): int {
+    public function subtract(int $a, int $b): int
+    {
         return $a - $b;
     }
 }

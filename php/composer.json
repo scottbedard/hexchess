@@ -12,7 +12,8 @@
   "license": "MIT",
   "name": "bedard/hexchess",
   "require-dev": {
-    "pestphp/pest": "^3.8"
+    "pestphp/pest": "^3.8",
+    "friendsofphp/php-cs-fixer": "^3.84"
   },
   "type": "library",
   "version": "2.1.2"
