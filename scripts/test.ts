@@ -10,7 +10,7 @@ async function run() {
     encoding: 'utf-8',
   })
 
-  js.succeed(`JavaScript (${Date.now() - startAt}ms)`)
+  js.succeed(`JavaScript ${dim(`(${Date.now() - startAt}ms)`)}`)
 
   const rust = ora('Rust...').start()
   const rustStart = Date.now()

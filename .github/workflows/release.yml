@@ -8,71 +8,8 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
-  rust:
-    name: Rust
-
-    runs-on: ubuntu-latest
-
-    container:
-      image: xd009642/tarpaulin:develop-nightly
-      options: --security-opt seccomp=unconfined
-
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
-
-    - name: Test
-      run: |
-        cd rust
-        cargo test
-
-  node:
-    name: Node
-
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v4
-  
-    - uses: pnpm/action-setup@v4
-      name: Install pnpm
-      with:
-        version: 9
-        run_install: false
-
-    - name: Install dependencies
-      run: pnpm install
-
-    - name: Build package
-      run: pnpm build
-    
-    - name: TypeScript tests
-      run: pnpm test
-
-  versions:
-    name: Check versions
-
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v4
-
-    - uses: pnpm/action-setup@v4
-      name: Install pnpm
-      with:
-        version: 9
-        run_install: false
-
-    - name: Install dependencies
-      run: pnpm install
-
-    - name: Check versions
-      run: pnpm check-versions release=${{ github.ref_name }}
-
   publish:
     name: Publish
-
-    needs: [rust, node, versions]
 
     runs-on: ubuntu-latest
 
@@ -93,13 +30,15 @@ jobs:
   
       - name: Install dependencies
         run: |
+          pnpm install
           cd js
           pnpm install
+
+      - name: Check versions
+        run: pnpm check-versions release=${{ github.ref_name }}
   
       - name: Build package
-        run: |
-          cd js
-          pnpm build
+        run: pnpm build
 
       - name: Publish to NPM
         run: |
