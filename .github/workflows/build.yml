@@ -78,7 +78,7 @@ jobs:
           cd php
           composer install
       - name: Test
-        run: ./php/vendor/bin/pest
+        run: ./php/vendor/bin/pest --log-junit ./php/junit.xml --cache-directory=./php/.pest/cache
 
   versions:
     name: Check versions
