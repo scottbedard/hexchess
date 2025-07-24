@@ -73,13 +73,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Install Xdebug
+        run: |
+          sudo apt-get install php-xdebug
+          php -v
       - name: Install dependencies
         run: |
           cd php
           composer install
       - name: Test
         working-directory: ./php
-        run: ./vendor/bin/pest --log-junit ./junit.xml --cache-directory=./.pest/cache
+        run: ./vendor/bin/pest --log-junit ./junit.xml --cache-directory=./.pest/cache --coverage
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: true
 
   # versions:
   #   name: Check versions
