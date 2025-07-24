@@ -4,7 +4,13 @@ namespace Bedard\Hexchess;
 
 class San
 {
-    public function __construct(
+    public int $from;
+
+    public int|null $promotion;
+
+    public int $to;
+
+          public function __construct(
         int|string $from,
         int|string $to,
         $promotion = null
@@ -12,3 +18,4 @@ class San
         // ...
     }
 }
+
