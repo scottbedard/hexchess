@@ -2,6 +2,7 @@
   "scripts": {
     "build": "jiti scripts/build.ts",
     "check-versions": "jiti scripts/check-versions.ts",
+    "set-version": "jiti scripts/set-version.ts",
     "test": "jiti scripts/test.ts"
   },
   "devDependencies": {
