@@ -65,7 +65,7 @@ async function run() {
   try {
     const cargoPath = 'rust/Cargo.lock'
     const cargoContent = read(cargoPath)
-    const oldVersion = cargoContent.match(/version = "([^"]+)"/)?.[1]
+    const oldVersion = cargoContent.match(/hexchess"\nversion = "([^"]+)"/)?.[1]
 
     if (!oldVersion) {
       console.error('Could not find version in Cargo.lock')
@@ -73,8 +73,8 @@ async function run() {
     }
 
     const updatedContent = cargoContent.replace(
-      /version = "([^"]+)"/,
-      `version = "${version}"`
+      /hexchess"\nversion = "([^"]+)"/,
+      `hexchess"\nversion = "${version}"`
     )
 
     write(cargoPath, updatedContent)
