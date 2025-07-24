@@ -1,5 +1,6 @@
 {
   "scripts": {
+    "build": "jiti scripts/build.ts",
     "check-versions": "jiti scripts/check-versions.ts",
     "test": "jiti scripts/test.ts"
   },

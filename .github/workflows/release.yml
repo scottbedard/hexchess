@@ -22,7 +22,9 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Test
-      run: cargo test
+      run: |
+        cd rust
+        cargo test
 
   node:
     name: Node
@@ -90,19 +92,24 @@ jobs:
       - uses: dtolnay/rust-toolchain@stable
   
       - name: Install dependencies
-        run: pnpm install
+        run: |
+          cd js
+          pnpm install
   
       - name: Build package
-        run: pnpm build
+        run: |
+          cd js
+          pnpm build
 
       - name: Publish to NPM
         run: |
-          cd ./dist
+          cd js/dist
           npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Publish to Crates.io
         run: |
+          cd rust
           cargo login ${{ secrets.CARGO_TOKEN }}
           cargo publish

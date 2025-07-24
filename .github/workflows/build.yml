@@ -20,13 +20,12 @@ jobs:
 
       - name: Install dependencies
         run: |
+          pnpm install --no-frozen-lockfile
           cd js
           pnpm install --no-frozen-lockfile
 
       - name: Build package
-        run: |
-          cd js
-          pnpm build
+        run: pnpm build
 
       - name: Lint
         run: |
