@@ -1,0 +1,11 @@
+{
+    "name": "bedard/hexchess",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Bedard\\Hexchess\\": "src/"
+        }
+    },
+    "require": {}
+}

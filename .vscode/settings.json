@@ -2,7 +2,7 @@
   "[js,ts]": {
     "editor.tabSize": 2
   },
-  "[rust]": {
+  "[rust,php]": {
     "editor.tabSize": 4
   },
   "editor.codeActionsOnSave": {
