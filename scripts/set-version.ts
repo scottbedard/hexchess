@@ -16,6 +16,18 @@ async function run() {
     process.exit(1)
   }
 
+  // composer.json
+  try {
+    const composerPath = 'php/composer.json'
+    const composer = JSON.parse(read(composerPath))
+    composer.version = version
+    write(composerPath, JSON.stringify(composer, null, 2) + '\n')
+    console.log(`php/composer.json: ${green(version)}`)
+  } catch (error) {
+    console.error('Failed to update php/composer.json:', error)
+    process.exit(1)
+  }
+
   // package.json
   try {
     const jsPackagePath = 'js/package.json'

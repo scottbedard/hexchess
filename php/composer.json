@@ -1,18 +1,19 @@
 {
-    "name": "bedard/hexchess",
-    "type": "library",
-    "license": "MIT",
-    "autoload": {
-        "psr-4": {
-            "Bedard\\Hexchess\\": "src/"
-        }
-    },
-    "require-dev": {
-        "pestphp/pest": "^3.8"
-    },
-    "config": {
-        "allow-plugins": {
-            "pestphp/pest-plugin": true
-        }
+  "autoload": {
+    "psr-4": {
+      "Bedard\\Hexchess\\": "src/"
     }
+  },
+  "config": {
+    "allow-plugins": {
+      "pestphp/pest-plugin": true
+    }
+  },
+  "license": "MIT",
+  "name": "bedard/hexchess",
+  "require-dev": {
+    "pestphp/pest": "^3.8"
+  },
+  "type": "library",
+  "version": "2.1.2"
 }
