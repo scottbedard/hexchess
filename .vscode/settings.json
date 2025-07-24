@@ -2,8 +2,13 @@
   "[js,ts]": {
     "editor.tabSize": 2
   },
-  "[rust,php]": {
+  "[rust]": {
     "editor.tabSize": 4
+  },
+  "[php]": {
+    "editor.tabSize": 4,
+    "editor.insertSpaces": true,
+    "editor.detectIndentation": false
   },
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit",
