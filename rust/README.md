@@ -9,7 +9,7 @@ A library for [Gliński's hexagonal chess](https://en.wikipedia.org/wiki/Hexagon
 
 <p align="center">
   <a href="https://hexchess.club">
-    <img src="assets/hexchess.svg" width="500" />
+    <img src="https://raw.githubusercontent.com/scottbedard/hexchess/refs/heads/main/assets/hexchess.svg" width="500" />
   </a>
 </p>
 
