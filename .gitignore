@@ -4,5 +4,7 @@ bin
 coverage
 dist
 node_modules
+php/.pest
+php/junit.xml
 target
 vendor

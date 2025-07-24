@@ -1,12 +1,13 @@
 {
   "scripts": {
-    "build:js": "jiti scripts/build.ts --js-only",
-    "build:rs": "jiti scripts/build.ts --rs-only",
+    "build:js": "jiti scripts/build.ts --js",
+    "build:rs": "jiti scripts/build.ts --rs",
     "build": "jiti scripts/build.ts",
     "check-versions": "jiti scripts/check-versions.ts",
     "set-version": "jiti scripts/set-version.ts",
-    "test:js": "jiti scripts/test.ts --js-only",
-    "test:rs": "jiti scripts/test.ts --rs-only",
+    "test:js": "jiti scripts/test.ts --js",
+    "test:php": "jiti scripts/test.ts --php",
+    "test:rs": "jiti scripts/test.ts --rs",
     "test": "jiti scripts/test.ts"
   },
   "devDependencies": {
