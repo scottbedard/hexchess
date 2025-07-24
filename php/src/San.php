@@ -10,7 +10,7 @@ class San
 
     public int $to;
 
-          public function __construct(
+    public function __construct(
         int|string $from,
         int|string $to,
         $promotion = null
@@ -18,4 +18,3 @@ class San
         // ...
     }
 }
-
