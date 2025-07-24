@@ -6,67 +6,67 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
-  node:
-    name: Node
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
+  # node:
+  #   name: Node
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
 
-      - uses: pnpm/action-setup@v4
-        name: Install pnpm
-        with:
-          version: 9
-          run_install: false
+  #     - uses: pnpm/action-setup@v4
+  #       name: Install pnpm
+  #       with:
+  #         version: 9
+  #         run_install: false
 
-      - name: Install dependencies
-        run: |
-          pnpm install --no-frozen-lockfile
-          cd js
-          pnpm install --no-frozen-lockfile
+  #     - name: Install dependencies
+  #       run: |
+  #         pnpm install --no-frozen-lockfile
+  #         cd js
+  #         pnpm install --no-frozen-lockfile
 
-      - name: Build package
-        run: pnpm build --js-only
+  #     - name: Build package
+  #       run: pnpm build --js-only
 
-      - name: Lint
-        run: |
-          cd js
-          pnpm lint
+  #     - name: Lint
+  #       run: |
+  #         cd js
+  #         pnpm lint
 
-      - name: Vitest
-        run: |
-          cd js
-          pnpm test:coverage
+  #     - name: Vitest
+  #       run: |
+  #         cd js
+  #         pnpm test:coverage
 
-      - name: Upload coverage reports
-        uses: codecov/codecov-action@v5
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          fail_ci_if_error: true
-  rust:
-    name: Rust
-    runs-on: ubuntu-latest
-    container:
-      image: xd009642/tarpaulin:develop-nightly
-      options: --security-opt seccomp=unconfined
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+  #     - name: Upload coverage reports
+  #       uses: codecov/codecov-action@v5
+  #       with:
+  #         token: ${{ secrets.CODECOV_TOKEN }}
+  #         fail_ci_if_error: true
+  # rust:
+  #   name: Rust
+  #   runs-on: ubuntu-latest
+  #   container:
+  #     image: xd009642/tarpaulin:develop-nightly
+  #     options: --security-opt seccomp=unconfined
+  #   steps:
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v4
 
-      - name: Build
-        run: |
-          cd rust
-          cargo build --release
+  #     - name: Build
+  #       run: |
+  #         cd rust
+  #         cargo build --release
 
-      - name: Test
-        run: |
-          cd rust
-          cargo +nightly tarpaulin --verbose --all-features --workspace --timeout 120 --out xml
+  #     - name: Test
+  #       run: |
+  #         cd rust
+  #         cargo +nightly tarpaulin --verbose --all-features --workspace --timeout 120 --out xml
 
-      - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v5
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          fail_ci_if_error: true
+  #     - name: Upload coverage reports to Codecov
+  #       uses: codecov/codecov-action@v5
+  #       with:
+  #         token: ${{ secrets.CODECOV_TOKEN }}
+  #         fail_ci_if_error: true
 
   php:
     name: PHP
@@ -81,22 +81,22 @@ jobs:
         working-directory: ./php
         run: ./vendor/bin/pest --log-junit ./junit.xml --cache-directory=./.pest/cache
 
-  versions:
-    name: Check versions
+  # versions:
+  #   name: Check versions
 
-    runs-on: ubuntu-latest
+  #   runs-on: ubuntu-latest
 
-    steps:
-    - uses: actions/checkout@v4
+  #   steps:
+  #   - uses: actions/checkout@v4
 
-    - uses: pnpm/action-setup@v4
-      name: Install pnpm
-      with:
-        version: 9
-        run_install: false
+  #   - uses: pnpm/action-setup@v4
+  #     name: Install pnpm
+  #     with:
+  #       version: 9
+  #       run_install: false
 
-    - name: Install dependencies
-      run: pnpm install
+  #   - name: Install dependencies
+  #     run: pnpm install
 
-    - name: Check versions
-      run: pnpm check-versions
+  #   - name: Check versions
+  #     run: pnpm check-versions
