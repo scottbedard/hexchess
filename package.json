@@ -1,45 +1,13 @@
 {
-  "author": "Scott Bedard",
-  "bugs": {
-    "url": "https://github.com/scottbedard/hexchess/issues"
-  },
-  "description": "A Rust / TypeScript library for Gliński's hexagonal chess, and the brain of hexchess.club",
-  "devDependencies": {
-    "@eslint/js": "^9.28.0",
-    "@rollup/plugin-typescript": "^12.1.2",
-    "@stylistic/eslint-plugin": "^4.4.0",
-    "@types/node": "^22.15.29",
-    "@vitest/coverage-v8": "3.1.4",
-    "eslint": "^9.28.0",
-    "globals": "^16.2.0",
-    "jiti": "^2.4.2",
-    "rollup": "^4.41.1",
-    "rollup-plugin-esbuild-minify": "^1.3.0",
-    "smol-toml": "^1.3.4",
-    "tslib": "^2.8.1",
-    "typescript": "^5.8.3",
-    "typescript-eslint": "^8.33.0",
-    "vite": "^6.3.5",
-    "vitest": "^3.1.4"
-  },
-  "main": "index.mjs",
-  "module": "index.mjs",
-  "name": "@bedard/hexchess",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/scottbedard/hexchess.git"
-  },
   "scripts": {
-    "build": "jiti ./scripts/build.ts",
-    "check-versions": "jiti ./scripts/check-versions.ts",
-    "lint:fix": "eslint --fix",
-    "lint": "eslint",
-    "sandbox": "jiti ./scripts/sandbox.ts",
-    "test:coverage": "vitest --coverage",
-    "test": "vitest"
+    "build": "jiti scripts/build.ts",
+    "check-versions": "jiti scripts/check-versions.ts",
+    "test": "jiti scripts/test.ts"
   },
-  "type": "module",
-  "types": "index.d.ts",
-  "unpkg": "index.bundle.js",
-  "version": "2.1.1"
+  "devDependencies": {
+    "@types/node": "^24.1.0",
+    "jiti": "^2.4.2",
+    "ora": "^8.2.0",
+    "smol-toml": "^1.4.1"
+  }
 }
