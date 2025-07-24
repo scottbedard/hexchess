@@ -5,9 +5,9 @@
     "build": "jiti scripts/build.ts",
     "check-versions": "jiti scripts/check-versions.ts",
     "set-version": "jiti scripts/set-version.ts",
-    "test:js": "jiti scripts/test.ts --js",
-    "test:php": "jiti scripts/test.ts --php",
-    "test:rs": "jiti scripts/test.ts --rs",
+    "test:js": "(cd js && pnpm test )",
+    "test:php": "( cd php && ./vendor/bin/pest )",
+    "test:rs": "( cd rust && cargo test --all-features )",
     "test": "jiti scripts/test.ts"
   },
   "devDependencies": {
