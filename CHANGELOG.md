@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.1.2
+
+- Refactor project structure and versioning
+
 ## 2.1.1
 
 - Increase Rust performance of `moves_from` ~22x by finding unsafe moves from king's perspective, and simplifying the knight graph.
