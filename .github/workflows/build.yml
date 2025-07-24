@@ -25,7 +25,7 @@ jobs:
           pnpm install --no-frozen-lockfile
 
       - name: Build package
-        run: pnpm build
+        run: pnpm build --js-only
 
       - name: Lint
         run: |
