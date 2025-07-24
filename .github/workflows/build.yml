@@ -68,6 +68,18 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           fail_ci_if_error: true
 
+  php:
+    name: PHP
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install dependencies
+        run: |
+          cd php
+          composer install
+      - name: Test
+        run: ./php/vendor/bin/pest
+
   versions:
     name: Check versions
 
