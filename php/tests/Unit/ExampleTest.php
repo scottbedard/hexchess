@@ -1,5 +1,9 @@
 <?php
 
+use Bedard\Hexchess\Hexchess;
+
 test('example', function () {
-    expect(true)->toBeTrue();
+    $hexchess = new Hexchess();
+
+    expect($hexchess->add(1, 2))->toBe(3);
 });
