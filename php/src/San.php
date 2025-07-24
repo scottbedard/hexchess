@@ -4,19 +4,15 @@ namespace Bedard\Hexchess;
 
 class San
 {
+    /** san from position */
     public int $from;
 
+    /** san promotion value */
     public int|null $promotion;
 
+    /** san to position */
     public int $to;
 
-    /**
-     * Create a new san instance
-     *
-     * @param int|string $from
-     * @param int|string $to
-     * @param int|null $promotion
-     */
     public function __construct(
         int|string $from,
         int|string $to,

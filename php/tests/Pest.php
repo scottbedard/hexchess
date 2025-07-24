@@ -39,7 +39,24 @@
 |
 */
 
-// function something()
-// {
-//     // ..
-// }
+/** die and dump */
+function dd(...$vars)
+{
+    foreach ($vars as $var) {
+        fwrite(STDERR, print_r($var, true));
+    }
+    fwrite(STDERR, PHP_EOL);
+    die(1);
+}
+
+/** load test fixtures */
+function json(string $name)
+{
+    $path = realpath(__DIR__ . "/../../tests/{$name}.json");
+
+    $json = file_get_contents($path);
+
+    expect($json)->not->toBeFalse();
+
+    return json_decode($json, true);
+}

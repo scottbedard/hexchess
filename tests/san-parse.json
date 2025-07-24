@@ -148,6 +148,12 @@
     "expect": null
   },
   {
+    "description": "invalid to second character 2",
+    "san": "a1abc2",
+    "error": true,
+    "expect": null
+  },
+  {
     "description": "missing to file",
     "san": "a10",
     "error": true,
@@ -174,12 +180,6 @@
   {
     "description": "invalid to rank",
     "san": "a1f12",
-    "error": true,
-    "expect": null
-  },
-  {
-    "description": "invalid to second character",
-    "san": "a1abc2",
     "error": true,
     "expect": null
   },
