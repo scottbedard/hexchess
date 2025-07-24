@@ -84,7 +84,7 @@ jobs:
           composer install
       - name: Test
         working-directory: ./php
-        run: ./vendor/bin/pest --log-junit ./junit.xml --cache-directory=./.pest/cache --coverage
+        run: ./vendor/bin/pest --log-junit ./junit.xml --cache-directory=./.pest/cache --coverage-clover coverage.xml 
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v5
         with:
