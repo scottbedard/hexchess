@@ -25,7 +25,10 @@ class San
         $this->promotion = $promotion;
     }
 
-    public static function from(string $source)
+    /**
+     * Parse san from string
+     */
+    public static function from(string $source): self
     {
         // from
         $from = array_values(array_filter(Constants::POSITIONS, fn ($position) => str_starts_with($source, $position)))[0] ?? null;
@@ -70,31 +73,38 @@ class San
         return new self($from, $to, $promotion);
     }
 
+    /** check if position is a promotion position */
     private static function isPromotionPosition(string|int $position): bool
     {
-        return in_array(Constants::index($position), [
-            80, // a1
-            81, // b1
-            82, // c1
-            83, // d1
-            84, // e1
-            85, // f1
-            86, // g1
-            87, // h1
-            88, // i1
-            89, // k1
-            90, // l1,
-            25, // a6
-            16, // b7
-            9, // c8
-            4, // d9
-            1, // e10
-            0, // f11
-            3, // g10
-            8, // h9
-            15, // i8
-            24, // k7
-            35, // l6
+        return in_array(Constants::position($position), [
+            'a1',
+            'b1',
+            'c1',
+            'd1',
+            'e1',
+            'f1',
+            'g1',
+            'h1',
+            'i1',
+            'k1',
+            'l1',
+            'a6',
+            'b7',
+            'c8',
+            'd9',
+            'e10',
+            'f11',
+            'g10',
+            'h9',
+            'i8',
+            'k7',
+            'l6',
         ]);
+    }
+
+    /** convert san to string */
+    public function __toString(): string
+    {
+        return Constants::position($this->from) . Constants::position($this->to) . ($this->promotion ?? '');
     }
 }
