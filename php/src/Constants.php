@@ -1497,7 +1497,7 @@ class Constants
         'l1',
     ];
 
-    /** normalize a string|int position to int */
+    /** normalize position to index */
     public static function index(int|string $position): int
     {
         if (is_int($position)) {
@@ -1511,5 +1511,15 @@ class Constants
         }
 
         throw new \InvalidArgumentException("invalid position: {$position}");
+    }
+
+    /** normalize index to position */
+    public static function position(int|string $index): string
+    {
+        if (is_int($index)) {
+            return self::POSITIONS[$index];
+        }
+
+        return self::POSITIONS[self::index($index)];
     }
 }

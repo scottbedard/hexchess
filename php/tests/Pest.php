@@ -58,5 +58,5 @@ function json(string $name)
 
     expect($json)->not->toBeFalse();
 
-    return json_decode($json, true);
+    return json_decode($json);
 }
