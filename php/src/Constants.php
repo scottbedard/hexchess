@@ -1496,4 +1496,20 @@ class Constants
         'k1',
         'l1',
     ];
+
+    /** normalize a string|int position to int */
+    public static function index(int|string $position): int
+    {
+        if (is_int($position)) {
+            return $position;
+        }
+
+        foreach (self::POSITIONS as $i => $p) {
+            if ($position === $p) {
+                return $i;
+            }
+        }
+
+        throw new \InvalidArgumentException("invalid position: {$position}");
+    }
 }
