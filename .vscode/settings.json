@@ -5,8 +5,21 @@
   "[rust]": {
     "editor.tabSize": 4
   },
+  "[php]": {
+    "editor.tabSize": 4,
+    "editor.insertSpaces": true,
+    "editor.detectIndentation": false
+  },
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit",
   },
-  "eslint.useFlatConfig": true
+  "eslint.useFlatConfig": true,
+  "emeraldwalk.runonsave": {
+    "commands": [
+      {
+        "cmd": "pnpm lint:php",
+        "match": "\\.php$"
+      }
+    ]
+  },
 }

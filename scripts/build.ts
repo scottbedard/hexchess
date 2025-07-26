@@ -36,13 +36,13 @@ async function run() {
   const args = process.argv.slice(2)
   const startAt = Date.now()
  
-  if (args.includes('--js-only') || args.length === 0) {
+  if (args.includes('--js') || args.length === 0) {
     const js = ora('Building JavaScript...').start()
     await buildJs()
     js.succeed(`JavaScript ${dim(`(${Date.now() - startAt}ms)`)}`)
   }
 
-  if (args.includes('--rs-only') || args.length === 0) {
+  if (args.includes('--rs') || args.length === 0) {
     const rust = ora('Rust...').start()
     const rustStart = Date.now()
     await buildRust()

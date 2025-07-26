@@ -6,8 +6,8 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
-  node:
-    name: Node
+  javascript:
+    name: JavaScript
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -25,7 +25,7 @@ jobs:
           pnpm install --no-frozen-lockfile
 
       - name: Build package
-        run: pnpm build --js-only
+        run: pnpm build --js
 
       - name: Lint
         run: |
@@ -62,6 +62,32 @@ jobs:
           cd rust
           cargo +nightly tarpaulin --verbose --all-features --workspace --timeout 120 --out xml
 
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: true
+
+  php:
+    name: PHP
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup PHP with PCOV
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.4
+          coverage: pcov
+      - name: Install dependencies
+        run: |
+          cd php
+          composer install
+      - name: Lint
+        working-directory: ./php
+        run: ./vendor/bin/php-cs-fixer fix . --dry-run --diff --format=txt
+      - name: Test
+        working-directory: ./php
+        run: ./vendor/bin/pest --log-junit ./junit.xml --cache-directory=./.pest/cache --coverage-clover coverage.xml 
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v5
         with:
