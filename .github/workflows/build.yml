@@ -50,15 +50,28 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - uses: pnpm/action-setup@v4
+        name: Install pnpm
+        with:
+          version: 9
+          run_install: false
+
+      - name: Install dependencies
+        run: |
+          pnpm install --no-frozen-lockfile
+          cd js
+          pnpm install --no-frozen-lockfile
+
       - name: Build
         run: |
           cd rust
           cargo build --release
 
       - name: Test
-        run: |
-          cd rust
-          cargo +nightly tarpaulin --verbose --all-features --workspace --timeout 120 --out xml
+        run: node hexchess test:rust --coverage
+        # run: |
+        #   cd rust
+        #   cargo +nightly tarpaulin --verbose --all-features --workspace --timeout 120 --out xml
 
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v5
@@ -76,8 +89,20 @@ jobs:
         with:
           php-version: 8.4
           coverage: pcov
-      - name: Install dependencies
+
+      - name: Install PHP dependencies
         run: composer install
+
+      - uses: pnpm/action-setup@v4
+        name: Install pnpm
+        with:
+          version: 9
+          run_install: false
+      - name: Install NPM dependencies
+        run: |
+          pnpm install --no-frozen-lockfile
+          cd js
+          pnpm install --no-frozen-lockfile
       - name: Lint
         run: ./vendor/bin/php-cs-fixer fix . --dry-run --diff --format=txt
       - name: Test
