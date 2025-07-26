@@ -71,6 +71,130 @@ class Hexchess
         }
     }
 
+    /** format hexchess as fen */
+    public function __toString(): string
+    {
+        $board = $this->stringifyBoard();
+        $turn = $this->turn;
+        $ep = $this->ep === null ? '-' : Board::position($this->ep);
+        $halfmove = $this->halfmove;
+        $fullmove = $this->fullmove;
+        return "{$board} {$turn} {$ep} {$halfmove} {$fullmove}";
+    }
+
+    /** apply move, regardless of turn or legality */
+    public function applyMoveUnsafe(San $san)
+    {
+        $piece = $this->board[$san->from];
+
+        if ($piece === null) {
+            throw new \InvalidArgumentException('Cannot apply move from empty position: ' . $san->from);
+        }
+
+        // update halfmove
+        if ($this->board[$san->to] !== null || $piece === 'p' || $piece === 'P') {
+            $this->halfmove = 0;
+        } else {
+            $this->halfmove += 1;
+        }
+
+        // update fullmove and turn color
+        $color = Board::color($piece);
+
+        if ($color === 'b') {
+            $this->fullmove += 1;
+            $this->turn = 'w';
+        } else {
+            $this->turn = 'b';
+        }
+
+        // set from positions
+        $this->board[$san->from] = null;
+
+        // set to position
+        if ($san->promotion) {
+            $this->board[$san->to] = $color === 'b' ? $san->promotion : strtoupper($san->promotion);
+        } else {
+            $this->board[$san->to] = $piece;
+        }
+
+        // clear captured en passant
+        if ($san->to === $this->ep) {
+            $captured = $piece === 'p'
+                ? Board::step($san->to, 0)
+                : ($piece === 'P'
+                    ? Board::step($san->to, 6)
+                    : null);
+
+            if ($captured !== null) {
+                $this->board[$captured] = null;
+            }
+        }
+
+        // set en passsant
+        if ($piece === 'p') {
+            if ($san->from === 17 && $san->to === 38) {
+                $this->ep = 27;
+            } // c7 -> c5, c6
+            elseif ($san->from === 18 && $san->to === 39) {
+                $this->ep = 28;
+            } // d7 -> d5, d6
+            elseif ($san->from === 19 && $san->to === 40) {
+                $this->ep = 29;
+            } // e7 -> e5, e6
+            elseif ($san->from === 20 && $san->to === 41) {
+                $this->ep = 30;
+            } // f7 -> f5, f6
+            elseif ($san->from === 21 && $san->to === 42) {
+                $this->ep = 31;
+            } // g7 -> g5, g6
+            elseif ($san->from === 22 && $san->to === 43) {
+                $this->ep = 32;
+            } // h7 -> h5, h6
+            elseif ($san->from === 23 && $san->to === 44) {
+                $this->ep = 33;
+            } // i7 -> i5, i6
+            elseif ($san->from === 24 && $san->to === 45) {
+                $this->ep = 34;
+            } // k7 -> k5, k6
+            else {
+                $this->ep = null;
+            }
+        } elseif ($piece === 'P') {
+            if ($san->from === 71 && $san->to === 49) {
+                $this->ep = 60;
+            } // c2 -> c4, c3
+            elseif ($san->from === 61 && $san->to === 39) {
+                $this->ep = 50;
+            } // d3 -> d5, d4
+            elseif ($san->from === 51 && $san->to === 29) {
+                $this->ep = 40;
+            } // e4 -> e6, e5
+            elseif ($san->from === 41 && $san->to === 20) {
+                $this->ep = 30;
+            } // f5 -> f7, f6
+            elseif ($san->from === 53 && $san->to === 31) {
+                $this->ep = 42;
+            } // g4 -> g6, g5
+            elseif ($san->from === 65 && $san->to === 43) {
+                $this->ep = 54;
+            } // h3 -> h5, h4
+            elseif ($san->from === 77 && $san->to === 55) {
+                $this->ep = 66;
+            } // i2 -> i4, i3
+            elseif ($san->from === 89 && $san->to === 67) {
+                $this->ep = 78;
+            } // k1 -> k3, k2
+            else {
+                $this->ep = null;
+            }
+        } else {
+            $this->ep = null;
+        }
+
+        return $this;
+    }
+
     /** find king by color */
     public function findKing(string $color): int | null
     {
@@ -286,5 +410,43 @@ class Hexchess
         }
 
         return $board;
+    }
+
+    /** format the board section of a fen */
+    private function stringifyBoard(): string
+    {
+        $blank = 0;
+        $index = 0;
+        $result = '';
+
+        foreach ($this->board as $piece) {
+            if ($piece === null) {
+                $blank += 1;
+            } else {
+                if ($blank > 0) {
+                    $result .= $blank;
+                    $blank = 0;
+                }
+
+                $result .= $piece;
+            }
+
+            if (in_array($index, [0, 3, 8, 15, 24, 35, 46, 57, 68, 79])) {
+                if ($blank > 0) {
+                    $result .= $blank;
+                }
+
+                $result .= '/';
+                $blank = 0;
+            }
+
+            $index += 1;
+        }
+
+        if ($blank > 0) {
+            $result .= $blank;
+        }
+
+        return $result;
     }
 }
