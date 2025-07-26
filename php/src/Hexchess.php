@@ -67,6 +67,20 @@ class Hexchess
         }
     }
 
+    /** find king by color */
+    public function findKing(string $color): int | null
+    {
+        $king = $color === 'b' ? 'k' : 'K';
+
+        for ($i = 0; $i < 91; $i++) {
+            if ($this->board[$i] === $king) {
+                return $i;
+            }
+        }
+
+        return null;
+    }
+
     /**
      * Create a new Hexchess instance with the initial position.
      */
