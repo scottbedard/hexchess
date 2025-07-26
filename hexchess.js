@@ -36,6 +36,7 @@ program
       coverage: options?.coverage,
       filter: options?.filter,
       silent: options?.silent,
+      watch: options?.watch,
     })
   })
 

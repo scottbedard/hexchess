@@ -2,18 +2,18 @@ import { execAsync, resolve } from './utils.js'
 
 export async function testJs(options) {
   const args = [
-    'test',
+    'vitest',
   ]
 
-  // if (options?.coverage) {
-  //   args.push('--coverage')
-  // }
+  if (options?.coverage) {
+    args.push('--coverage')
+  }
 
   if (options?.filter) {
     args.push(`--filter="${options.filter}"`)
   }
 
-  await execAsync('pnpm', args, {
+  await execAsync('npx', args, {
     cwd: resolve('js'),
     silent: options?.silent,
   })
