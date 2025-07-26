@@ -4,6 +4,10 @@ namespace Bedard\Hexchess;
 
 use Bedard\Hexchess\Board;
 use Bedard\Hexchess\Constants;
+use Bedard\Hexchess\Pieces\King;
+use Bedard\Hexchess\Pieces\Knight;
+use Bedard\Hexchess\Pieces\Pawn;
+use Bedard\Hexchess\Pieces\StraightLinePiece;
 
 class Hexchess
 {
@@ -112,6 +116,51 @@ class Hexchess
             'i3',
             'k2',
         ]);
+    }
+
+    /** get legal moves from a position */
+    public function movesFrom(int $from): array
+    {
+        $result = $this->movesFromUnsafe($from);
+
+        return $result;
+    }
+
+    /** get moves from a position, regardless of turn or legality */
+    public function movesFromUnsafe(int $from): array
+    {
+        $i = is_string($from) ? Board::index($from) : $from;
+
+        $piece = $this->board[$i];
+
+        if ($piece === null) {
+            return [];
+        }
+
+        $color = Board::color($piece);
+
+        switch ($piece) {
+            case 'b':
+            case 'B':
+                return StraightLinePiece::moves($this, $i, $color, [1, 3, 5, 7, 9, 11]);
+            case 'k':
+            case 'K':
+                return King::moves($this, $i, $color);
+            case 'n':
+            case 'N':
+                return Knight::moves($this, $i, $color);
+            case 'p':
+            case 'P':
+                return Pawn::moves($this, $i, $color);
+            case 'q':
+            case 'Q':
+                return StraightLinePiece::moves($this, $i, $color, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]);
+            case 'r':
+            case 'R':
+                return StraightLinePiece::moves($this, $i, $color, [0, 2, 4, 6, 8, 10]);
+        }
+
+        return [];
     }
 
     /**
