@@ -51,16 +51,18 @@ function dd(...$vars)
     die(1);
 }
 
+/** get json fixture */
+function json(string $name)
+{
+    $path = realpath(__DIR__ . "/../../tests/{$name}.json");
+    $json = file_get_contents($path);
+    return json_decode($json, true);
+}
+
 /** test json fixtures */
 function testJson(string $name, Closure $fn)
 {
-    $path = realpath(__DIR__ . "/../../tests/{$name}.json");
-
-    $json = file_get_contents($path);
-
-    expect($json)->not->toBeFalse();
-
-    $data = json_decode($json, true);
+    $data = json($name);
 
     return describe($name, function () use ($data, $fn) {
         foreach ($data as $t) {
