@@ -18,24 +18,22 @@ jobs:
           version: 9
           run_install: false
 
-      - name: Install dependencies
-        run: |
-          pnpm install --no-frozen-lockfile
-          cd js
-          pnpm install --no-frozen-lockfile
+      # - name: Install dependencies
+      #   run: |
+      #     pnpm install --no-frozen-lockfile
+      #     cd js
+      #     pnpm install --no-frozen-lockfile
 
-      - name: Build package
-        run: pnpm build --js
+      # - name: Build package
+      #   run: pnpm build --js
 
-      - name: Lint
-        run: |
-          cd js
-          pnpm lint
+      # - name: Lint
+      #   run: |
+      #     cd js
+      #     pnpm lint
 
       - name: Vitest
-        run: |
-          cd js
-          pnpm test:coverage
+        run: node hexchess test:js --coverage
 
       - name: Upload coverage reports
         uses: codecov/codecov-action@v5
@@ -79,15 +77,11 @@ jobs:
           php-version: 8.4
           coverage: pcov
       - name: Install dependencies
-        run: |
-          cd php
-          composer install
+        run: composer install
       - name: Lint
-        working-directory: ./php
         run: ./vendor/bin/php-cs-fixer fix . --dry-run --diff --format=txt
       - name: Test
-        working-directory: ./php
-        run: ./vendor/bin/pest --log-junit ./junit.xml --cache-directory=./.pest/cache --coverage-clover coverage.xml 
+        run: node hexchess test:php --coverage
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v5
         with:

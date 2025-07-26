@@ -27,6 +27,10 @@ export async function testPhp(options) {
     args.push(`--filter="${options.filter}"`)
   }
 
+  if (options?.coverage) {
+    args.push('--coverage-clover=coverage.xml ')
+  }
+
   await execAsync('./vendor/bin/pest', args, {
     silent: options?.silent,
   })

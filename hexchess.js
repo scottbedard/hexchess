@@ -40,10 +40,12 @@ program
 program
   .command('test:php')
   .description('Run PHP tests')
+  .option('-c, --coverage', 'Generate coverage report')
   .option('-f, --filter <filter>', 'Filter tests by name')
   .option('-s, --silent', 'Run tests silently')
   .action(async (options) => {
     await testPhp({
+      coverage: options?.coverage,
       filter: options?.filter,
       silent: options?.silent,
     })
