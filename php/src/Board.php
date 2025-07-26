@@ -31,6 +31,14 @@ class Board
         throw new \InvalidArgumentException("invalid position: {$position}");
     }
 
+    /** test if position is unnocupied or hostile */
+    public static function isTarget(Hexchess $hexchess, int|string|null $position, string $color): bool
+    {
+        return is_int($position) && (
+            !isset($hexchess->board[$position]) || self::color($hexchess->board[$position]) !== $color
+        );
+    }
+
     /** normalize index to position */
     public static function position(int|string $index): string
     {

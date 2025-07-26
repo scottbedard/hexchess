@@ -195,6 +195,22 @@ class Hexchess
         return $this;
     }
 
+    /**
+     * Get legal moves for the current turn.
+     *
+     * @return array<San>
+     */
+    public function currentMoves(): array
+    {
+        $result = [];
+
+        foreach ($this->getColor($this->turn) as $i => $n) {
+            array_push($result, ...$this->movesFrom($n));
+        }
+
+        return $result;
+    }
+
     /** find king by color */
     public function findKing(string $color): int | null
     {
@@ -278,7 +294,11 @@ class Hexchess
         return $result;
     }
 
-    /** get moves from a position, regardless of turn or legality */
+    /**
+     * Get moves from a position, regardless of turn or legality.
+     *
+     * @return array<San>
+     */
     public function movesFromUnsafe(int $from): array
     {
         $i = is_string($from) ? Board::index($from) : $from;

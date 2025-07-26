@@ -15,8 +15,8 @@ class King
         for ($i = 0; $i < 12; $i++) {
             $to = Board::step($from, $i);
 
-            if ($hexchess->board[$to] === null || Board::color($hexchess->board[$to]) !== $color) {
-                $moves[] = new San($from, $to);
+            if (Board::isTarget($hexchess, $to, $color)) {
+                array_push($moves, new San($from, $to));
             }
         }
 
