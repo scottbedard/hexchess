@@ -1,13 +1,11 @@
-import { dim, green, read } from './utils'
+import { dim, green, read } from './utils.js'
 import toml from 'smol-toml'
 
 function run() {
   const cargo = toml.parse(read('rust/Cargo.toml'))
   const npm = JSON.parse(read('js/package.json'))
   const composer = JSON.parse(read('php/composer.json'))
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const cargoVersion = (cargo.package as any).version
+  const cargoVersion = cargo.package.version
 
   console.log('Checking versions...')
   console.log()

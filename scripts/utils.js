@@ -1,4 +1,4 @@
-import { exec } from 'child_process'
+import { exec, spawn } from 'child_process'
 import { fileURLToPath } from 'url'
 import fs from 'node:fs'
 import path from 'node:path'
@@ -14,14 +14,27 @@ export function dim(text) {
 }
 
 /** execute a command asynchronously */
-export function execAsync(cmd: string, options: Parameters<typeof exec>[1]) {
+export function execAsync(cmd, args, options) {
   return new Promise((resolve, reject) => {
-    exec(cmd, options, (error, stdout, stderr) => {
-      if (error) {
-        reject(error);
-        return;
+    const child = spawn(cmd, args, options);
+
+    if (!options?.silent) {
+      child.stdout?.on('data', (data) => process.stdout.write(data));
+      child.stderr?.on('data', (data) => process.stderr.write(data));
+    }
+
+    child.on('close', (code) => {
+      if (code === 0) {
+        resolve(code);
+      } else {
+        const err = new Error(`Process exited with code ${code}`);
+        err.code = code;
+        reject(err);
       }
-      resolve({ stdout, stderr });
+    });
+
+    child.on('error', (err) => {
+      reject(err);
     });
   });
 }

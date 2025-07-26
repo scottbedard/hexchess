@@ -15,6 +15,18 @@ A cross-language library for [Gliński's hexagonal chess](https://en.wikipedia.o
   </a>
 </p>
 
+## Development
+
+Clone the repository, and setup CLI
+
+```
+git clone git@github.com:scottbedard/hexchess.git
+
+cd hexchess
+
+pnpm install
+```
+
 ## Languages
 
 The game library is available in multiple languages. These libraries run the same suite of tests to ensure compatibility, and for that reason are versioned together.
@@ -23,43 +35,6 @@ The game library is available in multiple languages. These libraries run the sam
 - [Rust](https://crates.io/crates/hexchess)
 
 If you are building a game engine, it's strongly recommended to use the Rust library for better performance.
-
-## Basic usage
-
-Game data represents a deserialized version of [Forsyth–Edwards Notation](https://en.wikipedia.org/wiki/Forsyth%E2%80%93Edwards_Notation). Since castling is not a part of hexchess, that section is omitted. The board is stored as an array of values, sorted by FEN index.
-
-Across libraries, Hexchess instances generally assume the following shape.
-
-```ts
-{
-  board: [
-    'b',  'q',  'b',  'k',  'n',  null, 'b',  null, 'n',  'r',
-    null, null, null, null, null, 'r',  'p',  'p',  'p',  'p',
-    'p',  'p',  'p',  'p',  'p',  null, null, null, null, null,
-    null, null, null, null, null, null, null, null, null, null,
-    null, 'P',  null, null, null, null, null, null, null, null,
-    null, 'P',  null, 'P',  null, null, null, null, null, null,
-    null, 'P',  null, 'B',  null, 'P',  null, null, null, null,
-    null, 'P',  null, null, 'B',  null, null, 'P',  null, null,
-    null, 'P',  'R',  'N',  'Q',  'B',  'K',  'N',  'R',  'P',
-    null
-  ],
-  turn: 'w',
-  ep: null,
-  halfmove: 0,
-  fullmove: 1
-}
-```
-
-The following constants are also available to represent the "empty" and "initial" states. See library docs for more information.
-
-```
-1/3/5/7/9/11/11/11/11/11/11 w - 0 1
-```
-
-```
-b/qbk/n1b1n/r5r/ppppppppp/11/5P5/4P1P4/3P1B1P3/2P2B2P2/1PRNQBKNRP1 w - 0 1
-```
 
 ## License
 

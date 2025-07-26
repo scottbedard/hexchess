@@ -13,6 +13,9 @@
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit",
   },
+  "files.associations": {
+    "hexchess": "javascript"
+  },
   "eslint.useFlatConfig": true,
   "emeraldwalk.runonsave": {
     "commands": [

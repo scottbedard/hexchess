@@ -1,4 +1,4 @@
-import { execAsync, read, write, green, dim } from './utils'
+import { execAsync, read, write, green, dim } from './utils.js'
 
 async function run() {
   const startAt = Date.now()

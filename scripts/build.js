@@ -1,4 +1,4 @@
-import { copy, dim, execAsync, green, read, resolve, write } from './utils'
+import { copy, dim, execAsync, green, read, resolve, write } from './utils.js'
 import ora from 'ora'
 
 async function buildJs() {
