@@ -20,11 +20,18 @@ jobs:
           version: 9
           run_install: false
 
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.4
+
       - name: Install dependencies
         run: |
           pnpm install
           cd js
           pnpm install
+          cd ../php
+          composer install
 
       - name: Test
         run: pnpm test
@@ -50,12 +57,19 @@ jobs:
           run_install: false
 
       - uses: dtolnay/rust-toolchain@stable
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.4
   
       - name: Install dependencies
         run: |
           pnpm install
           cd js
           pnpm install
+          cd ../php
+          composer install
 
       - name: Check versions
         run: pnpm check-versions release=${{ github.ref_name }}
@@ -75,3 +89,11 @@ jobs:
           cd rust
           cargo login ${{ secrets.CARGO_TOKEN }}
           cargo publish
+
+      - name: Publish to Packagist
+        run: |
+          cd php
+          curl -X POST -u "${{ secrets.PACKAGIST_USERNAME }}:${{ secrets.PACKAGIST_TOKEN }}" \
+            https://packagist.org/api/update-package \
+            -H "Content-Type: application/json" \
+            -d '{"repository":{"url":"https://github.com/scottbedard/hexchess"}}'
