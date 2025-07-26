@@ -5,6 +5,10 @@ export async function testJs(options) {
     'test',
   ]
 
+  if (options?.coverage) {
+    args.push('--coverage')
+  }
+
   if (options?.filter) {
     args.push(`--filter="${options.filter}"`)
   }

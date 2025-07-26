@@ -28,10 +28,12 @@ program
 program
   .command('test:js')
   .description('Run JavaScript tests')
+  .option('-c, --coverage', 'Generate coverage report')
   .option('-f, --filter <filter>', 'Filter tests by name')
   .option('-s, --silent', 'Run tests silently')
   .action(async (options) => {
     await testJs({
+      coverage: options?.coverage,
       filter: options?.filter,
       silent: options?.silent,
     })
