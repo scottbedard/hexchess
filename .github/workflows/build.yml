@@ -18,11 +18,11 @@ jobs:
           version: 9
           run_install: false
 
-      # - name: Install dependencies
-      #   run: |
-      #     pnpm install --no-frozen-lockfile
-      #     cd js
-      #     pnpm install --no-frozen-lockfile
+      - name: Install dependencies
+        run: |
+          pnpm install --no-frozen-lockfile
+          cd js
+          pnpm install --no-frozen-lockfile
 
       # - name: Build package
       #   run: pnpm build --js
