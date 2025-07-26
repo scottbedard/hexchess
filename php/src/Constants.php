@@ -1496,30 +1496,4 @@ class Constants
         'k1',
         'l1',
     ];
-
-    /** normalize position to index */
-    public static function index(int|string $position): int
-    {
-        if (is_int($position)) {
-            return $position;
-        }
-
-        foreach (self::POSITIONS as $i => $p) {
-            if ($position === $p) {
-                return $i;
-            }
-        }
-
-        throw new \InvalidArgumentException("invalid position: {$position}");
-    }
-
-    /** normalize index to position */
-    public static function position(int|string $index): string
-    {
-        if (is_int($index)) {
-            return self::POSITIONS[$index];
-        }
-
-        return self::POSITIONS[self::index($index)];
-    }
 }

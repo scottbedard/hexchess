@@ -3,6 +3,7 @@
 namespace Bedard\Hexchess;
 
 use Bedard\Hexchess\Constants;
+use Bedard\Hexchess\Util;
 
 class San
 {
@@ -20,8 +21,8 @@ class San
         string|int $to,
         ?string $promotion = null
     ) {
-        $this->from = Constants::index($from);
-        $this->to = Constants::index($to);
+        $this->from = Util::index($from);
+        $this->to = Util::index($to);
         $this->promotion = $promotion;
     }
 
@@ -76,7 +77,7 @@ class San
     /** check if position is a promotion position */
     private static function isPromotionPosition(string|int $position): bool
     {
-        return in_array(Constants::position($position), [
+        return in_array(Util::position($position), [
             'a1',
             'b1',
             'c1',
@@ -105,6 +106,6 @@ class San
     /** convert san to string */
     public function __toString(): string
     {
-        return Constants::position($this->from) . Constants::position($this->to) . ($this->promotion ?? '');
+        return Util::position($this->from) . Util::position($this->to) . ($this->promotion ?? '');
     }
 }
