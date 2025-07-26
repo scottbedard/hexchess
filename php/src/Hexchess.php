@@ -2,8 +2,8 @@
 
 namespace Bedard\Hexchess;
 
+use Bedard\Hexchess\Board;
 use Bedard\Hexchess\Constants;
-use Bedard\Hexchess\Util;
 
 class Hexchess
 {
@@ -49,7 +49,7 @@ class Hexchess
         if ($ep === '-') {
             $this->ep = null;
         } elseif ($this->isEnPassantPosition($ep)) {
-            $this->ep = Util::index($ep);
+            $this->ep = Board::index($ep);
         } else {
             throw new \InvalidArgumentException('Invalid en passant position: ' . $ep);
         }

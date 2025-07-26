@@ -4,7 +4,7 @@ namespace Bedard\Hexchess;
 
 use Bedard\Hexchess\Constants;
 
-class Util
+class Board
 {
     /** normalize position to index */
     public static function index(int|string $position): int
@@ -30,5 +30,11 @@ class Util
         }
 
         return Constants::POSITIONS[self::index($index)];
+    }
+
+    /** get the next position in a given direction */
+    public static function step(int $from, int $direction): int | null
+    {
+        return Constants::GRAPH[$from][$direction];
     }
 }

@@ -2,8 +2,8 @@
 
 namespace Bedard\Hexchess;
 
+use Bedard\Hexchess\Board;
 use Bedard\Hexchess\Constants;
-use Bedard\Hexchess\Util;
 
 class San
 {
@@ -21,8 +21,8 @@ class San
         string|int $to,
         ?string $promotion = null
     ) {
-        $this->from = Util::index($from);
-        $this->to = Util::index($to);
+        $this->from = Board::index($from);
+        $this->to = Board::index($to);
         $this->promotion = $promotion;
     }
 
@@ -77,7 +77,7 @@ class San
     /** check if position is a promotion position */
     private static function isPromotionPosition(string|int $position): bool
     {
-        return in_array(Util::position($position), [
+        return in_array(Board::position($position), [
             'a1',
             'b1',
             'c1',
@@ -106,6 +106,6 @@ class San
     /** convert san to string */
     public function __toString(): string
     {
-        return Util::position($this->from) . Util::position($this->to) . ($this->promotion ?? '');
+        return Board::position($this->from) . Board::position($this->to) . ($this->promotion ?? '');
     }
 }
