@@ -97,6 +97,22 @@ class Hexchess
         }
     }
 
+    /** get positions occupied by a color */
+    public function getColor(string $color): array
+    {
+        $result = [];
+
+        for ($i = 0; $i < 91; $i++) {
+            $piece = $this->board[$i];
+
+            if ($piece && Board::color($piece) === $color) {
+                $result[] = $i;
+            }
+        }
+
+        return $result;
+    }
+
     /**
      * Create a new Hexchess instance with the initial position.
      */
