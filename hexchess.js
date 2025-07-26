@@ -55,8 +55,9 @@ program
   })
 
 program
-  .command('test:rust')
+  .command('test:rs')
   .description('Run Rust tests')
+  .option('-c, --coverage', 'Generate coverage report')
   .option('-s, --silent', 'Run tests silently')
   .action(async (options) => {
     await testRust({
