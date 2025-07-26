@@ -1,16 +1,9 @@
 <?php
 
-use Bedard\Hexchess\Constants;
 use Bedard\Hexchess\San;
 
-$data = array_map(fn ($t) => [
-    $t->description,
-    $t->san,
-    $t->expect,
-], json('san-to-string'));
+testJson('san-to-string', function ($t) {
+    $san = new San($t['san']['from'], $t['san']['to'], $t['san']['promotion']);
 
-test('san parse', function ($desc, $s, $expected) {
-    $san = new San($s->from, $s->to, $s->promotion);
-
-    expect((string) $san)->toBe($expected);
-})->with($data);
+    expect((string) $san)->toBe($t['expect']);
+});

@@ -45,12 +45,14 @@ function dd(...$vars)
     foreach ($vars as $var) {
         fwrite(STDERR, print_r($var, true));
     }
+
     fwrite(STDERR, PHP_EOL);
+
     die(1);
 }
 
-/** load test fixtures */
-function json(string $name)
+/** test json fixtures */
+function testJson(string $name, Closure $fn)
 {
     $path = realpath(__DIR__ . "/../../tests/{$name}.json");
 
@@ -58,5 +60,11 @@ function json(string $name)
 
     expect($json)->not->toBeFalse();
 
-    return json_decode($json);
+    $data = json_decode($json, true);
+
+    return describe($name, function () use ($data, $fn) {
+        foreach ($data as $t) {
+            test($t['description'], fn () => $fn($t));
+        }
+    });
 }

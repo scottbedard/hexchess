@@ -2,22 +2,15 @@
 
 use Bedard\Hexchess\Hexchess;
 
-$data = array_map(fn ($t) => [
-    $t->description,
-    $t->fen,
-    $t->error,
-    $t->result,
-], json('hexchess-parse'));
-
-test('san parse', function ($desc, $fen, $error, $expected) {
-    if ($error) {
-        expect(fn () => Hexchess::parse($fen))->toThrow(\InvalidArgumentException::class);
+testJson('hexchess-parse', function ($t) {
+    if ($t['error']) {
+        expect(fn () => Hexchess::parse($t['fen']))->toThrow(\InvalidArgumentException::class);
     } else {
-        $hexchess = Hexchess::parse($fen);
-        expect($hexchess->board)->toBe($expected->board);
-        expect($hexchess->turn)->toBe($expected->turn);
-        expect($hexchess->ep)->toBe($expected->ep);
-        expect($hexchess->halfmove)->toBe($expected->halfmove);
-        expect($hexchess->fullmove)->toBe($expected->fullmove);
+        $hexchess = Hexchess::parse($t['fen']);
+        expect($hexchess->board)->toBe($t['result']['board']);
+        expect($hexchess->turn)->toBe($t['result']['turn']);
+        expect($hexchess->ep)->toBe($t['result']['ep']);
+        expect($hexchess->halfmove)->toBe($t['result']['halfmove']);
+        expect($hexchess->fullmove)->toBe($t['result']['fullmove']);
     }
-})->with($data);
+});
