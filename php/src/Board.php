@@ -3,9 +3,18 @@
 namespace Bedard\Hexchess;
 
 use Bedard\Hexchess\Constants;
+use Bedard\Hexchess\Enums\Color;
 
 class Board
 {
+    /** get the color of a piece */
+    public static function color(string $piece): string
+    {
+        return $piece === 'k' || $piece === 'q' || $piece === 'r' || $piece === 'b' || $piece === 'n' || $piece === 'p'
+            ? 'b'
+            : 'w';
+    }
+
     /** normalize position to index */
     public static function index(int|string $position): int
     {
@@ -36,5 +45,37 @@ class Board
     public static function step(int $from, int $direction): int | null
     {
         return Constants::GRAPH[$from][$direction];
+    }
+
+    /** walk along the hexboard graph */
+    public static function walk(Hexchess $hexchess, int $from, int $direction, string $color): array
+    {
+        $path = [];
+        $position = $from;
+
+        while (true) {
+            $next = self::step($position, $direction);
+
+            if ($next === null) {
+                return $path; // <- end of board
+            }
+
+            $position = $next;
+
+            $piece = $hexchess->board[$position];
+
+            if ($piece === null) {
+                $path[] = $position; // <- unoccupied position
+                continue;
+            }
+
+            if (self::color($piece) === $color) {
+                return $path; // <- shop short of friendly piece
+            }
+
+            $path[] = $position; // <- and captury enemy piece
+
+            return $path;
+        }
     }
 }
