@@ -40,8 +40,9 @@ async function run(args: string[]) {
 
   if (args.includes('--php') || args.length === 0) {
     const php = ora('PHP...').start()
+    const phpStart = Date.now()
     await testPhp()
-    php.succeed(`PHP ${dim(`(${Date.now() - startAt}ms)`)}`)
+    php.succeed(`PHP ${dim(`(${Date.now() - phpStart}ms)`)}`)
   }
 
   console.log()
