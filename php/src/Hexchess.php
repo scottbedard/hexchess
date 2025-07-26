@@ -195,6 +195,12 @@ class Hexchess
         return $this;
     }
 
+    /** clone the hexchess */
+    public function clone(): self
+    {
+        return new self((string) $this);
+    }
+
     /**
      * Get legal moves for the current turn.
      *
@@ -286,10 +292,51 @@ class Hexchess
         ]);
     }
 
+    /** test if position is threatened */
+    private function isThreatened(int $position): bool
+    {
+        $piece = $this->board[$position];
+
+        if (!$piece) {
+            return false;
+        }
+
+        $color = Board::color($piece);
+
+        for ($i = 0; $i < 91; $i++) {
+            $piece = $this->board[$i];
+
+            if ($piece && $color !== Board::color($piece)) {
+                foreach ($this->movesFromUnsafe($i) as $san) {
+                    if ($san->to === $position) {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
     /** get legal moves from a position */
     public function movesFrom(int $from): array
     {
-        $result = $this->movesFromUnsafe($from);
+        $piece = $this->board[$from];
+
+        if (!$piece) {
+            return [];
+        }
+
+        $color = Board::color($piece);
+
+        $result = array_filter($this->movesFromUnsafe($from), function (San $san) use ($color) {
+            $clone = $this->clone()->applyMoveUnsafe($san);
+            $king = $clone->findKing($color);
+
+            return $king
+                ? !$clone->isThreatened($king)
+                : true;
+        });
 
         return $result;
     }
