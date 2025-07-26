@@ -74,21 +74,21 @@ jobs:
       - name: Check versions
         run: pnpm check-versions release=${{ github.ref_name }}
   
-      - name: Build package
-        run: pnpm build
+      # - name: Build package
+      #   run: pnpm build
 
-      - name: Publish to NPM
-        run: |
-          cd js/dist
-          npm publish --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      # - name: Publish to NPM
+      #   run: |
+      #     cd js/dist
+      #     npm publish --access public
+      #   env:
+      #     NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      - name: Publish to Crates.io
-        run: |
-          cd rust
-          cargo login ${{ secrets.CARGO_TOKEN }}
-          cargo publish
+      # - name: Publish to Crates.io
+      #   run: |
+      #     cd rust
+      #     cargo login ${{ secrets.CARGO_TOKEN }}
+      #     cargo publish
 
       - name: Publish to Packagist
         run: |
