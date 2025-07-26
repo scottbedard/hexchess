@@ -82,6 +82,49 @@ class Hexchess
         return "{$board} {$turn} {$ep} {$halfmove} {$fullmove}";
     }
 
+    /** apply a whitespace separated list of moves */
+    public function apply(string $sequence): self
+    {
+        $clone = $this->clone();
+        $parts = array_filter(array_map('trim', explode(' ', $sequence)), fn ($str) => $str !== '');
+
+        foreach ($parts as $i => $str) {
+            try {
+                $san = San::from($str);
+
+                try {
+                    $clone->applyMove($san);
+                } catch (\Exception) {
+                    throw new \InvalidArgumentException("Illegal move at index {$i}: {$str}");
+                }
+            } catch (\Exception) {
+                throw new \InvalidArgumentException("Invalid san at index {$i}: {$str}");
+            }
+        }
+
+        $this->board = $clone->board;
+        $this->turn = $clone->turn;
+        $this->ep = $clone->ep;
+        $this->fullmove = $clone->fullmove;
+        $this->halfmove = $clone->halfmove;
+
+        return $this;
+    }
+
+    /** apply a move */
+    public function applyMove(string|San $san): self
+    {
+        $san = is_string($san) ? San::from($san) : $san;
+
+        if (!$this->isLegal($san)) {
+            throw new \InvalidArgumentException("Illegal move: {$san}");
+        }
+
+        $this->applyMoveUnsafe($san);
+
+        return $this;
+    }
+
     /** apply move, regardless of turn or legality */
     public function applyMoveUnsafe(San $san)
     {
@@ -232,10 +275,10 @@ class Hexchess
     }
 
     /** get a piece from a position */
-    public function get(string $position): string | null
+    public function get(string|int $position): string | null
     {
         try {
-            $i = Board::index($position);
+            $i = is_string($position) ? Board::index($position) : $position;
 
             return $this->board[$i] ?? null;
         } catch (\InvalidArgumentException $e) {
@@ -306,6 +349,24 @@ class Hexchess
         ]);
     }
 
+    /** test if a move is legal */
+    public function isLegal(string|San $san): bool
+    {
+        $san = is_string($san) ? San::from($san) : $san;
+
+        $piece = $this->board[$san->from];
+
+        if (!$piece) {
+            return false;
+        }
+
+        if (Board::color($piece) !== $this->turn) {
+            return false;
+        }
+
+        return in_array($san, $this->movesFrom($san->from));
+    }
+
     /** test if position is stalemate */
     public function isStalemate(): bool
     {
@@ -313,8 +374,10 @@ class Hexchess
     }
 
     /** test if position is threatened */
-    private function isThreatened(int $position): bool
+    public function isThreatened(string|int $position): bool
     {
+        $position = is_string($position) ? Board::index($position) : $position;
+
         $piece = $this->board[$position];
 
         if (!$piece) {
@@ -339,8 +402,9 @@ class Hexchess
     }
 
     /** get legal moves from a position */
-    public function movesFrom(int $from): array
+    public function movesFrom(string|int $from): array
     {
+        $from = is_string($from) ? Board::index($from) : $from;
         $piece = $this->board[$from];
 
         if (!$piece) {
@@ -366,11 +430,10 @@ class Hexchess
      *
      * @return array<San>
      */
-    public function movesFromUnsafe(int $from): array
+    public function movesFromUnsafe(string|int $from): array
     {
-        $i = is_string($from) ? Board::index($from) : $from;
-
-        $piece = $this->board[$i];
+        $from = is_string($from) ? Board::index($from) : $from;
+        $piece = $this->board[$from];
 
         if ($piece === null) {
             return [];
@@ -381,22 +444,22 @@ class Hexchess
         switch ($piece) {
             case 'b':
             case 'B':
-                return StraightLinePiece::moves($this, $i, $color, [1, 3, 5, 7, 9, 11]);
+                return StraightLinePiece::moves($this, $from, $color, [1, 3, 5, 7, 9, 11]);
             case 'k':
             case 'K':
-                return King::moves($this, $i, $color);
+                return King::moves($this, $from, $color);
             case 'n':
             case 'N':
-                return Knight::moves($this, $i, $color);
+                return Knight::moves($this, $from, $color);
             case 'p':
             case 'P':
-                return Pawn::moves($this, $i, $color);
+                return Pawn::moves($this, $from, $color);
             case 'q':
             case 'Q':
-                return StraightLinePiece::moves($this, $i, $color, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]);
+                return StraightLinePiece::moves($this, $from, $color, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]);
             case 'r':
             case 'R':
-                return StraightLinePiece::moves($this, $i, $color, [0, 2, 4, 6, 8, 10]);
+                return StraightLinePiece::moves($this, $from, $color, [0, 2, 4, 6, 8, 10]);
         }
 
         return [];
