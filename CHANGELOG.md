@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.2.0
+
+- Add PHP library
+
 ## 2.1.2
 
 - Refactor project structure and versioning

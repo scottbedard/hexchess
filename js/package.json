@@ -38,5 +38,5 @@
   "type": "module",
   "types": "index.d.ts",
   "unpkg": "index.bundle.js",
-  "version": "2.1.2"
+  "version": "2.2.0"
 }
