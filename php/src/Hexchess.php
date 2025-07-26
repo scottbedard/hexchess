@@ -267,6 +267,20 @@ class Hexchess
         return new self(Constants::INITIAL_POSITION);
     }
 
+    /** test if position is check */
+    public function isCheck(): bool
+    {
+        $king = $this->findKing($this->turn);
+
+        return $king !== null && $this->isThreatened($king);
+    }
+
+    /** test if position is checkmate */
+    public function isCheckmate(): bool
+    {
+        return $this->isCheck() && count($this->currentMoves()) === 0;
+    }
+
     /** test if position is legal en passant */
     private function isEnPassantPosition(string $position): bool
     {
@@ -290,6 +304,12 @@ class Hexchess
             'i3',
             'k2',
         ]);
+    }
+
+    /** test if position is stalemate */
+    public function isStalemate(): bool
+    {
+        return !$this->isCheck() && count($this->currentMoves()) === 0;
     }
 
     /** test if position is threatened */
