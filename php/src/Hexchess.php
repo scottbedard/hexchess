@@ -85,6 +85,18 @@ class Hexchess
         return null;
     }
 
+    /** get a piece from a position */
+    public function get(string $position): string | null
+    {
+        try {
+            $i = Board::index($position);
+
+            return $this->board[$i] ?? null;
+        } catch (\InvalidArgumentException $e) {
+            return null;
+        }
+    }
+
     /**
      * Create a new Hexchess instance with the initial position.
      */
