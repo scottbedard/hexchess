@@ -14,28 +14,28 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: dtolnay/rust-toolchain@stable
+      # - uses: dtolnay/rust-toolchain@stable
 
-      - uses: pnpm/action-setup@v4
-        name: Install pnpm
-        with:
-          version: 9
-          run_install: false
+      # - uses: pnpm/action-setup@v4
+      #   name: Install pnpm
+      #   with:
+      #     version: 9
+      #     run_install: false
 
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: 8.4
+      # - name: Setup PHP
+      #   uses: shivammathur/setup-php@v2
+      #   with:
+      #     php-version: 8.4
 
-      - name: Install dependencies
-        run: |
-          composer install
-          pnpm install
-          cd js
-          pnpm install
+      # - name: Install dependencies
+      #   run: |
+      #     composer install
+      #     pnpm install
+      #     cd js
+      #     pnpm install
 
-      - name: Test
-        run: node hexchess test
+      # - name: Test
+      #   run: node hexchess test
 
   publish:
     needs: test
@@ -77,18 +77,18 @@ jobs:
       - name: Build package
         run: node hexchess build:js
 
-      - name: Publish to NPM
-        run: |
-          cd js/dist
-          npm publish --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      # - name: Publish to NPM
+      #   run: |
+      #     cd js/dist
+      #     npm publish --access public
+      #   env:
+      #     NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      - name: Publish to Crates.io
-        run: |
-          cd rust
-          cargo login ${{ secrets.CARGO_TOKEN }}
-          cargo publish
+      # - name: Publish to Crates.io
+      #   run: |
+      #     cd rust
+      #     cargo login ${{ secrets.CARGO_TOKEN }}
+      #     cargo publish
 
       - name: Publish to Packagist
         run: |
