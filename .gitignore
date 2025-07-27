@@ -1,11 +1,11 @@
 .DS_Store
+.php-cs-fixer.cache
 **/*.rs.bk
 bin
 coverage
 dist
 node_modules
 php/.pest
-php/.php-cs-fixer.cache
 php/junit.xml
 target
 vendor

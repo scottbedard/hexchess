@@ -1,13 +1,23 @@
-import { dim, green } from './scripts/utils.js'
+import { dim, execAsync, green, resolve } from './scripts/utils.js'
 import { program } from 'commander'
 import { testJs, testPhp, testRust } from './scripts/test.js'
 import { versions } from './scripts/versions.js'
 import ora from 'ora'
 
+//
+// lint
+//
+
 program
-  .command('versions')
-  .description('Check the versions of the dependencies')
-  .action(versions)
+  .command('lint:php')
+  .description('Run linting')
+  .action(async () => {
+    await execAsync('./vendor/bin/php-cs-fixer', ['fix', '.', '--dry-run', '--diff', '--format=txt'])
+  })
+
+//
+// test
+//
 
 program
   .command('test')
@@ -70,6 +80,15 @@ program
       silent: options?.silent,
     })
   })
+
+//
+// versions
+//
+
+program
+  .command('versions')
+  .description('Check the versions of the dependencies')
+  .action(versions)
 
 program.parse()
   

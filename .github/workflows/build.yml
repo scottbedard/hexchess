@@ -110,7 +110,7 @@ jobs:
           cd js
           pnpm install --no-frozen-lockfile
       - name: Lint
-        run: ./vendor/bin/php-cs-fixer fix . --dry-run --diff --format=txt
+        run: node hexchess lint:php
       - name: Test
         run: node hexchess test:php --coverage
       - name: Upload coverage reports to Codecov
