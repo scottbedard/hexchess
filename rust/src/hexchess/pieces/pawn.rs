@@ -6,7 +6,8 @@ use crate::constants::{
     PromotionPiece,
 };
 
-use crate::hexchess::utils::get_color;
+use crate::color;
+use smallvec::SmallVec;
 
 /** pre-computed position pawn graph */
 struct PawnGraph {
@@ -1238,7 +1239,7 @@ pub fn pawn_moves_unsafe(
     hexchess: &Hexchess,
     from: u8,
     color: &Color,
-) -> Vec<San> {
+) -> SmallVec<[San; 12]> {
     let pawn_graph = match color {
         Color::White => &WHITE_PAWN_GRAPH,
         Color::Black => &BLACK_PAWN_GRAPH,
@@ -1246,10 +1247,10 @@ pub fn pawn_moves_unsafe(
 
     let pawn = match &pawn_graph[from as usize] {
         Some(graph) => graph,
-        None => return vec![],
+        None => return SmallVec::new(),
     };
 
-    let mut sans = vec![];
+    let mut sans: SmallVec<[San; 12]> = SmallVec::new();
 
     // advance forward one position
     if hexchess.board[pawn.forward_1 as usize] == None {
@@ -1271,7 +1272,7 @@ pub fn pawn_moves_unsafe(
             None => if hexchess.turn == *color && hexchess.ep == Some(to) {
                 sans.push(San { from, promotion: None, to });
             },
-            Some(occupying_piece) => if get_color(&occupying_piece) != *color {
+            Some(occupying_piece) => if color!(&occupying_piece) != *color {
                 push_sans(&mut sans, from, to, pawn.promote_portside);
             }
         }
@@ -1284,7 +1285,7 @@ pub fn pawn_moves_unsafe(
             None => if hexchess.turn == *color && hexchess.ep == Some(to) {
                 sans.push(San { from, promotion: None, to });
             },
-            Some(occupying_piece) => if get_color(&occupying_piece) != *color {
+            Some(occupying_piece) => if color!(&occupying_piece) != *color {
                 push_sans(&mut sans, from, to, pawn.promote_starboard);
             }
         }
@@ -1294,7 +1295,7 @@ pub fn pawn_moves_unsafe(
 }
 
 fn push_sans(
-    sans: &mut Vec<San>,
+    sans: &mut SmallVec<[San; 12]>,
     from: u8,
     to: u8,
     promotion: bool,
@@ -1308,15 +1309,3 @@ fn push_sans(
         sans.push(San { from, promotion: None, to });
     }
 }
-
-// #[cfg(test)]
-// mod tests {
-//     use super::*;
-//
-//     #[test]
-//     fn test_pawn_moves_unsafe() {
-//         let hexchess = Hexchess::init();
-//
-//         // ...
-//     }
-// }

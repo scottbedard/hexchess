@@ -1,7 +1,8 @@
 use crate::constants::{Color, KNIGHT_GRAPH};
 use crate::hexchess::hexchess::Hexchess;
 use crate::hexchess::san::San;
-use crate::hexchess::utils::get_color;
+use crate::color;
+use smallvec::SmallVec;
 
 const REACHABLE_POSITIONS: [u8; 91] = [
     4,  5,  6,  5,  6,  7,  8,  7,  6,  6,  8, 10,
@@ -18,11 +19,11 @@ pub fn knight_moves_unsafe(
     hexchess: &Hexchess,
     from: u8,
     color: &Color,
-) -> Vec<San> {
-    let mut moves: Vec<San> = KNIGHT_GRAPH[from as usize]
+) -> SmallVec<[San; 12]> {
+    let mut moves: SmallVec<[San; 12]> = KNIGHT_GRAPH[from as usize]
         .iter()
         .filter(|&to| match hexchess.board[*to as usize] {
-            Some(piece) => get_color(&piece) != *color,
+            Some(piece) => color!(&piece) != *color,
             None => true,
         })
         .map(|&to| San { from, promotion: None, to })

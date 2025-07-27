@@ -6,25 +6,9 @@ use crate::constants::{
     Piece,
 };
 
+use crate::color;
 use crate::hexchess::hexchess::Hexchess;
-
-/// get the color of a piece
-pub fn get_color(piece: &Piece) -> Color {
-    match piece {
-        Piece::WhitePawn => Color::White,
-        Piece::WhiteKnight => Color::White,
-        Piece::WhiteBishop => Color::White,
-        Piece::WhiteRook => Color::White,
-        Piece::WhiteQueen => Color::White,
-        Piece::WhiteKing => Color::White,
-        Piece::BlackPawn => Color::Black,
-        Piece::BlackKnight => Color::Black,
-        Piece::BlackBishop => Color::Black,
-        Piece::BlackRook => Color::Black,
-        Piece::BlackQueen => Color::Black,
-        Piece::BlackKing => Color::Black,
-    }
-}
+use smallvec::SmallVec;
 
 /// test if position is black en passant target
 pub fn is_legal_black_en_passant(position: &u8) -> bool {
@@ -59,6 +43,7 @@ pub fn is_legal_white_en_passant_position(position: &u8) -> bool {
 }
 
 /// test if position is en passant target
+#[inline(always)]
 pub fn is_legal_en_passant(position: &u8) -> bool {
     is_legal_black_en_passant(position) || is_legal_white_en_passant_position(position)
 }
@@ -306,8 +291,8 @@ pub fn step(from: u8, direction: u8) -> Option<u8> {
 }
 
 /// walk along the board in a given direction
-pub fn walk(hexchess: &Hexchess, from: u8, direction: u8, color: &Color) -> Vec<u8> {
-    let mut path: Vec<u8> = Vec::new();
+pub fn walk(hexchess: &Hexchess, from: u8, direction: u8, color: &Color) -> SmallVec<[u8; 11]> {
+    let mut path: SmallVec<[u8; 11]> = SmallVec::new();
     let mut position: u8 = from;
 
     loop {
@@ -324,7 +309,7 @@ pub fn walk(hexchess: &Hexchess, from: u8, direction: u8, color: &Color) -> Vec<
             }
         };
 
-        if get_color(&piece) == *color {
+        if color!(&piece) == *color {
             return path // <- shop short of friendly piece
         }
         

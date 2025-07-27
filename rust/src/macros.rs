@@ -94,6 +94,27 @@ macro_rules! h {
     ("l1") => { 90 };
 }
 
+/// get the color of a piece (macro version for compile-time evaluation)
+#[macro_export]
+macro_rules! color {
+    ($piece:expr) => {
+        match $piece {
+            $crate::constants::Piece::WhitePawn => $crate::constants::Color::White,
+            $crate::constants::Piece::WhiteKnight => $crate::constants::Color::White,
+            $crate::constants::Piece::WhiteBishop => $crate::constants::Color::White,
+            $crate::constants::Piece::WhiteRook => $crate::constants::Color::White,
+            $crate::constants::Piece::WhiteQueen => $crate::constants::Color::White,
+            $crate::constants::Piece::WhiteKing => $crate::constants::Color::White,
+            $crate::constants::Piece::BlackPawn => $crate::constants::Color::Black,
+            $crate::constants::Piece::BlackKnight => $crate::constants::Color::Black,
+            $crate::constants::Piece::BlackBishop => $crate::constants::Color::Black,
+            $crate::constants::Piece::BlackRook => $crate::constants::Color::Black,
+            $crate::constants::Piece::BlackQueen => $crate::constants::Color::Black,
+            $crate::constants::Piece::BlackKing => $crate::constants::Color::Black,
+        }
+    };
+}
+
 #[macro_export]
 macro_rules! s {
     ($expression:expr) => {

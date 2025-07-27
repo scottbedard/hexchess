@@ -1,4 +1,6 @@
+pub mod bishop;
 pub mod king;
 pub mod knight;
 pub mod pawn;
-pub mod straight_line;
+pub mod queen;
+pub mod rook;

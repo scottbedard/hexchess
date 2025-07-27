@@ -2,6 +2,7 @@ use hexchess::{Color, Hexchess};
 use hexchess::hexchess::utils::{index, walk};
 use serde::{Deserialize, Serialize};
 use crate::json;
+use smallvec::SmallVec;
 
 #[derive(Debug, Serialize, Deserialize)]
 struct Test {
@@ -23,10 +24,10 @@ fn test_board_traversal() {
 
         let from = index(test.from.as_str()).unwrap();
 
-        let result = test.result
+        let result: SmallVec<[u8; 11]> = test.result
             .iter()
             .map(|s| index(s.as_str()).unwrap())
-            .collect::<Vec<u8>>();
+            .collect();
 
         assert_eq!(
             walk(&hexchess, from, test.direction, &test.color),
