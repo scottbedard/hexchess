@@ -30,13 +30,13 @@ pnpm install
 
 ## Languages and versioning
 
-The game library is available in multiple languages, each testing against a shared data. This set of data, the tests, is what the version number refers to. In other words, your version numbers might go up without the package changing. The package is now just supporting a newer version of tests.
+The game library is available in multiple languages, each testing against a shared dataset. This shared dataset, the tests, are what our versioning refers to. Numbers may increase without the package actually changing, but are supports new tests.
 
 - [Javascript](https://www.npmjs.com/package/@bedard/hexchess) <sup>(and TypeScript)</sup>
 - [Rust](https://crates.io/crates/hexchess)
 - [PHP](https://packagist.org/packages/bedard/hexchess)
 
-For any engine development, use the Rust crate for ideal performance. The other packages are not optimized for performance.
+For engine development, use the Rust crate for ideal performance. The other packages are not optimized for performance.
 
 ## License
 
