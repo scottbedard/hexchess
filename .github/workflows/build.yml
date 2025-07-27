@@ -40,6 +40,7 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           fail_ci_if_error: true
+
   rust:
     name: Rust
     runs-on: ubuntu-latest
@@ -49,6 +50,11 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
 
       - uses: pnpm/action-setup@v4
         name: Install pnpm
@@ -68,7 +74,7 @@ jobs:
           cargo build --release
 
       - name: Test
-        run: node hexchess test:rust --coverage
+        run: node hexchess test:rs --coverage
         # run: |
         #   cd rust
         #   cargo +nightly tarpaulin --verbose --all-features --workspace --timeout 120 --out xml
@@ -104,7 +110,7 @@ jobs:
           cd js
           pnpm install --no-frozen-lockfile
       - name: Lint
-        run: ./vendor/bin/php-cs-fixer fix . --dry-run --diff --format=txt
+        run: node hexchess lint:php
       - name: Test
         run: node hexchess test:php --coverage
       - name: Upload coverage reports to Codecov
@@ -128,7 +134,10 @@ jobs:
         run_install: false
 
     - name: Install dependencies
-      run: pnpm install
+      run: |
+        pnpm install --no-frozen-lockfile
+        cd js
+        pnpm install --no-frozen-lockfile
 
     - name: Check versions
-      run: pnpm check-versions
+      run: node hexchess versions

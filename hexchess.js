@@ -1,7 +1,23 @@
-import { dim, green } from './scripts/utils.js'
+import { dim, execAsync, green, resolve } from './scripts/utils.js'
 import { program } from 'commander'
 import { testJs, testPhp, testRust } from './scripts/test.js'
+import { versions } from './scripts/versions.js'
 import ora from 'ora'
+
+//
+// lint
+//
+
+program
+  .command('lint:php')
+  .description('Run linting')
+  .action(async () => {
+    await execAsync('./vendor/bin/php-cs-fixer', ['fix', '.', '--dry-run', '--diff', '--format=txt'])
+  })
+
+//
+// test
+//
 
 program
   .command('test')
@@ -36,6 +52,7 @@ program
       coverage: options?.coverage,
       filter: options?.filter,
       silent: options?.silent,
+      watch: options?.watch,
     })
   })
 
@@ -54,14 +71,25 @@ program
   })
 
 program
-  .command('test:rust')
+  .command('test:rs')
   .description('Run Rust tests')
+  .option('-c, --coverage', 'Generate coverage report')
   .option('-s, --silent', 'Run tests silently')
   .action(async (options) => {
     await testRust({
+      coverage: options?.coverage,
       silent: options?.silent,
     })
   })
+
+//
+// versions
+//
+
+program
+  .command('versions')
+  .description('Check the versions of the dependencies')
+  .action(versions)
 
 program.parse()
   

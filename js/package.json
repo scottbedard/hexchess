@@ -31,9 +31,7 @@
   "scripts": {
     "build": "jiti ./scripts/build.js",
     "lint:fix": "eslint --fix",
-    "lint": "eslint",
-    "test:coverage": "vitest --coverage",
-    "test": "vitest"
+    "lint": "eslint"
   },
   "type": "module",
   "types": "index.d.ts",

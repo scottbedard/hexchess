@@ -2,7 +2,7 @@ import { execAsync, resolve } from './utils.js'
 
 export async function testJs(options) {
   const args = [
-    'test',
+    'vitest',
   ]
 
   if (options?.coverage) {
@@ -13,7 +13,7 @@ export async function testJs(options) {
     args.push(`--filter="${options.filter}"`)
   }
 
-  await execAsync('pnpm', args, {
+  await execAsync('npx', args, {
     cwd: resolve('js'),
     silent: options?.silent,
   })
@@ -45,6 +45,20 @@ export async function testRust(options) {
     'test',
     '--all-features',
   ]
+
+  if (options?.coverage) {
+    args.length = 0
+
+    args.push(
+      '+nightly',
+      'tarpaulin',
+      '--verbose',
+      '--all-features',
+      '--workspace',
+      '--timeout=120',
+      '--out=xml'
+    )
+  }
 
   await execAsync('cargo', args, {
     cwd: resolve('rust'),
