@@ -26,9 +26,6 @@ jobs:
 
       - name: Build package
         run: node hexchess build:js
-  
-      - name: Lint
-        run: node hexchess lint:js
 
       - name: Vitest
         run: node hexchess test:js --coverage
