@@ -7,8 +7,10 @@ use crate::constants::{
 };
 
 use crate::hexchess::hexchess::Hexchess;
+use smallvec::SmallVec;
 
 /// get the color of a piece
+#[inline(always)]
 pub fn get_color(piece: &Piece) -> Color {
     match piece {
         Piece::WhitePawn => Color::White,
@@ -59,6 +61,7 @@ pub fn is_legal_white_en_passant_position(position: &u8) -> bool {
 }
 
 /// test if position is en passant target
+#[inline(always)]
 pub fn is_legal_en_passant(position: &u8) -> bool {
     is_legal_black_en_passant(position) || is_legal_white_en_passant_position(position)
 }
@@ -306,8 +309,8 @@ pub fn step(from: u8, direction: u8) -> Option<u8> {
 }
 
 /// walk along the board in a given direction
-pub fn walk(hexchess: &Hexchess, from: u8, direction: u8, color: &Color) -> Vec<u8> {
-    let mut path: Vec<u8> = Vec::new();
+pub fn walk(hexchess: &Hexchess, from: u8, direction: u8, color: &Color) -> SmallVec<[u8; 11]> {
+    let mut path: SmallVec<[u8; 11]> = SmallVec::new();
     let mut position: u8 = from;
 
     loop {

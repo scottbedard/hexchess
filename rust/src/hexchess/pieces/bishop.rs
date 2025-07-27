@@ -2,17 +2,17 @@ use crate::constants::Color;
 use crate::hexchess::hexchess::Hexchess;
 use crate::hexchess::san::San;
 use crate::hexchess::utils::walk;
+use smallvec::SmallVec;
 
-pub fn straight_line_moves_unsafe(
+pub fn bishop_moves_unsafe(
     hexchess: &Hexchess,
     from: &u8,
     color: &Color,
-    directions: &[u8],
-) -> Vec<San> {
-    let mut result: Vec<San> = vec![];
+) -> SmallVec<[San; 14]> {
+    let mut result: SmallVec<[San; 14]> = SmallVec::new();
 
-    for n in directions {
-        let path = walk(hexchess, *from, *n, color);
+    for n in [1u8, 3, 5, 7, 9, 11] {
+        let path = walk(hexchess, *from, n, color);
 
         for to in path {
             result.push(San {

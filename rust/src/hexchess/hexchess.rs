@@ -1,11 +1,14 @@
 use crate::h;
+use crate::hexchess::pieces::bishop::bishop_moves_unsafe;
 use crate::hexchess::pieces::king::king_moves_unsafe;
 use crate::hexchess::pieces::knight::knight_moves_unsafe;
 use crate::hexchess::pieces::pawn::pawn_moves_unsafe;
-use crate::hexchess::pieces::straight_line::straight_line_moves_unsafe;
+use crate::hexchess::pieces::queen::queen_moves_unsafe;
+use crate::hexchess::pieces::rook::rook_moves_unsafe;
 use crate::hexchess::san::San;
 use serde_with::serde_as;
 use serde::{Deserialize, Serialize};
+use smallvec::SmallVec;
 use std::hash::Hash;
 
 use crate::constants::{
@@ -178,7 +181,7 @@ impl Hexchess {
 
     /// get legal moves for current turn
     pub fn current_moves(&self) -> Vec<San> {
-        let mut result: Vec<San> = vec![];
+        let mut result: Vec<San> = Vec::with_capacity(40); // Most positions have <40 legal moves
 
         for n in self.get_color(self.turn) {
             result.extend(self.moves_from(n));
@@ -188,16 +191,17 @@ impl Hexchess {
     }
 
     /// get piece at position
+    #[inline(always)]
     pub fn get(&self, position: &str) -> Option<Piece> {
         match index(position) {
-            Ok(index) => self.board[index as usize],
+            Ok(index) => unsafe { *self.board.get_unchecked(index as usize) },
             Err(_) => None,
         }
     }
 
     /// get positions occupied by a color
-    pub fn get_color(&self, color: Color) -> Vec<u8> {
-        let mut result: Vec<u8> = vec![];
+    pub fn get_color(&self, color: Color) -> SmallVec<[u8; 16]> {
+        let mut result: SmallVec<[u8; 16]> = SmallVec::new();
 
         for (index, piece) in self.board.iter().enumerate() {
             match piece {
@@ -216,7 +220,7 @@ impl Hexchess {
     pub fn moves_from(&self, from: u8) -> Vec<San> {
         let piece = match self.board[from as usize] {
             Some(piece) => piece,
-            None => return vec![],
+            None => return Vec::new(),
         };
 
         let color = get_color(&piece);
@@ -251,7 +255,7 @@ impl Hexchess {
 
     /// get moves from a position, regardless of turn or legality
     pub fn moves_from_unsafe(&self, from: u8) -> Vec<San> {
-        let mut result: Vec<San> = vec![];
+        let mut result: Vec<San> = Vec::with_capacity(12); // Most pieces have <12 moves
 
         let piece = match self.board[from as usize] {
             Some(piece) => piece,
@@ -262,22 +266,22 @@ impl Hexchess {
 
         result.extend(match piece {
             Piece::BlackKing | Piece::WhiteKing => {
-                king_moves_unsafe(&self, from, &color)
+                king_moves_unsafe(&self, from, &color).into_vec().into_iter()
             },
             Piece::BlackKnight | Piece::WhiteKnight => {
-                knight_moves_unsafe(&self, from, &color)
+                knight_moves_unsafe(&self, from, &color).into_vec().into_iter()
             },
             Piece::BlackPawn | Piece::WhitePawn => {
-                pawn_moves_unsafe(&self, from, &color)
+                pawn_moves_unsafe(&self, from, &color).into_vec().into_iter()
             },
             Piece::BlackBishop | Piece::WhiteBishop => {
-                straight_line_moves_unsafe(&self, &from, &color, &[1, 3, 5, 7, 9, 11])
+                bishop_moves_unsafe(&self, &from, &color).into_vec().into_iter()
             },
             Piece::BlackRook | Piece::WhiteRook => {
-                straight_line_moves_unsafe(&self, &from, &color, &[0, 2, 4, 6, 8, 10])
+                rook_moves_unsafe(&self, &from, &color).into_vec().into_iter()
             },
             Piece::BlackQueen | Piece::WhiteQueen => {
-                straight_line_moves_unsafe(&self, &from, &color, &[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11])
+                queen_moves_unsafe(&self, &from, &color).into_iter()
             }
         });
         

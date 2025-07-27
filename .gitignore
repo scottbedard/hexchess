@@ -7,5 +7,6 @@ dist
 node_modules
 php/.pest
 php/junit.xml
+sandbox.mjs
 target
 vendor
