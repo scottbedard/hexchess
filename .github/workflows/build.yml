@@ -74,7 +74,7 @@ jobs:
           cargo build --release
 
       - name: Test
-        run: node hexchess test:rust --coverage
+        run: node hexchess test:rs --coverage
         # run: |
         #   cd rust
         #   cargo +nightly tarpaulin --verbose --all-features --workspace --timeout 120 --out xml
