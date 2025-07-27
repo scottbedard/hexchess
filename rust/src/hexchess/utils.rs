@@ -6,27 +6,9 @@ use crate::constants::{
     Piece,
 };
 
+use crate::color;
 use crate::hexchess::hexchess::Hexchess;
 use smallvec::SmallVec;
-
-/// get the color of a piece
-#[inline(always)]
-pub fn get_color(piece: &Piece) -> Color {
-    match piece {
-        Piece::WhitePawn => Color::White,
-        Piece::WhiteKnight => Color::White,
-        Piece::WhiteBishop => Color::White,
-        Piece::WhiteRook => Color::White,
-        Piece::WhiteQueen => Color::White,
-        Piece::WhiteKing => Color::White,
-        Piece::BlackPawn => Color::Black,
-        Piece::BlackKnight => Color::Black,
-        Piece::BlackBishop => Color::Black,
-        Piece::BlackRook => Color::Black,
-        Piece::BlackQueen => Color::Black,
-        Piece::BlackKing => Color::Black,
-    }
-}
 
 /// test if position is black en passant target
 pub fn is_legal_black_en_passant(position: &u8) -> bool {
@@ -327,7 +309,7 @@ pub fn walk(hexchess: &Hexchess, from: u8, direction: u8, color: &Color) -> Smal
             }
         };
 
-        if get_color(&piece) == *color {
+        if color!(&piece) == *color {
             return path // <- shop short of friendly piece
         }
         

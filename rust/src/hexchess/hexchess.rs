@@ -20,8 +20,8 @@ use crate::constants::{
     PromotionPiece,
 };
 
+use crate::color;
 use crate::hexchess::utils::{
-    get_color,
     is_legal_en_passant,
     step,
     index,
@@ -101,7 +101,7 @@ impl Hexchess {
             self.halfmove += 1;
         }
 
-        let color = get_color(&piece);
+        let color = color!(&piece);
 
         // update fullmove and turn color
         if color == Color::Black {
@@ -208,7 +208,7 @@ impl Hexchess {
         for index in 0..91 {
             unsafe {
                 match *self.board.get_unchecked(index) {
-                    Some(piece) => if get_color(&piece) == color {
+                    Some(piece) => if color!(&piece) == color {
                         result.push(index as u8);
                     },
                     None => continue,
@@ -227,7 +227,7 @@ impl Hexchess {
             None => return Vec::new(),
         };
 
-        let color = get_color(&piece);
+        let color = color!(&piece);
 
         self.moves_from_unsafe(from)
             .into_iter()
@@ -267,7 +267,7 @@ impl Hexchess {
             None => return result,
         };
         
-        let color = get_color(&piece);
+        let color = color!(&piece);
 
         result.extend(match piece {
             Piece::BlackKing | Piece::WhiteKing => {
@@ -364,7 +364,7 @@ impl Hexchess {
             None => return false,
         };
         
-        if get_color(&piece) != self.turn {
+        if color!(&piece) != self.turn {
             return false;
         }
 
@@ -385,13 +385,13 @@ impl Hexchess {
             None => return false,
         };
 
-        let color = get_color(&threatened_piece);
+        let color = color!(&threatened_piece);
 
         // Use unchecked access for better performance
         for n in 0u8..91u8 {
             unsafe {
                 match *self.board.get_unchecked(n as usize) {
-                    Some(piece) => if get_color(&piece) != color {
+                    Some(piece) => if color!(&piece) != color {
                         for san in self.moves_from_unsafe(n) {
                             if san.to == position {
                                 return true
