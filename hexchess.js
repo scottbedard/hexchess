@@ -1,5 +1,6 @@
 import { buildJs, buildRust } from './scripts/build.js'
-import { dim, execAsync, green, resolve } from './scripts/utils.js'
+import { setVersion } from './scripts/set-version.js'
+import { dim, execAsync, green } from './scripts/utils.js'
 import { program } from 'commander'
 import { testJs, testPhp, testRust } from './scripts/test.js'
 import { versions } from './scripts/versions.js'
@@ -47,6 +48,17 @@ program
   .description('Run linting')
   .action(async () => {
     await execAsync('./vendor/bin/php-cs-fixer', ['fix', '.', '--dry-run', '--diff', '--format=txt'])
+  })
+
+//
+// set version
+//
+
+program
+  .command('set-version <version>')
+  .description('Set the version of the project')
+  .action((version) => {
+    setVersion({ version })
   })
 
 //
