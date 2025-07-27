@@ -16,5 +16,5 @@
     "friendsofphp/php-cs-fixer": "^3.84"
   },
   "type": "library",
-  "version": "2.2.0-alpha.4"
+  "version": "2.2.0-alpha.5"
 }
