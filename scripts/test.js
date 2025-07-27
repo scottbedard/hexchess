@@ -55,8 +55,9 @@ export async function testRust(options) {
       '--verbose',
       '--all-features',
       '--workspace',
-      // '--timeout 120',
-      '--out xml')
+      '--timeout=120',
+      '--out=xml'
+    )
   }
 
   await execAsync('cargo', args, {
