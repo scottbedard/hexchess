@@ -14,6 +14,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: dtolnay/rust-toolchain@stable
+
       - uses: pnpm/action-setup@v4
         name: Install pnpm
         with:
@@ -27,14 +29,13 @@ jobs:
 
       - name: Install dependencies
         run: |
+          composer install
           pnpm install
           cd js
           pnpm install
-          cd ../php
-          composer install
 
       - name: Test
-        run: pnpm test
+        run: node hexchess test
 
   publish:
     needs: test
@@ -65,17 +66,16 @@ jobs:
   
       - name: Install dependencies
         run: |
+          composer install
           pnpm install
           cd js
           pnpm install
-          cd ../php
-          composer install
 
       - name: Check versions
-        run: pnpm check-versions release=${{ github.ref_name }}
+        run: node hexchess versions
   
-      # - name: Build package
-      #   run: pnpm build
+      - name: Build package
+        run: node hexchess build:js
 
       # - name: Publish to NPM
       #   run: |
