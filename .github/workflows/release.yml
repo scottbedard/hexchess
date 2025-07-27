@@ -77,22 +77,21 @@ jobs:
       - name: Build package
         run: node hexchess build:js
 
-      # - name: Publish to NPM
-      #   run: |
-      #     cd js/dist
-      #     npm publish --access public
-      #   env:
-      #     NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Publish to NPM
+        run: |
+          cd js/dist
+          npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      # - name: Publish to Crates.io
-      #   run: |
-      #     cd rust
-      #     cargo login ${{ secrets.CARGO_TOKEN }}
-      #     cargo publish
+      - name: Publish to Crates.io
+        run: |
+          cd rust
+          cargo login ${{ secrets.CARGO_TOKEN }}
+          cargo publish
 
       - name: Publish to Packagist
         run: |
-          cd php
           curl -X POST -u "${{ secrets.PACKAGIST_USERNAME }}:${{ secrets.PACKAGIST_TOKEN }}" \
             https://packagist.org/api/update-package \
             -H "Content-Type: application/json" \
