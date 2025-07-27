@@ -1,8 +1,8 @@
 import { execAsync, read, write, green, dim } from './utils.js'
 
-async function run() {
+export async function setVersion(options) {
   const startAt = Date.now()
-  const version = process.argv[2]
+  const version = options.version
 
   if (!version) {
     console.error('Missing version argument')
@@ -18,11 +18,11 @@ async function run() {
 
   // composer.json
   try {
-    const composerPath = 'php/composer.json'
+    const composerPath = 'composer.json'
     const composer = JSON.parse(read(composerPath))
     composer.version = version
     write(composerPath, JSON.stringify(composer, null, 2) + '\n')
-    console.log(`php/composer.json: ${green(version)}`)
+    console.log(`composer.json: ${green(version)}`)
   } catch (error) {
     console.error('Failed to update php/composer.json:', error)
     process.exit(1)
@@ -42,7 +42,7 @@ async function run() {
 
   // pnpm-lock.yaml
   try {
-    await execAsync('pnpm install', {
+    await execAsync('pnpm', ['install'], {
       cwd: 'js',
     })
   } catch (error) {
@@ -99,5 +99,3 @@ async function run() {
   console.log()
   console.log(`${green('Done')} ${dim(`(${Date.now() - startAt}ms)`)}`)
 }
-
-run()
