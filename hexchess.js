@@ -1,8 +1,42 @@
+import { buildJs, buildRust } from './scripts/build.js'
 import { dim, execAsync, green, resolve } from './scripts/utils.js'
 import { program } from 'commander'
 import { testJs, testPhp, testRust } from './scripts/test.js'
 import { versions } from './scripts/versions.js'
 import ora from 'ora'
+
+//
+// build
+//
+
+program
+  .command('build')
+  .description('Build all projects')
+  .action(async () => {
+    const startAt = Date.now()
+
+    const js = ora('Building NPM package...').start()
+    await buildJs({ silent: true })
+    js.succeed(`NPM package ${dim(`(${Date.now() - startAt}ms)`)}`)
+
+    const rust = ora('Building Rust crate...').start()
+    const rustStart = Date.now()
+    await buildRust({ silent: true })
+    rust.succeed(`Rust crate ${dim(`(${Date.now() - rustStart}ms)`)}`)
+
+    console.log()
+    console.log(green('Done'), dim(`(${Date.now() - startAt}ms)`))
+  })
+
+program
+  .command('build:js')
+  .description('Build NPM package')
+  .action(buildJs)
+
+program
+  .command('build:rs')
+  .description('Build Rust crate')
+  .action(buildRust)
 
 //
 // lint

@@ -24,13 +24,11 @@ jobs:
           cd js
           pnpm install --no-frozen-lockfile
 
-      # - name: Build package
-      #   run: pnpm build --js
-
-      # - name: Lint
-      #   run: |
-      #     cd js
-      #     pnpm lint
+      - name: Build package
+        run: node hexchess build:js
+  
+      - name: Lint
+        run: node hexchess lint:js
 
       - name: Vitest
         run: node hexchess test:js --coverage
@@ -69,15 +67,10 @@ jobs:
           pnpm install --no-frozen-lockfile
 
       - name: Build
-        run: |
-          cd rust
-          cargo build --release
+        run: node hexchess build:rs
 
       - name: Test
         run: node hexchess test:rs --coverage
-        # run: |
-        #   cd rust
-        #   cargo +nightly tarpaulin --verbose --all-features --workspace --timeout 120 --out xml
 
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v5

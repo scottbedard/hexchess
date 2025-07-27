@@ -1,19 +1,19 @@
-import { copy, dim, execAsync, green, read, resolve, write } from './utils.js'
-import ora from 'ora'
+import { copy, execAsync, read, resolve, write } from './utils.js'
 
-async function buildJs() {
+export async function buildJs(options) {
   // cleanup
-  await execAsync(`rm -rf ${resolve('js/dist')}`, {
+  await execAsync('rm', ['-rf', resolve('js/dist')], {
     cwd: 'js',
+    silent: options?.silent,
   })
 
   // generate types
-  await execAsync('tsc --project ./tsconfig.json --emitDeclarationOnly', {
+  await execAsync('tsc', ['--project', './tsconfig.json', '--emitDeclarationOnly'], {
     cwd: 'js',
   })
 
   // build npm package
-  await execAsync('npx rollup --config rollup.config.ts --configPlugin @rollup/plugin-typescript', {
+  await execAsync('npx', ['rollup', '--config', 'rollup.config.ts', '--configPlugin', '@rollup/plugin-typescript'], {
     cwd: 'js',
   })
 
@@ -26,31 +26,9 @@ async function buildJs() {
   write('js/dist/index.mjs', read('js/dist/index.mjs').replace('x.y.z', pkg.version))
 }
 
-async function buildRust() {
-  await execAsync('cargo build --release', {
+export async function buildRust(options) {
+  await execAsync('cargo', ['build', '--release'], {
     cwd: 'rust',
+    silent: options?.silent,
   })
 }
-
-async function run() {
-  const args = process.argv.slice(2)
-  const startAt = Date.now()
- 
-  if (args.includes('--js') || args.length === 0) {
-    const js = ora('Building JavaScript...').start()
-    await buildJs()
-    js.succeed(`JavaScript ${dim(`(${Date.now() - startAt}ms)`)}`)
-  }
-
-  if (args.includes('--rs') || args.length === 0) {
-    const rust = ora('Rust...').start()
-    const rustStart = Date.now()
-    await buildRust()
-    rust.succeed(`Rust ${dim(`(${Date.now() - rustStart}ms)`)}`)
-  }
-
-  console.log()
-  console.log(`${green('Done')} ${dim(`(${Date.now() - startAt}ms)`)}`)
-}
-
-run()
