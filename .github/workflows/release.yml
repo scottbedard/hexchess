@@ -92,7 +92,5 @@ jobs:
 
       - name: Publish to Packagist
         run: |
-          curl -X POST -u "${{ secrets.PACKAGIST_USERNAME }}:${{ secrets.PACKAGIST_TOKEN }}" \
-            https://packagist.org/api/update-package \
-            -H "Content-Type: application/json" \
-            -d '{"repository":{"url":"https://github.com/scottbedard/hexchess"}}'
+          curl -X POST https://packagist.org/api/update-package/scottbedard/hexchess \
+            -u "${{ secrets.PACKAGIST_USERNAME }}:${{ secrets.PACKAGIST_TOKEN }}"
