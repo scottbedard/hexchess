@@ -77,6 +77,7 @@ program
   .option('-s, --silent', 'Run tests silently')
   .action(async (options) => {
     await testRust({
+      coverage: options?.coverage,
       silent: options?.silent,
     })
   })

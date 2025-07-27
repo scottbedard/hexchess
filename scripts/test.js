@@ -46,6 +46,19 @@ export async function testRust(options) {
     '--all-features',
   ]
 
+  if (options?.coverage) {
+    args.length = 0
+
+    args.push(
+      '+nightly',
+      'tarpaulin',
+      '--verbose',
+      '--all-features',
+      '--workspace',
+      '--timeout 120',
+      '--out xml')
+  }
+
   await execAsync('cargo', args, {
     cwd: resolve('rust'),
     silent: options?.silent,
