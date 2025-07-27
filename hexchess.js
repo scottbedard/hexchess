@@ -1,7 +1,13 @@
 import { dim, green } from './scripts/utils.js'
 import { program } from 'commander'
 import { testJs, testPhp, testRust } from './scripts/test.js'
+import { versions } from './scripts/versions.js'
 import ora from 'ora'
+
+program
+  .command('versions')
+  .description('Check the versions of the dependencies')
+  .action(versions)
 
 program
   .command('test')

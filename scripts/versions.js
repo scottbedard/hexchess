@@ -1,10 +1,10 @@
 import { dim, green, read } from './utils.js'
 import toml from 'smol-toml'
 
-function run() {
+export function versions() {
   const cargo = toml.parse(read('rust/Cargo.toml'))
   const npm = JSON.parse(read('js/package.json'))
-  const composer = JSON.parse(read('php/composer.json'))
+  const composer = JSON.parse(read('composer.json'))
   const cargoVersion = cargo.package.version
 
   console.log('Checking versions...')
@@ -29,17 +29,15 @@ function run() {
         throw new Error(`Release version mismatch [${release}]`)
       }
 
-      console.log(`Release: ${release}`)
+      console.log(`Release:  ${release}`)
       releasing = true
     }
   }
 
   if (!releasing) {
-    console.log(`Release: ${dim('None')}`)
+    console.log(`Release:  ${dim('None')}`)
   }
 
   console.log()
   console.log(green('Success'))
 }
-
-run()

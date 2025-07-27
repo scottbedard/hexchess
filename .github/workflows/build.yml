@@ -134,7 +134,10 @@ jobs:
         run_install: false
 
     - name: Install dependencies
-      run: pnpm install
+      run: |
+        pnpm install --no-frozen-lockfile
+        cd js
+        pnpm install --no-frozen-lockfile
 
     - name: Check versions
-      run: pnpm check-versions
+      run: node hexchess versions
