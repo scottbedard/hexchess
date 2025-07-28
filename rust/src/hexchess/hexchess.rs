@@ -662,7 +662,7 @@ fn parse_board(source: &String) -> Result<[Option<Piece>; 91], String> {
 }
 
 /// format the board section of a fen
-fn stringify_board(board: &[Option<Piece>; 91]) -> String {
+pub fn stringify_board(board: &[Option<Piece>; 91]) -> String {
     let mut blank: u8 = 0;
     let mut index: u8 = 0;
     let mut result = String::new();
