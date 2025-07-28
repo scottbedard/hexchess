@@ -135,7 +135,12 @@ program
 program
   .command('versions')
   .description('Check the versions of the dependencies')
-  .action(versions)
+  .option('-r, --release <release>', 'Release version')
+  .action((options) => {
+    versions({
+      release: options?.release,
+    })
+  })
 
 program.parse()
   

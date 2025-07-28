@@ -1,7 +1,7 @@
 import { dim, green, read } from './utils.js'
 import toml from 'smol-toml'
 
-export function versions() {
+export function versions(options) {
   const cargo = toml.parse(read('rust/Cargo.toml'))
   const npm = JSON.parse(read('js/package.json'))
   const composer = JSON.parse(read('composer.json'))
@@ -19,22 +19,14 @@ export function versions() {
     throw new Error(`Version mismatch [npm: ${npm.version}, cargo: ${cargoVersion}, composer: ${composer.version}]`)
   }
 
-  let releasing = false
 
-  for (const arg of process.argv) {
-    if (arg.startsWith('release=')) {
-      const release = arg.slice(8)
-
-      if (release !== npm.version) {
-        throw new Error(`Release version mismatch [${release}]`)
-      }
-
-      console.log(`Release:  ${release}`)
-      releasing = true
+  if (options?.release) {
+    if (options.release !== npm.version) {
+      throw new Error(`Release version mismatch [${options.release}]`)
     }
-  }
 
-  if (!releasing) {
+    console.log(`Release:  ${green(options.release)}`)
+  } else {
     console.log(`Release:  ${dim('None')}`)
   }
 
