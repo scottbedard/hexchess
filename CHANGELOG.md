@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.2.1
+
+- Various performance improvements to Rust library
+
 ## 2.2.0
 
 - Add PHP library
