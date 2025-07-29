@@ -42,6 +42,14 @@ impl Bitboard {
         (self.0 >> index) & 1 == 1
     }
 
+    /// Iterates over the indices of the set bits.
+    pub fn iter_set_bits(&self) -> SetBitsIterator {
+        SetBitsIterator {
+            bitboard: *self,
+            current_index: 0,
+        }
+    }
+
     /// Returns the index of the least significant bit (LSB).
     /// Returns `None` if the bitboard is empty.
     pub fn lsb_index(&self) -> Option<u8> {
@@ -79,6 +87,101 @@ impl Bitboard {
     pub fn toggle_bit(&mut self, index: u8) {
         assert!(index < 128, "Index out of bounds for u128");
         self.0 ^= 1u128 << index;
+    }
+}
+
+// Custom iterator for set bits
+pub struct SetBitsIterator {
+    bitboard: Bitboard,
+    current_index: u8,
+}
+
+impl Iterator for SetBitsIterator {
+    type Item = u8;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        while self.current_index < 128 {
+            if self.bitboard.is_bit_set(self.current_index) {
+                let index = self.current_index;
+                self.current_index += 1;
+                return Some(index);
+            }
+            self.current_index += 1;
+        }
+        None
+    }
+}
+
+// Implement common bitwise operations
+impl std::ops::BitAnd for Bitboard {
+    type Output = Self;
+    fn bitand(self, other: Self) -> Self {
+        Bitboard(self.0 & other.0)
+    }
+}
+
+impl std::ops::BitAndAssign for Bitboard {
+    fn bitand_assign(&mut self, other: Self) {
+        self.0 &= other.0;
+    }
+}
+
+impl std::ops::BitOr for Bitboard {
+    type Output = Self;
+    fn bitor(self, other: Self) -> Self {
+        Bitboard(self.0 | other.0)
+    }
+}
+
+impl std::ops::BitOrAssign for Bitboard {
+    fn bitor_assign(&mut self, other: Self) {
+        self.0 |= other.0;
+    }
+}
+
+impl std::ops::BitXor for Bitboard {
+    type Output = Self;
+    fn bitxor(self, other: Self) -> Self {
+        Bitboard(self.0 ^ other.0)
+    }
+}
+
+impl std::ops::BitXorAssign for Bitboard {
+    fn bitxor_assign(&mut self, other: Self) {
+        self.0 ^= other.0;
+    }
+}
+
+impl std::ops::Not for Bitboard {
+    type Output = Self;
+    fn not(self) -> Self::Output {
+        Bitboard(!self.0)
+    }
+}
+
+impl std::ops::Shl<u8> for Bitboard {
+    type Output = Self;
+    fn shl(self, rhs: u8) -> Self::Output {
+        Bitboard(self.0 << rhs)
+    }
+}
+
+impl std::ops::ShlAssign<u8> for Bitboard {
+    fn shl_assign(&mut self, rhs: u8) {
+        self.0 <<= rhs;
+    }
+}
+
+impl std::ops::Shr<u8> for Bitboard {
+    type Output = Self;
+    fn shr(self, rhs: u8) -> Self::Output {
+        Bitboard(self.0 >> rhs)
+    }
+}
+
+impl std::ops::ShrAssign<u8> for Bitboard {
+    fn shr_assign(&mut self, rhs: u8) {
+        self.0 >>= rhs;
     }
 }
 
@@ -163,5 +266,56 @@ mod tests {
         assert_eq!(bb.msb_index(), Some(5));
         bb.set_bit(127);
         assert_eq!(bb.msb_index(), Some(127));
+    }
+
+    #[test]
+    fn test_bit_operations() {
+        let bb1 = Bitboard(0b1010);
+        let bb2 = Bitboard(0b0110);
+
+        assert_eq!((bb1 & bb2).0, 0b0010);
+        assert_eq!((bb1 | bb2).0, 0b1110);
+        assert_eq!((bb1 ^ bb2).0, 0b1100);
+        assert_eq!((!bb1).0, !0b1010);
+
+        let mut bb_assign = Bitboard(0b1111);
+        bb_assign &= bb2;
+        assert_eq!(bb_assign.0, 0b0110);
+
+        let mut bb_assign = Bitboard(0b1001);
+        bb_assign |= bb2;
+        assert_eq!(bb_assign.0, 0b1111);
+
+        let mut bb_assign = Bitboard(0b1111);
+        bb_assign ^= bb2;
+        assert_eq!(bb_assign.0, 0b1001);
+
+        assert_eq!((bb1 << 2).0, 0b101000);
+        assert_eq!((bb1 >> 1).0, 0b0101);
+
+        let mut bb_shift = Bitboard(0b1010);
+        bb_shift <<= 2;
+        assert_eq!(bb_shift.0, 0b101000);
+
+        let mut bb_shift = Bitboard(0b1010);
+        bb_shift >>= 1;
+        assert_eq!(bb_shift.0, 0b0101);
+    }
+
+    #[test]
+    fn test_iter_set_bits() {
+        let mut bb = Bitboard::new();
+        bb.set_bit(3);
+        bb.set_bit(7);
+        bb.set_bit(100);
+
+        let mut set_bits = Vec::new();
+        for index in bb.iter_set_bits() {
+            set_bits.push(index);
+        }
+        assert_eq!(set_bits, vec![3, 7, 100]);
+
+        let empty_bb = Bitboard::new();
+        assert!(empty_bb.iter_set_bits().next().is_none());
     }
 }
