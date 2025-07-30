@@ -1,16 +1,4 @@
-/*
-    null,   null,   null,   null,   null,   'f11',  'g10',  'h9',   'i8',   'k7',   'l6',
-    null,   null,   null,   null,   'e10',  'f10',  'g9',   'h8',   'i7',   'k6',   'l5',
-    null,   null,   null,   'd9',   'e9',   'f9',   'g8',   'h7',   'i6',   'k5',   'l4',
-    null,   null,   'c8',   'd8',   'e8',   'f8',   'g7',   'h6',   'i5',   'k4',   'l3',
-    null,   'b7',   'c7',   'd7',   'e7',   'f7',   'g6',   'h5',   'i4',   'k3',   'l2',
-    'a6',   'b6',   'c6',   'd6',   'e6',   'f6',   'g5',   'h4',   'i3',   'k2',   'l1',
-    'a5',   'b5',   'c5',   'd5',   'e5',   'f5',   'g4',   'h3',   'i2',   'k1',   null,
-    'a4',   'b4',   'c4',   'd4',   'e4',   'f4',   'g3',   'h2',   'i1',   null,   null,
-    'a3',   'b3',   'c3',   'd3',   'e3',   'f3',   'g2',   'h1',   null,   null,   null,
-    'a2',   'b2',   'c2',   'd2',   'e2',   'f2',   'g1',   null,   null,   null,   null,
-    'a1',   'b1',   'c1',   'd1',   'e1',   'f1',   null,   null,   null,   null,   null,
-*/
+use crate::hexchess::position::Position;
 
 #[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
 pub struct Bitboard(pub u128);
@@ -28,6 +16,11 @@ impl Bitboard {
         self.0 &= !(1u128 << index);
     }
 
+    /// Clear bit at a given position.
+    pub fn clear_position(&mut self, position: Position) {
+        self.clear_bit(position as u8);
+    }
+
     /// Returns the number of set bits.
     pub fn count_bits(&self) -> u32 {
         self.0.count_ones()
@@ -38,6 +31,11 @@ impl Bitboard {
     pub fn is_bit_set(&self, index: u8) -> bool {
         assert!(index < 128, "Index out of bounds for u128");
         (self.0 >> index) & 1 == 1
+    }
+
+    /// Checks if a specific position is set (1).
+    pub fn is_position_set(&self, position: Position) -> bool {
+        self.is_bit_set(position as u8)
     }
 
     /// Iterates over the indices of the set bits.
@@ -78,6 +76,11 @@ impl Bitboard {
     pub fn set_bit(&mut self, index: u8) {
         assert!(index < 128, "Bitboard index out of bounds");
         self.0 |= 1u128 << index;
+    }
+
+    /// Set bit at a given position.
+    pub fn set_position(&mut self, position: Position) {
+        self.set_bit(position as u8);
     }
 
     /// Toggles a specific bit at `index`.
@@ -315,5 +318,15 @@ mod tests {
 
         let empty_bb = Bitboard::new();
         assert!(empty_bb.iter_set_bits().next().is_none());
+    }
+
+    #[test]
+    fn test_get_set_and_clear_position() {
+        let mut bb = Bitboard::new();
+        bb.set_position(Position::A1);
+        assert!(bb.is_position_set(Position::A1));
+        assert!(!bb.is_position_set(Position::A2));
+        bb.clear_position(Position::A1);
+        assert!(!bb.is_position_set(Position::A1));
     }
 }
