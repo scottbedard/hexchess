@@ -1,17 +1,15 @@
 /*
-    https://www.redblobgames.com/grids/hexagons/#map-storage
-
-    null,  null,  null,  null,  null,   f11,   g10,    h9,    i8,    k7,    l6,
-    null,  null,  null,  null,   e10,   f10,    g9,    h8,    i7,    k6,    l5,
-    null,  null,  null,    d9,    e9,    f9,    g8,    h7,    i6,    k5,    l4,
-    null,  null,    c8,    d8,    e8,    f8,    g7,    h6,    i5,    k4,    l3,
-    null,    b7,    c7,    d7,    e7,    f7,    g6,    h5,    i4,    k3,    l2,
-      a6,    b6,    c6,    d6,    e6,    f6,    g5,    h4,    i3,    k2,    l1,
-      a5,    b5,    c5,    d5,    e5,    f5,    g4,    h3,    i2,    k1,  null,
-      a4,    b4,    c4,    d4,    e4,    f4,    g3,    h2,    i1,  null,  null,
-      a3,    b3,    c3,    d3,    e3,    f3,    g2,    h1,  null,  null,  null,
-      a2,    b2,    c2,    d2,    e2,    f2,    g1,  null,  null,  null,  null,
-      a1,    b1,    c1,    d1,    e1,    f1,  null,  null,  null,  null,  null,
+    null,   null,   null,   null,   null,   'f11',  'g10',  'h9',   'i8',   'k7',   'l6',
+    null,   null,   null,   null,   'e10',  'f10',  'g9',   'h8',   'i7',   'k6',   'l5',
+    null,   null,   null,   'd9',   'e9',   'f9',   'g8',   'h7',   'i6',   'k5',   'l4',
+    null,   null,   'c8',   'd8',   'e8',   'f8',   'g7',   'h6',   'i5',   'k4',   'l3',
+    null,   'b7',   'c7',   'd7',   'e7',   'f7',   'g6',   'h5',   'i4',   'k3',   'l2',
+    'a6',   'b6',   'c6',   'd6',   'e6',   'f6',   'g5',   'h4',   'i3',   'k2',   'l1',
+    'a5',   'b5',   'c5',   'd5',   'e5',   'f5',   'g4',   'h3',   'i2',   'k1',   null,
+    'a4',   'b4',   'c4',   'd4',   'e4',   'f4',   'g3',   'h2',   'i1',   null,   null,
+    'a3',   'b3',   'c3',   'd3',   'e3',   'f3',   'g2',   'h1',   null,   null,   null,
+    'a2',   'b2',   'c2',   'd2',   'e2',   'f2',   'g1',   null,   null,   null,   null,
+    'a1',   'b1',   'c1',   'd1',   'e1',   'f1',   null,   null,   null,   null,   null,
 */
 
 #[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]

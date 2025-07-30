@@ -1,4 +1,5 @@
 pub mod bitboard;
+pub mod game;
 pub mod hexchess;
 pub mod pieces;
 pub mod san;
