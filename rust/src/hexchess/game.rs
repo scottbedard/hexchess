@@ -260,26 +260,6 @@ mod tests {
     }
 
     #[test]
-    fn test_initial_position() {
-        let game = Game::init();
-
-        assert!(game.bitboard_black_bishop.is_position_set(Position::F11));
-
-        // "b", "q", "b", "k", "n", null, "b", null, "n", "r",
-        // null, null, null, null, null, "r", "p", "p", "p", "p",
-        // "p", "p", "p", "p", "p", null, null, null, null, null,
-        // null, null, null, null, null, null, null, null, null, null,
-        // null, "P", null, null, null, null, null, null, null, null,
-        // null, "P", null, "P", null, null, null, null, null, null,
-        // null, "P", null, "B", null, "P", null, null, null, null,
-        // null, "P", null, null, "B", null, null, "P", null, null,
-        // null, "P", "R", "N", "Q", "B", "K", "N", "R", "P",
-        // null
-
-        panic!("{:?}", game);
-    }
-
-    #[test]
     fn test_get_piece() {
         let game = Game::init();
         assert_eq!(game.get_position(Position::F11), Some(Piece::BlackBishop));
@@ -320,5 +300,13 @@ mod tests {
         assert_eq!(game.get_position(Position::G5), Some(Piece::WhiteKing));
         assert_eq!(game.get_position(Position::G6), Some(Piece::WhiteRook));
         assert_eq!(game.get_position(Position::G7), Some(Piece::WhiteBishop));
+    }
+
+    #[test]
+    fn test_bitmask() {
+        let mask = hexchess_bitmask::bitmask!("x/3/5/7/9/11/11/11/11/11/11");
+        let game = Game::parse("p/3/5/7/9/11/11/11/11/11/11 w - 0 1").unwrap();
+
+        assert_eq!(game.bitboard_black_pawn.0, mask);
     }
 }
