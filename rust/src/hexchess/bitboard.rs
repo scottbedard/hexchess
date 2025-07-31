@@ -38,6 +38,12 @@ impl Bitboard {
         self.is_bit_set(position as u8)
     }
 
+    /// Test if a position is set by string
+    pub fn is_position_string_set(&self, position: &str) -> bool {
+        let position = Position::from_string(position).unwrap();
+        self.is_position_set(position)
+    }
+
     /// Iterates over the indices of the set bits.
     pub fn iter_set_bits(&self) -> SetBitsIterator {
         SetBitsIterator {
@@ -86,6 +92,12 @@ impl Bitboard {
     /// Set bit at a given position.
     pub fn set_position(&mut self, position: Position) {
         self.set_bit(position as u8);
+    }
+
+    /// Set bit at a given position by string.
+    pub fn set_position_string(&mut self, position: &str) {
+        let position = Position::from_string(position).unwrap();
+        self.set_position(position);
     }
 
     /// Toggles a specific bit at `index`.
@@ -333,6 +345,8 @@ mod tests {
         assert!(!bb.is_position_set(Position::A2));
         bb.clear_position(Position::A1);
         assert!(!bb.is_position_set(Position::A1));
+        bb.set_position_string("b1");
+        assert!(bb.is_position_string_set("b1"));
     }
 
     #[test]
