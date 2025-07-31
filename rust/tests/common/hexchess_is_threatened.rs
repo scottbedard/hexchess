@@ -1,5 +1,5 @@
 use crate::json;
-use hexchess::{index, Hexchess};
+use hexchess::{fen_index, Hexchess};
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -22,7 +22,7 @@ fn test_hexchess_is_threatened() {
             }
         };
 
-        let i = match index(&test.position) {
+        let i = match fen_index(&test.position) {
             Ok(i) => i,
             Err(_) => continue,
         };

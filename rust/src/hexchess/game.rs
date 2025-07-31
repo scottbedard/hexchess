@@ -1,6 +1,9 @@
-use crate::hexchess::bitboard::Bitboard;
 use crate::Color;
+use crate::constants::{INITIAL_POSITION, Piece};
+use crate::hexchess::bitboard::Bitboard;
+use crate::hexchess::position::Position;
 
+#[derive(Debug)]
 pub struct Game {
     pub bitboard_black_bishop: Bitboard,
     pub bitboard_black_king: Bitboard,
@@ -14,7 +17,7 @@ pub struct Game {
     pub bitboard_white_pawn: Bitboard,
     pub bitboard_white_queen: Bitboard,
     pub bitboard_white_rook: Bitboard,
-    pub ep: Option<u8>,
+    pub ep: Option<Position>,
     pub fullmove: u16,
     pub halfmove: u8,
     pub turn: Color,
@@ -42,6 +45,193 @@ impl Game {
             turn: Color::White,
         }
     }
+
+    /// Create a new game instance with the initial position.
+    pub fn init() -> Self {
+        Self::parse(INITIAL_POSITION).unwrap()
+    }
+
+    /// Get the piece at the given position.
+    pub fn get_position(&self, position: Position) -> Option<Piece> {
+        if self.bitboard_black_bishop.is_position_set(position) {
+            Some(Piece::BlackBishop)
+        } else if self.bitboard_black_king.is_position_set(position) {
+            Some(Piece::BlackKing)
+        } else if self.bitboard_black_knight.is_position_set(position) {
+            Some(Piece::BlackKnight)
+        } else if self.bitboard_black_pawn.is_position_set(position) {
+            Some(Piece::BlackPawn)
+        } else if self.bitboard_black_queen.is_position_set(position) {
+            Some(Piece::BlackQueen)
+        } else if self.bitboard_black_rook.is_position_set(position) {
+            Some(Piece::BlackRook)
+        } else if self.bitboard_white_bishop.is_position_set(position) {
+            Some(Piece::WhiteBishop)
+        } else if self.bitboard_white_king.is_position_set(position) {
+            Some(Piece::WhiteKing)
+        } else if self.bitboard_white_knight.is_position_set(position) {
+            Some(Piece::WhiteKnight)
+        } else if self.bitboard_white_pawn.is_position_set(position) {
+            Some(Piece::WhitePawn)
+        } else if self.bitboard_white_queen.is_position_set(position) {
+            Some(Piece::WhiteQueen)
+        } else if self.bitboard_white_rook.is_position_set(position) {
+            Some(Piece::WhiteRook)
+        } else {
+            None
+        }
+    }
+
+    /// Set the piece at the given position.
+    pub fn set_position(&mut self, position: Position, piece: Piece) {
+        match piece {
+            Piece::BlackBishop => self.bitboard_black_bishop.set_position(position),
+            Piece::BlackKing => self.bitboard_black_king.set_position(position),
+            Piece::BlackKnight => self.bitboard_black_knight.set_position(position),
+            Piece::BlackPawn => self.bitboard_black_pawn.set_position(position),
+            Piece::BlackQueen => self.bitboard_black_queen.set_position(position),
+            Piece::BlackRook => self.bitboard_black_rook.set_position(position),
+            Piece::WhiteBishop => self.bitboard_white_bishop.set_position(position),
+            Piece::WhiteKing => self.bitboard_white_king.set_position(position),
+            Piece::WhiteKnight => self.bitboard_white_knight.set_position(position),
+            Piece::WhitePawn => self.bitboard_white_pawn.set_position(position),
+            Piece::WhiteQueen => self.bitboard_white_queen.set_position(position),
+            Piece::WhiteRook => self.bitboard_white_rook.set_position(position),
+        }
+    }
+
+    /// Parse a FEN string into a game instance.
+    pub fn parse(source: &str) -> Result<Self, String> {
+        let mut game = Self::new();
+        let mut parts = source.split_whitespace();
+
+        // board
+        let board = match parts.next() {
+            Some(part) => match parse_board(&part.to_string()) {
+                Ok(result) => result,
+                Err(failure) => return Err(failure),
+            }
+            _ => return Err("fen segment not found: board".to_string()),
+        };
+
+        for (i, piece) in board.iter().enumerate() {
+            let position = Position::from_index(i as u8).unwrap();
+
+            match piece {
+                None => continue,
+                Some(Piece::BlackBishop) => game.bitboard_black_bishop.set_position(position),
+                Some(Piece::BlackKing) => game.bitboard_black_king.set_position(position),
+                Some(Piece::BlackKnight) => game.bitboard_black_knight.set_position(position),
+                Some(Piece::BlackPawn) => game.bitboard_black_pawn.set_position(position),
+                Some(Piece::BlackQueen) => game.bitboard_black_queen.set_position(position),
+                Some(Piece::BlackRook) => game.bitboard_black_rook.set_position(position),
+                Some(Piece::WhiteBishop) => game.bitboard_white_bishop.set_position(position),
+                Some(Piece::WhiteKing) => game.bitboard_white_king.set_position(position),
+                Some(Piece::WhiteKnight) => game.bitboard_white_knight.set_position(position),
+                Some(Piece::WhitePawn) => game.bitboard_white_pawn.set_position(position),
+                Some(Piece::WhiteQueen) => game.bitboard_white_queen.set_position(position),
+                Some(Piece::WhiteRook) => game.bitboard_white_rook.set_position(position),
+            }
+        }
+
+        // turn color
+        game.turn = match parts.next() {
+            Some(part) => match part {
+                "b" => Color::Black,
+                "w" => Color::White,
+                _ => return Err(format!("invalid turn color: {}", part)),
+            },
+            None => Color::White,
+        };
+
+        game.ep = match parts.next() {
+            Some(part) => match part {
+                "-" => None,
+                part => match Position::from_string(part) {
+                    Ok(position) => Some(position),
+                    Err(_) => return Err(format!("invalid en passant position: {}", part)),
+                }
+            },
+            None => None,
+        };
+
+        game.halfmove = match parts.next() {
+            Some(part) => match part.parse::<u8>() {
+              Ok(result) => result,
+              Err(_) => return Err(format!("invalid halfmove: {}", part)),
+            },
+            None => 0,
+        };
+
+        game.fullmove = match parts.next() {
+            Some(part) => match part.parse::<u16>() {
+                Ok(result) => match result >= 1 {
+                    true => result,
+                    false => return Err(format!("invalid fullmove: {}", part)),
+                },
+                Err(_) => return Err(format!("invalid fullmove: {}", part)),
+            },
+            None => 1,
+        };
+
+        Ok(game)
+    }
+}
+
+/// parse the board segment of fen
+fn parse_board(source: &String) -> Result<[Option<Piece>; 91], String> {
+    let mut arr: [Option<Piece>; 91] = [None; 91];
+    let mut existing_black_king = false;
+    let mut existing_white_king = false;
+    let mut fen_index: u8 = 0;
+
+    for (index, current) in source.chars().enumerate() {
+        match current {
+            '/' => continue,
+            '0' => continue,
+            '1' => match source.chars().nth(index as usize + 1) {
+                Some('0') | Some('1') => fen_index += 10,
+                _ => fen_index += 1,
+            },
+            '2' => fen_index += 2,
+            '3' => fen_index += 3,
+            '4' => fen_index += 4,
+            '5' => fen_index += 5,
+            '6' => fen_index += 6,
+            '7' => fen_index += 7,
+            '8' => fen_index += 8,
+            '9' => fen_index += 9,
+            'b' | 'B' | 'n' | 'N' | 'p' | 'P' | 'Q' | 'q' | 'r' | 'R' => {
+                arr[fen_index as usize] = Some(Piece::from(current));
+                fen_index += 1;
+            }
+            'k' => {
+                if existing_black_king {
+                    return Err("multiple black kings".to_string());
+                }
+
+                arr[fen_index as usize] = Some(Piece::BlackKing);
+                existing_black_king = true;
+                fen_index += 1;
+            }
+            'K' => {
+                if existing_white_king {
+                    return Err("multiple white kings".to_string());
+                }
+
+                arr[fen_index as usize] = Some(Piece::WhiteKing);
+                existing_white_king = true;
+                fen_index += 1;
+            },
+            _ => return Err(format!("invalid character at index {}: {}", index, current)),
+        }
+    }
+
+    if fen_index != 91 {
+        return Err("board overflow".to_string());
+    }
+
+    Ok(arr)
 }
 
 #[cfg(test)]
@@ -67,5 +257,68 @@ mod tests {
         assert_eq!(game.fullmove, 1);
         assert_eq!(game.halfmove, 0);
         assert_eq!(game.turn, Color::White);
+    }
+
+    #[test]
+    fn test_initial_position() {
+        let game = Game::init();
+
+        assert!(game.bitboard_black_bishop.is_position_set(Position::F11));
+
+        // "b", "q", "b", "k", "n", null, "b", null, "n", "r",
+        // null, null, null, null, null, "r", "p", "p", "p", "p",
+        // "p", "p", "p", "p", "p", null, null, null, null, null,
+        // null, null, null, null, null, null, null, null, null, null,
+        // null, "P", null, null, null, null, null, null, null, null,
+        // null, "P", null, "P", null, null, null, null, null, null,
+        // null, "P", null, "B", null, "P", null, null, null, null,
+        // null, "P", null, null, "B", null, null, "P", null, null,
+        // null, "P", "R", "N", "Q", "B", "K", "N", "R", "P",
+        // null
+
+        panic!("{:?}", game);
+    }
+
+    #[test]
+    fn test_get_piece() {
+        let game = Game::init();
+        assert_eq!(game.get_position(Position::F11), Some(Piece::BlackBishop));
+    }
+
+    #[test]
+    fn test_get_and_set_piece() {
+        let mut game = Game::new();
+
+        game.set_position(Position::F1, Piece::BlackBishop);
+        game.set_position(Position::F2, Piece::BlackPawn);
+        game.set_position(Position::F3, Piece::BlackKnight);
+        game.set_position(Position::F4, Piece::BlackQueen);
+        game.set_position(Position::F5, Piece::BlackKing);
+        game.set_position(Position::F6, Piece::BlackRook);
+        game.set_position(Position::F7, Piece::BlackBishop);
+        game.set_position(Position::F8, Piece::BlackKnight);
+        game.set_position(Position::G1, Piece::WhiteBishop);
+        game.set_position(Position::G2, Piece::WhitePawn);
+        game.set_position(Position::G3, Piece::WhiteKnight);
+        game.set_position(Position::G4, Piece::WhiteQueen);
+        game.set_position(Position::G5, Piece::WhiteKing);
+        game.set_position(Position::G6, Piece::WhiteRook);
+        game.set_position(Position::G7, Piece::WhiteBishop);
+
+        assert_eq!(game.get_position(Position::F1), Some(Piece::BlackBishop));
+        assert_eq!(game.get_position(Position::F2), Some(Piece::BlackPawn));
+        assert_eq!(game.get_position(Position::F3), Some(Piece::BlackKnight));
+        assert_eq!(game.get_position(Position::F4), Some(Piece::BlackQueen));
+        assert_eq!(game.get_position(Position::F5), Some(Piece::BlackKing));
+        assert_eq!(game.get_position(Position::F6), Some(Piece::BlackRook));
+        assert_eq!(game.get_position(Position::F7), Some(Piece::BlackBishop));
+        assert_eq!(game.get_position(Position::F8), Some(Piece::BlackKnight));
+        assert_eq!(game.get_position(Position::G1), Some(Piece::WhiteBishop));
+        assert_eq!(game.get_position(Position::G2), Some(Piece::WhitePawn));
+        assert_eq!(game.get_position(Position::G3), Some(Piece::WhiteKnight));
+        assert_eq!(game.get_position(Position::G4), Some(Piece::WhiteQueen));
+        assert_eq!(game.get_position(Position::G5), Some(Piece::WhiteKing));
+        assert_eq!(game.get_position(Position::G6), Some(Piece::WhiteRook));
+        assert_eq!(game.get_position(Position::G7), Some(Piece::WhiteBishop));
     }
 }

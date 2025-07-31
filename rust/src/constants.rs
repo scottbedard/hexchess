@@ -1546,6 +1546,26 @@ impl fmt::Display for Piece {
     }
 }
 
+impl From<char> for Piece {
+    fn from(c: char) -> Self {
+        match c {
+            'b' => Piece::BlackBishop,
+            'k' => Piece::BlackKing,
+            'n' => Piece::BlackKnight,
+            'p' => Piece::BlackPawn,
+            'q' => Piece::BlackQueen,
+            'r' => Piece::BlackRook,
+            'B' => Piece::WhiteBishop,
+            'K' => Piece::WhiteKing,
+            'N' => Piece::WhiteKnight,
+            'P' => Piece::WhitePawn,
+            'Q' => Piece::WhiteQueen,
+            'R' => Piece::WhiteRook,
+            _ => panic!("Invalid piece character: {}", c),
+        }
+    }
+}
+
 /// Promotion pieces
 #[derive(Clone, Copy, Debug, Deserialize, PartialEq, Serialize)]
 pub enum PromotionPiece {

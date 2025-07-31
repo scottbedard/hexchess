@@ -1,6 +1,6 @@
 use crate::json;
 use hexchess::Hexchess;
-use hexchess::hexchess::utils::index;
+use hexchess::hexchess::utils::fen_index;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -21,7 +21,7 @@ fn test_moves_from_unsafe() {
         let tests = json::<Test>(file);
 
         for test in tests {
-            let from = index(&test.position).unwrap();
+            let from = fen_index(&test.position).unwrap();
 
             let result = Hexchess::parse(&test.from)
                 .unwrap()

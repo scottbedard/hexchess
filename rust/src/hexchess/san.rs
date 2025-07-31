@@ -4,7 +4,7 @@ use std::fmt;
 
 use crate::hexchess::utils::{
     is_promotion_position,
-    index,
+    fen_index,
 };
 
 use super::utils::position;
@@ -94,14 +94,14 @@ impl San {
         // assemble and validate from and to positions
         let from_source = from_file.to_string() + &from_rank;
 
-        let from = match index(&from_source) {
+        let from = match fen_index(&from_source) {
             Ok(value) => value,
             Err(_) => return Err(format!("invalid from position: {}", from_source)),
         };
 
         let to_source = to_file.to_string() + &to_rank;
 
-        let to = match index(&to_source) {
+        let to = match fen_index(&to_source) {
             Ok(value) => value,
             Err(_) => return Err(format!("invalid to position: {}", to_source)),
         };
