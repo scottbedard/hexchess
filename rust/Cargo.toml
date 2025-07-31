@@ -26,9 +26,11 @@ path = "bench/initial_position.rs"
 default = []
 
 [dependencies]
+hexchess_bitmask = { path = "./hexchess_bitmask" }
+rand = "0.9.2"
 serde = { version = "1.0.219", features = ["derive"] }
-serde_with = "3.12.0"
 serde_json = "1.0.140"
+serde_with = "3.12.0"
 smallvec = "1.11"
 
 [profile.bench]

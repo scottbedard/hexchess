@@ -355,4 +355,18 @@ mod tests {
         assert!(bb.0 > 0);
         assert!(bb.0 < u128::MAX);
     }
+
+    #[test]
+    fn test_bitmask() {
+        let mask1 = hexchess_bitmask::bitmask!("1/3/5/7/9/11/11/11/11/11/11");
+        assert_eq!(mask1, 0);
+
+        let mask2 = hexchess_bitmask::bitmask!("x/3/5/7/9/11/11/11/11/11/11");
+        assert!(mask2 > 0);
+        assert!(mask2 < u128::MAX);
+
+        let mask3 = hexchess_bitmask::bitmask!("x/xxx/xxxxx/xxxxxxx/xxxxxxxxx/xxxxxxxxxxx/xxxxxxxxxxx/xxxxxxxxxxx/xxxxxxxxxxx/xxxxxxxxxxx/xxxxxxxxxxx");
+        assert!(mask3 > mask2);
+        assert!(mask3 < u128::MAX);
+    }
 }
