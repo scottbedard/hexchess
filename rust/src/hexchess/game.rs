@@ -237,6 +237,7 @@ fn parse_board(source: &String) -> Result<[Option<Piece>; 91], String> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use hexchess_bitmask::bitmask;
 
     #[test]
     fn test_new() {
@@ -304,9 +305,8 @@ mod tests {
 
     #[test]
     fn test_bitmask() {
-        let mask = hexchess_bitmask::bitmask!("x/3/5/7/9/11/11/11/11/11/11");
+        let mask = bitmask!("x/3/5/7/9/11/11/11/11/11/11");
         let game = Game::parse("p/3/5/7/9/11/11/11/11/11/11 w - 0 1").unwrap();
-
         assert_eq!(game.bitboard_black_pawn.0, mask);
     }
 }
