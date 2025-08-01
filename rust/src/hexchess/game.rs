@@ -71,31 +71,32 @@ impl Game {
 
     pub fn get_moves_unsafe(&self, position: Position) -> Vec<San> {
         // Get the piece at this position
-        let piece = match self.get_position(position) {
+        let _piece = match self.get_position(position) {
             Some(piece) => piece,
             None => return Vec::new(), // No piece at this position
         };
         
-        // Determine capacity based on piece type
-        let capacity = match piece {
-            Piece::BlackKing | Piece::WhiteKing => 9,      // Kings: max 9 moves
-            Piece::BlackKnight | Piece::WhiteKnight => 8,  // Knights: max 8 moves
-            Piece::BlackPawn | Piece::WhitePawn => 4,      // Pawns: max 4 moves (including promotions)
-            Piece::BlackBishop | Piece::WhiteBishop => 13, // Bishops: can have many moves
-            Piece::BlackRook | Piece::WhiteRook => 14,     // Rooks: can have many moves
-            Piece::BlackQueen | Piece::WhiteQueen => 27,   // Queens: can have many moves
-        };
-        
-        let mut result: Vec<San> = Vec::with_capacity(capacity);
-
-        // TODO: Implement move generation logic here
-        // let color = piece.get_color(); // You'll need to implement this
+        let result: Vec<San> = Vec::new();
         
         // result.extend(match piece {
         //     Piece::BlackKing | Piece::WhiteKing => {
-        //         king_moves_unsafe(&self, position, &color).into_vec().into_iter()
+        //         king_moves_unsafe(&self, from, &color).into_vec().into_iter()
         //     },
-        //     // ... other piece types
+        //     Piece::BlackKnight | Piece::WhiteKnight => {
+        //         knight_moves_unsafe(&self, from, &color).into_vec().into_iter()
+        //     },
+        //     Piece::BlackPawn | Piece::WhitePawn => {
+        //         pawn_moves_unsafe(&self, from, &color).into_vec().into_iter()
+        //     },
+        //     Piece::BlackBishop | Piece::WhiteBishop => {
+        //         bishop_moves_unsafe(&self, &from, &color).into_vec().into_iter()
+        //     },
+        //     Piece::BlackRook | Piece::WhiteRook => {
+        //         rook_moves_unsafe(&self, &from, &color).into_vec().into_iter()
+        //     },
+        //     Piece::BlackQueen | Piece::WhiteQueen => {
+        //         queen_moves_unsafe(&self, &from, &color).into_iter()
+        //     }
         // });
         
         result
