@@ -98,26 +98,6 @@ impl Game {
         }
     }
 
-    /// Set the piece at the given position.
-    pub fn set_position(&mut self, position: Position, piece: Piece) {
-        self.clear_position(position);
-
-        match piece {
-            Piece::BlackBishop => self.bitboard_black_bishop.set_position(position),
-            Piece::BlackKing => self.bitboard_black_king.set_position(position),
-            Piece::BlackKnight => self.bitboard_black_knight.set_position(position),
-            Piece::BlackPawn => self.bitboard_black_pawn.set_position(position),
-            Piece::BlackQueen => self.bitboard_black_queen.set_position(position),
-            Piece::BlackRook => self.bitboard_black_rook.set_position(position),
-            Piece::WhiteBishop => self.bitboard_white_bishop.set_position(position),
-            Piece::WhiteKing => self.bitboard_white_king.set_position(position),
-            Piece::WhiteKnight => self.bitboard_white_knight.set_position(position),
-            Piece::WhitePawn => self.bitboard_white_pawn.set_position(position),
-            Piece::WhiteQueen => self.bitboard_white_queen.set_position(position),
-            Piece::WhiteRook => self.bitboard_white_rook.set_position(position),
-        }
-    }
-
     /// Parse a FEN string into a game instance.
     pub fn parse(source: &str) -> Result<Self, String> {
         let mut game = Self::new();
@@ -193,6 +173,38 @@ impl Game {
         };
 
         Ok(game)
+    }
+
+    /// Set the piece at the given position.
+    pub fn set_position(&mut self, position: Position, piece: Piece) {
+        self.clear_position(position);
+
+        match piece {
+            Piece::BlackBishop => self.bitboard_black_bishop.set_position(position),
+            Piece::BlackKing => self.bitboard_black_king.set_position(position),
+            Piece::BlackKnight => self.bitboard_black_knight.set_position(position),
+            Piece::BlackPawn => self.bitboard_black_pawn.set_position(position),
+            Piece::BlackQueen => self.bitboard_black_queen.set_position(position),
+            Piece::BlackRook => self.bitboard_black_rook.set_position(position),
+            Piece::WhiteBishop => self.bitboard_white_bishop.set_position(position),
+            Piece::WhiteKing => self.bitboard_white_king.set_position(position),
+            Piece::WhiteKnight => self.bitboard_white_knight.set_position(position),
+            Piece::WhitePawn => self.bitboard_white_pawn.set_position(position),
+            Piece::WhiteQueen => self.bitboard_white_queen.set_position(position),
+            Piece::WhiteRook => self.bitboard_white_rook.set_position(position),
+        }
+    }
+
+    /// Convert bitboard states to a piece array.
+    pub fn to_array(&self) -> [Option<Piece>; 91] {
+        let mut arr: [Option<Piece>; 91] = [None; 91];
+        
+        for i in 0..91 {
+            let position = Position::from_index(i as u8).unwrap();
+            arr[i] = self.get_position(position);
+        }
+
+        arr
     }
 }
 
@@ -344,5 +356,102 @@ mod tests {
         let mask = bitmask!("x/3/5/7/9/11/11/11/11/11/11");
         let game = Game::parse("p/3/5/7/9/11/11/11/11/11/11 w - 0 1").unwrap();
         assert_eq!(game.bitboard_black_pawn.0, mask);
+    }
+
+    #[test]
+    fn test_to_array() {
+        assert_eq!(Game::init().to_array(), [
+            Some(Piece::BlackBishop),
+            Some(Piece::BlackQueen),
+            Some(Piece::BlackBishop),
+            Some(Piece::BlackKing),
+            Some(Piece::BlackKnight),
+            None,
+            Some(Piece::BlackBishop),
+            None,
+            Some(Piece::BlackKnight),
+            Some(Piece::BlackRook),
+            None,
+            None,
+            None,
+            None,
+            None,
+            Some(Piece::BlackRook),
+            Some(Piece::BlackPawn),
+            Some(Piece::BlackPawn),
+            Some(Piece::BlackPawn),
+            Some(Piece::BlackPawn),
+            Some(Piece::BlackPawn),
+            Some(Piece::BlackPawn),
+            Some(Piece::BlackPawn),
+            Some(Piece::BlackPawn),
+            Some(Piece::BlackPawn),
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            Some(Piece::WhitePawn),
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            Some(Piece::WhitePawn),
+            None,
+            Some(Piece::WhitePawn),
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            Some(Piece::WhitePawn),
+            None,
+            Some(Piece::WhiteBishop),
+            None,
+            Some(Piece::WhitePawn),
+            None,
+            None,
+            None,
+            None,
+            None,
+            Some(Piece::WhitePawn),
+            None,
+            None,
+            Some(Piece::WhiteBishop),
+            None,
+            None,
+            Some(Piece::WhitePawn),
+            None,
+            None,
+            None,
+            Some(Piece::WhitePawn),
+            Some(Piece::WhiteRook),
+            Some(Piece::WhiteKnight),
+            Some(Piece::WhiteQueen),
+            Some(Piece::WhiteBishop),
+            Some(Piece::WhiteKing),
+            Some(Piece::WhiteKnight),
+            Some(Piece::WhiteRook),
+            Some(Piece::WhitePawn),
+            None
+        ]);
     }
 }
