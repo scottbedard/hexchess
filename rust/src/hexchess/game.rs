@@ -171,7 +171,7 @@ impl Game {
         };
 
         for (i, piece) in board.iter().enumerate() {
-            let position = Position::from_index(i as u8).unwrap();
+            let position = Position::from_fen_index(i as u8);
 
             match piece {
                 None => continue,
@@ -238,7 +238,7 @@ impl Game {
         let mut arr: [Option<Piece>; 91] = [None; 91];
         
         for i in 0..91 {
-            let position = Position::from_index(i as u8).unwrap();
+            let position = Position::from_fen_index(i as u8);
             arr[i] = self.get_position(position);
         }
 

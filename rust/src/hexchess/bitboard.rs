@@ -1,6 +1,7 @@
 extern crate hexchess_bitmask;
 
 use crate::hexchess::position::Position;
+use hexchess_bitmask::bitmask;
 
 #[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
 pub struct Bitboard(pub u128);
@@ -26,6 +27,11 @@ impl Bitboard {
     /// Returns the number of set bits.
     pub fn count_bits(&self) -> u32 {
         self.0.count_ones()
+    }
+
+    /// Create a bitboard with all hexboard bits set.
+    pub fn filled() -> Self {
+        Self(bitmask!("x/xxx/xxxxx/xxxxxxx/xxxxxxxxx/xxxxxxxxxxx/xxxxxxxxxxx/xxxxxxxxxxx/xxxxxxxxxxx/xxxxxxxxxxx/xxxxxxxxxxx"))
     }
 
     /// Checks if a specific bit at `index` is set (1).
@@ -107,6 +113,19 @@ impl Bitboard {
     pub fn toggle_bit(&mut self, index: u8) {
         assert!(index < 128, "Index out of bounds for u128");
         self.0 ^= 1u128 << index;
+    }
+
+    /// Convert the bitboard to a vector of positions.
+    pub fn to_positions(&self) -> Vec<Position> {
+        let mut result = Vec::with_capacity(self.count_bits() as usize);
+
+        let board = Bitboard(self.0 & Bitboard::filled().0);
+
+        for index in board.iter_set_bits() {
+            result.push(Position::from_bitboard_index(index));
+        }
+
+        result
     }
 }
 
@@ -208,7 +227,7 @@ impl std::ops::ShrAssign<u8> for Bitboard {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use hexchess_bitmask::{bitmask, bitmask_csv};
+    use hexchess_bitmask::bitmask_csv;
 
     #[test]
     fn test_new() {
@@ -371,6 +390,7 @@ mod tests {
         assert_eq!(b1.0, bitmask!("x/3/5/7/9/11/11/11/11/11/11"));
 
         let mask2 = bitmask!("x/xxx/xxxxx/xxxxxxx/xxxxxxxxx/xxxxxxxxxxx/xxxxxxxxxxx/xxxxxxxxxxx/xxxxxxxxxxx/xxxxxxxxxxx/xxxxxxxxxxx");
+        assert_eq!(mask2, Bitboard::filled().0);
         assert!(mask2 > mask1);
         assert!(mask2 < u128::MAX);
     }
@@ -379,7 +399,21 @@ mod tests {
     fn test_bitmask_csv() {
         assert_eq!(
             bitmask!("x/3/5/7/9/x9x/11/11/11/11/x4x4x"),
-            bitmask_csv!("a1,a6,f11,l6,l1,f1")
+            bitmask_csv!("a1, a6, f11, l6, l1, f1")
         );
+    }
+
+    #[test]
+    fn test_bitmask_csv_to_positions() {
+        let bb = Bitboard(bitmask_csv!("a1, a6, f11, l6, l1, f1"));
+
+        assert_eq!(bb.to_positions(), vec![
+            Position::F11,
+            Position::L6,
+            Position::A6,
+            Position::L1,
+            Position::A1,
+            Position::F1,
+        ]);
     }
 }
