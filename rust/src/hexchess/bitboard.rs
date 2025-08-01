@@ -1,3 +1,5 @@
+extern crate hexchess_bitmask;
+
 use crate::hexchess::position::Position;
 
 #[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
@@ -206,6 +208,7 @@ impl std::ops::ShrAssign<u8> for Bitboard {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use hexchess_bitmask::bitmask;
 
     #[test]
     fn test_new() {
@@ -358,15 +361,17 @@ mod tests {
 
     #[test]
     fn test_bitmask() {
-        let mask1 = hexchess_bitmask::bitmask!("1/3/5/7/9/11/11/11/11/11/11");
-        assert_eq!(mask1, 0);
+        let b0 = Bitboard(0);
+        assert_eq!(b0.0, 0);
+        assert_eq!(b0.0, bitmask!("1/3/5/7/9/11/11/11/11/11/11"));
 
-        let mask2 = hexchess_bitmask::bitmask!("x/3/5/7/9/11/11/11/11/11/11");
-        assert!(mask2 > 0);
+        let mut b1 = Bitboard(0);
+        let mask1 = bitmask!("x/3/5/7/9/11/11/11/11/11/11");
+        b1.set_position(Position::F11);
+        assert_eq!(b1.0, bitmask!("x/3/5/7/9/11/11/11/11/11/11"));
+
+        let mask2 = bitmask!("x/xxx/xxxxx/xxxxxxx/xxxxxxxxx/xxxxxxxxxxx/xxxxxxxxxxx/xxxxxxxxxxx/xxxxxxxxxxx/xxxxxxxxxxx/xxxxxxxxxxx");
+        assert!(mask2 > mask1);
         assert!(mask2 < u128::MAX);
-
-        let mask3 = hexchess_bitmask::bitmask!("x/xxx/xxxxx/xxxxxxx/xxxxxxxxx/xxxxxxxxxxx/xxxxxxxxxxx/xxxxxxxxxxx/xxxxxxxxxxx/xxxxxxxxxxx/xxxxxxxxxxx");
-        assert!(mask3 > mask2);
-        assert!(mask3 < u128::MAX);
     }
 }
