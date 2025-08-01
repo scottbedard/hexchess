@@ -1,4 +1,5 @@
-use hexchess::{Color, Hexchess};
+use hexchess::hexchess::color::Color;
+use hexchess::hexchess::hexchess::Hexchess;
 use hexchess::hexchess::utils::{fen_index, walk};
 use serde::{Deserialize, Serialize};
 use crate::json;
