@@ -69,6 +69,29 @@ impl Game {
         self.bitboard_white_rook.clear_position(position);
     }
 
+    /// Get the bitboard for a given color.
+    pub fn get_color_bitboard(&self, color: Color) -> Bitboard {
+        match color {
+            Color::Black => {
+                self.bitboard_black_bishop |
+                self.bitboard_black_king |
+                self.bitboard_black_knight |
+                self.bitboard_black_pawn |
+                self.bitboard_black_queen |
+                self.bitboard_black_rook
+            },
+            Color::White => {
+                self.bitboard_white_bishop |
+                self.bitboard_white_king |
+                self.bitboard_white_knight |
+                self.bitboard_white_pawn |
+                self.bitboard_white_queen |
+                self.bitboard_white_rook
+            }
+        }
+    }
+
+    /// Get moves from a position, regardless of turn or legality.
     pub fn get_moves_unsafe(&self, position: Position) -> Vec<San> {
         // Get the piece at this position
         let _piece = match self.get_position(position) {
@@ -552,5 +575,15 @@ mod tests {
         let game = Game::init();
 
         assert_eq!(game.to_string(), INITIAL_POSITION);
+    }
+
+    #[test]
+    fn test_get_color_bitboard() {
+        let game = Game::init();
+        let black = bitmask!("x/xxx/x1x1x/x5x/xxxxxxxxx/11/11/11/11/11/11");
+        let white = bitmask!("1/3/5/7/9/11/5x5/4x1x4/3x1x1x3/2x2x2x2/1xxxxxxxxx1");
+
+        assert_eq!(game.get_color_bitboard(Color::Black).0, black);
+        assert_eq!(game.get_color_bitboard(Color::White).0, white);
     }
 }

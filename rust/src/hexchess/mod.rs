@@ -1,4 +1,5 @@
 pub mod bitboard;
+pub mod bitmaps;
 pub mod color;
 pub mod game;
 pub mod hexchess;
