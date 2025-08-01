@@ -21,7 +21,7 @@ pub fn king_moves_unsafe(
 
         match hexchess.board[to as usize] {
             Some(piece) => {
-                if color!(&piece) != *color {
+                if piece.is_enemy(*color) {
                     result.push(San { from, promotion: None, to });
                 }
             },

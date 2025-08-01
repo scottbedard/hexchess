@@ -1,3 +1,4 @@
+use crate::h;
 use crate::hexchess::color::Color;
 use crate::hexchess::piece::Piece;
 use crate::hexchess::pieces::bishop::bishop_moves_unsafe;
@@ -19,7 +20,6 @@ use crate::constants::{
     PromotionPiece,
 };
 
-use crate::{color, h};
 use crate::hexchess::utils::{
     is_legal_en_passant,
     step,
@@ -100,7 +100,7 @@ impl Hexchess {
             self.halfmove += 1;
         }
 
-        let color = color!(&piece);
+        let color = piece.color();
 
         // update fullmove and turn color
         if color == Color::Black {
@@ -207,7 +207,7 @@ impl Hexchess {
         for index in 0..91 {
             unsafe {
                 match *self.board.get_unchecked(index) {
-                    Some(piece) => if color!(&piece) == color {
+                    Some(piece) => if piece.is_friendly(color) {
                         result.push(index as u8);
                     },
                     None => continue,
@@ -226,7 +226,7 @@ impl Hexchess {
             None => return Vec::new(),
         };
 
-        let color = color!(&piece);
+        let color = piece.color();
 
         self.moves_from_unsafe(from)
             .into_iter()
@@ -266,7 +266,7 @@ impl Hexchess {
             None => return result,
         };
         
-        let color = color!(&piece);
+        let color = piece.color();
 
         result.extend(match piece {
             Piece::BlackKing | Piece::WhiteKing => {
@@ -363,7 +363,7 @@ impl Hexchess {
             None => return false,
         };
         
-        if color!(&piece) != self.turn {
+        if piece.is_enemy(self.turn) {
             return false;
         }
 
@@ -384,13 +384,13 @@ impl Hexchess {
             None => return false,
         };
 
-        let color = color!(&threatened_piece);
+        let color = threatened_piece.color();
 
         // Use unchecked access for better performance
         for n in 0u8..91u8 {
             unsafe {
                 match *self.board.get_unchecked(n as usize) {
-                    Some(piece) => if color!(&piece) != color {
+                    Some(piece) => if piece.is_enemy(color) {
                         for san in self.moves_from_unsafe(n) {
                             if san.to == position {
                                 return true

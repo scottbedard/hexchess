@@ -24,7 +24,7 @@ pub fn knight_moves_unsafe(
     let mut moves: SmallVec<[San; 12]> = KNIGHT_GRAPH[from as usize]
         .iter()
         .filter(|&to| match hexchess.board[*to as usize] {
-            Some(piece) => color!(&piece) != *color,
+            Some(piece) => piece.is_enemy(*color),
             None => true,
         })
         .map(|&to| San { from, promotion: None, to })

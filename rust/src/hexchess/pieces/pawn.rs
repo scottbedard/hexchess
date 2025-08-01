@@ -1268,7 +1268,7 @@ pub fn pawn_moves_unsafe(
             None => if hexchess.turn == *color && hexchess.ep == Some(to) {
                 sans.push(San { from, promotion: None, to });
             },
-            Some(occupying_piece) => if color!(&occupying_piece) != *color {
+            Some(occupying_piece) => if occupying_piece.is_enemy(*color) {
                 push_sans(&mut sans, from, to, pawn.promote_portside);
             }
         }
@@ -1281,7 +1281,7 @@ pub fn pawn_moves_unsafe(
             None => if hexchess.turn == *color && hexchess.ep == Some(to) {
                 sans.push(San { from, promotion: None, to });
             },
-            Some(occupying_piece) => if color!(&occupying_piece) != *color {
+            Some(occupying_piece) => if occupying_piece.is_enemy(*color) {
                 push_sans(&mut sans, from, to, pawn.promote_starboard);
             }
         }

@@ -304,7 +304,7 @@ pub fn walk(hexchess: &Hexchess, from: u8, direction: u8, color: &Color) -> Smal
             }
         };
 
-        if color!(&piece) == *color {
+        if piece.is_friendly(*color) {
             return path // <- shop short of friendly piece
         }
         

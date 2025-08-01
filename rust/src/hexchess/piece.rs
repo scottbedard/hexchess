@@ -1,3 +1,4 @@
+use crate::hexchess::color::Color;
 use serde::{Deserialize, Serialize};
 use std::fmt;
 
@@ -82,6 +83,35 @@ impl From<char> for Piece {
 }
 
 impl Piece {
+    /// Check if a piece is of a given color.
+    pub fn is_friendly(&self, color: Color) -> bool {
+        self.color() == color
+    }
+
+    /// Check if a piece is an enemy of a given color.
+    pub fn is_enemy(&self, color: Color) -> bool {
+        self.color() != color
+    }
+
+    /// Get the color of a piece.
+    pub fn color(&self) -> Color {
+        match self {
+            Piece::BlackBishop => Color::Black,
+            Piece::BlackKing => Color::Black,
+            Piece::BlackKnight => Color::Black,
+            Piece::BlackPawn => Color::Black,
+            Piece::BlackQueen => Color::Black,
+            Piece::BlackRook => Color::Black,
+            Piece::WhiteBishop => Color::White,
+            Piece::WhiteKing => Color::White,
+            Piece::WhiteKnight => Color::White,
+            Piece::WhitePawn => Color::White,
+            Piece::WhiteQueen => Color::White,
+            Piece::WhiteRook => Color::White,
+        }
+    }
+
+    /// Convert a piece to a character.
     pub fn to_char(&self) -> char {
         match self {
             Piece::BlackBishop => 'b',
@@ -118,5 +148,37 @@ mod tests {
         assert_eq!(format!("{}", Piece::WhitePawn), "P");
         assert_eq!(format!("{}", Piece::WhiteQueen), "Q");
         assert_eq!(format!("{}", Piece::WhiteRook), "R");
+    }
+
+    #[test]
+    fn test_piece_is_color() {
+        assert!(Piece::BlackBishop.is_friendly(Color::Black));
+        assert!(Piece::BlackKing.is_friendly(Color::Black));
+        assert!(Piece::BlackKnight.is_friendly(Color::Black));
+        assert!(Piece::BlackPawn.is_friendly(Color::Black));
+        assert!(Piece::BlackQueen.is_friendly(Color::Black));
+        assert!(Piece::BlackRook.is_friendly(Color::Black));
+        assert!(Piece::WhiteBishop.is_friendly(Color::White));
+        assert!(Piece::WhiteKing.is_friendly(Color::White));
+        assert!(Piece::WhiteKnight.is_friendly(Color::White));
+        assert!(Piece::WhitePawn.is_friendly(Color::White));
+        assert!(Piece::WhiteQueen.is_friendly(Color::White));
+        assert!(Piece::WhiteRook.is_friendly(Color::White));
+    }
+
+    #[test]
+    fn test_piece_color() {
+        assert_eq!(Piece::BlackBishop.color(), Color::Black);
+        assert_eq!(Piece::BlackKing.color(), Color::Black);
+        assert_eq!(Piece::BlackKnight.color(), Color::Black);
+        assert_eq!(Piece::BlackPawn.color(), Color::Black);
+        assert_eq!(Piece::BlackQueen.color(), Color::Black);
+        assert_eq!(Piece::BlackRook.color(), Color::Black);
+        assert_eq!(Piece::WhiteBishop.color(), Color::White);
+        assert_eq!(Piece::WhiteKing.color(), Color::White);
+        assert_eq!(Piece::WhiteKnight.color(), Color::White);
+        assert_eq!(Piece::WhitePawn.color(), Color::White);
+        assert_eq!(Piece::WhiteQueen.color(), Color::White);
+        assert_eq!(Piece::WhiteRook.color(), Color::White);
     }
 }
