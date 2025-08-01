@@ -1,12 +1,8 @@
+use crate::color;
+use crate::constants::PromotionPiece;
+use crate::hexchess::color::Color;
 use crate::hexchess::hexchess::Hexchess;
 use crate::hexchess::san::San;
-
-use crate::constants::{
-    Color,
-    PromotionPiece,
-};
-
-use crate::color;
 use smallvec::SmallVec;
 
 /** pre-computed position pawn graph */

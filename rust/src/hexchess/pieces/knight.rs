@@ -1,7 +1,8 @@
-use crate::constants::{Color, KNIGHT_GRAPH};
+use crate::{color, h};
+use crate::constants::KNIGHT_GRAPH;
+use crate::hexchess::color::Color;
 use crate::hexchess::hexchess::Hexchess;
 use crate::hexchess::san::San;
-use crate::color;
 use smallvec::SmallVec;
 
 const REACHABLE_POSITIONS: [u8; 91] = [

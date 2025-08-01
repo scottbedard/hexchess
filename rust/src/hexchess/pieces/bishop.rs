@@ -1,4 +1,4 @@
-use crate::constants::Color;
+use crate::hexchess::color::Color;
 use crate::hexchess::hexchess::Hexchess;
 use crate::hexchess::san::San;
 use crate::hexchess::utils::walk;

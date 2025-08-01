@@ -99,18 +99,18 @@ macro_rules! h {
 macro_rules! color {
     ($piece:expr) => {
         match $piece {
-            $crate::hexchess::piece::Piece::WhitePawn => $crate::constants::Color::White,
-            $crate::hexchess::piece::Piece::WhiteKnight => $crate::constants::Color::White,
-            $crate::hexchess::piece::Piece::WhiteBishop => $crate::constants::Color::White,
-            $crate::hexchess::piece::Piece::WhiteRook => $crate::constants::Color::White,
-            $crate::hexchess::piece::Piece::WhiteQueen => $crate::constants::Color::White,
-            $crate::hexchess::piece::Piece::WhiteKing => $crate::constants::Color::White,
-            $crate::hexchess::piece::Piece::BlackPawn => $crate::constants::Color::Black,
-            $crate::hexchess::piece::Piece::BlackKnight => $crate::constants::Color::Black,
-            $crate::hexchess::piece::Piece::BlackBishop => $crate::constants::Color::Black,
-            $crate::hexchess::piece::Piece::BlackRook => $crate::constants::Color::Black,
-            $crate::hexchess::piece::Piece::BlackQueen => $crate::constants::Color::Black,
-            $crate::hexchess::piece::Piece::BlackKing => $crate::constants::Color::Black,
+            $crate::hexchess::piece::Piece::WhitePawn => $crate::hexchess::color::Color::White,
+            $crate::hexchess::piece::Piece::WhiteKnight => $crate::hexchess::color::Color::White,
+            $crate::hexchess::piece::Piece::WhiteBishop => $crate::hexchess::color::Color::White,
+            $crate::hexchess::piece::Piece::WhiteRook => $crate::hexchess::color::Color::White,
+            $crate::hexchess::piece::Piece::WhiteQueen => $crate::hexchess::color::Color::White,
+            $crate::hexchess::piece::Piece::WhiteKing => $crate::hexchess::color::Color::White,
+            $crate::hexchess::piece::Piece::BlackPawn => $crate::hexchess::color::Color::Black,
+            $crate::hexchess::piece::Piece::BlackKnight => $crate::hexchess::color::Color::Black,
+            $crate::hexchess::piece::Piece::BlackBishop => $crate::hexchess::color::Color::Black,
+            $crate::hexchess::piece::Piece::BlackRook => $crate::hexchess::color::Color::Black,
+            $crate::hexchess::piece::Piece::BlackQueen => $crate::hexchess::color::Color::Black,
+            $crate::hexchess::piece::Piece::BlackKing => $crate::hexchess::color::Color::Black,
         }
     };
 }

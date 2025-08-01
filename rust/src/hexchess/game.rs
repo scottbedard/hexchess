@@ -1,8 +1,9 @@
-use crate::{Color, San};
 use crate::constants::INITIAL_POSITION;
 use crate::hexchess::bitboard::Bitboard;
+use crate::hexchess::color::Color;
 use crate::hexchess::piece::Piece;
 use crate::hexchess::position::Position;
+use crate::hexchess::san::San;
 
 #[derive(Debug)]
 pub struct Game {

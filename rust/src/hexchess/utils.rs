@@ -1,11 +1,6 @@
-use crate::h;
-
-use crate::constants::{
-    Color,
-    HEXBOARD_GRAPH,
-};
-
-use crate::color;
+use crate::constants::HEXBOARD_GRAPH;
+use crate::{color, h};
+use crate::hexchess::color::Color;
 use crate::hexchess::hexchess::Hexchess;
 use crate::hexchess::piece::Piece;
 use smallvec::SmallVec;

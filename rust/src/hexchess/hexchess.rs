@@ -1,4 +1,4 @@
-use crate::h;
+use crate::hexchess::color::Color;
 use crate::hexchess::piece::Piece;
 use crate::hexchess::pieces::bishop::bishop_moves_unsafe;
 use crate::hexchess::pieces::king::king_moves_unsafe;
@@ -13,14 +13,13 @@ use smallvec::SmallVec;
 use std::hash::Hash;
 
 use crate::constants::{
-    Color,
     HEXBOARD_GRAPH,
     INITIAL_POSITION,
     KNIGHT_GRAPH,
     PromotionPiece,
 };
 
-use crate::color;
+use crate::{color, h};
 use crate::hexchess::utils::{
     is_legal_en_passant,
     step,

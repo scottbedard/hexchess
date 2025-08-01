@@ -1477,24 +1477,6 @@ pub const KNIGHT_GRAPH: [&[u8]; 91] = [
     &[76, 65, 55, 56],
 ];
 
-/// Piece color
-#[derive(Clone, Copy, Debug, Eq, Deserialize, Hash, PartialEq, Serialize)]
-pub enum Color {
-    #[serde(rename(deserialize = "b", serialize = "b"))]
-    Black,
-    #[serde(rename(deserialize = "w", serialize = "w"))]
-    White,
-}
-
-impl fmt::Display for Color {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        match self {
-            Color::Black => write!(f, "b"),
-            Color::White => write!(f, "w"),
-        }
-    }
-}
-
 /// Promotion pieces
 #[derive(Clone, Copy, Debug, Deserialize, PartialEq, Serialize)]
 pub enum PromotionPiece {
