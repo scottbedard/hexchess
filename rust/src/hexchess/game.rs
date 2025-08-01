@@ -208,6 +208,63 @@ impl Game {
     }
 }
 
+/// Display the game state as a FEN string.
+impl std::fmt::Display for Game {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let board = self.to_array();
+        let mut blank: u8 = 0;
+        let mut index: u8 = 0;
+        let mut fen = String::new();
+
+        for val in board.iter() {
+            match val {
+                None => {
+                    blank += 1;
+                },
+                Some(piece) => {
+                    if blank > 0 {
+                        fen.push_str(&blank.to_string());
+                        blank = 0;
+                    }
+
+                    fen.push_str(&piece.to_string());
+                },
+            };
+
+            match index {
+                0 | 3 | 8 | 15 | 24 | 35 | 46 | 57 | 68 | 79 => {
+                    if blank > 0 {
+                        fen.push_str(&blank.to_string());
+                    }
+
+                    fen.push('/');
+                    blank = 0;
+                },
+                _ => {}
+            };
+
+            index += 1;
+        }
+
+        if blank > 0 {
+            fen.push_str(&blank.to_string());
+        }
+
+        write!(
+            f, 
+            "{} {} {} {} {}",
+            fen,
+            self.turn,
+            match self.ep {
+                Some(ep) => ep.to_string(),
+                None => "-".to_string(),
+            },
+            self.halfmove,
+            self.fullmove,
+        )
+    }
+}
+
 /// parse the board segment of fen
 fn parse_board(source: &String) -> Result<[Option<Piece>; 91], String> {
     let mut arr: [Option<Piece>; 91] = [None; 91];
@@ -453,5 +510,12 @@ mod tests {
             Some(Piece::WhitePawn),
             None
         ]);
+    }
+
+    #[test]
+    fn test_to_string() {
+        let game = Game::init();
+
+        assert_eq!(game.to_string(), INITIAL_POSITION);
     }
 }

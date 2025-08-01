@@ -1486,6 +1486,15 @@ pub enum Color {
     White,
 }
 
+impl fmt::Display for Color {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            Color::Black => write!(f, "b"),
+            Color::White => write!(f, "w"),
+        }
+    }
+}
+
 /// Piece symbols
 #[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, PartialEq, Serialize)]
 pub enum Piece {
@@ -1562,6 +1571,25 @@ impl From<char> for Piece {
             'Q' => Piece::WhiteQueen,
             'R' => Piece::WhiteRook,
             _ => panic!("Invalid piece character: {}", c),
+        }
+    }
+}
+
+impl Piece {
+    pub fn to_char(&self) -> char {
+        match self {
+            Piece::BlackBishop => 'b',
+            Piece::BlackKing => 'k',
+            Piece::BlackKnight => 'n',
+            Piece::BlackPawn => 'p',
+            Piece::BlackQueen => 'q',
+            Piece::BlackRook => 'r',
+            Piece::WhiteBishop => 'B',
+            Piece::WhiteKing => 'K',
+            Piece::WhiteKnight => 'N',
+            Piece::WhitePawn => 'P',
+            Piece::WhiteQueen => 'Q',
+            Piece::WhiteRook => 'R',
         }
     }
 }
