@@ -51,6 +51,22 @@ impl Game {
         Self::parse(INITIAL_POSITION).unwrap()
     }
 
+    /// Clear all bitboards at a given position.
+    pub fn clear_position(&mut self, position: Position) {
+        self.bitboard_black_bishop.clear_position(position);
+        self.bitboard_black_king.clear_position(position);
+        self.bitboard_black_knight.clear_position(position);
+        self.bitboard_black_pawn.clear_position(position);
+        self.bitboard_black_queen.clear_position(position);
+        self.bitboard_black_rook.clear_position(position);
+        self.bitboard_white_bishop.clear_position(position);
+        self.bitboard_white_king.clear_position(position);
+        self.bitboard_white_knight.clear_position(position);
+        self.bitboard_white_pawn.clear_position(position);
+        self.bitboard_white_queen.clear_position(position);
+        self.bitboard_white_rook.clear_position(position);
+    }
+
     /// Get the piece at the given position.
     pub fn get_position(&self, position: Position) -> Option<Piece> {
         if self.bitboard_black_bishop.is_position_set(position) {
@@ -84,6 +100,8 @@ impl Game {
 
     /// Set the piece at the given position.
     pub fn set_position(&mut self, position: Position, piece: Piece) {
+        self.clear_position(position);
+
         match piece {
             Piece::BlackBishop => self.bitboard_black_bishop.set_position(position),
             Piece::BlackKing => self.bitboard_black_king.set_position(position),
@@ -301,6 +319,24 @@ mod tests {
         assert_eq!(game.get_position(Position::G5), Some(Piece::WhiteKing));
         assert_eq!(game.get_position(Position::G6), Some(Piece::WhiteRook));
         assert_eq!(game.get_position(Position::G7), Some(Piece::WhiteBishop));
+    }
+
+    #[test]
+    fn test_setting_a_position_clears_other_bitboards() {
+        let mut game = Game::new();
+        game.set_position(Position::F11, Piece::BlackBishop);
+        assert_eq!(game.bitboard_black_bishop.is_position_set(Position::F11), true);
+        game.set_position(Position::F11, Piece::BlackKing);
+        assert_eq!(game.bitboard_black_bishop.is_position_set(Position::F11), false);
+        assert_eq!(game.bitboard_black_king.is_position_set(Position::F11), true);
+    }
+
+    #[test]
+    fn test_clear_position() {
+        let mut game = Game::init();
+        game.set_position(Position::F11, Piece::BlackBishop);
+        game.clear_position(Position::F11);
+        assert_eq!(game.get_position(Position::F11), None);
     }
 
     #[test]
