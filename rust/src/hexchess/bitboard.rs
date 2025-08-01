@@ -208,7 +208,7 @@ impl std::ops::ShrAssign<u8> for Bitboard {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use hexchess_bitmask::bitmask;
+    use hexchess_bitmask::{bitmask, bitmask_csv};
 
     #[test]
     fn test_new() {
@@ -373,5 +373,13 @@ mod tests {
         let mask2 = bitmask!("x/xxx/xxxxx/xxxxxxx/xxxxxxxxx/xxxxxxxxxxx/xxxxxxxxxxx/xxxxxxxxxxx/xxxxxxxxxxx/xxxxxxxxxxx/xxxxxxxxxxx");
         assert!(mask2 > mask1);
         assert!(mask2 < u128::MAX);
+    }
+
+    #[test]
+    fn test_bitmask_csv() {
+        assert_eq!(
+            bitmask!("x/3/5/7/9/x9x/11/11/11/11/x4x4x"),
+            bitmask_csv!("a1,a6,f11,l6,l1,f1")
+        );
     }
 }

@@ -46,6 +46,27 @@ pub fn bitmask(input: TokenStream) -> TokenStream {
     output.into()
 }
 
+#[proc_macro]
+pub fn bitmask_csv(input: TokenStream) -> TokenStream {
+    let source = parse_macro_input!(input as LitStr).value();
+    let mut result: u128 = 0;
+
+    let positions: Vec<String> = source
+        .split(',')
+        .map(|s| s.trim().to_string())
+        .collect();
+
+    for position in positions {
+        result |= 1u128 << bitmask_index_from_position(&position);
+    }
+
+    let output = quote! {
+        #result
+    };
+    
+    output.into()
+}
+
 /// Convert a fen index to a bitmap index
 fn bitmask_index(index: u8) -> u8 {
     match index {
@@ -141,5 +162,103 @@ fn bitmask_index(index: u8) -> u8 {
         89 => 75, // k1
         90 => 65, // l1
         _ => panic!("invalid fen index: {}", index),
+    }
+}
+
+/// Convert a position to a bitmap index
+fn bitmask_index_from_position(position: &str) -> u8 {
+    match position {
+        "f11" => 5,
+        "g10" => 6,
+        "h9" => 7,
+        "i8" => 8,
+        "k7" => 9,
+        "l6" => 10,
+        "e10" => 15,
+        "f10" => 16,
+        "g9" => 17,
+        "h8" => 18,
+        "i7" => 19,
+        "k6" => 20,
+        "l5" => 21,
+        "d9" => 25,
+        "e9" => 26,
+        "f9" => 27,
+        "g8" => 28,
+        "h7" => 29,
+        "i6" => 30,
+        "k5" => 31,
+        "l4" => 32,
+        "c8" => 35,
+        "d8" => 36,
+        "e8" => 37,
+        "f8" => 38,
+        "g7" => 39,
+        "h6" => 40,
+        "i5" => 41,
+        "k4" => 42,
+        "l3" => 43,
+        "b7" => 45,
+        "c7" => 46,
+        "d7" => 47,
+        "e7" => 48,
+        "f7" => 49,
+        "g6" => 50,
+        "h5" => 51,
+        "i4" => 52,
+        "k3" => 53,
+        "l2" => 54,
+        "a6" => 55,
+        "b6" => 56,
+        "c6" => 57,
+        "d6" => 58,
+        "e6" => 59,
+        "f6" => 60,
+        "g5" => 61,
+        "h4" => 62,
+        "i3" => 63,
+        "k2" => 64,
+        "l1" => 65,
+        "a5" => 66,
+        "b5" => 67,
+        "c5" => 68,
+        "d5" => 69,
+        "e5" => 70,
+        "f5" => 71,
+        "g4" => 72,
+        "h3" => 73,
+        "i2" => 74,
+        "k1" => 75,
+        "a4" => 77,
+        "b4" => 78,
+        "c4" => 79,
+        "d4" => 80,
+        "e4" => 81,
+        "f4" => 82,
+        "g3" => 83,
+        "h2" => 84,
+        "i1" => 85,
+        "a3" => 88,
+        "b3" => 89,
+        "c3" => 90,
+        "d3" => 91,
+        "e3" => 92,
+        "f3" => 93,
+        "g2" => 94,
+        "h1" => 95,
+        "a2" => 99,
+        "b2" => 100,
+        "c2" => 101,
+        "d2" => 102,
+        "e2" => 103,
+        "f2" => 104,
+        "g1" => 105,
+        "a1" => 110,
+        "b1" => 111,
+        "c1" => 112,
+        "d1" => 113,
+        "e1" => 114,
+        "f1" => 115,
+        _ => panic!("invalid position: {}", position),
     }
 }
