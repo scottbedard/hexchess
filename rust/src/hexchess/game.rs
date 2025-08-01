@@ -1,6 +1,7 @@
-use crate::Color;
-use crate::constants::{INITIAL_POSITION, Piece};
+use crate::{Color, San};
+use crate::constants::INITIAL_POSITION;
 use crate::hexchess::bitboard::Bitboard;
+use crate::hexchess::piece::Piece;
 use crate::hexchess::position::Position;
 
 #[derive(Debug)]
@@ -65,6 +66,38 @@ impl Game {
         self.bitboard_white_pawn.clear_position(position);
         self.bitboard_white_queen.clear_position(position);
         self.bitboard_white_rook.clear_position(position);
+    }
+
+    pub fn get_moves_unsafe(&self, position: Position) -> Vec<San> {
+        // Get the piece at this position
+        let piece = match self.get_position(position) {
+            Some(piece) => piece,
+            None => return Vec::new(), // No piece at this position
+        };
+        
+        // Determine capacity based on piece type
+        let capacity = match piece {
+            Piece::BlackKing | Piece::WhiteKing => 9,      // Kings: max 9 moves
+            Piece::BlackKnight | Piece::WhiteKnight => 8,  // Knights: max 8 moves
+            Piece::BlackPawn | Piece::WhitePawn => 4,      // Pawns: max 4 moves (including promotions)
+            Piece::BlackBishop | Piece::WhiteBishop => 13, // Bishops: can have many moves
+            Piece::BlackRook | Piece::WhiteRook => 14,     // Rooks: can have many moves
+            Piece::BlackQueen | Piece::WhiteQueen => 27,   // Queens: can have many moves
+        };
+        
+        let mut result: Vec<San> = Vec::with_capacity(capacity);
+
+        // TODO: Implement move generation logic here
+        // let color = piece.get_color(); // You'll need to implement this
+        
+        // result.extend(match piece {
+        //     Piece::BlackKing | Piece::WhiteKing => {
+        //         king_moves_unsafe(&self, position, &color).into_vec().into_iter()
+        //     },
+        //     // ... other piece types
+        // });
+        
+        result
     }
 
     /// Get the piece at the given position.
@@ -175,6 +208,18 @@ impl Game {
         Ok(game)
     }
 
+    /// Convert bitboard states to a piece array.
+    pub fn to_array(&self) -> [Option<Piece>; 91] {
+        let mut arr: [Option<Piece>; 91] = [None; 91];
+        
+        for i in 0..91 {
+            let position = Position::from_index(i as u8).unwrap();
+            arr[i] = self.get_position(position);
+        }
+
+        arr
+    }
+
     /// Set the piece at the given position.
     pub fn set_position(&mut self, position: Position, piece: Piece) {
         self.clear_position(position);
@@ -193,18 +238,6 @@ impl Game {
             Piece::WhiteQueen => self.bitboard_white_queen.set_position(position),
             Piece::WhiteRook => self.bitboard_white_rook.set_position(position),
         }
-    }
-
-    /// Convert bitboard states to a piece array.
-    pub fn to_array(&self) -> [Option<Piece>; 91] {
-        let mut arr: [Option<Piece>; 91] = [None; 91];
-        
-        for i in 0..91 {
-            let position = Position::from_index(i as u8).unwrap();
-            arr[i] = self.get_position(position);
-        }
-
-        arr
     }
 }
 

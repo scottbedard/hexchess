@@ -1,4 +1,5 @@
 use crate::h;
+use crate::hexchess::piece::Piece;
 use crate::hexchess::pieces::bishop::bishop_moves_unsafe;
 use crate::hexchess::pieces::king::king_moves_unsafe;
 use crate::hexchess::pieces::knight::knight_moves_unsafe;
@@ -16,7 +17,6 @@ use crate::constants::{
     HEXBOARD_GRAPH,
     INITIAL_POSITION,
     KNIGHT_GRAPH,
-    Piece,
     PromotionPiece,
 };
 

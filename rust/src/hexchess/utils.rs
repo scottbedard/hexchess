@@ -3,11 +3,11 @@ use crate::h;
 use crate::constants::{
     Color,
     HEXBOARD_GRAPH,
-    Piece,
 };
 
 use crate::color;
 use crate::hexchess::hexchess::Hexchess;
+use crate::hexchess::piece::Piece;
 use smallvec::SmallVec;
 
 /// test if position is black en passant target

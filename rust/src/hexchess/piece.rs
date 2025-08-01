@@ -1,0 +1,122 @@
+use serde::{Deserialize, Serialize};
+use std::fmt;
+
+/// Piece symbols
+#[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, PartialEq, Serialize)]
+pub enum Piece {
+    #[serde(rename(deserialize = "P", serialize = "P"))]
+    WhitePawn,
+
+    #[serde(rename(deserialize = "N", serialize = "N"))]
+    WhiteKnight,
+
+    #[serde(rename(deserialize = "B", serialize = "B"))]
+    WhiteBishop,
+
+    #[serde(rename(deserialize = "R", serialize = "R"))]
+    WhiteRook,
+
+    #[serde(rename(deserialize = "Q", serialize = "Q"))]
+    WhiteQueen,
+
+    #[serde(rename(deserialize = "K", serialize = "K"))]
+    WhiteKing,
+
+    #[serde(rename(deserialize = "p", serialize = "p"))]
+    BlackPawn,
+
+    #[serde(rename(deserialize = "n", serialize = "n"))]
+    BlackKnight,
+
+    #[serde(rename(deserialize = "b", serialize = "b"))]
+    BlackBishop,
+
+    #[serde(rename(deserialize = "r", serialize = "r"))]
+    BlackRook,
+
+    #[serde(rename(deserialize = "q", serialize = "q"))]
+    BlackQueen,
+
+    #[serde(rename(deserialize = "k", serialize = "k"))]
+    BlackKing,
+}
+
+impl fmt::Display for Piece {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        let printable = match *self {
+            Piece::BlackBishop => 'b',
+            Piece::BlackKing => 'k',
+            Piece::BlackKnight => 'n',
+            Piece::BlackPawn => 'p',
+            Piece::BlackQueen => 'q',
+            Piece::BlackRook => 'r',
+            Piece::WhiteBishop => 'B',
+            Piece::WhiteKing => 'K',
+            Piece::WhiteKnight => 'N',
+            Piece::WhitePawn => 'P',
+            Piece::WhiteQueen => 'Q',
+            Piece::WhiteRook => 'R',
+        };
+        write!(f, "{}", printable)
+    }
+}
+
+impl From<char> for Piece {
+    fn from(c: char) -> Self {
+        match c {
+            'b' => Piece::BlackBishop,
+            'k' => Piece::BlackKing,
+            'n' => Piece::BlackKnight,
+            'p' => Piece::BlackPawn,
+            'q' => Piece::BlackQueen,
+            'r' => Piece::BlackRook,
+            'B' => Piece::WhiteBishop,
+            'K' => Piece::WhiteKing,
+            'N' => Piece::WhiteKnight,
+            'P' => Piece::WhitePawn,
+            'Q' => Piece::WhiteQueen,
+            'R' => Piece::WhiteRook,
+            _ => panic!("Invalid piece character: {}", c),
+        }
+    }
+}
+
+impl Piece {
+    pub fn to_char(&self) -> char {
+        match self {
+            Piece::BlackBishop => 'b',
+            Piece::BlackKing => 'k',
+            Piece::BlackKnight => 'n',
+            Piece::BlackPawn => 'p',
+            Piece::BlackQueen => 'q',
+            Piece::BlackRook => 'r',
+            Piece::WhiteBishop => 'B',
+            Piece::WhiteKing => 'K',
+            Piece::WhiteKnight => 'N',
+            Piece::WhitePawn => 'P',
+            Piece::WhiteQueen => 'Q',
+            Piece::WhiteRook => 'R',
+        }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_piece_display() {
+        assert_eq!(format!("{}", Piece::BlackBishop), "b");
+        assert_eq!(format!("{}", Piece::BlackKing), "k");
+        assert_eq!(format!("{}", Piece::BlackKnight), "n");
+        assert_eq!(format!("{}", Piece::BlackPawn), "p");
+        assert_eq!(format!("{}", Piece::BlackQueen), "q");
+        assert_eq!(format!("{}", Piece::BlackRook), "r");
+        assert_eq!(format!("{}", Piece::WhiteBishop), "B");
+        assert_eq!(format!("{}", Piece::WhiteKing), "K");
+        assert_eq!(format!("{}", Piece::WhiteKnight), "N");
+        assert_eq!(format!("{}", Piece::WhitePawn), "P");
+        assert_eq!(format!("{}", Piece::WhiteQueen), "Q");
+        assert_eq!(format!("{}", Piece::WhiteRook), "R");
+    }
+}
