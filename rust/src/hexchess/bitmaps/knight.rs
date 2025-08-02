@@ -6,7 +6,7 @@ use crate::hexchess::position::Position;
 use crate::hexchess::san::San;
 use hexchess_bitmask::bitmask_csv;
 
-pub fn get_knight_moves_unsafe(game: &Game,  from: Position) -> Vec<San> {
+pub fn get_knight_moves_unsafe(_game: &Game,  from: Position) -> Vec<San> {
     let move_mask = Bitboard(
         match from {
             Position::F11 => bitmask_csv!("h8, g8, e8, d8"), 
@@ -103,17 +103,15 @@ pub fn get_knight_moves_unsafe(game: &Game,  from: Position) -> Vec<San> {
         }
     );
 
-    let length = move_mask.count_ones();
-
-    let mut result = Vec::with_capacity(length as usize);
+    let mut output = Vec::with_capacity(move_mask.count_ones() as usize);
 
     for index in move_mask.iter_set_bits() {
-        let position = Position::from_bitboard_index(index);
-        let san = San::new(from, position);
-        result.push(san);
+        let to = Position::from_bitboard_index(index);
+        let san = San::new(from, to);
+        output.push(san);
     }
 
-    result
+    output
 }
 
 #[cfg(test)]
@@ -121,9 +119,51 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_get_moves_unsafe() {
-        // let game = Game::new();
-        // let moves = get_knight_moves_unsafe(&game, Position::F11);
-        // assert_eq!(moves.len(), 4);
+    fn test_get_knight_moves_unsafe_f11() {
+        let expected = ["f11h8", "f11g8", "f11d8", "f11e8"];
+
+        let game = Game::new();
+
+        let sans = get_knight_moves_unsafe(&game, Position::F11)
+            .iter()
+            .map(|san| san.to_string())
+            .collect::<Vec<String>>();
+
+        assert_eq!(sans.len(), 4);
+
+        for san in sans {
+            assert!(expected.contains(&san.as_str()));
+        }
+    }
+
+    #[test]
+    fn test_get_knight_moves_unsafe_f6() {
+        let expected = [
+            "f6g8",
+            "f6h7",
+            "f6e8",
+            "f6i5",
+            "f6d7",
+            "f6i4",
+            "f6c5",
+            "f6h3",
+            "f6c4",
+            "f6g3",
+            "f6d3",
+            "f6e3",
+        ];
+
+        let game = Game::new();
+
+        let sans = get_knight_moves_unsafe(&game, Position::F6)
+            .iter()
+            .map(|san| san.to_string())
+            .collect::<Vec<String>>();
+
+        assert_eq!(sans.len(), 12);
+
+        for san in sans {
+            assert!(expected.contains(&san.as_str()));
+        }
     }
 }

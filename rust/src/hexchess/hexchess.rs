@@ -21,7 +21,6 @@ use crate::constants::{
 };
 
 use crate::hexchess::utils::{
-    is_legal_en_passant,
     step,
     fen_index,
     walk_until_piece,
@@ -50,12 +49,7 @@ impl Hexchess {
         let mut i: u32 = 0;
 
         for part in sequence.split_whitespace() {
-            let san = match San::from_string(&part.to_string()) {
-                Ok(san) => san,
-                Err(_) => {
-                    return Err(format!("invalid san at index {}: {}", i, part));
-                },
-            };
+            let san = San::from_string(&part.to_string());
 
             if clone.apply_move(&san).is_err() {
                 return Err(format!("illegal move at index {}: {}", i, part));

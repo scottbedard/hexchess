@@ -2,11 +2,6 @@ use crate::constants::PromotionPiece;
 use crate::hexchess::position::Position;
 use std::fmt;
 
-use crate::hexchess::utils::{
-    is_promotion_position,
-    fen_index,
-};
-
 /// Struct representing a single move.
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct San {
@@ -22,30 +17,30 @@ pub struct San {
 
 impl San {
     /// Create a new SAN from a string.
-    pub fn from_string(source: &str) -> Result<Self, String> {
+    pub fn from_string(source: &str) -> Self {
         let mut chars = source.chars();
 
         // first file
         let from_file = match chars.next() {
             Some(val) => match is_file(val) {
                 true => val,
-                false => return Err(format!("invalid from file: {}", val)),
+                false => panic!("invalid from file: {}", val),
             },
-            None => return Err("missing from file".to_string()),
+            None => panic!("missing from file"),
         };
     
         // get next two chars to determine if from rank is 11
         let second_char = match chars.next() {
             Some(val) => match is_rank(val) {
                 true => val,
-                false => return Err(format!("invalid second character: {}", val)),
+                false => panic!("invalid second character: {}", val),
             },
-            None => return Err("missing second character".to_string()),
+            None => panic!("missing second character"),
         };
     
         let third_char = match chars.next() {
             Some(c) => c,
-            None => return Err("missing third character".to_string()),
+            None => panic!("missing third character"),
         };
 
         // first rank
@@ -59,13 +54,13 @@ impl San {
             "10" | "11" => match chars.next() {
                 Some(val) => match is_file(val) {
                   true => val,
-                  false => return Err(format!("invalid to file: {}", val)),
+                  false => panic!("invalid to file: {}", val),
                 },
-                None => return Err("missing from file".to_string()),
+                None => panic!("missing from file"),
             },
             _ => match is_file(third_char) {
                 true => third_char,
-                false => return Err(format!("invalid to file: {}", third_char)),
+                false => panic!("invalid to file: {}", third_char),
             },
         };
     
@@ -73,9 +68,9 @@ impl San {
         let to_second_char = match chars.next() {
             Some(val) => match is_rank(val) {
                 true => val,
-                false => return Err(format!("invalid second to character: {}", val)),
+                false => panic!("invalid second to character: {}", val),
             },
-            None => return Err("missing second to character".to_string()),
+            None => panic!("missing second to character"),
         };
     
         let to_third_char = chars.next();
@@ -86,7 +81,7 @@ impl San {
             ('1', Some('1')) => String::from("11"),
             _ => match (is_rank(second_char), to_third_char) {
                 (true, Some('b' | 'n' | 'r' | 'q') | None) => to_second_char.to_string(),
-                _ => return Err("invalid to rank".to_string()),
+                _ => panic!("invalid to rank"),
             }
         };
 
@@ -98,7 +93,7 @@ impl San {
         let to = Position::from_string(&to_source);
         
         if from == to {
-            return Err("to and from positions are the same".to_string());
+            panic!("to and from positions are the same");
         }
     
         // parse and validate promotion
@@ -114,7 +109,7 @@ impl San {
                         'n' => Some(PromotionPiece::Knight),
                         'q' => Some(PromotionPiece::Queen),
                         'r' => Some(PromotionPiece::Rook),
-                        _ => return Err(format!("invalid promotion character: {}", val_2)),
+                        _ => panic!("invalid promotion character: {}", val_2),
                     },
                     _ => None,
                 }
@@ -123,16 +118,16 @@ impl San {
         };
     
         // validate promotion to is valid
-        if promotion.is_some() && !is_promotion_position(&to) {
-            return Err(format!("invalid promotion position: {}", to_source));
+        if promotion.is_some() && !to.is_promotion_position() {
+            panic!("invalid promotion position: {}", to_source);
         }
     
         // prohibit post-promotion characters
         if chars.next().is_some() {
-            return Err("post promotion character".to_string());
+            panic!("post promotion character");
         }
     
-        Ok(Self { from, promotion, to })
+        Self { from, promotion, to }
     }
 
     /// Create a new SAN from a position.
@@ -143,12 +138,12 @@ impl San {
 
 impl fmt::Display for San {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{}{}", self.from, self.to)?;
+        write!(f, "{}{}", self.from.to_string(), self.to.to_string())?;
         
         if let Some(promotion) = self.promotion {
-            write!(f, "{}", promotion)?;
+            write!(f, "{}", promotion.to_string())?;
         }
-        
+
         Ok(())
     }
 }
@@ -174,10 +169,11 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_san_from_string() {
-        let san1 = San::from_string("a1a2").unwrap();
+    fn test_san_from_and_to_string() {
+        let san1 = San::from_string("a1a2");
         assert_eq!(san1.from, Position::A1);
         assert_eq!(san1.to, Position::A2);
         assert_eq!(san1.promotion, None);
+        assert_eq!(san1.to_string(), "a1a2");
     }
 }

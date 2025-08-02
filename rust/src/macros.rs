@@ -120,6 +120,6 @@ macro_rules! position {
 #[macro_export]
 macro_rules! san {
     ($expression:expr) => {
-        crate::hexchess::san::San::from(&$expression.to_string()).unwrap()
+        crate::hexchess::san::San::from_string(&$expression.to_string())
     };
 }

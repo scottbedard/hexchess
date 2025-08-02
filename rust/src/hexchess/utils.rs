@@ -242,14 +242,14 @@ mod tests {
     #[test]
     #[ignore]
     fn test_walk_until_piece() {
-        let hexchess = Hexchess::parse("1/3/2r2/7/9/11/11/11/5R5/11/11 w - 0 1").unwrap();
+        let _hexchess = Hexchess::parse("1/3/2r2/7/9/11/11/11/5R5/11/11 w - 0 1").unwrap();
 
-        let result = position!("f3");
+        let _result = position!("f3");
 
-        panic!("result: {:?}", walk_until_piece(&hexchess, position!("f3"), 0));
+        // panic!("result: {:?}", walk_until_piece(&hexchess, position!("f3"), 0));
 
 
-        assert_eq!(walk_until_piece(&hexchess, position!("f3"), 0), Some(Piece::BlackRook));
-        assert_eq!(walk_until_piece(&hexchess, position!("f3"), 2), None);
+        // assert_eq!(walk_until_piece(&hexchess, position!("f3"), 0), Some(Piece::BlackRook));
+        // assert_eq!(walk_until_piece(&hexchess, position!("f3"), 2), None);
     }
 }

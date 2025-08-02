@@ -19,12 +19,12 @@ fn test_move_legality() {
         let hexchess = Hexchess::parse(&test.from).unwrap();
         let san = San::from_string(&test.san);
 
-        if san.is_err() {
-            assert_eq!(test.result, false, "{}", test.description);
-            continue;
-        }
+        // if san.is_err() {
+        //     assert_eq!(test.result, false, "{}", test.description);
+        //     continue;
+        // }
 
-        let result = hexchess.is_legal(&san.unwrap());
+        let result = hexchess.is_legal(&san);
 
         assert_eq!(result, test.result, "{}", test.description);
     }

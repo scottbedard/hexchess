@@ -27,12 +27,12 @@ fn test_hexchess_apply_move_unsafe() {
 
         let san = San::from_string(&test.sequence);
 
-        if san.is_err() {
-            assert!(test.error, "{}", test.description);
-            continue;
-        }
+        // if san.is_err() {
+        //     assert!(test.error, "{}", test.description);
+        //     continue;
+        // }
 
-        let output = result.apply_move_unsafe(&san.unwrap());
+        let output = result.apply_move_unsafe(&san);
 
         if output.is_err() {
             assert!(test.error, "{}", test.description);

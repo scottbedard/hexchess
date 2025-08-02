@@ -23,13 +23,7 @@ fn test_san_parse() {
     let tests = json::<Test>("san-parse.json");
 
     for test in tests {
-        let result = match San::from_string(&test.san) {
-            Ok(san) => san,
-            Err(_) => {
-                assert!(test.error, "{}", test.description);
-                continue;
-            }
-        };
+        let result = San::from_string(&test.san);
 
         if test.expect.is_some() {
             let expect = test.expect.unwrap();
