@@ -41,6 +41,8 @@ fn test_piece_movement() {
             expected.sort();
 
             assert_eq!(actual, expected, "{}", test.description);
+
+            println!("test {} - {} ... ok", file, test.description);
         }
     }
 }
