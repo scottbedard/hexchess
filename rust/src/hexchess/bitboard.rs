@@ -2,6 +2,7 @@ extern crate hexchess_bitmask;
 
 use crate::hexchess::position::Position;
 use hexchess_bitmask::bitmask;
+use std::ops::{Deref, DerefMut};
 
 #[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
 pub struct Bitboard(pub u128);
@@ -85,6 +86,13 @@ impl Bitboard {
         Bitboard(0)
     }
 
+    /// Create a bitboard with only the given position set.
+    pub fn only(position: Position) -> Self {
+        let mut output = Bitboard(0);
+        output.set_position(position);
+        output
+    }
+
     /// Create a bitboard with random data.
     pub fn random() -> Bitboard {
         Bitboard(rand::random::<u128>())
@@ -126,6 +134,21 @@ impl Bitboard {
         }
 
         result
+    }
+}
+
+/// Dereference directly to the underlying u128 value.
+impl Deref for Bitboard {
+    type Target = u128;
+    
+    fn deref(&self) -> &Self::Target {
+        &self.0
+    }
+}
+
+impl DerefMut for Bitboard {
+    fn deref_mut(&mut self) -> &mut Self::Target {
+        &mut self.0
     }
 }
 
@@ -415,5 +438,12 @@ mod tests {
             Position::A1,
             Position::F1,
         ]);
+    }
+
+    #[test]
+    fn test_only() {
+        let actual = Bitboard::only(Position::F11);
+        let expected = bitmask!("x/3/5/7/9/11/11/11/11/11/11");
+        assert_eq!(*actual, expected);
     }
 }
