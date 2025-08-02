@@ -4,10 +4,18 @@ use std::fmt;
 /// Piece color
 #[derive(Clone, Copy, Debug, Eq, Deserialize, Hash, PartialEq, Serialize)]
 pub enum Color {
-    #[serde(rename(deserialize = "b", serialize = "b"))]
     Black,
-    #[serde(rename(deserialize = "w", serialize = "w"))]
+
     White,
+}
+
+impl Color {
+    pub fn opposite(&self) -> Self {
+        match self {
+            Color::Black => Color::White,
+            Color::White => Color::Black,
+        }
+    }
 }
 
 impl fmt::Display for Color {
@@ -16,5 +24,16 @@ impl fmt::Display for Color {
             Color::Black => write!(f, "b"),
             Color::White => write!(f, "w"),
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_opposite() {
+        assert_eq!(Color::Black.opposite(), Color::White);
+        assert_eq!(Color::White.opposite(), Color::Black);
     }
 }

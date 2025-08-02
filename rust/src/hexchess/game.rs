@@ -1,5 +1,6 @@
 use crate::constants::INITIAL_POSITION;
 use crate::hexchess::bitboard::Bitboard;
+use crate::hexchess::bitmaps::knight::get_knight_moves_unsafe;
 use crate::hexchess::color::Color;
 use crate::hexchess::piece::Piece;
 use crate::hexchess::position::Position;
@@ -69,6 +70,23 @@ impl Game {
         self.bitboard_white_rook.clear_position(position);
     }
 
+    /// Get the color of the piece at the given position.
+    pub fn get_color(&self, position: Position) -> Option<Color> {
+        let black = self.get_color_bitboard(Color::Black);
+
+        if black.is_position_set(position) {
+            return Some(Color::Black);
+        }
+
+        let white = self.get_color_bitboard(Color::White);
+
+        if white.is_position_set(position) {
+            return Some(Color::White);
+        }
+
+        None
+    }
+
     /// Get the bitboard for a given color.
     pub fn get_color_bitboard(&self, color: Color) -> Bitboard {
         match color {
@@ -94,13 +112,16 @@ impl Game {
     /// Get moves from a position, regardless of turn or legality.
     pub fn get_moves_unsafe(&self, position: Position) -> Vec<San> {
         // Get the piece at this position
-        let _piece = match self.get_position(position) {
+        let piece = match self.get_position(position) {
             Some(piece) => piece,
-            None => return Vec::new(), // No piece at this position
+            None => return Vec::new(), // no piece at this position
         };
-        
-        let result: Vec<San> = Vec::new();
-        
+
+        let result = match piece {
+            Piece::BlackKnight | Piece::WhiteKnight => get_knight_moves_unsafe(&self, position),
+            _ => Vec::new(),
+        };
+
         // result.extend(match piece {
         //     Piece::BlackKing | Piece::WhiteKing => {
         //         king_moves_unsafe(&self, from, &color).into_vec().into_iter()

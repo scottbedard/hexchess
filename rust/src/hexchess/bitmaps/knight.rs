@@ -6,8 +6,8 @@ use crate::hexchess::position::Position;
 use crate::hexchess::san::San;
 use hexchess_bitmask::bitmask_csv;
 
-pub fn get_knight_moves_unsafe(_game: &Game,  from: Position) -> Vec<San> {
-    let move_mask = Bitboard(
+pub fn get_knight_moves_unsafe(game: &Game, from: Position) -> Vec<San> {
+    let mut result = Bitboard(
         match from {
             Position::F11 => bitmask_csv!("h8, g8, e8, d8"), 
             Position::E10 => bitmask_csv!("h9, g8, f8, d7, c7"), 
@@ -103,9 +103,14 @@ pub fn get_knight_moves_unsafe(_game: &Game,  from: Position) -> Vec<San> {
         }
     );
 
-    let mut output = Vec::with_capacity(move_mask.count_ones() as usize);
+    match game.get_color(from) {
+        Some(color) => result &= !game.get_color_bitboard(color),
+        None => {}
+    };
 
-    for index in move_mask.iter_set_bits() {
+    let mut output = Vec::with_capacity(result.count_ones() as usize);
+
+    for index in result.iter_set_bits() {
         let to = Position::from_bitboard_index(index);
         let san = San::new(from, to);
         output.push(san);
