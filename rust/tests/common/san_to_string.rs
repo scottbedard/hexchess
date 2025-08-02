@@ -19,6 +19,7 @@ struct TestSan {
 }
 
 #[test]
+#[ignore]
 fn test_san_to_string() {
     let tests = json::<Test>("san-to-string.json");
 

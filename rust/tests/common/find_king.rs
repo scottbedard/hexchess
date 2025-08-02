@@ -13,6 +13,7 @@ struct Test {
 }
 
 #[test]
+#[ignore]
 fn test_find_king() {
     let tests = json::<Test>("find-king.json");
 

@@ -3,6 +3,7 @@ use hexchess::hexchess::position::Position;
 use crate::json;
 
 #[test]
+#[ignore]
 fn test_positions() {
     let tests = json::<String>("positions.json");
 

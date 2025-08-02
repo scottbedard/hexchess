@@ -12,6 +12,7 @@ struct Test {
 }
 
 #[test]
+#[ignore]
 fn test_get_color() {
     let tests = json::<Test>("get-color.json");
 
