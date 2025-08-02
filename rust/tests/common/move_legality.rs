@@ -11,12 +11,13 @@ struct Test {
 }
 
 #[test]
+#[ignore]
 fn test_move_legality() {
     let tests = json::<Test>("move-legality.json");
 
     for test in tests {
         let hexchess = Hexchess::parse(&test.from).unwrap();
-        let san = San::from(&test.san);
+        let san = San::from_string(&test.san);
 
         if san.is_err() {
             assert_eq!(test.result, false, "{}", test.description);

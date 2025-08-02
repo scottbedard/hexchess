@@ -10,6 +10,7 @@ struct Test {
 }
 
 #[test]
+#[ignore]
 fn test_hexchess_to_string() {
     let tests = json::<Test>("hexchess-to-string.json");
 

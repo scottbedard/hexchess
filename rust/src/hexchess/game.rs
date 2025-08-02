@@ -203,10 +203,7 @@ impl Game {
         game.ep = match parts.next() {
             Some(part) => match part {
                 "-" => None,
-                part => match Position::from_string(part) {
-                    Ok(position) => Some(position),
-                    Err(_) => return Err(format!("invalid en passant position: {}", part)),
-                }
+                part => Some(Position::from_string(part))
             },
             None => None,
         };

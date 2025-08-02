@@ -1,4 +1,4 @@
-use crate::color;
+use crate::hexchess::position::Position;
 use crate::constants::PromotionPiece;
 use crate::hexchess::color::Color;
 use crate::hexchess::hexchess::Hexchess;
@@ -1233,7 +1233,7 @@ const BLACK_PAWN_GRAPH: [Option<PawnGraph>; 91] = [
 /** unsafe pawn moves */
 pub fn pawn_moves_unsafe(
     hexchess: &Hexchess,
-    from: u8,
+    from: Position,
     color: &Color,
 ) -> SmallVec<[San; 12]> {
     let pawn_graph = match color {
@@ -1249,14 +1249,14 @@ pub fn pawn_moves_unsafe(
     let mut sans: SmallVec<[San; 12]> = SmallVec::new();
 
     // advance forward one position
-    if hexchess.board[pawn.forward_1 as usize] == None {
-        push_sans(&mut sans, from, pawn.forward_1, pawn.promote_forward);
+    if hexchess.board[Position::from_fen_index(pawn.forward_1) as usize] == None {
+        push_sans(&mut sans, from, Position::from_fen_index(pawn.forward_1), pawn.promote_forward);
 
         // advance forward another position if possible
         match pawn.forward_2 {
             None => {},
             Some(to) => if hexchess.board[to as usize] == None {
-                sans.push(San { from, promotion: None, to });
+                sans.push(San { from, promotion: None, to: Position::from_fen_index(to) });
             }
         }
     }
@@ -1265,11 +1265,11 @@ pub fn pawn_moves_unsafe(
     match pawn.capture_portside {
         None => {},
         Some(to) => match hexchess.board[to as usize] {
-            None => if hexchess.turn == *color && hexchess.ep == Some(to) {
-                sans.push(San { from, promotion: None, to });
+            None => if hexchess.turn == *color && hexchess.ep == Some(Position::from_fen_index(to)) {
+                sans.push(San { from, promotion: None, to: Position::from_fen_index(to) });
             },
             Some(occupying_piece) => if occupying_piece.is_enemy(*color) {
-                push_sans(&mut sans, from, to, pawn.promote_portside);
+                push_sans(&mut sans, from, Position::from_fen_index(to), pawn.promote_portside);
             }
         }
     }
@@ -1278,11 +1278,11 @@ pub fn pawn_moves_unsafe(
     match pawn.capture_starboard {
         None => {},
         Some(to) => match hexchess.board[to as usize] {
-            None => if hexchess.turn == *color && hexchess.ep == Some(to) {
-                sans.push(San { from, promotion: None, to });
+            None => if hexchess.turn == *color && hexchess.ep == Some(Position::from_fen_index(to)) {
+                sans.push(San { from, promotion: None, to: Position::from_fen_index(to) });
             },
             Some(occupying_piece) => if occupying_piece.is_enemy(*color) {
-                push_sans(&mut sans, from, to, pawn.promote_starboard);
+                push_sans(&mut sans, from, Position::from_fen_index(to), pawn.promote_starboard);
             }
         }
     }
@@ -1292,8 +1292,8 @@ pub fn pawn_moves_unsafe(
 
 fn push_sans(
     sans: &mut SmallVec<[San; 12]>,
-    from: u8,
-    to: u8,
+    from: Position,
+    to: Position,
     promotion: bool,
 ) {
     if promotion {

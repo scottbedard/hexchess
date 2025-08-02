@@ -1,99 +1,3 @@
-/// position index aliases
-#[macro_export]
-macro_rules! h {
-    ("f11") => { 0 };
-    ("e10") => { 1 };
-    ("f10") => { 2 };
-    ("g10") => { 3 };
-    ("d9") => { 4 };
-    ("e9") => { 5 };
-    ("f9") => { 6 };
-    ("g9") => { 7 };
-    ("h9") => { 8 };
-    ("c8") => { 9 };
-    ("d8") => { 10 };
-    ("e8") => { 11 };
-    ("f8") => { 12 };
-    ("g8") => { 13 };
-    ("h8") => { 14 };
-    ("i8") => { 15 };
-    ("b7") => { 16 };
-    ("c7") => { 17 };
-    ("d7") => { 18 };
-    ("e7") => { 19 };
-    ("f7") => { 20 };
-    ("g7") => { 21 };
-    ("h7") => { 22 };
-    ("i7") => { 23 };
-    ("k7") => { 24 };
-    ("a6") => { 25 };
-    ("b6") => { 26 };
-    ("c6") => { 27 };
-    ("d6") => { 28 };
-    ("e6") => { 29 };
-    ("f6") => { 30 };
-    ("g6") => { 31 };
-    ("h6") => { 32 };
-    ("i6") => { 33 };
-    ("k6") => { 34 };
-    ("l6") => { 35 };
-    ("a5") => { 36 };
-    ("b5") => { 37 };
-    ("c5") => { 38 };
-    ("d5") => { 39 };
-    ("e5") => { 40 };
-    ("f5") => { 41 };
-    ("g5") => { 42 };
-    ("h5") => { 43 };
-    ("i5") => { 44 };
-    ("k5") => { 45 };
-    ("l5") => { 46 };
-    ("a4") => { 47 };
-    ("b4") => { 48 };
-    ("c4") => { 49 };
-    ("d4") => { 50 };
-    ("e4") => { 51 };
-    ("f4") => { 52 };
-    ("g4") => { 53 };
-    ("h4") => { 54 };
-    ("i4") => { 55 };
-    ("k4") => { 56 };
-    ("l4") => { 57 };
-    ("a3") => { 58 };
-    ("b3") => { 59 };
-    ("c3") => { 60 };
-    ("d3") => { 61 };
-    ("e3") => { 62 };
-    ("f3") => { 63 };
-    ("g3") => { 64 };
-    ("h3") => { 65 };
-    ("i3") => { 66 };
-    ("k3") => { 67 };
-    ("l3") => { 68 };
-    ("a2") => { 69 };
-    ("b2") => { 70 };
-    ("c2") => { 71 };
-    ("d2") => { 72 };
-    ("e2") => { 73 };
-    ("f2") => { 74 };
-    ("g2") => { 75 };
-    ("h2") => { 76 };
-    ("i2") => { 77 };
-    ("k2") => { 78 };
-    ("l2") => { 79 };
-    ("a1") => { 80 };
-    ("b1") => { 81 };
-    ("c1") => { 82 };
-    ("d1") => { 83 };
-    ("e1") => { 84 };
-    ("f1") => { 85 };
-    ("g1") => { 86 };
-    ("h1") => { 87 };
-    ("i1") => { 88 };
-    ("k1") => { 89 };
-    ("l1") => { 90 };
-}
-
 /// get the color of a piece (macro version for compile-time evaluation)
 #[macro_export]
 macro_rules! color {
@@ -116,7 +20,105 @@ macro_rules! color {
 }
 
 #[macro_export]
-macro_rules! s {
+macro_rules! position {
+    ("f11") => { $crate::hexchess::position::Position::F11 };
+    ("e10") => { $crate::hexchess::position::Position::E10 };
+    ("f10") => { $crate::hexchess::position::Position::F10 };
+    ("g10") => { $crate::hexchess::position::Position::G10 };
+    ("d9") => { $crate::hexchess::position::Position::D9 };
+    ("e9") => { $crate::hexchess::position::Position::E9 };
+    ("f9") => { $crate::hexchess::position::Position::F9 };
+    ("g9") => { $crate::hexchess::position::Position::G9 };
+    ("h9") => { $crate::hexchess::position::Position::H9 };
+    ("c8") => { $crate::hexchess::position::Position::C8 };
+    ("d8") => { $crate::hexchess::position::Position::D8 };
+    ("e8") => { $crate::hexchess::position::Position::E8 };
+    ("f8") => { $crate::hexchess::position::Position::F8 };
+    ("g8") => { $crate::hexchess::position::Position::G8 };
+    ("h8") => { $crate::hexchess::position::Position::H8 };
+    ("i8") => { $crate::hexchess::position::Position::I8 };
+    ("b7") => { $crate::hexchess::position::Position::B7 };
+    ("c7") => { $crate::hexchess::position::Position::C7 };
+    ("d7") => { $crate::hexchess::position::Position::D7 };
+    ("e7") => { $crate::hexchess::position::Position::E7 };
+    ("f7") => { $crate::hexchess::position::Position::F7 };
+    ("g7") => { $crate::hexchess::position::Position::G7 };
+    ("h7") => { $crate::hexchess::position::Position::H7 };
+    ("i7") => { $crate::hexchess::position::Position::I7 };
+    ("k7") => { $crate::hexchess::position::Position::K7 };
+    ("a6") => { $crate::hexchess::position::Position::A6 };
+    ("b6") => { $crate::hexchess::position::Position::B6 };
+    ("c6") => { $crate::hexchess::position::Position::C6 };
+    ("d6") => { $crate::hexchess::position::Position::D6 };
+    ("e6") => { $crate::hexchess::position::Position::E6 };
+    ("f6") => { $crate::hexchess::position::Position::F6 };
+    ("g6") => { $crate::hexchess::position::Position::G6 };
+    ("h6") => { $crate::hexchess::position::Position::H6 };
+    ("i6") => { $crate::hexchess::position::Position::I6 };
+    ("k6") => { $crate::hexchess::position::Position::K6 };
+    ("l6") => { $crate::hexchess::position::Position::L6 };
+    ("a5") => { $crate::hexchess::position::Position::A5 };
+    ("b5") => { $crate::hexchess::position::Position::B5 };
+    ("c5") => { $crate::hexchess::position::Position::C5 };
+    ("d5") => { $crate::hexchess::position::Position::D5 };
+    ("e5") => { $crate::hexchess::position::Position::E5 };
+    ("f5") => { $crate::hexchess::position::Position::F5 };
+    ("g5") => { $crate::hexchess::position::Position::G5 };
+    ("h5") => { $crate::hexchess::position::Position::H5 };
+    ("i5") => { $crate::hexchess::position::Position::I5 };
+    ("k5") => { $crate::hexchess::position::Position::K5 };
+    ("l5") => { $crate::hexchess::position::Position::L5 };
+    ("a4") => { $crate::hexchess::position::Position::A4 };
+    ("b4") => { $crate::hexchess::position::Position::B4 };
+    ("c4") => { $crate::hexchess::position::Position::C4 };
+    ("d4") => { $crate::hexchess::position::Position::D4 };
+    ("e4") => { $crate::hexchess::position::Position::E4 };
+    ("f4") => { $crate::hexchess::position::Position::F4 };
+    ("g4") => { $crate::hexchess::position::Position::G4 };
+    ("h4") => { $crate::hexchess::position::Position::H4 };
+    ("i4") => { $crate::hexchess::position::Position::I4 };
+    ("k4") => { $crate::hexchess::position::Position::K4 };
+    ("l4") => { $crate::hexchess::position::Position::L4 };
+    ("a3") => { $crate::hexchess::position::Position::A3 };
+    ("b3") => { $crate::hexchess::position::Position::B3 };
+    ("c3") => { $crate::hexchess::position::Position::C3 };
+    ("d3") => { $crate::hexchess::position::Position::D3 };
+    ("e3") => { $crate::hexchess::position::Position::E3 };
+    ("f3") => { $crate::hexchess::position::Position::F3 };
+    ("g3") => { $crate::hexchess::position::Position::G3 };
+    ("h3") => { $crate::hexchess::position::Position::H3 };
+    ("i3") => { $crate::hexchess::position::Position::I3 };
+    ("k3") => { $crate::hexchess::position::Position::K3 };
+    ("l3") => { $crate::hexchess::position::Position::L3 };
+    ("a2") => { $crate::hexchess::position::Position::A2 };
+    ("b2") => { $crate::hexchess::position::Position::B2 };
+    ("c2") => { $crate::hexchess::position::Position::C2 };
+    ("d2") => { $crate::hexchess::position::Position::D2 };
+    ("e2") => { $crate::hexchess::position::Position::E2 };
+    ("f2") => { $crate::hexchess::position::Position::F2 };
+    ("g2") => { $crate::hexchess::position::Position::G2 };
+    ("h2") => { $crate::hexchess::position::Position::H2 };
+    ("i2") => { $crate::hexchess::position::Position::I2 };
+    ("k2") => { $crate::hexchess::position::Position::K2 };
+    ("l2") => { $crate::hexchess::position::Position::L2 };
+    ("a1") => { $crate::hexchess::position::Position::A1 };
+    ("b1") => { $crate::hexchess::position::Position::B1 };
+    ("c1") => { $crate::hexchess::position::Position::C1 };
+    ("d1") => { $crate::hexchess::position::Position::D1 };
+    ("e1") => { $crate::hexchess::position::Position::E1 };
+    ("f1") => { $crate::hexchess::position::Position::F1 };
+    ("g1") => { $crate::hexchess::position::Position::G1 };
+    ("h1") => { $crate::hexchess::position::Position::H1 };
+    ("i1") => { $crate::hexchess::position::Position::I1 };
+    ("k1") => { $crate::hexchess::position::Position::K1 };
+    ("l1") => { $crate::hexchess::position::Position::L1 };
+    ($other:expr) => {
+        compile_error!("Unknown position string in position! macro")
+    };
+}
+
+#[macro_export]
+macro_rules! san {
     ($expression:expr) => {
         crate::hexchess::san::San::from(&$expression.to_string()).unwrap()
     };

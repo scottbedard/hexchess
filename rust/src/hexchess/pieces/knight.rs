@@ -1,8 +1,8 @@
-use crate::{color, h};
 use crate::constants::KNIGHT_GRAPH;
 use crate::hexchess::color::Color;
 use crate::hexchess::hexchess::Hexchess;
 use crate::hexchess::san::San;
+use crate::hexchess::position::Position;
 use smallvec::SmallVec;
 
 const REACHABLE_POSITIONS: [u8; 91] = [
@@ -18,7 +18,7 @@ const REACHABLE_POSITIONS: [u8; 91] = [
 
 pub fn knight_moves_unsafe(
     hexchess: &Hexchess,
-    from: u8,
+    from: Position,
     color: &Color,
 ) -> SmallVec<[San; 12]> {
     let mut moves: SmallVec<[San; 12]> = KNIGHT_GRAPH[from as usize]
@@ -27,7 +27,10 @@ pub fn knight_moves_unsafe(
             Some(piece) => piece.is_enemy(*color),
             None => true,
         })
-        .map(|&to| San { from, promotion: None, to })
+        .map(|&to| {
+            let target = Position::from_fen_index(to);
+            San { from, promotion: None, to: target }
+        })
         .collect();
     
     moves.sort_by_key(|san| REACHABLE_POSITIONS[san.to as usize]);
@@ -42,7 +45,7 @@ mod tests {
     #[test]
     fn test_knight_moves() {
         let hexchess = Hexchess::init();
-        let moves = knight_moves_unsafe(&hexchess, 0, &Color::White);
+        let moves = knight_moves_unsafe(&hexchess, Position::F11, &Color::White);
         assert!(!moves.is_empty());
     }
 }

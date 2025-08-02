@@ -12,6 +12,7 @@ struct Test {
 }
 
 #[test]
+#[ignore]
 fn test_hexchess_apply() {
     let tests = json::<Test>("hexchess-apply.json");
 

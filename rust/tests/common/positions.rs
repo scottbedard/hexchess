@@ -1,4 +1,5 @@
-use hexchess::hexchess::utils::{fen_index, position};
+use hexchess::hexchess::position::Position;
+
 use crate::json;
 
 #[test]
@@ -6,9 +7,9 @@ fn test_positions() {
     let tests = json::<String>("positions.json");
 
     for i in 0..91 {
-        let name = position(&i);
+        let p = Position::from_fen_index(i);
 
-        assert_eq!(fen_index(name).unwrap(), i);
-        assert_eq!(name, tests[i as usize]);
+        assert_eq!(p.to_fen_index(), i);
+        assert_eq!(p.to_string(), tests[i as usize]);
     }
 }

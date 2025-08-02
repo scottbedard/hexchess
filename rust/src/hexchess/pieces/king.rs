@@ -1,19 +1,19 @@
-use crate::color;
-use crate::constants::HEXBOARD_GRAPH;
+use crate::constants::hexboard_graph;
 use crate::hexchess::color::Color;
 use crate::hexchess::hexchess::Hexchess;
 use crate::hexchess::san::San;
+use crate::hexchess::position::Position;
 use smallvec::SmallVec;
 
 
 pub fn king_moves_unsafe(
     hexchess: &Hexchess,
-    from: u8,
+    from: Position,
     color: &Color,
 ) -> SmallVec<[San; 12]> {
     let mut result: SmallVec<[San; 12]> = SmallVec::new();
 
-    for position in HEXBOARD_GRAPH[from as usize] {
+    for position in hexboard_graph(from) {
         let to = match position {
             Some(t) => t,
             None => continue,

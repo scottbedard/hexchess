@@ -1,5 +1,5 @@
 use crate::constants::PromotionPiece;
-use serde::{Deserialize, Serialize};
+use crate::hexchess::position::Position;
 use std::fmt;
 
 use crate::hexchess::utils::{
@@ -7,23 +7,22 @@ use crate::hexchess::utils::{
     fen_index,
 };
 
-use super::utils::position;
-
 /// Struct representing a single move.
-#[derive(Clone, Copy, Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Copy, Debug, PartialEq)]
 pub struct San {
-    /// From position index, 0..91
-    pub from: u8,
+    /// From position
+    pub from: Position,
 
     /// Promotion piece
     pub promotion: Option<PromotionPiece>,
 
-    /// Target position index, 0..91
-    pub to: u8,
+    /// Target position
+    pub to: Position,
 }
 
 impl San {
-    pub fn from(source: &str) -> Result<Self, String> {
+    /// Create a new SAN from a string.
+    pub fn from_string(source: &str) -> Result<Self, String> {
         let mut chars = source.chars();
 
         // first file
@@ -93,18 +92,10 @@ impl San {
 
         // assemble and validate from and to positions
         let from_source = from_file.to_string() + &from_rank;
-
-        let from = match fen_index(&from_source) {
-            Ok(value) => value,
-            Err(_) => return Err(format!("invalid from position: {}", from_source)),
-        };
+        let from = Position::from_string(&from_source);
 
         let to_source = to_file.to_string() + &to_rank;
-
-        let to = match fen_index(&to_source) {
-            Ok(value) => value,
-            Err(_) => return Err(format!("invalid to position: {}", to_source)),
-        };
+        let to = Position::from_string(&to_source);
         
         if from == to {
             return Err("to and from positions are the same".to_string());
@@ -143,25 +134,22 @@ impl San {
     
         Ok(Self { from, promotion, to })
     }
+
+    /// Create a new SAN from a position.
+    pub fn new(from: Position, to: Position) -> Self {
+        Self { from, promotion: None, to }
+    }
 }
 
 impl fmt::Display for San {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        let mut value = position(&self.from).to_string() + &position(&self.to).to_string();
-
-        match self.promotion {
-            Some(promotion) => {
-                value.push(match promotion {
-                    PromotionPiece::Bishop => 'b',
-                    PromotionPiece::Knight => 'n',
-                    PromotionPiece::Queen => 'q',
-                    PromotionPiece::Rook => 'r',
-                });
-            }
-            None => {}
-        };
-
-        write!(f, "{}", value)
+        write!(f, "{}{}", self.from, self.to)?;
+        
+        if let Some(promotion) = self.promotion {
+            write!(f, "{}", promotion)?;
+        }
+        
+        Ok(())
     }
 }
 
@@ -178,5 +166,18 @@ fn is_rank(c: char) -> bool {
     match c {
         '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' => true,
         _ => false,
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_san_from_string() {
+        let san1 = San::from_string("a1a2").unwrap();
+        assert_eq!(san1.from, Position::A1);
+        assert_eq!(san1.to, Position::A2);
+        assert_eq!(san1.promotion, None);
     }
 }

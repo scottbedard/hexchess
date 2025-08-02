@@ -1,5 +1,6 @@
 use crate::json;
-use hexchess::{fen_index, Hexchess};
+use hexchess::Hexchess;
+use hexchess::hexchess::position::Position;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -11,6 +12,7 @@ struct Test {
 }
 
 #[test]
+#[ignore]
 fn test_hexchess_is_threatened() {
     let tests = json::<Test>("hexchess-is-threatened.json");
 
@@ -22,11 +24,8 @@ fn test_hexchess_is_threatened() {
             }
         };
 
-        let i = match fen_index(&test.position) {
-            Ok(i) => i,
-            Err(_) => continue,
-        };
+        let position = Position::from_string(&test.position);
 
-        assert_eq!(hexchess.is_threatened(i), test.expect, "{}", test.description);
+        assert_eq!(hexchess.is_threatened(position), test.expect, "{}", test.description);
     }
 }

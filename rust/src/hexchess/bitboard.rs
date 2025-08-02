@@ -25,7 +25,7 @@ impl Bitboard {
     }
 
     /// Returns the number of set bits.
-    pub fn count_bits(&self) -> u32 {
+    pub fn count_ones(&self) -> u32 {
         self.0.count_ones()
     }
 
@@ -48,7 +48,7 @@ impl Bitboard {
 
     /// Test if a position is set by string
     pub fn is_position_string_set(&self, position: &str) -> bool {
-        let position = Position::from_string(position).unwrap();
+        let position = Position::from_string(position);
         self.is_position_set(position)
     }
 
@@ -104,7 +104,7 @@ impl Bitboard {
 
     /// Set bit at a given position by string.
     pub fn set_position_string(&mut self, position: &str) {
-        let position = Position::from_string(position).unwrap();
+        let position = Position::from_string(position);
         self.set_position(position);
     }
 
@@ -117,7 +117,7 @@ impl Bitboard {
 
     /// Convert the bitboard to a vector of positions.
     pub fn to_positions(&self) -> Vec<Position> {
-        let mut result = Vec::with_capacity(self.count_bits() as usize);
+        let mut result = Vec::with_capacity(self.count_ones() as usize);
 
         let board = Bitboard(self.0 & Bitboard::filled().0);
 
@@ -281,11 +281,11 @@ mod tests {
     #[test]
     fn test_count_bits() {
         let mut bb = Bitboard::new();
-        assert_eq!(bb.count_bits(), 0);
+        assert_eq!(bb.count_ones(), 0);
         bb.set_bit(0);
         bb.set_bit(1);
         bb.set_bit(127);
-        assert_eq!(bb.count_bits(), 3);
+        assert_eq!(bb.count_ones(), 3);
     }
 
     #[test]

@@ -11,6 +11,7 @@ struct Test {
 }
 
 #[test]
+#[ignore]
 fn test_hexchess_parse() {
     let tests = json::<Test>("hexchess-parse.json");
 

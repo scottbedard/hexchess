@@ -1,4 +1,4 @@
-use crate::h;
+use crate::constants::hexboard_graph;
 use crate::hexchess::color::Color;
 use crate::hexchess::piece::Piece;
 use crate::hexchess::pieces::bishop::bishop_moves_unsafe;
@@ -7,6 +7,7 @@ use crate::hexchess::pieces::knight::knight_moves_unsafe;
 use crate::hexchess::pieces::pawn::pawn_moves_unsafe;
 use crate::hexchess::pieces::queen::queen_moves_unsafe;
 use crate::hexchess::pieces::rook::rook_moves_unsafe;
+use crate::hexchess::position::Position;
 use crate::hexchess::san::San;
 use serde_with::serde_as;
 use serde::{Deserialize, Serialize};
@@ -14,7 +15,6 @@ use smallvec::SmallVec;
 use std::hash::Hash;
 
 use crate::constants::{
-    HEXBOARD_GRAPH,
     INITIAL_POSITION,
     KNIGHT_GRAPH,
     PromotionPiece,
@@ -24,7 +24,6 @@ use crate::hexchess::utils::{
     is_legal_en_passant,
     step,
     fen_index,
-    position,
     walk_until_piece,
 };
 
@@ -35,7 +34,7 @@ pub struct Hexchess {
     #[serde_as(as = "[_; 91]")]
     pub board: [Option<Piece>; 91],
 
-    pub ep: Option<u8>,
+    pub ep: Option<Position>,
 
     pub fullmove: u16,
 
@@ -51,7 +50,7 @@ impl Hexchess {
         let mut i: u32 = 0;
 
         for part in sequence.split_whitespace() {
-            let san = match San::from(&part.to_string()) {
+            let san = match San::from_string(&part.to_string()) {
                 Ok(san) => san,
                 Err(_) => {
                     return Err(format!("invalid san at index {}: {}", i, part));
@@ -151,25 +150,25 @@ impl Hexchess {
         // set en passsant
         self.ep = match piece {
             Piece::BlackPawn => match (san.from, san.to) {
-                (h!("c7"), h!("c5")) => Some(h!("c6")),
-                (h!("d7"), h!("d5")) => Some(h!("d6")),
-                (h!("e7"), h!("e5")) => Some(h!("e6")),
-                (h!("f7"), h!("f5")) => Some(h!("f6")),
-                (h!("g7"), h!("g5")) => Some(h!("g6")),
-                (h!("h7"), h!("h5")) => Some(h!("h6")),
-                (h!("i7"), h!("i5")) => Some(h!("i6")),
-                (h!("k7"), h!("k5")) => Some(h!("k6")),
+                (Position::C7, Position::C5) => Some(Position::C6),
+                (Position::D7, Position::D5) => Some(Position::D6),
+                (Position::E7, Position::E5) => Some(Position::E6),
+                (Position::F7, Position::F5) => Some(Position::F6),
+                (Position::G7, Position::G5) => Some(Position::G6),
+                (Position::H7, Position::H5) => Some(Position::H6),
+                (Position::I7, Position::I5) => Some(Position::I6),
+                (Position::K7, Position::K5) => Some(Position::K6),
                 _ => None,
             },
             Piece::WhitePawn => match (san.from, san.to) {
-                (h!("c2"), h!("c4")) => Some(h!("c3")),
-                (h!("d3"), h!("d5")) => Some(h!("d4")),
-                (h!("e4"), h!("e6")) => Some(h!("e5")),
-                (h!("f5"), h!("f7")) => Some(h!("f6")),
-                (h!("g4"), h!("g6")) => Some(h!("g5")),
-                (h!("h3"), h!("h5")) => Some(h!("h4")),
-                (h!("i2"), h!("i4")) => Some(h!("i3")),
-                (h!("k1"), h!("k3")) => Some(h!("k2")),
+                (Position::C2, Position::C4) => Some(Position::C3),
+                (Position::D3, Position::D5) => Some(Position::D4),
+                (Position::E4, Position::E6) => Some(Position::E5),
+                (Position::F5, Position::F7) => Some(Position::F6),
+                (Position::G4, Position::G6) => Some(Position::G5),
+                (Position::H3, Position::H5) => Some(Position::H4),
+                (Position::I2, Position::I4) => Some(Position::I3),
+                (Position::K1, Position::K3) => Some(Position::K2),
                 _ => None,
             },
             _ => None,
@@ -200,15 +199,15 @@ impl Hexchess {
     }
 
     /// get positions occupied by a color
-    pub fn get_color(&self, color: Color) -> SmallVec<[u8; 16]> {
-        let mut result: SmallVec<[u8; 16]> = SmallVec::new();
+    pub fn get_color(&self, color: Color) -> SmallVec<[Position; 16]> {
+        let mut result: SmallVec<[Position; 16]> = SmallVec::new();
 
         // Use unchecked access for better performance
         for index in 0..91 {
             unsafe {
                 match *self.board.get_unchecked(index) {
                     Some(piece) => if piece.is_friendly(color) {
-                        result.push(index as u8);
+                        result.push(Position::from_fen_index(index as u8));
                     },
                     None => continue,
                 }
@@ -220,7 +219,7 @@ impl Hexchess {
 
     /// get legal moves a position
     #[inline(always)]
-    pub fn moves_from(&self, from: u8) -> Vec<San> {
+    pub fn moves_from(&self, from: Position) -> Vec<San> {
         let piece = match self.board[from as usize] {
             Some(piece) => piece,
             None => return Vec::new(),
@@ -258,10 +257,10 @@ impl Hexchess {
 
     /// get moves from a position, regardless of turn or legality
     #[inline(always)]
-    pub fn moves_from_unsafe(&self, from: u8) -> Vec<San> {
+    pub fn moves_from_unsafe(&self, from: Position) -> Vec<San> {
         let mut result: Vec<San> = Vec::with_capacity(12); // Most pieces have <12 moves
 
-        let piece = match self.board[from as usize] {
+        let piece = match self.board[from.to_fen_index() as usize] {
             Some(piece) => piece,
             None => return result,
         };
@@ -305,7 +304,7 @@ impl Hexchess {
 
     /// find king by color
     #[inline(always)]
-    pub fn find_king(&self, color: Color) -> Option<u8> {
+    pub fn find_king(&self, color: Color) -> Option<Position> {
         let king = match color {
             Color::Black => Piece::BlackKing,
             Color::White => Piece::WhiteKing,
@@ -315,7 +314,7 @@ impl Hexchess {
         for index in 0..91 {
             unsafe {
                 if *self.board.get_unchecked(index) == Some(king) {
-                    return Some(index as u8);
+                    return Some(Position::from_fen_index(index as u8));
                 }
             }
         }
@@ -378,7 +377,7 @@ impl Hexchess {
     }
 
     /// test if position is threatened
-    pub fn is_threatened(&self, position: u8) -> bool {
+    pub fn is_threatened(&self, position: Position) -> bool {
         let threatened_piece = match self.board[position as usize] {
             Some(piece) => piece,
             None => return false,
@@ -391,7 +390,7 @@ impl Hexchess {
             unsafe {
                 match *self.board.get_unchecked(n as usize) {
                     Some(piece) => if piece.is_enemy(color) {
-                        for san in self.moves_from_unsafe(n) {
+                        for san in self.moves_from_unsafe(Position::from_fen_index(n)) {
                             if san.to == position {
                                 return true
                             }
@@ -429,13 +428,7 @@ impl Hexchess {
         let ep = match parts.next() {
             Some(part) => match part {
                 "-" => None,
-                _ => match fen_index(&part) {
-                    Ok(result) => match is_legal_en_passant(&result) {
-                        true => Some(result),
-                        false => return Err(format!("illegal en passant position: {}", part)),
-                    },
-                    Err(_) => return Err(format!("invalid en passant position: {}", part)),
-                },
+                _ => Some(Position::from_string(part)),
             },
             None => None,
         };
@@ -478,8 +471,8 @@ impl Hexchess {
                 Color::White => 'w',
             },
             match self.ep {
-                Some(ep) => position(&ep),
-                None => "-",
+                Some(ep) => ep.to_string(),
+                None => "-".to_string(),
             },
             self.halfmove,
             self.fullmove,
@@ -489,7 +482,7 @@ impl Hexchess {
 
 /// test if knight threatens a position
 #[inline(always)]
-fn is_knight_threat(hexchess: &Hexchess, color: &Color, position: u8) -> bool {
+fn is_knight_threat(hexchess: &Hexchess, color: &Color, position: Position) -> bool {
     let hostile_knight = match color {
         Color::Black => Piece::WhiteKnight,
         Color::White => Piece::BlackKnight,
@@ -508,13 +501,13 @@ fn is_knight_threat(hexchess: &Hexchess, color: &Color, position: u8) -> bool {
 
 /// test if position touches the hostile king
 #[inline(always)]
-fn is_king_threat(hexchess: &Hexchess, color: &Color, position: u8) -> bool {
+fn is_king_threat(hexchess: &Hexchess, color: &Color, position: Position) -> bool {
     let hostile_king = match color {
         Color::Black => Piece::WhiteKing,
         Color::White => Piece::BlackKing,
     };
 
-    for n in HEXBOARD_GRAPH[position as usize] {
+    for n in hexboard_graph(position) {
         if let Some(index) = n {
             unsafe {
                 if *hexchess.board.get_unchecked(index as usize) == Some(hostile_king) {
@@ -529,7 +522,7 @@ fn is_king_threat(hexchess: &Hexchess, color: &Color, position: u8) -> bool {
 
 /// test if pawn threatens a position
 #[inline(always)]
-fn is_pawn_threat(hexchess: &Hexchess, color: &Color, position: u8) -> bool {
+fn is_pawn_threat(hexchess: &Hexchess, color: &Color, position: Position) -> bool {
     // portside and starboard are reversed from the pawn's perspective because
     // we only know the king's position. so we must move the king like friendly
     // pawn to see if it encounters a hostile pawn
@@ -565,7 +558,7 @@ fn is_pawn_threat(hexchess: &Hexchess, color: &Color, position: u8) -> bool {
 
 /// test if straight line piece threatens a position
 #[inline(always)]
-fn is_straight_line_threat(hexchess: &Hexchess, color: &Color, position: u8) -> bool {
+fn is_straight_line_threat(hexchess: &Hexchess, color: &Color, position: Position) -> bool {
     let hostile_bishop = match color {
         Color::Black => Piece::WhiteBishop,
         Color::White => Piece::BlackBishop,

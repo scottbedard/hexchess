@@ -1,7 +1,6 @@
 use crate::json;
 use hexchess::hexchess::color::Color;
 use hexchess::hexchess::hexchess::Hexchess;
-use hexchess::hexchess::utils::position;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -21,7 +20,7 @@ fn test_get_color() {
 
         let result = hexchess.get_color(test.color)
             .iter()
-            .map(|p| position(p).to_string())
+            .map(|p| p.to_string())
             .collect::<Vec<String>>();
 
         assert_eq!(result, test.result);

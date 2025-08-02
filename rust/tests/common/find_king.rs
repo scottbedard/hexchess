@@ -1,7 +1,7 @@
 use crate::json;
 use hexchess::hexchess::color::Color;
 use hexchess::hexchess::hexchess::Hexchess;
-use hexchess::hexchess::utils::position;
+use hexchess::hexchess::position::Position;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -22,7 +22,7 @@ fn test_find_king() {
         let king = hexchess.find_king(test.color);
 
         if let Some(king) = king {
-            assert_eq!(position(&king), test.result.unwrap(), "{}", test.description);
+            assert_eq!(king.to_string(), test.result.unwrap(), "{}", test.description);
         } else {
             assert_eq!(king, None, "{}", test.description);
         }

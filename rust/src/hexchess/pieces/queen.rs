@@ -1,11 +1,12 @@
 use crate::hexchess::color::Color;
 use crate::hexchess::hexchess::Hexchess;
+use crate::hexchess::position::Position;
 use crate::hexchess::san::San;
 use crate::hexchess::utils::walk;
 
 pub fn queen_moves_unsafe(
     hexchess: &Hexchess,
-    from: &u8,
+    from: &Position,
     color: &Color,
 ) -> Vec<San> {
     let mut result: Vec<San> = Vec::with_capacity(42); // Queen can have up to 42 moves

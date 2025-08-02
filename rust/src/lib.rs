@@ -4,4 +4,4 @@ pub mod macros;
 pub use hexchess::hexchess::Hexchess;
 pub use hexchess::piece::Piece;
 pub use hexchess::san::San;
-pub use hexchess::utils::{fen_index, position};
+pub use hexchess::utils::fen_index;

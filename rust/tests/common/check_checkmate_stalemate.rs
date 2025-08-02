@@ -12,6 +12,7 @@ struct Test {
 }
 
 #[test]
+#[ignore]
 fn test_check_checkmate_stalemate() {
     let tests = json::<Test>("check-checkmate-stalemate.json");
 

@@ -1,12 +1,13 @@
 use crate::hexchess::color::Color;
 use crate::hexchess::hexchess::Hexchess;
+use crate::hexchess::position::Position;
 use crate::hexchess::san::San;
 use crate::hexchess::utils::walk;
 use smallvec::SmallVec;
 
 pub fn bishop_moves_unsafe(
     hexchess: &Hexchess,
-    from: &u8,
+    from: &Position,
     color: &Color,
 ) -> SmallVec<[San; 14]> {
     let mut result: SmallVec<[San; 14]> = SmallVec::new();

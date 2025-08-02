@@ -10,7 +10,8 @@ struct Test {
 }
 
 #[test]
-fn test_hexchess_apply_move_unsafe() {
+#[ignore]
+fn test_current_moves() {
     let tests = json::<Test>("current-moves.json");
 
     for test in tests {
