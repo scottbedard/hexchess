@@ -9,8 +9,6 @@ use crate::hexchess::pieces::queen::queen_moves_unsafe;
 use crate::hexchess::pieces::rook::rook_moves_unsafe;
 use crate::hexchess::position::Position;
 use crate::hexchess::san::San;
-use serde_with::serde_as;
-use serde::{Deserialize, Serialize};
 use smallvec::SmallVec;
 use std::hash::Hash;
 
@@ -27,10 +25,8 @@ use crate::hexchess::utils::{
 };
 
 /// Hexchess game state
-#[serde_as]
-#[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, PartialEq, Serialize)]
+#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
 pub struct Hexchess {
-    #[serde_as(as = "[_; 91]")]
     pub board: [Option<Piece>; 91],
 
     pub ep: Option<Position>,

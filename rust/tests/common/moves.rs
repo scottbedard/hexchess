@@ -15,9 +15,9 @@ struct Test {
 fn test_piece_movement() {
     let files = [
         // "moves-from.json",
-        "moves-king.json",
-        "moves-knight.json",
-        // "moves-pawn.json",
+        // "moves-king.json",
+        // "moves-knight.json",
+        "moves-pawn.json",
         // "moves-straight-line.json",
     ];
 
