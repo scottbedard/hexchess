@@ -1,5 +1,5 @@
+use hexchess_bitmask::bitmask_csv;
 use std::fmt;
-use serde::{Deserialize, Serialize};
 
 /*
     null,   null,   null,   null,   null,   'f11',  'g10',  'h9',   'i8',   'k7',   'l6',
@@ -16,7 +16,7 @@ use serde::{Deserialize, Serialize};
 */
 
 /// Position within a hexchess bitboard.
-#[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, PartialEq, Serialize)]
+#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
 #[repr(u8)]
 pub enum Position {
     F11 = 5,
@@ -209,6 +209,12 @@ impl Position {
             115 => Position::F1,
             _ => panic!("Invalid bitboard index: {}", index),
         }
+    }
+
+    /// Convert bitmask to `Position`.
+    pub fn from_bitmask(bitmask: u128) -> Self {
+        let index= bitmask.trailing_zeros() as u8;
+        Position::from_bitboard_index(index)
     }
 
     /// Convert FEN index to `Position`.
@@ -448,6 +454,108 @@ impl Position {
         self.is_black_promotion_position() || self.is_white_promotion_position()
     }
 
+    /// Convert the position to a bitmask.
+    pub fn to_bitmask(&self) -> u128 {
+        1u128 << (*self as u8)
+    }
+
+    /// Convert position to file bitmask.
+    pub fn to_file_bitmask(&self) -> u128 {
+        match self {
+            Position::A1 |
+            Position::A2 |
+            Position::A3 |
+            Position::A4 |
+            Position::A5 |
+            Position::A6 => bitmask_csv!("a1, a2, a3, a4, a5, a6"),
+            Position::B1 |
+            Position::B2 |
+            Position::B3 |
+            Position::B4 |
+            Position::B5 |
+            Position::B6 |
+            Position::B7 => bitmask_csv!("b1, b2, b3, b4, b5, b6, b7"),
+            Position::C1 |
+            Position::C2 |
+            Position::C3 |
+            Position::C4 |
+            Position::C5 |
+            Position::C6 |
+            Position::C7 |
+            Position::C8 => bitmask_csv!("c1, c2, c3, c4, c5, c6, c7, c8"),
+            Position::D1 |
+            Position::D2 |
+            Position::D3 |
+            Position::D4 |
+            Position::D5 |
+            Position::D6 |
+            Position::D7 |
+            Position::D8 |
+            Position::D9 => bitmask_csv!("d1, d2, d3, d4, d5, d6, d7, d8, d9"),
+            Position::E1 |
+            Position::E2 |
+            Position::E3 |
+            Position::E4 |
+            Position::E5 |
+            Position::E6 |
+            Position::E7 |
+            Position::E8 |
+            Position::E9 |
+            Position::E10 => bitmask_csv!("e1, e2, e3, e4, e5, e6, e7, e8, e9, e10"),
+            Position::F1 |
+            Position::F2 |
+            Position::F3 |
+            Position::F4 |
+            Position::F5 |
+            Position::F6 |
+            Position::F7 |
+            Position::F8 |
+            Position::F9 |
+            Position::F10 |
+            Position::F11 => bitmask_csv!("f1, f2, f3, f4, f5, f6, f7, f8, f9, f10, f11"),
+            Position::G1 |
+            Position::G2 |
+            Position::G3 |
+            Position::G4 |
+            Position::G5 |
+            Position::G6 |
+            Position::G7 |
+            Position::G8 |
+            Position::G9 |
+            Position::G10 => bitmask_csv!("g1, g2, g3, g4, g5, g6, g7, g8, g9, g10"),
+            Position::H1 |
+            Position::H2 |
+            Position::H3 |
+            Position::H4 |
+            Position::H5 |
+            Position::H6 |
+            Position::H7 |
+            Position::H8 |
+            Position::H9 => bitmask_csv!("h1, h2, h3, h4, h5, h6, h7, h8, h9"),
+            Position::I1 |
+            Position::I2 |
+            Position::I3 |
+            Position::I4 |
+            Position::I5 |
+            Position::I6 |
+            Position::I7 |
+            Position::I8 => bitmask_csv!("i1, i2, i3, i4, i5, i6, i7, i8"),
+            Position::K1 |
+            Position::K2 |
+            Position::K3 |
+            Position::K4 |
+            Position::K5 |
+            Position::K6 |
+            Position::K7 => bitmask_csv!("k1, k2, k3, k4, k5, k6, k7"),
+            Position::L1 |
+            Position::L2 |
+            Position::L3 |
+            Position::L4 |
+            Position::L5 |
+            Position::L6 => bitmask_csv!("l1, l2, l3, l4, l5, l6"),
+        }
+    }
+
     /// Convert position to FEN index.
     pub fn to_fen_index(&self) -> u8 {
         match self {
@@ -643,5 +751,17 @@ impl fmt::Display for Position {
         };
     
         write!(f, "{}", position)
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_to_and_from_bitmask() {
+        let from = Position::F11.to_bitmask();
+        let to = Position::from_bitmask(from);
+        assert_eq!(to, Position::F11);
     }
 }
