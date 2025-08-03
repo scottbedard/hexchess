@@ -1,4 +1,5 @@
 use hexchess_bitmask::{bitmask, bitmask_csv};
+use serde::{Deserialize, Serialize};
 use std::fmt;
 
 /*
@@ -16,7 +17,7 @@ use std::fmt;
 */
 
 /// Position within a hexchess bitboard.
-#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
+#[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, PartialEq, Serialize)]
 #[repr(u8)]
 pub enum Position {
     F11 = 5,
@@ -551,7 +552,7 @@ impl Position {
         self.is_black_promotion_position() || self.is_white_promotion_position()
     }
 
-    /// Step the position in the given direction.
+    /// Step from position in the given direction.
     pub fn step(&self, direction: u8) -> Option<Self> {
         let from = self.to_bitmask();
 
