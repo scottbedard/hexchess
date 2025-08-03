@@ -188,7 +188,7 @@ impl Game {
 
     /// Test if a position is occupied by a piece of the opposite color.
     pub fn is_position_hostile(&self, position: Position, color: Color) -> bool {
-        !self.is_position_friendly(position, color)
+        self.get_color_bitboard(color.opposite()).is_position_set(position)
     }
 
     /// Test if a position is occupied by any piece.
