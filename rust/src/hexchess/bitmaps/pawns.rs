@@ -1,98 +1,69 @@
-use crate::hexchess::bitboard::Bitboard;
+extern crate hexchess_bitmask;
+
 use crate::hexchess::color::Color;
 use crate::hexchess::game::Game;
 use crate::hexchess::position::Position;
+use crate::hexchess::promotion_piece::PromotionPiece;
 use crate::hexchess::san::San;
+use hexchess_bitmask::bitmask;
 
 pub fn get_pawn_moves_unsafe(game: &Game, from: Position) -> Vec<San> {
-    let color = game.get_color(from);
-    let _file_bitmask = from.to_file_bitmask();
-    
-    let mut _result = Bitboard::new();
+    let color = match game.get_color(from) {
+        Some(color) => color,
+        None => return Vec::new(),
+    };
+
+    let mut output = Vec::new();
+
+    let promotion_mask = match color {
+        Color::White => bitmask!("x/x1x/x3x/x5x/x7x/x9x/11/11/11/11/11"),
+        Color::Black => bitmask!("1/3/5/7/9/11/11/11/11/11/xxxxxxxxxxx"),
+    };
 
     // advance forward
-    match color {
-        Some(Color::White) => {
-            // f10 f11
-            // e9 e10
-            // f9 f10
-            // g9 g10
-            // d8 d9
-            // e8 e9
-            // f8 f9
-            // g8 g9
-            // h8 h9
-            // c7 c8
-            // d7 d8
-            // e7 e8
-            // f7 f8
-            // g7 g8
-            // h7 h8
-            // i7 i8
-            // b6 b7
-            // c6 c7
-            // d6 d7
-            // e6 e7
-            // f6 f7
-            // g6 g7
-            // h6 h7
-            // i6 i7
-            // k6 k7
-            // a5 a6
-            // b5 b6
-            // c5 c6
-            // d5 d6
-            // e5 e6
-            // f5 f6
-            // g5 g6
-            // h5 h6
-            // i5 i6
-            // k5 k6
-            // l5 l6
-            // a4 a5
-            // b4 b5
-            // c4 c5
-            // d4 d5
-            // e4 e5
-            // g4 g5
-            // h4 h5
-            // i4 i5
-            // k4 k5
-            // l4 l5
-            // a3 a4
-            // b3 b4
-            // c3 c4
-            // d3 d4
-            // h3 h4
-            // i3 i4
-            // k3 k4
-            // l3 l4
-            // a2 a3
-            // b2 b3
-            // c2 c3
-            // i2 i3
-            // k2 k3
-            // l2 l3
-            // a1 a2
-            // b1 b2
-            // k1 k2
-            // l1 l2
-        }
-        Some(Color::Black) => {
-            // ...
-        }
-        None => {}
-    }
+    let forward = match color {
+        Color::White => 0,
+        Color::Black => 6,
+    };
 
-    let output = Vec::new();
-    
-    // let mut output = Vec::with_capacity(result.count_ones() as usize);
+    match from.step(forward) {
+        Some(forward_position) => if game.is_position_empty(forward_position) {
+            let forward_mask = forward_position.to_bitmask();
 
-    // for index in result.iter_set_bits() {
-    //     let to = Position::from_bitboard_index(index);
-    //     let san = San::new(from, to);
-    //     output.push(san);
-    // }
+            // forward promotion
+            if forward_mask & promotion_mask != 0 {
+                push_promotion_sans(&mut output, from, forward_position);
+            } else {
+                // advance forward
+                output.push(San::new(from, forward_position));
+
+                let double_forward_mask = match color {
+                    Color::Black => bitmask!("1/3/5/7/9/1xxxxxxxxx1/11/11/11/11/11"),
+                    Color::White => bitmask!("1/3/5/7/9/5x5/4x1x4/3x3x3/2x5x2/1x7x1/11"),
+                };
+
+                // advance forward again
+                if forward_mask & double_forward_mask != 0 {
+                    let double_forward_position = forward_position.step(forward).unwrap();
+
+                    if game.is_position_empty(double_forward_position) {
+                        output.push(San::new(from, double_forward_position));
+                    }
+                }
+            }
+        },
+        None => {},
+    };
+
+    // captures
 
     output
+}
+
+fn push_promotion_sans(output: &mut Vec<San>, from: Position, to: Position) {
+    output.reserve(4);
+    output.push(San { from, to, promotion: Some(PromotionPiece::Queen) });
+    output.push(San { from, to, promotion: Some(PromotionPiece::Rook) });
+    output.push(San { from, to, promotion: Some(PromotionPiece::Bishop) });
+    output.push(San { from, to, promotion: Some(PromotionPiece::Knight) });
 }

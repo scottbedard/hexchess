@@ -1,6 +1,6 @@
 use crate::json;
-use hexchess::constants::PromotionPiece;
 use hexchess::hexchess::position::Position;
+use hexchess::hexchess::promotion_piece::PromotionPiece;
 use hexchess::hexchess::san::San;
 use serde::{Deserialize, Serialize};
 

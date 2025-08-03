@@ -72,6 +72,22 @@ impl Game {
         self.bitboard_white_rook.clear_position(position);
     }
 
+    /// Get the bitboard for all pieces.
+    pub fn get_all_bitboard(&self) -> Bitboard {
+        self.bitboard_black_bishop |
+        self.bitboard_black_king |
+        self.bitboard_black_knight |
+        self.bitboard_black_pawn |
+        self.bitboard_black_queen |
+        self.bitboard_black_rook |
+        self.bitboard_white_bishop |
+        self.bitboard_white_king |
+        self.bitboard_white_knight |
+        self.bitboard_white_pawn |
+        self.bitboard_white_queen |
+        self.bitboard_white_rook
+    }
+
     /// Get the color of the piece at the given position.
     pub fn get_color(&self, position: Position) -> Option<Color> {
         let black = self.get_color_bitboard(Color::Black);
@@ -125,27 +141,6 @@ impl Game {
             Piece::BlackPawn | Piece::WhitePawn => get_pawn_moves_unsafe(&self, position),
             _ => Vec::new(),
         };
-
-        // result.extend(match piece {
-        //     Piece::BlackKing | Piece::WhiteKing => {
-        //         king_moves_unsafe(&self, from, &color).into_vec().into_iter()
-        //     },
-        //     Piece::BlackKnight | Piece::WhiteKnight => {
-        //         knight_moves_unsafe(&self, from, &color).into_vec().into_iter()
-        //     },
-        //     Piece::BlackPawn | Piece::WhitePawn => {
-        //         pawn_moves_unsafe(&self, from, &color).into_vec().into_iter()
-        //     },
-        //     Piece::BlackBishop | Piece::WhiteBishop => {
-        //         bishop_moves_unsafe(&self, &from, &color).into_vec().into_iter()
-        //     },
-        //     Piece::BlackRook | Piece::WhiteRook => {
-        //         rook_moves_unsafe(&self, &from, &color).into_vec().into_iter()
-        //     },
-        //     Piece::BlackQueen | Piece::WhiteQueen => {
-        //         queen_moves_unsafe(&self, &from, &color).into_iter()
-        //     }
-        // });
         
         result
     }
@@ -179,6 +174,26 @@ impl Game {
         } else {
             None
         }
+    }
+
+    /// Test if a position is empty.
+    pub fn is_position_empty(&self, position: Position) -> bool {
+        !self.is_position_occupied(position)
+    }
+
+    /// Test if a position is occupied by a piece of the given color.
+    pub fn is_position_friendly(&self, position: Position, color: Color) -> bool {
+        self.get_color_bitboard(color).is_position_set(position)
+    }
+
+    /// Test if a position is occupied by a piece of the opposite color.
+    pub fn is_position_hostile(&self, position: Position, color: Color) -> bool {
+        !self.is_position_friendly(position, color)
+    }
+
+    /// Test if a position is occupied by any piece.
+    pub fn is_position_occupied(&self, position: Position) -> bool {
+        self.get_all_bitboard().is_position_set(position)
     }
 
     /// Parse a FEN string into a game instance.
@@ -607,5 +622,25 @@ mod tests {
 
         assert_eq!(game.get_color_bitboard(Color::Black).0, black);
         assert_eq!(game.get_color_bitboard(Color::White).0, white);
+    }
+
+    #[test]
+    fn test_is_position_occupied_friendly_or_hostile() {
+        let game = Game::init();
+        assert_eq!(game.is_position_empty(Position::F11), false);
+        assert_eq!(game.is_position_empty(Position::A1), true);
+
+        assert_eq!(game.is_position_occupied(Position::F11), true);
+        assert_eq!(game.is_position_occupied(Position::A1), false);
+
+        assert_eq!(game.is_position_friendly(Position::F11, Color::Black), true);
+        assert_eq!(game.is_position_friendly(Position::F11, Color::White), false);
+        assert_eq!(game.is_position_friendly(Position::F1, Color::Black), false);
+        assert_eq!(game.is_position_friendly(Position::F1, Color::White), true);
+
+        assert_eq!(game.is_position_hostile(Position::F11, Color::Black), false);
+        assert_eq!(game.is_position_hostile(Position::F11, Color::White), true);
+        assert_eq!(game.is_position_hostile(Position::F1, Color::Black), true);
+        assert_eq!(game.is_position_hostile(Position::F1, Color::White), false);
     }
 }

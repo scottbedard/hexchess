@@ -8,6 +8,7 @@ use crate::hexchess::pieces::pawn::pawn_moves_unsafe;
 use crate::hexchess::pieces::queen::queen_moves_unsafe;
 use crate::hexchess::pieces::rook::rook_moves_unsafe;
 use crate::hexchess::position::Position;
+use crate::hexchess::promotion_piece::PromotionPiece;
 use crate::hexchess::san::San;
 use serde_with::serde_as;
 use serde::{Deserialize, Serialize};
@@ -17,7 +18,6 @@ use std::hash::Hash;
 use crate::constants::{
     INITIAL_POSITION,
     KNIGHT_GRAPH,
-    PromotionPiece,
 };
 
 use crate::hexchess::utils::{

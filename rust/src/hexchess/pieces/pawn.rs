@@ -1,7 +1,7 @@
-use crate::hexchess::position::Position;
-use crate::constants::PromotionPiece;
 use crate::hexchess::color::Color;
 use crate::hexchess::hexchess::Hexchess;
+use crate::hexchess::position::Position;
+use crate::hexchess::promotion_piece::PromotionPiece;
 use crate::hexchess::san::San;
 use smallvec::SmallVec;
 

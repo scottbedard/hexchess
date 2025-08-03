@@ -6,5 +6,6 @@ pub mod hexchess;
 pub mod piece;
 pub mod pieces;
 pub mod position;
+pub mod promotion_piece;
 pub mod san;
 pub mod utils;
