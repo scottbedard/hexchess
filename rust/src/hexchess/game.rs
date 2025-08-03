@@ -1,5 +1,6 @@
 use crate::constants::INITIAL_POSITION;
 use crate::hexchess::bitboard::Bitboard;
+use crate::hexchess::bitmaps::king::get_king_moves_unsafe;
 use crate::hexchess::bitmaps::knight::get_knight_moves_unsafe;
 use crate::hexchess::color::Color;
 use crate::hexchess::piece::Piece;
@@ -118,6 +119,7 @@ impl Game {
         };
 
         let result = match piece {
+            Piece::BlackKing | Piece::WhiteKing => get_king_moves_unsafe(&self, position),
             Piece::BlackKnight | Piece::WhiteKnight => get_knight_moves_unsafe(&self, position),
             _ => Vec::new(),
         };
