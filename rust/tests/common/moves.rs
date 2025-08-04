@@ -29,7 +29,7 @@ fn test_piece_movement() {
 
             let mut actual = Game::parse(&test.from)
                 .unwrap()
-                .get_moves_unsafe(from)
+                .get_moves(from)
                 .into_iter()
                 .map(|san| san.to_string())
                 .collect::<Vec<String>>();

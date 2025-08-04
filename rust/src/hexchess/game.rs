@@ -11,9 +11,10 @@ use crate::hexchess::bitmaps::sliding::{
 use crate::hexchess::color::Color;
 use crate::hexchess::piece::Piece;
 use crate::hexchess::position::Position;
+use crate::hexchess::promotion_piece::PromotionPiece;
 use crate::hexchess::san::San;
 
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub struct Game {
     pub bitboard_black_bishop: Bitboard,
     pub bitboard_black_king: Bitboard,
@@ -34,6 +35,111 @@ pub struct Game {
 }
 
 impl Game {
+    /// apply a move regardless of turn or legality
+    pub fn apply_move_unsafe(&mut self, san: &San) -> Result<(), String> {
+        let piece = match self.get_position(san.from) {
+            Some(piece) => piece,
+            None => return Err(format!("cannot apply move from empty position: {}", san.from)),
+        };
+
+        let color = piece.color();
+
+        let hostile_color = color.opposite();
+
+        let enemy_bitmask = *self.get_color_bitboard(hostile_color);
+
+        let ep_bitmask = match self.ep {
+            Some(ep) => ep.to_bitmask(),
+            None => 0,
+        };
+
+        let to_bitmask = san.to.to_bitmask();
+
+        let is_capture = (ep_bitmask | enemy_bitmask) & to_bitmask != 0;
+
+        // update halfmove
+        if is_capture || piece == Piece::BlackPawn || piece == Piece::WhitePawn {
+            self.halfmove = 0;
+        } else {
+            self.halfmove += 1;
+        }
+
+        // update fullmove and turn color
+        if color == Color::Black {
+            self.fullmove += 1;
+            self.turn = Color::White;
+        } else {
+            self.turn = Color::Black;
+        }
+
+        // set from positions
+        self.clear_position(san.from);
+
+        // set to position
+        let to_piece = match color {
+            Color::Black => match san.promotion {
+                Some(PromotionPiece::Bishop) => Piece::BlackBishop,
+                Some(PromotionPiece::Knight) => Piece::BlackKnight,
+                Some(PromotionPiece::Queen) => Piece::BlackQueen,
+                Some(PromotionPiece::Rook) => Piece::BlackRook,
+                None => piece,
+            },
+            Color::White => match san.promotion {
+                Some(PromotionPiece::Bishop) => Piece::WhiteBishop,
+                Some(PromotionPiece::Knight) => Piece::WhiteKnight,
+                Some(PromotionPiece::Queen) => Piece::WhiteQueen,
+                Some(PromotionPiece::Rook) => Piece::WhiteRook,
+                None => piece,
+            },
+        };
+
+        self.set_position(san.to, to_piece);
+        
+        // clear captured en passant
+        if Some(san.to) == self.ep {
+            match piece {
+                Piece::BlackPawn => match san.to.step(0) {
+                    Some(p) => self.bitboard_white_pawn.clear_position(p),
+                    None => {},
+                },
+                Piece::WhitePawn => match san.to.step(6) {
+                    Some(p) => self.bitboard_black_pawn.clear_position(p),
+                    None => {},
+                },
+                _ => {},
+            };
+        }
+
+        // set en passsant
+        self.ep = match piece {
+            Piece::BlackPawn => match (san.from, san.to) {
+                (Position::C7, Position::C5) => Some(Position::C6),
+                (Position::D7, Position::D5) => Some(Position::D6),
+                (Position::E7, Position::E5) => Some(Position::E6),
+                (Position::F7, Position::F5) => Some(Position::F6),
+                (Position::G7, Position::G5) => Some(Position::G6),
+                (Position::H7, Position::H5) => Some(Position::H6),
+                (Position::I7, Position::I5) => Some(Position::I6),
+                (Position::K7, Position::K5) => Some(Position::K6),
+                _ => None,
+            },
+            Piece::WhitePawn => match (san.from, san.to) {
+                (Position::C2, Position::C4) => Some(Position::C3),
+                (Position::D3, Position::D5) => Some(Position::D4),
+                (Position::E4, Position::E6) => Some(Position::E5),
+                (Position::F5, Position::F7) => Some(Position::F6),
+                (Position::G4, Position::G6) => Some(Position::G5),
+                (Position::H3, Position::H5) => Some(Position::H4),
+                (Position::I2, Position::I4) => Some(Position::I3),
+                (Position::K1, Position::K3) => Some(Position::K2),
+                _ => None,
+            },
+            _ => None,
+        };
+
+        Ok(())
+    }
+
     /// Create a new game instance with no pieces.
     pub fn new() -> Self {
         Self {
@@ -130,6 +236,19 @@ impl Game {
                 self.bitboard_white_rook
             }
         }
+    }
+
+    /// Get all legal moves.
+    pub fn get_moves(&self, position: Position) -> Vec<San> {
+        self.get_moves_unsafe(position)
+            .into_iter()
+            .filter(|san| {
+                let mut clone = self.clone();
+                let _ = clone.apply_move_unsafe(san);
+                // !clone.is_check()
+                true
+            })
+            .collect()
     }
 
     /// Get moves from a position, regardless of turn or legality.

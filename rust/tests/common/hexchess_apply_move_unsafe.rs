@@ -1,5 +1,6 @@
 use crate::json;
-use hexchess::{Hexchess, San};
+use hexchess::hexchess::game::Game;
+use hexchess::hexchess::san::San;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -17,8 +18,8 @@ fn test_hexchess_apply_move_unsafe() {
     let tests = json::<Test>("hexchess-apply-move-unsafe.json");
 
     for test in tests {
-        let mut result = match Hexchess::parse(&test.from) {
-            Ok(hexchess) => hexchess,
+        let mut result = match Game::parse(&test.from) {
+            Ok(game) => game,
             Err(_) => {
                 assert!(test.error, "{}", test.description);
                 continue;
@@ -26,11 +27,6 @@ fn test_hexchess_apply_move_unsafe() {
         };
 
         let san = San::from_string(&test.sequence);
-
-        // if san.is_err() {
-        //     assert!(test.error, "{}", test.description);
-        //     continue;
-        // }
 
         let output = result.apply_move_unsafe(&san);
 
