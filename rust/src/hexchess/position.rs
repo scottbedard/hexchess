@@ -513,43 +513,17 @@ impl Position {
 
     /// test if position is black promotion position
     pub fn is_black_promotion_position(&self) -> bool {
-        match self {
-            Position::A1 |
-            Position::B1 |
-            Position::C1 |
-            Position::D1 |
-            Position::E1 |
-            Position::F1 |
-            Position::G1 |
-            Position::H1 |
-            Position::I1 |
-            Position::K1 |
-            Position::L1 => true,
-            _ => false,
-        }
+        self.to_bitmask() & bitmask!("1/3/5/7/9/11/11/11/11/11/xxxxxxxxxxx") != 0
     }
 
     /// test if position is a white promotion position
     pub fn is_white_promotion_position(&self) -> bool {
-        match self {
-            Position::F11 |
-            Position::E10 |
-            Position::G10 |
-            Position::D9 |
-            Position::H9 |
-            Position::C8 |
-            Position::I8 |
-            Position::B7 |
-            Position::K7 |
-            Position::A6 |
-            Position::L6 => true,
-            _ => false,
-        }
+        self.to_bitmask() & bitmask!("x/x1x/x3x/x5x/x7x/x9x/11/11/11/11/11") != 0
     }
 
     /// test if position is a promotion position
     pub fn is_promotion_position(&self) -> bool {
-        self.is_black_promotion_position() || self.is_white_promotion_position()
+        self.to_bitmask() & bitmask!("x/x1x/x3x/x5x/x7x/x9x/11/11/11/11/xxxxxxxxxxx") != 0
     }
 
     /// Step from position in the given direction.

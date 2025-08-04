@@ -3,6 +3,11 @@ use crate::hexchess::bitboard::Bitboard;
 use crate::hexchess::bitmaps::king::get_king_moves_unsafe;
 use crate::hexchess::bitmaps::knight::get_knight_moves_unsafe;
 use crate::hexchess::bitmaps::pawns::get_pawn_moves_unsafe;
+use crate::hexchess::bitmaps::sliding::{
+    get_bishop_moves_unsafe,
+    get_rook_moves_unsafe,
+    get_queen_moves_unsafe
+};
 use crate::hexchess::color::Color;
 use crate::hexchess::piece::Piece;
 use crate::hexchess::position::Position;
@@ -129,20 +134,19 @@ impl Game {
 
     /// Get moves from a position, regardless of turn or legality.
     pub fn get_moves_unsafe(&self, position: Position) -> Vec<San> {
-        // Get the piece at this position
         let piece = match self.get_position(position) {
             Some(piece) => piece,
             None => return Vec::new(), // no piece at this position
         };
 
-        let result = match piece {
+        match piece {
+            Piece::BlackBishop | Piece::WhiteBishop => get_bishop_moves_unsafe(&self, position),
             Piece::BlackKing | Piece::WhiteKing => get_king_moves_unsafe(&self, position),
             Piece::BlackKnight | Piece::WhiteKnight => get_knight_moves_unsafe(&self, position),
             Piece::BlackPawn | Piece::WhitePawn => get_pawn_moves_unsafe(&self, position),
-            _ => Vec::new(),
-        };
-        
-        result
+            Piece::BlackQueen | Piece::WhiteQueen => get_queen_moves_unsafe(&self, position),
+            Piece::BlackRook | Piece::WhiteRook => get_rook_moves_unsafe(&self, position),
+        }
     }
 
     /// Get the piece at the given position.

@@ -18,7 +18,7 @@ fn test_piece_movement() {
         "moves-king.json",
         "moves-knight.json",
         "moves-pawn.json",
-        // "moves-straight-line.json",
+        "moves-straight-line.json",
     ];
 
     for file in files {
