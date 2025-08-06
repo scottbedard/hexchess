@@ -1,7 +1,10 @@
 use crate::constants::INITIAL_POSITION;
 use crate::hexchess::bitboard::Bitboard;
 use crate::hexchess::bitmaps::king::get_king_moves_unsafe;
-use crate::hexchess::bitmaps::knight::get_knight_moves_unsafe;
+use crate::hexchess::bitmaps::knight::{
+    get_knight_moves_bitmask,
+    get_knight_moves_unsafe,
+};
 use crate::hexchess::bitmaps::pawns::{
     get_pawn_threats_bitmask,
     get_pawn_moves_unsafe,
@@ -333,13 +336,39 @@ impl Game {
 
         let hostile_color = friendly_color.opposite();
 
-        // pawn threats
-        let hostile_pawns = match friendly_color {
-            Color::Black => *self.bitboard_white_pawn,
-            Color::White => *self.bitboard_black_pawn,
+        let (
+            hostile_bishops,
+            hostile_king,
+            hostile_knights,
+            hostile_pawns,
+            hostile_queens,
+            hostile_rooks,
+        ) = match friendly_color {
+            Color::Black => (
+                *self.bitboard_white_bishop,
+                *self.bitboard_white_king,
+                *self.bitboard_white_knight,
+                *self.bitboard_white_pawn,
+                *self.bitboard_white_queen,
+                *self.bitboard_white_rook,
+            ),
+            Color::White => (
+                *self.bitboard_black_bishop,
+                *self.bitboard_black_king,
+                *self.bitboard_black_knight,
+                *self.bitboard_black_pawn,
+                *self.bitboard_black_queen,
+                *self.bitboard_black_rook,
+            ),
         };
 
+        // check for pawn threats
         if hostile_pawns & get_pawn_threats_bitmask(position, friendly_color) > 0 {
+            return true;
+        }
+
+        // knight threats
+        if hostile_knights & get_knight_moves_bitmask(position) > 0 {
             return true;
         }
 
