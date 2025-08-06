@@ -1,5 +1,5 @@
 use crate::json;
-use hexchess::Hexchess;
+use hexchess::hexchess::game::Game;
 use hexchess::hexchess::position::Position;
 use serde::{Deserialize, Serialize};
 
@@ -17,7 +17,7 @@ fn test_hexchess_is_threatened() {
     let tests = json::<Test>("hexchess-is-threatened.json");
 
     for test in tests {
-        let hexchess = match Hexchess::parse(&test.from) {
+        let hexchess = match Game::parse(&test.from) {
             Ok(hexchess) => hexchess,
             Err(e) => {
                 panic!("{}", e);

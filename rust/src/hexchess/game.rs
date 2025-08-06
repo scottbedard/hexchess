@@ -2,11 +2,16 @@ use crate::constants::INITIAL_POSITION;
 use crate::hexchess::bitboard::Bitboard;
 use crate::hexchess::bitmaps::king::get_king_moves_unsafe;
 use crate::hexchess::bitmaps::knight::get_knight_moves_unsafe;
-use crate::hexchess::bitmaps::pawns::get_pawn_moves_unsafe;
+use crate::hexchess::bitmaps::pawns::{
+    get_pawn_threats_bitmask,
+    get_pawn_moves_unsafe,
+};
 use crate::hexchess::bitmaps::sliding::{
     get_bishop_moves_unsafe,
+    get_diagonal_bitmask,
+    get_orthogonal_bitmask,
+    get_queen_moves_unsafe,
     get_rook_moves_unsafe,
-    get_queen_moves_unsafe
 };
 use crate::hexchess::color::Color;
 use crate::hexchess::piece::Piece;
@@ -317,6 +322,57 @@ impl Game {
     /// Test if a position is occupied by any piece.
     pub fn is_position_occupied(&self, position: Position) -> bool {
         self.get_all_bitboard().is_position_set(position)
+    }
+
+    /// Test if a position is threatened.
+    pub fn is_threatened(&self, position: Position) -> bool {
+        let friendly_color = match self.get_color(position) {
+            Some(color) => color,
+            None => return false,
+        };
+
+        let hostile_color = friendly_color.opposite();
+
+        // pawn threats
+        let hostile_pawns = match friendly_color {
+            Color::Black => *self.bitboard_white_pawn,
+            Color::White => *self.bitboard_black_pawn,
+        };
+
+        if hostile_pawns & get_pawn_threats_bitmask(position, friendly_color) > 0 {
+            return true;
+        }
+
+        // let diagonal_bitmask = get_diagonal_bitmask(position);
+
+        // let orthogonal_bitmask = get_orthogonal_bitmask(position);
+
+        // let (
+        //     hostile_bishops,
+        //     hostile_queens,
+        //     hostile_rooks,
+        // ) = match color {
+        //     Color::Black => (
+        //         *self.bitboard_white_bishop,
+        //         *self.bitboard_white_queen,
+        //         *self.bitboard_white_rook,
+        //     ),
+        //     Color::White => (
+        //         *self.bitboard_black_bishop,
+        //         *self.bitboard_black_queen,
+        //         *self.bitboard_black_rook,
+        //     )
+        // };
+
+        // let possible_diagonal_threat = diagonal_bitmask & (hostile_bishops | hostile_queens);
+
+        // let possible_orthogonal_threat = orthogonal_bitmask & (hostile_rooks | hostile_queens);
+
+        // if possible_diagonal_threat | possible_orthogonal_threat == 0 {
+        //     return false;
+        // }
+
+        false
     }
 
     /// Parse a FEN string into a game instance.
