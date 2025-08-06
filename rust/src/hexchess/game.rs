@@ -334,17 +334,7 @@ impl Game {
             None => return false,
         };
 
-        let all_pieces = self.get_all_bitboard();
-
-        let hostile_color = friendly_color.opposite();
-
         let (
-            friendly_bishops,
-            friendly_king,
-            friendly_knights,
-            friendly_pawns,
-            friendly_queens,
-            friendly_rooks,
             hostile_bishops,
             hostile_king,
             hostile_knights,
@@ -353,12 +343,6 @@ impl Game {
             hostile_rooks,
         ) = match friendly_color {
             Color::Black => (
-                *self.bitboard_black_bishop,
-                *self.bitboard_black_king,
-                *self.bitboard_black_knight,
-                *self.bitboard_black_pawn,
-                *self.bitboard_black_queen,
-                *self.bitboard_black_rook,
                 *self.bitboard_white_bishop,
                 *self.bitboard_white_king,
                 *self.bitboard_white_knight,
@@ -367,12 +351,6 @@ impl Game {
                 *self.bitboard_white_rook,
             ),
             Color::White => (
-                *self.bitboard_white_bishop,
-                *self.bitboard_white_king,
-                *self.bitboard_white_knight,
-                *self.bitboard_white_pawn,
-                *self.bitboard_white_queen,
-                *self.bitboard_white_rook,
                 *self.bitboard_black_bishop,
                 *self.bitboard_black_king,
                 *self.bitboard_black_knight,
@@ -392,15 +370,20 @@ impl Game {
             return true;
         }
 
+        // king threats
+        if hostile_king & position.get_neighbors() > 0 {
+            return true;
+        }
+
         // diagonal threats
         let diagonal_bitmask = get_diagonal_bitmask(position);
 
         let diagonal_threats = hostile_bishops | hostile_queens;
 
         if diagonal_bitmask & diagonal_threats > 0 {
-            let (bishop, queen) = match hostile_color {
-                Color::Black => (Piece::BlackBishop, Piece::BlackBishop),
-                Color::White => (Piece::WhiteBishop, Piece::WhiteQueen),
+            let (hostile_bishop, hostile_queen) = match friendly_color {
+                Color::Black => (Piece::WhiteBishop, Piece::WhiteBishop),
+                Color::White => (Piece::BlackBishop, Piece::BlackQueen),
             };
 
             for n in [1u8, 3, 5, 7, 9, 11] {
@@ -411,7 +394,7 @@ impl Game {
                         Some(next_p) => {
                             let next_value = self.get_position(next_p);
 
-                            if next_value == Some(bishop) || next_value == Some(queen) {
+                            if next_value == Some(hostile_bishop) || next_value == Some(hostile_queen) {
                                 return true;
                             }
 
@@ -433,9 +416,9 @@ impl Game {
         let orthogonal_threats = hostile_rooks | hostile_queens;
 
         if orthogonal_bitmask & orthogonal_threats > 0 {
-            let (rook, queen) = match hostile_color {
-                Color::Black => (Piece::BlackRook, Piece::BlackRook),
-                Color::White => (Piece::WhiteRook, Piece::WhiteQueen),
+            let (hostile_rook, hostile_queen) = match friendly_color {
+                Color::Black => (Piece::WhiteRook, Piece::WhiteQueen),
+                Color::White => (Piece::BlackRook, Piece::BlackRook),
             };
 
             for n in [0u8, 2, 4, 6, 8, 10] {
@@ -446,7 +429,7 @@ impl Game {
                         Some(next_p) => {
                             let next_value = self.get_position(next_p);
 
-                            if next_value == Some(rook) || next_value == Some(queen) {
+                            if next_value == Some(hostile_rook) || next_value == Some(hostile_queen) {
                                 return true;
                             }
 
@@ -461,8 +444,6 @@ impl Game {
                 }
             }
         }
-
-        // king threats...
 
         false
     }
