@@ -427,9 +427,42 @@ impl Game {
             }
         }
 
-        // let orthogonal_bitmask = get_orthogonal_bitmask(position);
+        // orthogonal threats
+        let orthogonal_bitmask = get_orthogonal_bitmask(position);
 
-        // ...
+        let orthogonal_threats = hostile_rooks | hostile_queens;
+
+        if orthogonal_bitmask & orthogonal_threats > 0 {
+            let (rook, queen) = match hostile_color {
+                Color::Black => (Piece::BlackRook, Piece::BlackRook),
+                Color::White => (Piece::WhiteRook, Piece::WhiteQueen),
+            };
+
+            for n in [0u8, 2, 4, 6, 8, 10] {
+                let mut next_position = position.step(n);
+
+                loop {                    
+                    match next_position {
+                        Some(next_p) => {
+                            let next_value = self.get_position(next_p);
+
+                            if next_value == Some(rook) || next_value == Some(queen) {
+                                return true;
+                            }
+
+                            if next_value.is_some() {
+                                break;
+                            }
+
+                            next_position = next_p.step(n);
+                        },
+                        None => break, // end of board
+                    };
+                }
+            }
+        }
+
+        // king threats...
 
         false
     }
