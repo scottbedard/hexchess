@@ -372,34 +372,33 @@ impl Game {
             return true;
         }
 
-        // let diagonal_bitmask = get_diagonal_bitmask(position);
+        // diagonal threats
+        let diagonal_bitmask = get_diagonal_bitmask(position);
+
+        let diagonal_threats = hostile_bishops | hostile_queens;
+
+        if diagonal_bitmask & diagonal_threats > 0 {
+            for n in [1u8, 3, 5, 7, 9, 11] {
+                let mut next_position = position.step(n);
+
+                loop {
+                    match next_position {
+                        Some(p) => {
+                            if diagonal_threats & p.to_bitmask() > 0 {
+                                return true;
+                            }
+
+                            next_position = p.step(n);
+                        }
+                        None => break, // end of board
+                    }
+                }
+            }
+        }
 
         // let orthogonal_bitmask = get_orthogonal_bitmask(position);
 
-        // let (
-        //     hostile_bishops,
-        //     hostile_queens,
-        //     hostile_rooks,
-        // ) = match color {
-        //     Color::Black => (
-        //         *self.bitboard_white_bishop,
-        //         *self.bitboard_white_queen,
-        //         *self.bitboard_white_rook,
-        //     ),
-        //     Color::White => (
-        //         *self.bitboard_black_bishop,
-        //         *self.bitboard_black_queen,
-        //         *self.bitboard_black_rook,
-        //     )
-        // };
-
-        // let possible_diagonal_threat = diagonal_bitmask & (hostile_bishops | hostile_queens);
-
-        // let possible_orthogonal_threat = orthogonal_bitmask & (hostile_rooks | hostile_queens);
-
-        // if possible_diagonal_threat | possible_orthogonal_threat == 0 {
-        //     return false;
-        // }
+        // ...
 
         false
     }
