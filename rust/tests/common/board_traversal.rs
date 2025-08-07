@@ -20,6 +20,8 @@ struct Test {
 #[test]
 #[ignore]
 fn test_board_traversal() {
+    // board traversal tests no longer apply when using bitmasks.
+    // a new test suite will be needed for traversal assertions.
     let tests = json::<Test>("board-traversal.json");
 
     for test in tests {

@@ -214,7 +214,7 @@ impl Position {
 
     /// Convert bitmask to `Position`.
     pub fn from_bitmask(bitmask: u128) -> Self {
-        let index= bitmask.trailing_zeros() as u8;
+        let index = bitmask.trailing_zeros() as u8;
         Position::from_bitboard_index(index)
     }
 
