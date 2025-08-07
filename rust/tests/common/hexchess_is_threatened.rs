@@ -12,7 +12,6 @@ struct Test {
 }
 
 #[test]
-#[ignore]
 fn test_hexchess_is_threatened() {
     let tests = json::<Test>("hexchess-is-threatened.json");
 

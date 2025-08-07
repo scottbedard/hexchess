@@ -418,7 +418,7 @@ impl Game {
         if orthogonal_bitmask & orthogonal_threats > 0 {
             let (hostile_rook, hostile_queen) = match friendly_color {
                 Color::Black => (Piece::WhiteRook, Piece::WhiteQueen),
-                Color::White => (Piece::BlackRook, Piece::BlackRook),
+                Color::White => (Piece::BlackRook, Piece::BlackQueen),
             };
 
             for n in [0u8, 2, 4, 6, 8, 10] {
