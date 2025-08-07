@@ -191,6 +191,22 @@ impl Game {
         self.bitboard_white_rook.clear_position(position);
     }
 
+    /// Find the king of a given color.
+    pub fn find_king(&self, color: Color) -> Option<Position> {
+        let king_mask = match color {
+            Color::Black => self.bitboard_black_king,
+            Color::White => self.bitboard_white_king,
+        };
+
+        let king_index = king_mask.trailing_zeros() as u8;
+
+        if king_index == 128 {
+            return None;
+        }
+
+        Some(Position::from_bitboard_index(king_index))
+    }
+
     /// Get the bitboard for all pieces.
     pub fn get_all_bitboard(&self) -> Bitboard {
         self.bitboard_black_bishop |
@@ -311,6 +327,18 @@ impl Game {
     pub fn is_position_empty(&self, position: Position) -> bool {
         !self.is_position_occupied(position)
     }
+
+    // pub fn is_check(&self) -> bool {
+    //     // let king = match self.find_king(self.turn) {
+    //     //     Some(king) => king,
+    //     //     None => return false
+    //     // };
+
+    //     // let opposite_turn = match self.turn {
+    //     //     Color::Black => Color::White,
+    //     //     Color::White => Color::Black,
+    //     // };
+    // }
 
     /// Test if a position is occupied by a piece of the given color.
     pub fn is_position_friendly(&self, position: Position, color: Color) -> bool {

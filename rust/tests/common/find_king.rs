@@ -1,30 +1,33 @@
 use crate::json;
 use hexchess::hexchess::color::Color;
-use hexchess::hexchess::hexchess::Hexchess;
+use hexchess::hexchess::game::Game;
+use hexchess::hexchess::position::Position;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize)]
 struct Test {
-    color: Color,
+    color: String,
     description: String,
     from: String,
     result: Option<String>,
 }
 
 #[test]
-#[ignore]
 fn test_find_king() {
     let tests = json::<Test>("find-king.json");
 
     for test in tests {
-        let hexchess = Hexchess::parse(&test.from).unwrap();
+        let color = Color::from_string(&test.color);
+        let hexchess = Game::parse(&test.from).unwrap();
 
-        let king = hexchess.find_king(test.color);
+        let king = hexchess.find_king(color);
 
-        if let Some(king) = king {
-            assert_eq!(king.to_string(), test.result.unwrap(), "{}", test.description);
-        } else {
+        if test.result.is_none() {
             assert_eq!(king, None, "{}", test.description);
+        } else {
+            let position = Position::from_string(&test.result.unwrap());
+
+            assert_eq!(king, Some(position), "{}", test.description);
         }
     }
 }

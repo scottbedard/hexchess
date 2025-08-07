@@ -10,6 +10,14 @@ pub enum Color {
 }
 
 impl Color {
+    pub fn from_string(string: &str) -> Self {
+        match string {
+            "b" => Color::Black,
+            "w" => Color::White,
+            _ => panic!("invalid color: {}", string),
+        }
+    }
+
     pub fn opposite(&self) -> Self {
         match self {
             Color::Black => Color::White,
