@@ -33,5 +33,7 @@ fn test_current_moves() {
                 test.description
             );
         }
+
+        assert_eq!(current_moves.len(), expected_sans.len());
     }
 }
