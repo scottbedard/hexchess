@@ -750,6 +750,17 @@ impl Position {
             Position::L1 => 90,
         }
     }
+
+    /// Walk in a given direction, collecting positions until edge of board
+    pub fn walk(&self, direction: u8) -> Vec<Position> {
+        let mut path = Vec::new();
+        let mut current = *self;
+        while let Some(next) = current.step(direction) {
+            path.push(next);
+            current = next;
+        }
+        path
+    }
 }
 
 impl fmt::Display for Position {
