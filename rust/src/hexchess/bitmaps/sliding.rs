@@ -273,8 +273,9 @@ fn get_sliding_moves_unsafe(
             Some(color) => {
                 if color == hostile_color {
                     result.push(San { from: from_position, to: position, promotion: None });
-                    break;
                 }
+
+                break;
             }
             None => {
                 result.push(San { from: from_position, to: position, promotion: None });

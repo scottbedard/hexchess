@@ -148,6 +148,23 @@ impl Game {
         Ok(())
     }
 
+    /// Get current legal moves.
+    pub fn current_moves(&self) -> Vec<San> {
+        let mut result = Vec::new();
+
+        self
+            .get_color_bitboard(self.turn)
+            .iter_set_bits()
+            .for_each(|i| {
+                let position = Position::from_bitboard_index(i);
+                let moves = self.get_moves(position);
+
+                result.extend(moves);
+            });
+
+        result
+    }
+
     /// Create a new game instance with no pieces.
     pub fn new() -> Self {
         Self {
@@ -267,10 +284,13 @@ impl Game {
         self.get_moves_unsafe(position)
             .into_iter()
             .filter(|san| {
+                // apply the move, and filter any that self-check
                 let mut clone = self.clone();
                 let _ = clone.apply_move_unsafe(san);
-                // !clone.is_check()
-                true
+                match clone.find_king(self.turn) {
+                    Some(king) => !clone.is_threatened(king),
+                    None => true,
+                }
             })
             .collect()
     }
@@ -323,22 +343,25 @@ impl Game {
         }
     }
 
+    /// Test if the board is in check.
+    pub fn is_check(&self) -> bool {
+        let king = match self.find_king(self.turn) {
+            Some(king) => king,
+            None => return false
+        };
+
+        self.is_threatened(king)
+    }
+
+    /// Test if the board is in checkmate.
+    pub fn is_checkmate(&self) -> bool {
+        self.is_check() && self.current_moves().len() == 0
+    }
+
     /// Test if a position is empty.
     pub fn is_position_empty(&self, position: Position) -> bool {
         !self.is_position_occupied(position)
     }
-
-    // pub fn is_check(&self) -> bool {
-    //     // let king = match self.find_king(self.turn) {
-    //     //     Some(king) => king,
-    //     //     None => return false
-    //     // };
-
-    //     // let opposite_turn = match self.turn {
-    //     //     Color::Black => Color::White,
-    //     //     Color::White => Color::Black,
-    //     // };
-    // }
 
     /// Test if a position is occupied by a piece of the given color.
     pub fn is_position_friendly(&self, position: Position, color: Color) -> bool {
@@ -353,6 +376,11 @@ impl Game {
     /// Test if a position is occupied by any piece.
     pub fn is_position_occupied(&self, position: Position) -> bool {
         self.get_all_bitboard().is_position_set(position)
+    }
+
+    /// Test if the board is in stalemate.
+    pub fn is_stalemate(&self) -> bool {
+        !self.is_check() && self.current_moves().len() == 0
     }
 
     /// Test if a position is threatened.
@@ -922,5 +950,47 @@ mod tests {
         assert_eq!(game.is_position_hostile(Position::F11, Color::White), true);
         assert_eq!(game.is_position_hostile(Position::F1, Color::Black), true);
         assert_eq!(game.is_position_hostile(Position::F1, Color::White), false);
+    }
+
+    #[test]
+    fn test_find_king() {
+        let game = Game::parse("1/3/5/7/9/5k5/5P5/11/11/11/11 b - 0 1").unwrap();
+
+        assert_eq!(game.find_king(Color::Black), Some(Position::F6));
+        assert_eq!(game.find_king(Color::White), None);
+    }
+
+    #[test]
+    fn test_white_is_check() {
+        let game = Game::parse("1/3/5/7/9/11/11/11/11/5q5/5K5 w - 0 1").unwrap();
+
+        assert_eq!(game.is_check(), true);
+    }
+
+    #[test]
+    fn test_black_is_check() {
+        let game = Game::parse("k/1Q1/5/7/9/11/11/11/11/11/11 b - 0 1").unwrap();
+
+        assert_eq!(game.is_check(), true);
+    }
+
+    #[test]
+    fn test_king_does_not_self_check() {
+        let game = Game::parse("1/3/5/7/9/5k5/5P5/11/11/11/11 b - 0 1").unwrap();
+
+        let expected = vec![
+            "f6f7", "f6g7",
+            "f6g6", "f6h5",
+            "f6g4", "f6f5",
+            "f6e4", "f6d5",
+            "f6e6", "f6e7",
+        ];
+
+        assert_eq!(game.current_moves().len(), expected.len());
+        
+        for san in game.current_moves() {
+            let san_str = san.to_string();
+            assert!(expected.contains(&san_str.as_str()), "Move {} not found in expected", san_str);
+        }
     }
 }
