@@ -111,6 +111,25 @@ impl Piece {
         }
     }
 
+    /// Create a piece from a string.
+    pub fn from_string(s: &str) -> Result<Self, String> {
+        match s {
+            "b" => Ok(Piece::BlackBishop),
+            "k" => Ok(Piece::BlackKing),
+            "n" => Ok(Piece::BlackKnight),
+            "p" => Ok(Piece::BlackPawn),
+            "q" => Ok(Piece::BlackQueen),
+            "r" => Ok(Piece::BlackRook),
+            "B" => Ok(Piece::WhiteBishop),
+            "K" => Ok(Piece::WhiteKing),
+            "N" => Ok(Piece::WhiteKnight),
+            "P" => Ok(Piece::WhitePawn),
+            "Q" => Ok(Piece::WhiteQueen),
+            "R" => Ok(Piece::WhiteRook),
+            _ => Err(format!("invalid piece: {}", s)),
+        }
+    }
+
     /// Convert a piece to a character.
     pub fn to_char(&self) -> char {
         match self {

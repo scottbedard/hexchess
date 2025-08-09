@@ -12,7 +12,6 @@ struct Test {
 }
 
 #[test]
-#[ignore]
 fn test_move_legality() {
     let tests = json::<Test>("move-legality.json");
 

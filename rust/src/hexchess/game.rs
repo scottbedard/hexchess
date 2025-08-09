@@ -165,6 +165,22 @@ impl Game {
         Ok(())
     }
 
+    /// Clear all bitboards.
+    pub fn clear_all_bitboards(&mut self) {
+        self.bitboard_black_bishop = Bitboard::new();
+        self.bitboard_black_king = Bitboard::new();
+        self.bitboard_black_knight = Bitboard::new();
+        self.bitboard_black_pawn = Bitboard::new();
+        self.bitboard_black_queen = Bitboard::new();
+        self.bitboard_black_rook = Bitboard::new();
+        self.bitboard_white_bishop = Bitboard::new();
+        self.bitboard_white_king = Bitboard::new();
+        self.bitboard_white_knight = Bitboard::new();
+        self.bitboard_white_pawn = Bitboard::new();
+        self.bitboard_white_queen = Bitboard::new();
+        self.bitboard_white_rook = Bitboard::new();
+    }
+
     /// Clear all bitboards at a given position.
     pub fn clear_position(&mut self, position: Position) {
         self.bitboard_black_bishop.clear_position(position);
@@ -611,6 +627,20 @@ impl Game {
         };
 
         Ok(game)
+    }
+
+    /// Set the board from an array of pieces.
+    pub fn set_board_array(&mut self, board: [Option<Piece>; 91]) {
+        self.clear_all_bitboards();
+
+        for (i, piece) in board.iter().enumerate() {
+            let position = Position::from_fen_index(i as u8);
+
+            match piece {
+                Some(p) => self.set_position(position, *p),
+                None => {},
+            };
+        }
     }
 
     /// Set the piece at the given position.
