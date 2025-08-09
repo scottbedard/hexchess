@@ -3,7 +3,7 @@
 extern crate test;
 extern crate hexchess;
 
-use hexchess::hexchess::hexchess::Hexchess;
+use hexchess::hexchess::game::Game;
 use test::Bencher;
 
 #[bench]
@@ -12,8 +12,10 @@ fn bench_initial_position(b: &mut Bencher) {
     // 17,940,987.40 ns/iter (+/- 331,128.34) - pre-calc pawns
     // 815,047.90 ns/iter (+/- 24,078.53) - test unsafe from king's perspective
     // 720,664.60 ns/iter (+/- 5,080.18) - smallvec
+    // 880,891.60 ns/iter (+/- 17,080.93) - bitmaps
+
     b.iter(|| {
-        let hexchess_0 = Hexchess::init();
+        let hexchess_0 = Game::init();
         let white_moves = hexchess_0.current_moves();
 
         for white_move in white_moves {
