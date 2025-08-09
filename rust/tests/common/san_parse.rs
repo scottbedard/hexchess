@@ -23,7 +23,7 @@ fn test_san_parse() {
     let tests = json::<Test>("san-parse.json");
 
     for test in tests {
-        let result = San::from_string(&test.san);
+        let result = San::from_string(&test.san).unwrap();
 
         if test.expect.is_some() {
             let expect = test.expect.unwrap();

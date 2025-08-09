@@ -25,7 +25,7 @@ fn test_find_king() {
         if test.result.is_none() {
             assert_eq!(king, None, "{}", test.description);
         } else {
-            let position = Position::from_string(&test.result.unwrap());
+            let position = Position::from_string(&test.result.unwrap()).unwrap();
 
             assert_eq!(king, Some(position), "{}", test.description);
         }

@@ -49,8 +49,10 @@ impl Bitboard {
 
     /// Test if a position is set by string
     pub fn is_position_string_set(&self, position: &str) -> bool {
-        let position = Position::from_string(position);
-        self.is_position_set(position)
+        match Position::from_string(position) {
+            Ok(position) => self.is_position_set(position),
+            Err(_) => panic!("Invalid position: {}", position),
+        }
     }
 
     /// Iterates over the indices of the set bits.
@@ -112,8 +114,10 @@ impl Bitboard {
 
     /// Set bit at a given position by string.
     pub fn set_position_string(&mut self, position: &str) {
-        let position = Position::from_string(position);
-        self.set_position(position);
+        match Position::from_string(position) {
+            Ok(position) => self.set_position(position),
+            Err(_) => panic!("Invalid position: {}", position),
+        }
     }
 
     /// Toggles a specific bit at `index`.

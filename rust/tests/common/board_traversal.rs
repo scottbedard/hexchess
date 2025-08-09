@@ -27,11 +27,11 @@ fn test_board_traversal() {
     for test in tests {
         let hexchess = Hexchess::parse(&test.hexchess).unwrap();
 
-        let from = Position::from_string(&test.from);
+        let from = Position::from_string(&test.from).unwrap();
 
         let result: SmallVec<[Position; 11]> = test.result
             .iter()
-            .map(|s| Position::from_string(s))
+            .map(|s| Position::from_string(s).unwrap())
             .collect();
 
         assert_eq!(

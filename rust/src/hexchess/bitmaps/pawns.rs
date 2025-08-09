@@ -199,6 +199,7 @@ pub fn get_pawn_threats_bitmask(position: Position, color: Color) -> u128 {
     }
 }
 
+/// get pawn moves unsafe
 pub fn get_pawn_moves_unsafe(game: &Game, from_position: Position) -> Vec<San> {
     let color = match game.get_color(from_position) {
         Some(color) => color,
@@ -289,6 +290,12 @@ pub fn get_pawn_moves_unsafe(game: &Game, from_position: Position) -> Vec<San> {
     output
 }
 
+/// test if a position is a legal en passant target
+pub fn is_legal_en_passant(position: Position) -> bool {
+    position.to_bitmask() & bitmask!("1/3/5/7/9/1xxxxxxxxx1/4x1x4/3x3x3/2x5x2/1x7x1/11") != 0
+}
+
+/// push promotion sans
 fn push_promotion_sans(output: &mut Vec<San>, from: Position, to: Position) {
     output.reserve(4);
     output.push(San { from, to, promotion: Some(PromotionPiece::Queen) });

@@ -23,7 +23,7 @@ fn test_hexchess_is_threatened() {
             }
         };
 
-        let position = Position::from_string(&test.position);
+        let position = Position::from_string(&test.position).unwrap();
 
         assert_eq!(hexchess.is_threatened(position), test.expect, "{}", test.description);
     }

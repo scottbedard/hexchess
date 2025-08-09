@@ -25,7 +25,7 @@ fn test_san_to_string() {
 
     for test in tests {
         let san = San {
-            from: Position::from_string(&test.san.from),
+            from: Position::from_string(&test.san.from).unwrap(),
             promotion: match test.san.promotion {
                 Some(val) => match val.as_str() {
                     "b" => Some(PromotionPiece::Bishop),
@@ -36,7 +36,7 @@ fn test_san_to_string() {
                 },
                 None => None,
             },
-            to: Position::from_string(&test.san.to),
+            to: Position::from_string(&test.san.to).unwrap(),
         };
 
         assert_eq!(san.to_string(), test.expect, "{}", test.description);

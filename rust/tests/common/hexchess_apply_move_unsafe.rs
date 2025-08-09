@@ -13,7 +13,6 @@ struct Test {
 }
 
 #[test]
-#[ignore]
 fn test_hexchess_apply_move_unsafe() {
     let tests = json::<Test>("hexchess-apply-move-unsafe.json");
 
@@ -28,7 +27,7 @@ fn test_hexchess_apply_move_unsafe() {
 
         let san = San::from_string(&test.sequence);
 
-        let output = result.apply_move_unsafe(&san);
+        let output = result.apply_move_unsafe(&san.unwrap());
 
         if output.is_err() {
             assert!(test.error, "{}", test.description);

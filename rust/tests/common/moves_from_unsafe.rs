@@ -22,7 +22,7 @@ fn test_moves_from_unsafe() {
         let tests = json::<Test>(file);
 
         for test in tests {
-            let from = Position::from_string(&test.from);
+            let from = Position::from_string(&test.from).unwrap();
 
             let result = Hexchess::parse(&test.from)
                 .unwrap()

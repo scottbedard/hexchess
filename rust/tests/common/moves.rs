@@ -25,7 +25,7 @@ fn test_piece_movement() {
         let tests = json::<Test>(file);
 
         for test in tests {
-            let from = Position::from_string(&test.position);
+            let from = Position::from_string(&test.position).unwrap();
 
             let mut actual = Game::parse(&test.from)
                 .unwrap()

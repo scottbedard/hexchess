@@ -51,7 +51,7 @@ impl Hexchess {
         for part in sequence.split_whitespace() {
             let san = San::from_string(&part.to_string());
 
-            if clone.apply_move(&san).is_err() {
+            if clone.apply_move(&san.unwrap()).is_err() {
                 return Err(format!("illegal move at index {}: {}", i, part));
             }
 
@@ -422,7 +422,10 @@ impl Hexchess {
         let ep = match parts.next() {
             Some(part) => match part {
                 "-" => None,
-                _ => Some(Position::from_string(part)),
+                _ => match Position::from_string(part) {
+                    Ok(position) => Some(position),
+                    Err(_) => return Err(format!("invalid en passant position: {}", part)),
+                }
             },
             None => None,
         };

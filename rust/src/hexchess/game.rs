@@ -6,8 +6,9 @@ use crate::hexchess::bitmaps::knight::{
     get_knight_moves_unsafe,
 };
 use crate::hexchess::bitmaps::pawns::{
-    get_pawn_threats_bitmask,
     get_pawn_moves_unsafe,
+    get_pawn_threats_bitmask,
+    is_legal_en_passant,
 };
 use crate::hexchess::bitmaps::sliding::{
     get_bishop_moves_unsafe,
@@ -43,6 +44,39 @@ pub struct Game {
 }
 
 impl Game {
+    // /// apply a whitespace separated sequence of moves
+    // pub fn apply(&mut self, sequence: &str) -> Result<Self, String> {
+    //     let mut clone = self.clone();
+    //     let mut i: u32 = 0;
+
+    //     for part in sequence.split_whitespace() {
+    //         let san = San::from_string(&part.to_string());
+
+    //         if clone.apply_move(&san).is_err() {
+    //             return Err(format!("illegal move at index {}: {}", i, part));
+    //         }
+
+    //         i += 1;
+    //     }
+
+    //     self.board = clone.board;
+    //     self.turn = clone.turn;
+    //     self.ep = clone.ep;
+    //     self.fullmove = clone.fullmove;
+    //     self.halfmove = clone.halfmove;
+
+    //     Ok(*self)
+    // }
+
+    /// apply legal move
+    pub fn apply_move(&mut self, san: &San) -> Result<(), String> {
+        if !self.is_legal(san) {
+            return Err(format!("illegal move: {:?}", san));
+        }
+
+        self.apply_move_unsafe(san)
+    }
+
     /// apply a move regardless of turn or legality
     pub fn apply_move_unsafe(&mut self, san: &San) -> Result<(), String> {
         let piece = match self.get_position(san.from) {
@@ -148,6 +182,22 @@ impl Game {
         Ok(())
     }
 
+    /// Clear all bitboards at a given position.
+    pub fn clear_position(&mut self, position: Position) {
+        self.bitboard_black_bishop.clear_position(position);
+        self.bitboard_black_king.clear_position(position);
+        self.bitboard_black_knight.clear_position(position);
+        self.bitboard_black_pawn.clear_position(position);
+        self.bitboard_black_queen.clear_position(position);
+        self.bitboard_black_rook.clear_position(position);
+        self.bitboard_white_bishop.clear_position(position);
+        self.bitboard_white_king.clear_position(position);
+        self.bitboard_white_knight.clear_position(position);
+        self.bitboard_white_pawn.clear_position(position);
+        self.bitboard_white_queen.clear_position(position);
+        self.bitboard_white_rook.clear_position(position);
+    }
+
     /// Get current legal moves.
     pub fn current_moves(&self) -> Vec<San> {
         let mut result = Vec::new();
@@ -190,22 +240,6 @@ impl Game {
     /// Create a new game instance with the initial position.
     pub fn init() -> Self {
         Self::parse(INITIAL_POSITION).unwrap()
-    }
-
-    /// Clear all bitboards at a given position.
-    pub fn clear_position(&mut self, position: Position) {
-        self.bitboard_black_bishop.clear_position(position);
-        self.bitboard_black_king.clear_position(position);
-        self.bitboard_black_knight.clear_position(position);
-        self.bitboard_black_pawn.clear_position(position);
-        self.bitboard_black_queen.clear_position(position);
-        self.bitboard_black_rook.clear_position(position);
-        self.bitboard_white_bishop.clear_position(position);
-        self.bitboard_white_king.clear_position(position);
-        self.bitboard_white_knight.clear_position(position);
-        self.bitboard_white_pawn.clear_position(position);
-        self.bitboard_white_queen.clear_position(position);
-        self.bitboard_white_rook.clear_position(position);
     }
 
     /// Find the king of a given color.
@@ -341,6 +375,18 @@ impl Game {
         } else {
             None
         }
+    }
+
+    /// Test if a move is legal.
+    pub fn is_legal(&self, san: &San) -> bool {
+        if self.get_color(san.from) != Some(self.turn) {
+            return false;
+        }
+
+        self
+            .get_moves(san.from)
+            .iter()
+            .any(|move_san| move_san == san)
     }
 
     /// Test if the board is in check.
@@ -551,7 +597,13 @@ impl Game {
         game.ep = match parts.next() {
             Some(part) => match part {
                 "-" => None,
-                part => Some(Position::from_string(part))
+                part => match Position::from_string(part) {
+                    Ok(position) => match is_legal_en_passant(position) {
+                        true => Some(position),
+                        false => return Err(format!("illegal en passant: {}", part)),
+                    },
+                    Err(_) => return Err(format!("invalid en passant: {}", part)),
+                }
             },
             None => None,
         };
@@ -578,18 +630,6 @@ impl Game {
         Ok(game)
     }
 
-    /// Convert bitboard states to a piece array.
-    pub fn to_array(&self) -> [Option<Piece>; 91] {
-        let mut arr: [Option<Piece>; 91] = [None; 91];
-        
-        for i in 0..91 {
-            let position = Position::from_fen_index(i as u8);
-            arr[i] = self.get_position(position);
-        }
-
-        arr
-    }
-
     /// Set the piece at the given position.
     pub fn set_position(&mut self, position: Position, piece: Piece) {
         self.clear_position(position);
@@ -609,12 +649,24 @@ impl Game {
             Piece::WhiteRook => self.bitboard_white_rook.set_position(position),
         }
     }
+
+    /// Convert bitboard states to a piece array.
+    pub fn to_board_array(&self) -> [Option<Piece>; 91] {
+        let mut arr: [Option<Piece>; 91] = [None; 91];
+        
+        for i in 0..91 {
+            let position = Position::from_fen_index(i as u8);
+            arr[i] = self.get_position(position);
+        }
+
+        arr
+    }
 }
 
 /// Display the game state as a FEN string.
 impl std::fmt::Display for Game {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        let board = self.to_array();
+        let board = self.to_board_array();
         let mut blank: u8 = 0;
         let mut index: u8 = 0;
         let mut fen = String::new();
@@ -820,7 +872,7 @@ mod tests {
 
     #[test]
     fn test_to_array() {
-        assert_eq!(Game::init().to_array(), [
+        assert_eq!(Game::init().to_board_array(), [
             Some(Piece::BlackBishop),
             Some(Piece::BlackQueen),
             Some(Piece::BlackBishop),
