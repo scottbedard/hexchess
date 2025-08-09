@@ -12,26 +12,27 @@ struct Test {
 }
 
 #[test]
-#[ignore]
 fn test_hexchess_apply() {
     let tests = json::<Test>("hexchess-apply.json");
 
     for test in tests {
-        let mut result = match Game::parse(&test.from) {
-            Ok(game) => game,
+        let mut game = match Game::parse(&test.from) {
+            Ok(g) => g,
             Err(_) => {
                 assert!(test.error, "{}", test.description);
                 continue;
             }
         };
 
-        // let sequence = result.apply(&test.sequence);
+        let result = game.apply_sequence(&test.sequence);
 
-        // assert_eq!(sequence.is_err(), test.error, "{}", test.description);
+        if test.error {
+            assert!(result.is_err(), "{}", test.description);
+            continue;
+        }
 
-        // match test.to {
-        //     Some(to) => assert_eq!(to, result.to_string(), "{}", test.description),
-        //     None => (),
-        // }
+        let expected = Game::parse(&test.to.unwrap()).unwrap();
+
+        assert_eq!(expected.to_string(), game.to_string(), "{}", test.description);
     }
 }

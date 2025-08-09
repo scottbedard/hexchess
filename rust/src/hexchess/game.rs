@@ -44,29 +44,25 @@ pub struct Game {
 }
 
 impl Game {
-    // /// apply a whitespace separated sequence of moves
-    // pub fn apply(&mut self, sequence: &str) -> Result<Self, String> {
-    //     let mut clone = self.clone();
-    //     let mut i: u32 = 0;
+    /// apply a whitespace separated sequence of moves
+    pub fn apply_sequence(&mut self, sequence: &str) -> Result<(), String> {
+        let mut i: u32 = 0;
 
-    //     for part in sequence.split_whitespace() {
-    //         let san = San::from_string(&part.to_string());
+        for part in sequence.split_whitespace() {
+            let san = match San::from_string(&part.to_string()) {
+                Ok(san) => san,
+                Err(_) => return Err(format!("invalid san at index {}: {}", i, part)),
+            };
 
-    //         if clone.apply_move(&san).is_err() {
-    //             return Err(format!("illegal move at index {}: {}", i, part));
-    //         }
+            if self.apply_move(&san).is_err() {
+                return Err(format!("illegal move at index {}: {}", i, part));
+            }
 
-    //         i += 1;
-    //     }
+            i += 1;
+        }
 
-    //     self.board = clone.board;
-    //     self.turn = clone.turn;
-    //     self.ep = clone.ep;
-    //     self.fullmove = clone.fullmove;
-    //     self.halfmove = clone.halfmove;
-
-    //     Ok(*self)
-    // }
+        Ok(())
+    }
 
     /// apply legal move
     pub fn apply_move(&mut self, san: &San) -> Result<(), String> {
@@ -86,21 +82,8 @@ impl Game {
 
         let color = piece.color();
 
-        let hostile_color = color.opposite();
-
-        let enemy_bitmask = *self.get_color_bitboard(hostile_color);
-
-        let ep_bitmask = match self.ep {
-            Some(ep) => ep.to_bitmask(),
-            None => 0,
-        };
-
-        let to_bitmask = san.to.to_bitmask();
-
-        let is_capture = (ep_bitmask | enemy_bitmask) & to_bitmask != 0;
-
         // update halfmove
-        if is_capture || piece == Piece::BlackPawn || piece == Piece::WhitePawn {
+        if piece == Piece::BlackPawn || piece == Piece::WhitePawn || *self.get_color_bitboard(color.opposite()) & san.to.to_bitmask() != 0 {
             self.halfmove = 0;
         } else {
             self.halfmove += 1;
@@ -136,7 +119,7 @@ impl Game {
         };
 
         self.set_position(san.to, to_piece);
-        
+
         // clear captured en passant
         if Some(san.to) == self.ep {
             match piece {
@@ -1044,5 +1027,12 @@ mod tests {
             let san_str = san.to_string();
             assert!(expected.contains(&san_str.as_str()), "Move {} not found in expected", san_str);
         }
+    }
+
+    #[test]
+    fn test_only_pawns_capture_en_passant() {
+        let mut game = Game::parse("b/qbk/n1b1n/r5r/ppppp1ppp/11/5Pp4/4P1PB3/3P1B1P3/2P5P2/1PRNQBKNRP1 w g6 0 2").unwrap();
+        let _ = game.apply_sequence("h4g6");
+        assert_eq!(game.to_string(), "b/qbk/n1b1n/r5r/ppppp1ppp/6B4/5Pp4/4P1P4/3P1B1P3/2P5P2/1PRNQBKNRP1 b - 1 2");
     }
 }
