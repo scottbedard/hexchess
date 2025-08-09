@@ -1,11 +1,12 @@
 use crate::json;
 use hexchess::hexchess::color::Color;
+use hexchess::hexchess::game::Game;
 use hexchess::hexchess::position::Position;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize)]
 struct Test {
-    color: Color,
+    color: String,
     description: String,
     direction: u8,
     from: String,
@@ -21,20 +22,11 @@ fn test_board_traversal() {
     // a new test suite will be needed for traversal assertions.
     let tests = json::<Test>("board-traversal.json");
 
-    // for test in tests {
-    //     let hexchess = Hexchess::parse(&test.hexchess).unwrap();
+    for test in tests {
+        let _color = Color::from_string(&test.color);
+        let _game = Game::parse(&test.hexchess).unwrap();
+        let _position = Position::from_string(&test.from).unwrap();
 
-    //     let from = Position::from_string(&test.from).unwrap();
-
-    //     let result: SmallVec<[Position; 11]> = test.result
-    //         .iter()
-    //         .map(|s| Position::from_string(s).unwrap())
-    //         .collect();
-
-    //     assert_eq!(
-    //         walk(&hexchess, from, test.direction, &test.color),
-    //         result,
-    //         "{}", test.description
-    //     );        
-    // }
+        // ...    
+    }
 }
