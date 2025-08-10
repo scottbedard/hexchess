@@ -16,5 +16,8 @@
     "friendsofphp/php-cs-fixer": "^3.84"
   },
   "type": "library",
-  "version": "2.2.1"
+  "version": "2.2.1",
+  "require": {
+    "symfony/yaml": "^7.3"
+  }
 }

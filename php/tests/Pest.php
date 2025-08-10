@@ -1,5 +1,7 @@
 <?php
 
+use Symfony\Component\Yaml\Yaml;
+
 /*
 |--------------------------------------------------------------------------
 | Test Case
@@ -67,6 +69,26 @@ function testJson(string $name, Closure $fn)
     return describe($name, function () use ($data, $fn) {
         foreach ($data as $t) {
             test($t['description'], fn () => $fn($t));
+        }
+    });
+}
+
+/** get yaml fixture */
+function yaml(string $name)
+{
+    $path = realpath(__DIR__ . "/../../yaml-tests/{$name}.yaml");
+    $yaml = file_get_contents($path);
+    return Yaml::parse($yaml);
+}
+
+/** test yaml fixtures */
+function testYaml(string $name, Closure $fn, string $primaryKey = 'description')
+{
+    $data = yaml($name);
+
+    return describe($name, function () use ($data, $fn, $primaryKey) {
+        foreach ($data as $t) {
+            test($t[$primaryKey], fn () => $fn($t));
         }
     });
 }
