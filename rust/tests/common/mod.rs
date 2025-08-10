@@ -16,3 +16,4 @@ mod san_parse;
 mod san_to_string;
 mod yaml_board_traversal;
 mod yaml_moves_from;
+mod yaml_current_moves;
