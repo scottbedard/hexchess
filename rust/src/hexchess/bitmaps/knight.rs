@@ -112,11 +112,11 @@ pub fn get_knight_moves_unsafe(game: &Game, from: Position) -> Vec<San> {
 
     let mut output = Vec::with_capacity(targets.count_ones() as usize);
 
-    for index in targets.iter_set_bits() {
-        let to = Position::from_bitboard_index(index);
+    targets.iter_bits(|index| {
+        let to = Position::from_bitboard_index(index as u8);
         let san = San::new(from, to);
         output.push(san);
-    }
+    });
 
     output
 }

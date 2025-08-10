@@ -56,10 +56,15 @@ impl Bitboard {
     }
 
     /// Iterates over the indices of the set bits.
-    pub fn iter_set_bits(&self) -> SetBitsIterator {
-        SetBitsIterator {
-            bitboard: *self,
-            current_index: 0,
+    pub fn iter_bits(&self, mut f: impl FnMut(u8)) {
+        let mut x = self.0;
+
+        while x != 0 {
+            let bit = x.trailing_zeros() as u8;
+
+            f(bit);
+
+            x &= x - 1;
         }
     }
 
@@ -133,9 +138,9 @@ impl Bitboard {
 
         let board = Bitboard(self.0 & Bitboard::filled().0);
 
-        for index in board.iter_set_bits() {
-            result.push(Position::from_bitboard_index(index));
-        }
+        board.iter_bits(|index| {
+            result.push(Position::from_bitboard_index(index as u8));
+        });
 
         result
     }
@@ -153,28 +158,6 @@ impl Deref for Bitboard {
 impl DerefMut for Bitboard {
     fn deref_mut(&mut self) -> &mut Self::Target {
         &mut self.0
-    }
-}
-
-// Custom iterator for set bits
-pub struct SetBitsIterator {
-    bitboard: Bitboard,
-    current_index: u8,
-}
-
-impl Iterator for SetBitsIterator {
-    type Item = u8;
-
-    fn next(&mut self) -> Option<Self::Item> {
-        while self.current_index < 128 {
-            if self.bitboard.is_bit_set(self.current_index) {
-                let index = self.current_index;
-                self.current_index += 1;
-                return Some(index);
-            }
-            self.current_index += 1;
-        }
-        None
     }
 }
 
@@ -370,20 +353,25 @@ mod tests {
     }
 
     #[test]
-    fn test_iter_set_bits() {
+    fn test_iter_bits() {
         let mut bb = Bitboard::new();
         bb.set_bit(3);
         bb.set_bit(7);
         bb.set_bit(100);
 
         let mut set_bits = Vec::new();
-        for index in bb.iter_set_bits() {
+        
+        bb.iter_bits(|index| {
             set_bits.push(index);
-        }
+        });
+
         assert_eq!(set_bits, vec![3, 7, 100]);
 
         let empty_bb = Bitboard::new();
-        assert!(empty_bb.iter_set_bits().next().is_none());
+
+        empty_bb.iter_bits(|_index| {
+            assert!(false);
+        });
     }
 
     #[test]

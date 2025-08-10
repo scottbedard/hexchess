@@ -203,9 +203,8 @@ impl Game {
 
         self
             .get_color_bitboard(self.turn)
-            .iter_set_bits()
-            .for_each(|i| {
-                let position = Position::from_bitboard_index(i);
+            .iter_bits(|i| {
+                let position = Position::from_bitboard_index(i as u8);
                 let moves = self.get_moves(position);
 
                 result.extend(moves);

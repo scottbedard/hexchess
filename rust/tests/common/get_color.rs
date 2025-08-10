@@ -20,10 +20,10 @@ fn test_get_color() {
         let color = Color::from_string(&test.color);
         let hexchess = Game::parse(&test.from).unwrap();
 
-        let result: Vec<String> = hexchess.get_color_bitboard(color)
-            .iter_set_bits()
-            .map(|n| Position::from_bitboard_index(n).to_string())
-            .collect();
+        let mut result = Vec::new();
+        hexchess.get_color_bitboard(color).iter_bits(|index| {
+            result.push(Position::from_bitboard_index(index as u8).to_string());
+        });
 
         for pos in &result {
             assert!(

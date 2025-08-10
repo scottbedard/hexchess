@@ -13,11 +13,11 @@ pub fn get_king_moves_unsafe(game: &Game, from: Position) -> Vec<San> {
     
     let mut output = Vec::with_capacity(result.count_ones() as usize);
 
-    for index in result.iter_set_bits() {
-        let to = Position::from_bitboard_index(index);
+    result.iter_bits(|index| {
+        let to = Position::from_bitboard_index(index as u8);
         let san = San::new(from, to);
         output.push(san);
-    }
+    });
 
     output
 }
