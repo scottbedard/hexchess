@@ -1,10 +1,8 @@
-mod board_traversal;
 mod check_checkmate_stalemate;
 mod current_moves;
 mod find_king;
 mod get_color;
 mod get;
-mod graph_traversal;
 mod hexchess_apply_move_unsafe;
 mod hexchess_apply;
 mod hexchess_is_threatened;
