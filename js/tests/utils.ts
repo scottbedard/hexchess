@@ -1,4 +1,5 @@
 import { fileURLToPath } from 'url'
+import { parse } from 'yaml'
 import fs from 'node:fs'
 import path from 'node:path'
 
@@ -15,4 +16,8 @@ export function resolve(...parts: string[]) {
   const __dirname = path.dirname(__filename)
 
   return path.resolve(__dirname, '../..', ...parts)
+}
+
+export function yaml(file: string) {
+  return parse(read('yaml-tests', file))
 }
