@@ -1,5 +1,7 @@
 use crate::json;
-use hexchess::{position, San};
+use hexchess::hexchess::position::Position;
+use hexchess::hexchess::promotion_piece::PromotionPiece;
+use hexchess::hexchess::san::San;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -22,22 +24,22 @@ fn test_san_parse() {
     let tests = json::<Test>("san-parse.json");
 
     for test in tests {
-        let result = match San::from(&test.san) {
-            Ok(san) => san,
-            Err(_) => {
-                assert!(test.error, "{}", test.description);
-                continue;
-            }
-        };
+        let actual: Result<San, String> = San::from_string(&test.san);
 
-        if test.expect.is_some() {
-            let expect = test.expect.unwrap();
-            assert_eq!(expect.from, position(&result.from));
-            assert_eq!(expect.promotion, match result.promotion {
-                Some(p) => Some(p.to_string()),
-                None => None,
-            });
-            assert_eq!(expect.to, position(&result.to));
+        if test.expect.is_none() {
+            assert!(actual.is_err(), "{}", test.description);
+            continue;
         }
+
+        let actual_san = actual.unwrap();
+
+        let expected_san = test.expect.unwrap();
+
+        assert_eq!(actual_san.from, Position::from_string(&expected_san.from).unwrap());
+
+        assert_eq!(actual_san.promotion, match expected_san.promotion {
+            Some(val) => Some(PromotionPiece::from_string(&val).unwrap()),
+            None => None,
+        });
     }
 }

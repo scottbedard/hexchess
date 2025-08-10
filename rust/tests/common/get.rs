@@ -1,5 +1,6 @@
 use crate::json;
-use hexchess::Hexchess;
+use hexchess::hexchess::game::Game;
+use hexchess::hexchess::position::Position;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -15,11 +16,19 @@ fn test_get() {
     let tests = json::<Test>("get.json");
 
     for test in tests {
-        let hexchess = Hexchess::parse(&test.from).unwrap();
+        let game = Game::parse(&test.from).unwrap();
 
-        let result = hexchess.get(&test.position);
+        let position = match Position::from_string(&test.position) {
+            Ok(p) => p,
+            Err(_) => {
+                assert!(test.result.is_none(), "{}", test.description);
+                continue;
+            },
+        };
 
-        if result.is_some() {
+        let result = game.get_position(position);
+
+        if test.result.is_some() {
             assert_eq!(result.unwrap().to_string(), test.result.unwrap(), "{}", test.description);
         } else {
             assert!(test.result.is_none(), "{}", test.description);

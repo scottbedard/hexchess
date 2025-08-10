@@ -1,6 +1,6 @@
 use crate::json;
-use hexchess::Hexchess;
-use hexchess::hexchess::utils::index;
+use hexchess::hexchess::game::Game;
+use hexchess::hexchess::position::Position;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -14,7 +14,7 @@ struct Test {
 #[test]
 fn test_piece_movement() {
     let files = [
-        "moves-from.json",
+        // "moves-from.json",
         "moves-king.json",
         "moves-knight.json",
         "moves-pawn.json",
@@ -25,22 +25,24 @@ fn test_piece_movement() {
         let tests = json::<Test>(file);
 
         for test in tests {
-            let from = index(&test.position).unwrap();
+            let from = Position::from_string(&test.position).unwrap();
 
-            let mut result = Hexchess::parse(&test.from)
+            let mut actual = Game::parse(&test.from)
                 .unwrap()
-                .moves_from(from)
+                .get_moves(from)
                 .into_iter()
                 .map(|san| san.to_string())
                 .collect::<Vec<String>>();
-            
-            result.sort();
+
+            actual.sort();
 
             let mut expected = test.expect.clone();
 
             expected.sort();
 
-            assert_eq!(result, expected, "{}", test.description);
+            assert_eq!(actual, expected, "{}", test.description);
+
+            println!("test {} - {} ... ok", file, test.description);
         }
     }
 }

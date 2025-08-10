@@ -1,5 +1,6 @@
 use crate::json;
-use hexchess::{Hexchess, San};
+use hexchess::hexchess::game::Game;
+use hexchess::hexchess::san::San;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -15,15 +16,15 @@ fn test_move_legality() {
     let tests = json::<Test>("move-legality.json");
 
     for test in tests {
-        let hexchess = Hexchess::parse(&test.from).unwrap();
-        let san = San::from(&test.san);
+        let game = Game::parse(&test.from).unwrap();
+        let san = San::from_string(&test.san);
 
         if san.is_err() {
             assert_eq!(test.result, false, "{}", test.description);
             continue;
         }
 
-        let result = hexchess.is_legal(&san.unwrap());
+        let result = game.is_legal(&san.unwrap());
 
         assert_eq!(result, test.result, "{}", test.description);
     }

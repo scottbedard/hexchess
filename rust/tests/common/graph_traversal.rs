@@ -1,8 +1,6 @@
-use hexchess::{Color, Hexchess};
-use hexchess::hexchess::utils::{index, walk};
-use serde::{Deserialize, Serialize};
 use crate::json;
-use smallvec::SmallVec;
+use hexchess::hexchess::position::Position;
+use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize)]
 struct Test {
@@ -14,21 +12,19 @@ struct Test {
 fn test_graph_traversal() {
     let tests = json::<Test>("graph-traversal.json");
 
-    let hexchess = Hexchess::new();
-
     for test in tests {
-        let from = index(test.from.as_str()).unwrap();
+        let position = Position::from_string(&test.from).unwrap();
 
-        for direction in 0u8..12u8 {
-            let result: SmallVec<[u8; 11]> = test.results[direction as usize]
+        for direction in 0u8..12 {
+            let actual: Vec<String> = position
+                .walk(direction)
                 .iter()
-                .map(|s| index(s.as_str()).unwrap())
+                .map(|p| p.to_string())
                 .collect();
 
-            assert_eq!(
-                walk(&hexchess, from, direction, &Color::White),
-                result
-            );
+            let expected = test.results[direction as usize].clone();
+
+            assert_eq!(actual, expected);
         }
     }
 }

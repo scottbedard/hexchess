@@ -1,6 +1,6 @@
 use crate::json;
-use hexchess::Hexchess;
-use hexchess::hexchess::utils::index;
+use hexchess::hexchess::game::Game;
+use hexchess::hexchess::position::Position;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -21,11 +21,11 @@ fn test_moves_from_unsafe() {
         let tests = json::<Test>(file);
 
         for test in tests {
-            let from = index(&test.position).unwrap();
+            let position = Position::from_string(&test.position).unwrap();
 
-            let result = Hexchess::parse(&test.from)
+            let result = Game::parse(&test.from)
                 .unwrap()
-                .moves_from_unsafe(from)
+                .get_moves_unsafe(position)
                 .into_iter()
                 .map(|san| san.to_string())
                 .collect::<Vec<String>>();

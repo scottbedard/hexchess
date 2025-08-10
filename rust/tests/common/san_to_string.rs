@@ -1,6 +1,7 @@
 use crate::json;
-use hexchess::{index, San};
-use hexchess::constants::PromotionPiece;
+use hexchess::hexchess::position::Position;
+use hexchess::hexchess::promotion_piece::PromotionPiece;
+use hexchess::hexchess::san::San;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -23,7 +24,7 @@ fn test_san_to_string() {
 
     for test in tests {
         let san = San {
-            from: index(&test.san.from).unwrap(),
+            from: Position::from_string(&test.san.from).unwrap(),
             promotion: match test.san.promotion {
                 Some(val) => match val.as_str() {
                     "b" => Some(PromotionPiece::Bishop),
@@ -34,7 +35,7 @@ fn test_san_to_string() {
                 },
                 None => None,
             },
-            to: index(&test.san.to).unwrap(),
+            to: Position::from_string(&test.san.to).unwrap(),
         };
 
         assert_eq!(san.to_string(), test.expect, "{}", test.description);
