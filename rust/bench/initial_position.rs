@@ -13,6 +13,7 @@ fn bench_initial_position(b: &mut Bencher) {
     // 815,047.90 ns/iter (+/- 24,078.53) - test unsafe from king's perspective
     // 720,664.60 ns/iter (+/- 5,080.18) - smallvec
     // 880,891.60 ns/iter (+/- 17,080.93) - bitmaps
+    // 779,362.55 ns/iter (+/- 5,740.49) - bitmaps + graph step
 
     b.iter(|| {
         let hexchess_0 = Game::init();

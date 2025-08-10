@@ -14,11 +14,6 @@ path = "src/lib.rs"
 
 [[bench]]
 harness = true
-name = "knight"
-path = "bench/knight.rs"
-
-[[bench]]
-harness = true
 name = "initial_position"
 path = "bench/initial_position.rs"
 
