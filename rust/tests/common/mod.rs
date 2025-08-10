@@ -16,3 +16,4 @@ mod moves;
 mod positions;
 mod san_parse;
 mod san_to_string;
+mod yaml_board_traversal;
