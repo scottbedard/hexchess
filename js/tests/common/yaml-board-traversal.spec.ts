@@ -1,14 +1,19 @@
 import { describe, expect, test } from 'vitest'
-import { Hexchess, type Direction } from '../../src'
+import { Hexchess, type Direction, type Position } from '../../src'
 import { index, position as toPosition, walk } from '../../src/utils'
 import { yaml } from '../utils'
 
-const data = yaml('board-traversal.yaml')
+interface Test {
+  expected: Position[][]
+  position: Position
+}
+
+const suite = yaml<Test[]>('board-traversal.yaml')
 
 describe('board traversal', () => {
   const hexchess = new Hexchess()
 
-  for (const spec of data) {
+  for (const spec of suite) {
     test(spec.position, () => {
       const position = index(spec.position)
 

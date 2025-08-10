@@ -18,6 +18,6 @@ export function resolve(...parts: string[]) {
   return path.resolve(__dirname, '../..', ...parts)
 }
 
-export function yaml(file: string) {
-  return parse(read('yaml-tests', file))
+export function yaml<T>(file: string) {
+  return parse(read('yaml-tests', file)) as T
 }
