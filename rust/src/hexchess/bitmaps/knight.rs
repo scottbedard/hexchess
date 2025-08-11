@@ -173,4 +173,14 @@ mod tests {
             assert!(expected.contains(&san.as_str()));
         }
     }
+
+    #[test]
+    fn test_all_positions_have_moves() {
+        for n in 0..91 {
+            let position = Position::from_fen_index(n as u8);
+            let moves = get_knight_moves_unsafe(&Game::new(), position);
+
+            assert!(moves.len() > 0);
+        }
+    }
 }
