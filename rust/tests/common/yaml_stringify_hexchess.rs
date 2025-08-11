@@ -1,36 +1,35 @@
-use crate::json;
+use crate::yaml;
 use hexchess::hexchess::color::Color;
 use hexchess::hexchess::game::Game;
 use hexchess::hexchess::piece::Piece;
 use hexchess::hexchess::position::Position;
 use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Serialize, Deserialize)]
-struct TestResult {
+#[derive(Debug, PartialEq, Serialize, Deserialize)]
+struct HexchessStruct {
     board: Vec<Option<String>>,
-    turn: String,
     ep: Option<u8>,
-    halfmove: u8,
     fullmove: u16,
+    halfmove: u8,
+    turn: String,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, PartialEq, Serialize, Deserialize)]
 struct Test {
     description: String,
-    from: TestResult,
-    result: String,
+    expected: String,
+    hexchess: HexchessStruct,
 }
 
 #[test]
-fn test_hexchess_to_string() {
-    let tests = json::<Test>("hexchess-to-string.json");
+fn test_stringify_hexchess() {
+    let tests = yaml::<Test>("stringify-hexchess.yaml");
 
     for test in tests {
-        // let mut hexchess = Hexchess::new();
         let mut game = Game::new();
 
         let expected_array: [Option<Piece>; 91] = test
-            .from
+            .hexchess
             .board
             .iter()
             .map(|p1| match p1 {
@@ -42,14 +41,14 @@ fn test_hexchess_to_string() {
             .unwrap();
 
         game.set_board_array(expected_array);
-        game.ep = match test.from.ep {
+        game.ep = match test.hexchess.ep {
             Some(ep) => Some(Position::from_fen_index(ep)),
             None => None,
         };
-        game.fullmove = test.from.fullmove;
-        game.halfmove = test.from.halfmove;
-        game.turn = Color::from_string(&test.from.turn);
+        game.fullmove = test.hexchess.fullmove;
+        game.halfmove = test.hexchess.halfmove;
+        game.turn = Color::from_string(&test.hexchess.turn);
 
-        assert_eq!(game.to_string(), test.result, "{}", test.description);
+        assert_eq!(game.to_string(), test.expected, "{}", test.description);
     }
 }

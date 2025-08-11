@@ -1,7 +1,6 @@
 
 mod hexchess_apply_move_unsafe;
 mod hexchess_apply;
-mod hexchess_to_string;
 mod move_legality;
 mod moves_from_unsafe;
 mod yaml_board_traversal;
@@ -16,3 +15,4 @@ mod yaml_parse_hexchess;
 mod yaml_parse_san;
 mod yaml_positions;
 mod yaml_stringify_san;
+mod yaml_stringify_hexchess;
