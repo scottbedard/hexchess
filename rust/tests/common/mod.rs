@@ -1,8 +1,7 @@
-
 mod hexchess_apply_move_unsafe;
-mod hexchess_apply;
 mod move_legality;
 mod moves_from_unsafe;
+mod yaml_apply_moves;
 mod yaml_board_traversal;
 mod yaml_check_checkmate_stalemate;
 mod yaml_current_moves;
@@ -14,5 +13,5 @@ mod yaml_moves;
 mod yaml_parse_hexchess;
 mod yaml_parse_san;
 mod yaml_positions;
-mod yaml_stringify_san;
 mod yaml_stringify_hexchess;
+mod yaml_stringify_san;
