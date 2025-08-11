@@ -1,8 +1,6 @@
 use crate::yaml;
 use hexchess::hexchess::color::Color;
 use hexchess::hexchess::game::Game;
-use hexchess::hexchess::piece::Piece;
-use hexchess::hexchess::position::Position;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, PartialEq, Serialize, Deserialize)]
