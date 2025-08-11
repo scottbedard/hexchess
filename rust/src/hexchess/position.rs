@@ -2040,6 +2040,8 @@ mod tests {
             let neighbors = position.get_neighbors();
             assert!(neighbors > 0);
 
+            assert!(position.step(u8::MAX).is_none());
+
             for j in 0..11 {
                 let neighbor = position.step(j);
 
