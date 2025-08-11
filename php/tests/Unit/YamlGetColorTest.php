@@ -1,7 +1,6 @@
 <?php
 
 use Bedard\Hexchess\Board;
-
 use Bedard\Hexchess\Hexchess;
 
 testYaml('get-color', function ($spec) {

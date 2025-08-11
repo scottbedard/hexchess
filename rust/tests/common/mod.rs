@@ -1,4 +1,3 @@
-mod get;
 mod hexchess_apply_move_unsafe;
 mod hexchess_apply;
 mod hexchess_is_threatened;
@@ -14,5 +13,6 @@ mod yaml_check_checkmate_stalemate;
 mod yaml_current_moves;
 mod yaml_find_king;
 mod yaml_get_color;
+mod yaml_get_position;
 mod yaml_moves_from;
 mod yaml_parse_hexchess;
