@@ -4,19 +4,24 @@ import { yaml } from '../utils'
 
 interface Test {
   description: string
+  error: boolean
+  expected: null | string[]
   hexchess: string
-  expected: string[]
 }
 
-const suite = yaml<Test[]>('current-moves.yaml')
+const suite = yaml<Test[]>('parse-hexchess.yaml')
 
-describe('current moves', () => {
+describe('parse hexchess', () => {
   for (const spec of suite) {
     test(spec.description, () => {
-      const hexchess = Hexchess.parse(spec.hexchess)
-      const moves = hexchess.currentMoves().map(san => san.toString())
+      if (spec.error) {
+        expect(() => Hexchess.parse(spec.hexchess)).toThrow()
+        return
+      }
 
-      expect(moves).toEqual(spec.expected)
+      const hexchess = Hexchess.parse(spec.hexchess)
+
+      expect(hexchess.board).toEqual(spec.expected)
     })
   }
 })

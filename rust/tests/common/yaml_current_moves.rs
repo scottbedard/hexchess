@@ -1,6 +1,5 @@
 use crate::yaml;
 use hexchess::hexchess::game::Game;
-use hexchess::hexchess::position::Position;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, PartialEq, Serialize, Deserialize)]

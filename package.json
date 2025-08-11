@@ -6,7 +6,8 @@
     "smol-toml": "^1.4.2"
   },
   "dependencies": {
-    "commander": "^14.0.0"
+    "commander": "^14.0.0",
+    "es-toolkit": "^1.39.9"
   },
   "type": "module"
 }
