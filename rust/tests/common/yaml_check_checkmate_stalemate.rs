@@ -1,22 +1,22 @@
-use crate::json;
+use crate::yaml;
 use hexchess::hexchess::game::Game;
 use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, PartialEq, Serialize, Deserialize)]
 struct Test {
     check: bool,
     checkmate: bool,
     description: String,
-    from: String,
+    hexchess: String,
     stalemate: bool,
 }
 
 #[test]
-fn test_check_checkmate_stalemate() {
-    let tests = json::<Test>("check-checkmate-stalemate.json");
+fn test_moves_from() {
+    let tests = yaml::<Test>("check-checkmate-stalemate.yaml");
 
     for test in tests {
-        let hexchess = Game::parse(&test.from).unwrap();
+        let hexchess = Game::parse(&test.hexchess).unwrap();
 
         assert_eq!(hexchess.is_check(), test.check, "check assertion failed: {}", test.description);
         assert_eq!(hexchess.is_checkmate(), test.checkmate, "checkmate assertion failed: {}", test.description);
