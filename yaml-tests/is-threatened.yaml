@@ -1,0 +1,100 @@
+-
+    description: unoccupied position is not threatened
+    hexchess: 1/3/5/7/9/11/11/11/11/11/11 w - 0 1
+    position: f6
+    expected: false
+-
+    description: unattacked position is not threatened
+    hexchess: 1/2K/5/7/9/11/11/11/11/11/11 w - 0 1
+    position: g10
+    expected: false
+-
+    description: white threatened by black pawn
+    hexchess: 1/3/5/7/9/11/5Pp4/11/11/11/11 w - 0 1
+    position: f5
+    expected: true
+-
+    description: black threatened by white pawn
+    hexchess: 1/3/5/7/9/11/5Pp4/11/11/11/11 w - 0 1
+    position: g5
+    expected: true
+-
+    description: white not threatened by friendly pawn
+    hexchess: 1/3/5/7/9/11/5PP4/11/11/11/11 w - 0 1
+    position: f5
+    expected: false
+-
+    description: black not threatened by friendly pawn
+    hexchess: 1/3/5/7/9/11/5pp4/11/11/11/11 w - 0 1
+    position: f5
+    expected: false
+-
+    description: white threatened by knight
+    hexchess: 1/3/5/7/6n2/5P5/11/11/11/11/11 w - 0 1
+    position: f6
+    expected: true
+-
+    description: white not threatened by friendly knight
+    hexchess: 1/3/5/7/6N2/5P5/11/11/11/11/11 w - 0 1
+    position: f6
+    expected: false
+-
+    description: black threatened by knight
+    hexchess: 1/3/5/7/2N6/5p5/11/11/11/11/11 w - 0 1
+    position: f6
+    expected: true
+-
+    description: black not threatened by friendly knight
+    hexchess: 1/3/5/7/2n6/5p5/11/11/11/11/11 w - 0 1
+    position: f6
+    expected: false
+-
+    description: white threatened by bishop
+    hexchess: b/3/5/7/9/11/11/11/11/11/P10 w - 0 1
+    position: a1
+    expected: true
+-
+    description: white not threatened by blocked bishop
+    hexchess: b/3/5/7/9/11/2P8/11/11/11/P10 w - 0 1
+    position: a1
+    expected: false
+-
+    description: black threatened by white bishop
+    hexchess: B/3/5/7/9/11/11/11/11/11/p10 w - 0 1
+    position: a1
+    expected: true
+-
+    description: black not threatened by friendly bishop
+    hexchess: b/3/5/7/9/11/11/11/11/11/p10 w - 0 1
+    position: a1
+    expected: false
+-
+    description: white threatened by rook
+    hexchess: r/3/5/7/9/11/11/11/11/11/5K5 w - 0 1
+    position: f1
+    expected: true
+-
+    description: white not threatened by blocked rook
+    hexchess: r/3/5/7/9/5P5/11/11/11/11/5K5 w - 0 1
+    position: f1
+    expected: false
+-
+    description: white king threatened by black king
+    hexchess: 1/3/5/7/3k5/5K5/11/11/11/11/11 w - 0 1
+    position: f6
+    expected: true
+-
+    description: not threatened by friendly piece
+    hexchess: 1/2K/5/7/9/11/11/11/11/11/6R4 w - 0 1
+    position: g10
+    expected: false
+-
+    description: position is threatened in turn
+    hexchess: 1/3/5/3q3/9/5K5/11/11/11/11/11 w - 0 1
+    position: f6
+    expected: true
+-
+    description: position is threatened out of turn
+    hexchess: 1/3/5/7/4q4/5K5/11/11/11/11/11 b - 0 1
+    position: f6
+    expected: true

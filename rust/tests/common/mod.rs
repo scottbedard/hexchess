@@ -1,7 +1,6 @@
 
 mod hexchess_apply_move_unsafe;
 mod hexchess_apply;
-mod hexchess_is_threatened;
 mod hexchess_to_string;
 mod move_legality;
 mod moves_from_unsafe;
@@ -11,6 +10,7 @@ mod yaml_current_moves;
 mod yaml_find_king;
 mod yaml_get_color;
 mod yaml_get_position;
+mod yaml_is_threatened;
 mod yaml_moves;
 mod yaml_parse_hexchess;
 mod yaml_parse_san;
