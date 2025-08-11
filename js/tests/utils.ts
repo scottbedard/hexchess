@@ -3,10 +3,6 @@ import { parse } from 'yaml'
 import fs from 'node:fs'
 import path from 'node:path'
 
-export function json(file: string) {
-  return JSON.parse(read('tests', file))
-}
-
 export function read(...parts: string[]) {
   return fs.readFileSync(resolve(...parts), 'utf-8')
 }
