@@ -1,10 +1,9 @@
+use crate::yaml;
 use hexchess::hexchess::position::Position;
-
-use crate::json;
 
 #[test]
 fn test_positions() {
-    let tests = json::<String>("positions.json");
+    let tests = yaml::<String>("positions.yaml");
 
     for i in 0..91 {
         let p = Position::from_fen_index(i);
