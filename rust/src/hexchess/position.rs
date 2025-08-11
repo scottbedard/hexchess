@@ -2034,6 +2034,23 @@ mod tests {
     use super::*;
 
     #[test]
+    fn test_all_positions_have_neighbors() {
+        for i in 0..91 {
+            let position = Position::from_fen_index(i as u8);
+            let neighbors = position.get_neighbors();
+            assert!(neighbors > 0);
+
+            for j in 0..11 {
+                let neighbor = position.step(j);
+
+                if neighbor.is_some() {
+                    assert!(neighbors & neighbor.unwrap().to_bitmask() > 0);
+                }
+            }
+        }
+    }
+
+    #[test]
     fn test_to_and_from_bitmask() {
         let from = Position::F11.to_bitmask();
         let to = Position::from_bitmask(from);
