@@ -1,39 +1,40 @@
-use crate::json;
+use crate::yaml;
 use hexchess::hexchess::color::Color;
 use hexchess::hexchess::game::Game;
 use hexchess::hexchess::position::Position;
 use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, PartialEq, Serialize, Deserialize)]
 struct Test {
-    color: String,
     description: String,
-    from: String,
-    result: Vec<String>,
+    color: String,
+    expected: Vec<String>,
+    hexchess: String,
 }
 
 #[test]
 fn test_get_color() {
-    let tests = json::<Test>("get-color.json");
+    let tests = yaml::<Test>("get-color.yaml");
 
     for test in tests {
         let color = Color::from_string(&test.color);
-        let hexchess = Game::parse(&test.from).unwrap();
+        let hexchess = Game::parse(&test.hexchess).unwrap();
+        
+        let mut actual = Vec::new();
 
-        let mut result = Vec::new();
         hexchess.get_color_bitboard(color).iter_bits(|index| {
-            result.push(Position::from_bitboard_index(index as u8).to_string());
+            actual.push(Position::from_bitboard_index(index as u8).to_string());
         });
 
-        for pos in &result {
+        for pos in &actual {
             assert!(
-                test.result.contains(pos),
+                test.expected.contains(pos),
                 "Position {} found in result but not in expected result for test {}",
                 pos,
                 test.description
             );
         }
 
-        assert_eq!(result.len(), test.result.len());
+        assert_eq!(actual.len(), test.expected.len());
     }
 }
