@@ -12,7 +12,7 @@ struct Test {
 }
 
 #[test]
-fn test_moves_from() {
+fn test_check_checkmate_stalemate() {
     let tests = yaml::<Test>("check-checkmate-stalemate.yaml");
 
     for test in tests {

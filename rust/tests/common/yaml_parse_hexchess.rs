@@ -11,7 +11,7 @@ struct Test {
 }
 
 #[test]
-fn test_moves_from() {
+fn test_parse_hexchess() {
     let tests = yaml::<Test>("parse-hexchess.yaml");
 
     for test in tests {

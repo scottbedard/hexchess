@@ -10,7 +10,7 @@ interface Test {
 
 const suite = yaml<Test[]>('board-traversal.yaml')
 
-describe('board traversal', () => {
+describe('board-traversal', () => {
   const hexchess = new Hexchess()
 
   for (const spec of suite) {

@@ -11,7 +11,7 @@ interface Test {
 
 const suite = yaml<Test[]>('parse-hexchess.yaml')
 
-describe('parse hexchess', () => {
+describe('parse-hexchess', () => {
   for (const spec of suite) {
     test(spec.description, () => {
       if (spec.error) {

@@ -10,7 +10,7 @@ interface Test {
 
 const suite = yaml<Test[]>('current-moves.yaml')
 
-describe('current moves', () => {
+describe('current-moves', () => {
   for (const spec of suite) {
     test(spec.description, () => {
       const hexchess = Hexchess.parse(spec.hexchess)

@@ -1,4 +1,3 @@
-mod find_king;
 mod get_color;
 mod get;
 mod hexchess_apply_move_unsafe;
@@ -14,5 +13,6 @@ mod san_to_string;
 mod yaml_board_traversal;
 mod yaml_check_checkmate_stalemate;
 mod yaml_current_moves;
+mod yaml_find_king;
 mod yaml_moves_from;
 mod yaml_parse_hexchess;

@@ -13,7 +13,7 @@ interface Test {
 
 const suite = yaml<Test[]>('moves-from.yaml')
 
-describe('board traversal', () => {
+describe('board-traversal', () => {
   for (const spec of suite) {
     test(spec.description, () => {
       const hexchess = Hexchess.parse(spec.hexchess)
