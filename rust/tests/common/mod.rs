@@ -1,6 +1,6 @@
-mod hexchess_apply_move_unsafe;
 mod move_legality;
 mod moves_from_unsafe;
+mod yaml_apply_moves_unsafe;
 mod yaml_apply_moves;
 mod yaml_board_traversal;
 mod yaml_check_checkmate_stalemate;

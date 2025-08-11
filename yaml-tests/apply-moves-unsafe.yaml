@@ -1,0 +1,12 @@
+-
+    description: errors on empty positions
+    error: true
+    hexchess: b/qbk/n1b1n/r5r/ppppppppp/11/5P5/4P1P4/3P1B1P3/2P2B2P2/1PRNQBKNRP1 w - 0 1
+    moves: a4a5
+    expected: null
+-
+    description: illegal move succeeds
+    error: false
+    hexchess: b/qbk/n1b1n/r5r/ppppppppp/11/5P5/4P1P4/3P1B1P3/2P2B2P2/1PRNQBKNRP1 w - 0 1
+    moves: b1b6
+    expected: b/qbk/n1b1n/r5r/ppppppppp/1P9/5P5/4P1P4/3P1B1P3/2P2B2P2/2RNQBKNRP1 b - 0 1
