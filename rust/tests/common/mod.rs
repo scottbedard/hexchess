@@ -1,4 +1,3 @@
-mod move_legality;
 mod moves_from_unsafe;
 mod yaml_apply_moves_unsafe;
 mod yaml_apply_moves;
@@ -9,6 +8,7 @@ mod yaml_find_king;
 mod yaml_get_color;
 mod yaml_get_position;
 mod yaml_is_threatened;
+mod yaml_move_legality;
 mod yaml_moves;
 mod yaml_parse_hexchess;
 mod yaml_parse_san;
