@@ -14,7 +14,7 @@ struct Test {
 }
 
 #[test]
-fn test_find_king() {
+fn test_moves_from_unsafe() {
     let tests = yaml::<Test>("moves-from-unsafe.yaml");
 
     for test in tests {

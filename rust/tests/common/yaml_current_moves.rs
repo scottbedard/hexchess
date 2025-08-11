@@ -10,7 +10,7 @@ struct Test {
 }
 
 #[test]
-fn test_moves_from() {
+fn test_current_moves() {
     let tests = yaml::<Test>("current-moves.yaml");
 
     for test in tests {
