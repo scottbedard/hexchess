@@ -1,0 +1,46 @@
+-
+    description: black
+    color: b
+    hexchess: b/qbk/n1b1n/r5r/ppppppppp/11/5P5/4P1P4/3P1B1P3/2P2B2P2/1PRNQBKNRP1 w - 0 1
+    expected:
+        - f11
+        - e10
+        - f10
+        - g10
+        - d9
+        - f9
+        - h9
+        - c8
+        - i8
+        - b7
+        - c7
+        - d7
+        - e7
+        - f7
+        - g7
+        - h7
+        - i7
+        - k7
+-
+    description: white
+    color: w
+    hexchess: b/qbk/n1b1n/r5r/ppppppppp/11/5P5/4P1P4/3P1B1P3/2P2B2P2/1PRNQBKNRP1 w - 0 1
+    expected:
+        - f5
+        - e4
+        - g4
+        - d3
+        - f3
+        - h3
+        - c2
+        - f2
+        - i2
+        - b1
+        - c1
+        - d1
+        - e1
+        - f1
+        - g1
+        - h1
+        - i1
+        - k1

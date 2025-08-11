@@ -1,0 +1,20 @@
+-
+    description: g10
+    hexchess: b/qbk/n1b1n/r5r/ppppppppp/11/5P5/4P1P4/3P1B1P3/2P2B2P2/1PRNQBKNRP1 w - 0 1
+    position: g10
+    expected: k
+-
+    description: g1
+    hexchess: b/qbk/n1b1n/r5r/ppppppppp/11/5P5/4P1P4/3P1B1P3/2P2B2P2/1PRNQBKNRP1 w - 0 1
+    position: g1
+    expected: K
+-
+    description: empty position
+    hexchess: b/qbk/n1b1n/r5r/ppppppppp/11/5P5/4P1P4/3P1B1P3/2P2B2P2/1PRNQBKNRP1 w - 0 1
+    position: ''
+    expected: null
+-
+    description: error
+    hexchess: b/qbk/n1b1n/r5r/ppppppppp/11/5P5/4P1P4/3P1B1P3/2P2B2P2/1PRNQBKNRP1 w - 0 1
+    position: whoops
+    expected: null

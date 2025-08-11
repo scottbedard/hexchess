@@ -1,0 +1,364 @@
+-
+    description: empty
+    hexchess: 1/3/5/7/9/11/11/11/11/11/11 w - 0 1
+    error: false
+    expected: [
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null,
+    ]
+-
+    description: initial state
+    hexchess: b/qbk/n1b1n/r5r/ppppppppp/11/5P5/4P1P4/3P1B1P3/2P2B2P2/1PRNQBKNRP1 w - 0 1
+    error: false
+    expected: [
+         'b',  'q',  'b',  'k',  'n', null,  'b', null,  'n',  'r',
+        null, null, null, null, null,  'r',  'p',  'p',  'p',  'p',
+         'p',  'p',  'p',  'p',  'p', null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null,  'P', null, null, null, null, null, null, null, null,
+        null,  'P', null,  'P', null, null, null, null, null, null,
+        null,  'P', null,  'B', null,  'P', null, null, null, null,
+        null,  'P', null, null,  'B', null, null,  'P', null, null,
+        null,  'P',  'R',  'N',  'Q',  'B',  'K',  'N',  'R',  'P',
+        null,
+    ]
+-
+    description: turn color
+    hexchess: 1/3/5/7/9/11/11/11/11/11/11 b - 0 1
+    error: false
+    expected: [
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null,
+    ]
+-
+    description: empty string
+    hexchess: ''
+    error: true
+    expected: null
+-
+    description: invalid string
+    hexchess: whoops
+    error: true
+    expected: null
+-
+    description: invalid character
+    hexchess: x/3/5/7/9/11/11/11/11/11/11 w - 0 1
+    error: true
+    expected: null
+-
+    description: invalid turn color
+    hexchess: 1/3/5/7/9/11/11/11/11/11/11 x - 0 1
+    error: true
+    expected: null
+-
+    description: invalid en passant
+    hexchess: 1/3/5/7/9/11/11/11/11/11/11 w x 0 1
+    error: true
+    expected: null
+-
+    description: invalid halfmove
+    hexchess: 1/3/5/7/9/11/11/11/11/11/11 w - x 1
+    error: true
+    expected: null
+-
+    description: invalid fullmove
+    hexchess: 1/3/5/7/9/11/11/11/11/11/11 w - 0 x
+    error: true
+    expected: null
+-
+    description: zero fullmove
+    hexchess: 1/3/5/7/9/11/11/11/11/11/11 w - 0 0
+    error: true
+    expected: null
+-
+    description: board only
+    hexchess: 1/3/5/7/9/11/11/11/11/11/11
+    error: false
+    expected: [
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null,
+    ]
+-
+    description: missing en passant
+    hexchess: 1/3/5/7/9/11/11/11/11/11/11 w
+    error: false
+    expected: [
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null,
+    ]
+-
+    description: missing halfmove
+    hexchess: 1/3/5/7/9/11/11/11/11/11/11 w - 0
+    error: false
+    expected: [
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null,
+    ]
+-
+    description: missing fullmove
+    hexchess: 1/3/5/7/9/11/11/11/11/11/11 w - 0
+    error: false
+    expected: [
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null,
+    ]
+-
+    description: en passant black
+    hexchess: 1/3/5/7/9/11/11/11/11/11/11 w e6 0 1
+    error: false
+    expected: [
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null,
+    ]
+-
+    description: en passant white
+    hexchess: 1/3/5/7/9/11/11/11/11/11/11 w g5 0 1
+    error: false
+    expected: [
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null,
+    ]
+-
+    description: illegal en passant
+    hexchess: 1/3/5/7/9/11/11/11/11/11/11 w a1 0 1
+    error: true
+    expected: null
+-
+    description: multiple black kings
+    hexchess: 1/k1k/5/7/9/11/11/11/11/11/11 w - 0 1
+    error: true
+    expected: null
+-
+    description: multiple white kings
+    hexchess: 1/K1K/5/7/9/11/11/11/11/11/11 w - 0 1
+    error: true
+    expected: null
+-
+    description: board overflow
+    hexchess: 2/3/5/7/9/11/11/11/11/11/11 w - 0 1
+    error: true
+    expected: null
+-
+    description: fen with skip 1
+    hexchess: 1/3/5/7/9/1p9/11/11/11/11/11 w - 0 1
+    error: false
+    expected: [
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null,  'p', null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null,
+    ]
+-
+    description: fen with skip 2
+    hexchess: 1/3/5/7/9/2p8/11/11/11/11/11 w - 0 1
+    error: false
+    expected: [
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null,  'p', null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null,
+    ]
+-
+    description: fen with skip 3
+    hexchess: 1/3/5/7/9/3p7/11/11/11/11/11 w - 0 1
+    error: false
+    expected: [
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null,  'p', null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null,
+    ]
+-
+    description: fen with skip 4
+    hexchess: 1/3/5/7/9/4p6/11/11/11/11/11 w - 0 1
+    error: false
+    expected: [
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null,  'p',
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null,
+    ]
+-
+    description: fen with skip 5
+    hexchess: 1/3/5/7/9/5p5/11/11/11/11/11 w - 0 1
+    error: false
+    expected: [
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+         'p', null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null,
+    ]
+-
+    description: fen with skip 6
+    hexchess: 1/3/5/7/9/6p4/11/11/11/11/11 w - 0 1
+    error: false
+    expected: [
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null,  'p', null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null,
+    ]
+-
+    description: fen with skip 7
+    hexchess: 1/3/5/7/9/7p3/11/11/11/11/11 w - 0 1
+    error: false
+    expected: [
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null,  'p', null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null,
+    ]
+-
+    description: fen with skip 8
+    hexchess: 1/3/5/7/9/8p2/11/11/11/11/11 w - 0 1
+    error: false
+    expected: [
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null,  'p', null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null,
+    ]
+-
+    description: fen with skip 9
+    hexchess: 1/3/5/7/9/9p1/11/11/11/11/11 w - 0 1
+    error: false
+    expected: [
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null,  'p', null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null,
+    ]
+-
+    description: fen with skip 10
+    hexchess: 1/3/5/7/9/10p/11/11/11/11/11 w - 0 1
+    error: false
+    expected: [
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null,  'p', null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null, null,
+        null,
+    ]

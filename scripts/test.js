@@ -5,12 +5,12 @@ export async function testJs(options) {
     'vitest',
   ]
 
-  if (options?.coverage) {
-    args.push('--coverage')
+  if (options?.filter) {
+    args.push(options.filter)
   }
 
-  if (options?.filter) {
-    args.push(`--filter="${options.filter}"`)
+  if (options?.coverage) {
+    args.push('--coverage')
   }
 
   await execAsync('npx', args, {

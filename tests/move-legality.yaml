@@ -1,0 +1,80 @@
+-
+    description: legal move
+    hexchess: b/qbk/n1b1n/r5r/ppppppppp/11/5P5/4P1P4/3P1B1P3/2P2B2P2/1PRNQBKNRP1 w - 0 1
+    san: g4g5
+    expected: true
+-
+    description: illegal move
+    hexchess: b/qbk/n1b1n/r5r/ppppppppp/11/5P5/4P1P4/3P1B1P3/2P2B2P2/1PRNQBKNRP1 w - 0 1
+    san: b1b4
+    expected: false
+-
+    description: illegal move out of turn - 1
+    hexchess: b/qbk/n1b1n/r5r/ppppppppp/11/5P5/4P1P4/3P1B1P3/2P2B2P2/1PRNQBKNRP1 w - 0 1
+    san: g7g6
+    expected: false
+-
+    description: illegal move out of turn - 2
+    hexchess: b/qbk/n1b1n/r5r/ppppppppp/11/5P5/4P1P4/3P1B1P3/2P2B2P2/1PRNQBKNRP1 b - 0 1
+    san: g7g6
+    expected: true
+-
+    description: white cannot promote on black positions - 1
+    hexchess: 1/3/5/7/p7p/R9R/11/11/11/11/rP7Pr w - 0 1
+    san: b1b2
+    expected: true
+-
+    description: white cannot promote on black positions - 2
+    hexchess: 1/3/5/7/p7p/R9R/11/11/11/11/rP7Pr w - 0 1
+    san: b1b2q
+    expected: false
+-
+    description: white cannot promote on black positions - 3
+    hexchess: 1/3/5/7/p7p/R9R/11/11/11/11/rP7Pr w - 0 1
+    san: k1l1
+    expected: true
+-
+    description: white cannot promote on black positions - 4
+    hexchess: 1/3/5/7/p7p/R9R/11/11/11/11/rP7Pr w - 0 1
+    san: k1l1q
+    expected: false
+-
+    description: black cannot promote on white positions - 1
+    hexchess: 1/3/5/7/p7p/R9R/11/11/11/11/rP7Pr b - 0 1
+    san: b7a6
+    expected: true
+-
+    description: black cannot promote on white positions - 2
+    hexchess: 1/3/5/7/p7p/R9R/11/11/11/11/rP7Pr b - 0 1
+    san: b7a6q
+    expected: false
+-
+    description: black cannot promote on white positions - 3
+    hexchess: 1/3/5/7/p7p/R9R/11/11/11/11/rP7Pr b - 0 1
+    san: k7l6
+    expected: true
+-
+    description: black cannot promote on white positions - 4
+    hexchess: 1/3/5/7/p7p/R9R/11/11/11/11/rP7Pr b - 0 1
+    san: k7l6q
+    expected: false
+-
+    description: pawn must promote on final rank - 1
+    hexchess: 1/1P1/5/7/9/11/11/11/11/5p5/11 w - 0 1
+    san: f10f11
+    expected: false
+-
+    description: pawn must promote on final rank - 2
+    hexchess: 1/1P1/5/7/9/11/11/11/11/5p5/11 w - 0 1
+    san: f10f11q
+    expected: true
+-
+    description: pawn must promote on final rank - 3
+    hexchess: 1/1P1/5/7/9/11/11/11/11/5p5/11 b - 0 1
+    san: f2f1
+    expected: false
+-
+    description: pawn must promote on final rank - 4
+    hexchess: 1/1P1/5/7/9/11/11/11/11/5p5/11 b - 0 1
+    san: f2f1q
+    expected: true

@@ -313,13 +313,18 @@ impl Game {
 
     /// Get all legal moves.
     pub fn get_moves(&self, position: Position) -> Vec<San> {
+        let color = match self.get_color(position) {
+            Some(color) => color,
+            None => return Vec::new(),
+        };
+
         self.get_moves_unsafe(position)
             .into_iter()
             .filter(|san| {
                 // apply the move, and filter any that self-check
                 let mut clone = self.clone();
                 let _ = clone.apply_move_unsafe(san);
-                match clone.find_king(self.turn) {
+                match clone.find_king(color) {
                     Some(king) => !clone.is_threatened(king),
                     None => true,
                 }

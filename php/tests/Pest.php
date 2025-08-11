@@ -1,5 +1,7 @@
 <?php
 
+use Symfony\Component\Yaml\Yaml;
+
 /*
 |--------------------------------------------------------------------------
 | Test Case
@@ -51,22 +53,22 @@ function dd(...$vars)
     die(1);
 }
 
-/** get json fixture */
-function json(string $name)
+/** get yaml fixture */
+function yaml(string $name)
 {
-    $path = realpath(__DIR__ . "/../../tests/{$name}.json");
-    $json = file_get_contents($path);
-    return json_decode($json, true);
+    $path = realpath(__DIR__ . "/../../tests/{$name}.yaml");
+    $yaml = file_get_contents($path);
+    return Yaml::parse($yaml);
 }
 
-/** test json fixtures */
-function testJson(string $name, Closure $fn)
+/** test yaml fixtures */
+function testYaml(string $name, Closure $fn, string $primaryKey = 'description')
 {
-    $data = json($name);
+    $data = yaml($name);
 
-    return describe($name, function () use ($data, $fn) {
+    return describe($name, function () use ($data, $fn, $primaryKey) {
         foreach ($data as $t) {
-            test($t['description'], fn () => $fn($t));
+            test($t[$primaryKey], fn () => $fn($t));
         }
     });
 }

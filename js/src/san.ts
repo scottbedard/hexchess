@@ -47,10 +47,10 @@ export class San {
         if (isPromotionPosition(index(to))) {
           promotion = last as PromotionPiece
         } else {
-          error(`invalid san promotion: ${last}`)
+          error(`invalid san promotion: ${source} - ${last}`)
         }
       } else {
-        error(`invalid san promotion: ${last}`)
+        error(`invalid san promotion: ${source} - ${last}`)
       }
     }
 

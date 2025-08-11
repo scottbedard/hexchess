@@ -126,8 +126,10 @@ class Hexchess
     }
 
     /** apply move, regardless of turn or legality */
-    public function applyMoveUnsafe(San $san)
+    public function applyMoveUnsafe(string|San $san)
     {
+        $san = is_string($san) ? San::from($san) : $san;
+
         $piece = $this->board[$san->from];
 
         if ($piece === null) {
