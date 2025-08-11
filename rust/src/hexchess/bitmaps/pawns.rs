@@ -309,6 +309,15 @@ mod tests {
     use super::*;
 
     #[test]
+    fn test_moves_unsafe_from_empty() {
+        let game = Game::new();
+
+        let sans = get_pawn_moves_unsafe(&game, Position::F1);
+
+        assert_eq!(sans.len(), 0);
+    }
+
+    #[test]
     fn test_all_bitmasks_return_number() {
         for n in 0..91 {
             let position = Position::from_fen_index(n as u8);

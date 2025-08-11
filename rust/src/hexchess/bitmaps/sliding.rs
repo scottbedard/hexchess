@@ -293,6 +293,18 @@ mod tests {
     use super::*;
 
     #[test]
+    fn test_sliding_moves_unsafe_from_empty() {
+        let game = Game::new();
+        let bishop = get_bishop_moves_unsafe(&game, Position::F1);
+        let rook = get_rook_moves_unsafe(&game, Position::F1);
+        let queen = get_queen_moves_unsafe(&game, Position::F1);
+
+        assert_eq!(bishop.len(), 0);
+        assert_eq!(rook.len(), 0);
+        assert_eq!(queen.len(), 0);
+    }
+
+    #[test]
     fn test_all_bitmasks_are_non_zero() {
         for n in 0..91 {
             let position = Position::from_fen_index(n as u8);
