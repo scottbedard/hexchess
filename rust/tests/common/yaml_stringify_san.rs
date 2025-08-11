@@ -1,26 +1,26 @@
-use crate::json;
+use crate::yaml;
 use hexchess::hexchess::position::Position;
 use hexchess::hexchess::promotion_piece::PromotionPiece;
 use hexchess::hexchess::san::San;
 use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Serialize, Deserialize)]
-struct Test {
-    description: String,
-    san: TestSan,
-    expect: String
-}
-
-#[derive(Debug, Serialize, Deserialize)]
-struct TestSan {
+#[derive(Debug, PartialEq, Serialize, Deserialize)]
+struct SanStruct {
     from: String,
     promotion: Option<String>,
     to: String,
 }
 
+#[derive(Debug, PartialEq, Serialize, Deserialize)]
+struct Test {
+    description: String,
+    san: SanStruct,
+    expected: String,
+}
+
 #[test]
-fn test_san_to_string() {
-    let tests = json::<Test>("san-to-string.json");
+fn test_stringify_san() {
+    let tests = yaml::<Test>("stringify-san.yaml");
 
     for test in tests {
         let san = San {
@@ -38,6 +38,6 @@ fn test_san_to_string() {
             to: Position::from_string(&test.san.to).unwrap(),
         };
 
-        assert_eq!(san.to_string(), test.expect, "{}", test.description);
+        assert_eq!(san.to_string(), test.expected, "{}", test.description);
     }
 }
