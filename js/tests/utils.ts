@@ -15,5 +15,5 @@ export function resolve(...parts: string[]) {
 }
 
 export function yaml<T>(file: string) {
-  return parse(read('yaml-tests', file)) as T
+  return parse(read('tests', file)) as T
 }

@@ -8,7 +8,7 @@ use std::fs;
 pub fn yaml<T: for<'de> Deserialize<'de>>(file: &str) -> Vec<T> {
     let mut path = env::current_dir().expect("Failed to get current directory");
     path.pop();
-    path.push(format!("yaml-tests/{}", file));
+    path.push(format!("tests/{}", file));
 
     let yaml = fs::read_to_string(path)
         .expect(format!("Failed to read yaml file: {}", file).as_str());

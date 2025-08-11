@@ -56,7 +56,7 @@ function dd(...$vars)
 /** get yaml fixture */
 function yaml(string $name)
 {
-    $path = realpath(__DIR__ . "/../../yaml-tests/{$name}.yaml");
+    $path = realpath(__DIR__ . "/../../tests/{$name}.yaml");
     $yaml = file_get_contents($path);
     return Yaml::parse($yaml);
 }
