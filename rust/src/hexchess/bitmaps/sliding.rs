@@ -287,3 +287,17 @@ fn get_sliding_moves_unsafe(
 
     result
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_all_bitmasks_are_non_zero() {
+        for n in 0..91 {
+            let position = Position::from_fen_index(n as u8);
+            assert!(get_diagonal_bitmask(position) > 0);
+            assert!(get_orthogonal_bitmask(position) > 0);
+        }
+    }
+}
