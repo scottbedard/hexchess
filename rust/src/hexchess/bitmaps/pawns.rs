@@ -303,3 +303,26 @@ fn push_promotion_sans(output: &mut Vec<San>, from: Position, to: Position) {
     output.push(San { from, to, promotion: Some(PromotionPiece::Bishop) });
     output.push(San { from, to, promotion: Some(PromotionPiece::Knight) });
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_all_bitmasks_return_number() {
+        for n in 0..91 {
+            let position = Position::from_fen_index(n as u8);
+
+            if position == Position::F1 {
+                assert_eq!(get_pawn_threats_bitmask(position, Color::Black), 0, "black {:?}", position);
+                assert!(get_pawn_threats_bitmask(position, Color::White) > 0, "white {:?}", position);
+            } else if position == Position::F11 {
+                assert!(get_pawn_threats_bitmask(position, Color::Black) > 0, "black {:?}", position);
+                assert_eq!(get_pawn_threats_bitmask(position, Color::White), 0, "white {:?}", position);
+            } else {
+                assert!(get_pawn_threats_bitmask(position, Color::Black) > 0, "black {:?}", position);
+                assert!(get_pawn_threats_bitmask(position, Color::White) > 0, "white {:?}", position);
+            }
+        }
+    }
+}
