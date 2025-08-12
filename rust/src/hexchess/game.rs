@@ -318,15 +318,21 @@ impl Game {
             None => return Vec::new(),
         };
 
+        let king_position = match self.find_king(color) {
+            Some(king) => king,
+            None => return self.get_moves_unsafe(position),
+        };
+
         self.get_moves_unsafe(position)
             .into_iter()
             .filter(|san| {
                 // apply the move, and filter any that self-check
                 let mut clone = self.clone();
                 let _ = clone.apply_move_unsafe(san);
-                match clone.find_king(color) {
-                    Some(king) => !clone.is_threatened(king),
-                    None => true,
+
+                match san.from == king_position {
+                    true => !clone.is_threatened(san.to),
+                    false => !clone.is_threatened(king_position)
                 }
             })
             .collect()

@@ -1,5 +1,5 @@
 export { Hexchess } from './hexchess'
-export { index, position } from './utils'
+export { index, position, step, walk } from './utils'
 export { San } from './san'
 export * from './constants'
 export * from './types'
