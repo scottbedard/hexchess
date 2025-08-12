@@ -486,17 +486,18 @@ impl Game {
             return true;
         }
 
+        // sliding pieces
+        let (hostile_bishop, hostile_queen, hostile_rook) = match friendly_color {
+            Color::Black => (Piece::WhiteBishop, Piece::WhiteQueen, Piece::WhiteRook),
+            Color::White => (Piece::BlackBishop, Piece::BlackQueen, Piece::BlackRook),
+        };
+
         // diagonal threats
         let diagonal_bitmask = get_diagonal_bitmask(position);
 
         let diagonal_threats = hostile_bishops | hostile_queens;
 
         if diagonal_bitmask & diagonal_threats > 0 {
-            let (hostile_bishop, hostile_queen) = match friendly_color {
-                Color::Black => (Piece::WhiteBishop, Piece::WhiteBishop),
-                Color::White => (Piece::BlackBishop, Piece::BlackQueen),
-            };
-
             for n in [1u8, 3, 5, 7, 9, 11] {
                 let mut next_position = position.step(n);
 
@@ -527,11 +528,6 @@ impl Game {
         let orthogonal_threats = hostile_rooks | hostile_queens;
 
         if orthogonal_bitmask & orthogonal_threats > 0 {
-            let (hostile_rook, hostile_queen) = match friendly_color {
-                Color::Black => (Piece::WhiteRook, Piece::WhiteQueen),
-                Color::White => (Piece::BlackRook, Piece::BlackQueen),
-            };
-
             for n in [0u8, 2, 4, 6, 8, 10] {
                 let mut next_position = position.step(n);
 
