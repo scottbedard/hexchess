@@ -16,6 +16,7 @@ fn bench_initial_position(b: &mut Bencher) {
     // 779,362.55 ns/iter (+/- 5,740.49) - bitmaps + graph step
     // 683,964.55 ns/iter (+/- 6,605.64) - better bitmap iteration
     // 677,835.45 ns/iter (+/- 11,782.53) - avoid redundant find_king calls on get_moves
+    // 663,612.50 ns/iter (+/- 3,863.87) - pre-calc knight, pawn, and neighbor bitmasks
 
     b.iter(|| {
         let hexchess_0 = Game::init();
