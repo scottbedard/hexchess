@@ -7,6 +7,8 @@ use crate::hexchess::promotion_piece::PromotionPiece;
 use crate::hexchess::san::San;
 use hexchess_bitmask::{bitmask, bitmask_csv};
 
+const BLACK_DOUBLE_FORWARD_MASK: u128 = bitmask!("1/3/5/7/9/1xxxxxxxxx1/11/11/11/11/11");
+
 const BLACK_PAWN_THREATS: [u128; 91] = [
     bitmask_csv!("g10, e10"), // F11
     bitmask_csv!("f10, d9"), // E10
@@ -100,6 +102,12 @@ const BLACK_PAWN_THREATS: [u128; 91] = [
     bitmask_csv!("i1"), // K1
     bitmask_csv!("k1"), // L1
 ];
+
+const BLACK_PROMOTION_POSITIONS: u128 = bitmask!("1/3/5/7/9/11/11/11/11/11/xxxxxxxxxxx");
+
+const EN_PASSANT_POSITIONS: u128 = bitmask!("1/3/5/7/9/1xxxxxxxxx1/4x1x4/3x3x3/2x5x2/1x7x1/11");
+
+const WHITE_DOUBLE_FORWARD_MASK: u128 = bitmask!("1/3/5/7/9/5x5/4x1x4/3x3x3/2x5x2/1x7x1/11");
 
 const WHITE_PAWN_THREATS: [u128; 91] = [
     0, // F11
@@ -195,6 +203,8 @@ const WHITE_PAWN_THREATS: [u128; 91] = [
     bitmask_csv!("k2"), // L1
 ];
 
+const WHITE_PROMOTION_POSITIONS: u128 = bitmask!("x/x1x/x3x/x5x/x7x/x9x/11/11/11/11/11");
+
 /// get bitmask for pawn threats
 pub fn get_pawn_threats_bitmask(position: Position, color: Color) -> u128 {
     match color {
@@ -216,8 +226,8 @@ pub fn get_pawn_moves_unsafe(game: &Game, from_position: Position) -> Vec<San> {
         starboard_direction,
         promotion_mask
     ) = match color {
-        Color::Black => (6u8, 4u8, 8u8, bitmask!("1/3/5/7/9/11/11/11/11/11/xxxxxxxxxxx")),
-        Color::White => (0u8, 10u8, 2u8, bitmask!("x/x1x/x3x/x5x/x7x/x9x/11/11/11/11/11")),
+        Color::Black => (6u8, 4u8, 8u8, BLACK_PROMOTION_POSITIONS),
+        Color::White => (0u8, 10u8, 2u8, WHITE_PROMOTION_POSITIONS),
     };
 
     let mut output = Vec::new();
@@ -233,8 +243,8 @@ pub fn get_pawn_moves_unsafe(game: &Game, from_position: Position) -> Vec<San> {
                 output.push(San::new(from_position, forward_position));
 
                 let double_forward_mask = match color {
-                    Color::Black => bitmask!("1/3/5/7/9/1xxxxxxxxx1/11/11/11/11/11"),
-                    Color::White => bitmask!("1/3/5/7/9/5x5/4x1x4/3x3x3/2x5x2/1x7x1/11"),
+                    Color::Black => BLACK_DOUBLE_FORWARD_MASK,
+                    Color::White => WHITE_DOUBLE_FORWARD_MASK,
                 };
 
                 // double forward advancement
@@ -296,7 +306,7 @@ pub fn get_pawn_moves_unsafe(game: &Game, from_position: Position) -> Vec<San> {
 
 /// test if a position is a legal en passant target
 pub fn is_legal_en_passant(position: Position) -> bool {
-    position.to_bitmask() & bitmask!("1/3/5/7/9/1xxxxxxxxx1/4x1x4/3x3x3/2x5x2/1x7x1/11") != 0
+    position.to_bitmask() & EN_PASSANT_POSITIONS != 0
 }
 
 /// push promotion sans

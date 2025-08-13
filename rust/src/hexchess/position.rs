@@ -16,6 +16,8 @@ use std::fmt;
     'a1',   'b1',   'c1',   'd1',   'e1',   'f1',   null,   null,   null,   null,   null,
 */
 
+const PROMOTION_POSITIONS: u128 = bitmask!("x/x1x/x3x/x5x/x7x/x9x/11/11/11/11/xxxxxxxxxxx");
+
 const POSITION_NEIGHBORS: [u128; 91] = [
     bitmask_csv!("g10, g9, f10, e9, e10"), // F11
     bitmask_csv!("f11, g10, f10, f9, e9, d8, d9"), // E10
@@ -515,7 +517,7 @@ impl Position {
 
     /// test if position is a promotion position
     pub fn is_promotion_position(&self) -> bool {
-        self.to_bitmask() & bitmask!("x/x1x/x3x/x5x/x7x/x9x/11/11/11/11/xxxxxxxxxxx") != 0
+        self.to_bitmask() & PROMOTION_POSITIONS != 0
     }
 
     /// Step from position in the given direction.
