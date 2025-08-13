@@ -88,11 +88,6 @@ impl Piece {
         self.color() == color
     }
 
-    /// Check if a piece is an enemy of a given color.
-    pub fn is_enemy(&self, color: Color) -> bool {
-        self.color() != color
-    }
-
     /// Get the color of a piece.
     pub fn color(&self) -> Color {
         match self {
@@ -127,24 +122,6 @@ impl Piece {
             "Q" => Ok(Piece::WhiteQueen),
             "R" => Ok(Piece::WhiteRook),
             _ => Err(format!("invalid piece: {}", s)),
-        }
-    }
-
-    /// Convert a piece to a character.
-    pub fn to_char(&self) -> char {
-        match self {
-            Piece::BlackBishop => 'b',
-            Piece::BlackKing => 'k',
-            Piece::BlackKnight => 'n',
-            Piece::BlackPawn => 'p',
-            Piece::BlackQueen => 'q',
-            Piece::BlackRook => 'r',
-            Piece::WhiteBishop => 'B',
-            Piece::WhiteKing => 'K',
-            Piece::WhiteKnight => 'N',
-            Piece::WhitePawn => 'P',
-            Piece::WhiteQueen => 'Q',
-            Piece::WhiteRook => 'R',
         }
     }
 }
@@ -199,5 +176,22 @@ mod tests {
         assert_eq!(Piece::WhitePawn.color(), Color::White);
         assert_eq!(Piece::WhiteQueen.color(), Color::White);
         assert_eq!(Piece::WhiteRook.color(), Color::White);
+    }
+
+    #[test]
+    fn test_from_char() {
+        assert_eq!(Piece::from('b'), Piece::BlackBishop);
+        assert_eq!(Piece::from('k'), Piece::BlackKing);
+        assert_eq!(Piece::from('n'), Piece::BlackKnight);
+        assert_eq!(Piece::from('p'), Piece::BlackPawn);
+        assert_eq!(Piece::from('q'), Piece::BlackQueen);
+        assert_eq!(Piece::from('r'), Piece::BlackRook);
+        assert_eq!(Piece::from('B'), Piece::WhiteBishop);
+        assert_eq!(Piece::from('K'), Piece::WhiteKing);
+        assert_eq!(Piece::from('N'), Piece::WhiteKnight);
+        assert_eq!(Piece::from('P'), Piece::WhitePawn);
+        assert_eq!(Piece::from('Q'), Piece::WhiteQueen);
+        assert_eq!(Piece::from('R'), Piece::WhiteRook);
+        assert!(std::panic::catch_unwind(|| Piece::from('x')).is_err());
     }
 }
