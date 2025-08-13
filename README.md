@@ -22,7 +22,7 @@ Game libraries are available in [Rust](https://crates.io/crates/hexchess), [PHP]
 
 For basic game logic, use the PHP or TypeScript / JavaScript libraries. These are not optimized for performance, and use a [position-centric](https://www.chessprogramming.org/Board_Representation#Square_Centric) game state. In other words, the board is stored as a flat array of values, with each value representing the occupying piece. This makes things like rendering and rules logic simpler.
 
-For game engines, use the Rust crate. It's optimized for performance, using [bitboards](https://www.chessprogramming.org/Bitboards) to represent game state. This allows for fast board querying using `u128` bitmasks.
+For game engines, use the Rust crate. It's optimized for performance, and uses [bitboards](https://www.chessprogramming.org/Bitboards) to represent the game state. This allows for fast board querying using `u128` bitmasks.
 
 ## Versioning
 
