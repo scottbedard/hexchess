@@ -1,5 +1,5 @@
 use crate::hexchess::color::Color;
-use crate::hexchess::game::Game;
+use crate::hexchess::hexchess::Hexchess;
 use crate::hexchess::position::Position;
 use crate::hexchess::san::San;
 use hexchess_bitmask::{bitmask_csv};
@@ -200,60 +200,60 @@ pub fn get_orthogonal_bitmask(position: Position) -> u128 {
     ORTHOGONAL_BITMASKS[position.to_fen_index() as usize]
 }
 
-pub fn get_bishop_moves_unsafe(game: &Game, from_position: Position) -> Vec<San> {
-    match game.get_color(from_position) {
+pub fn get_bishop_moves_unsafe(hexchess: &Hexchess, from_position: Position) -> Vec<San> {
+    match hexchess.get_color(from_position) {
         Some(color) => {
             // check all 6 diagonal directions
             let mut result = Vec::new();
             let hostile_color = color.opposite();
-            result.append(&mut get_sliding_moves_unsafe(game, from_position, hostile_color, 1));
-            result.append(&mut get_sliding_moves_unsafe(game, from_position, hostile_color, 3));
-            result.append(&mut get_sliding_moves_unsafe(game, from_position, hostile_color, 5));
-            result.append(&mut get_sliding_moves_unsafe(game, from_position, hostile_color, 7));
-            result.append(&mut get_sliding_moves_unsafe(game, from_position, hostile_color, 9));
-            result.append(&mut get_sliding_moves_unsafe(game, from_position, hostile_color, 11));
+            result.append(&mut get_sliding_moves_unsafe(hexchess, from_position, hostile_color, 1));
+            result.append(&mut get_sliding_moves_unsafe(hexchess, from_position, hostile_color, 3));
+            result.append(&mut get_sliding_moves_unsafe(hexchess, from_position, hostile_color, 5));
+            result.append(&mut get_sliding_moves_unsafe(hexchess, from_position, hostile_color, 7));
+            result.append(&mut get_sliding_moves_unsafe(hexchess, from_position, hostile_color, 9));
+            result.append(&mut get_sliding_moves_unsafe(hexchess, from_position, hostile_color, 11));
             result
         },
         None => vec![],
     }
 }
 
-pub fn get_rook_moves_unsafe(game: &Game, from_position: Position) -> Vec<San> {
-    match game.get_color(from_position) {
+pub fn get_rook_moves_unsafe(hexchess: &Hexchess, from_position: Position) -> Vec<San> {
+    match hexchess.get_color(from_position) {
         Some(color) => {
             // check all 6 orthogonal directions
             let mut result = Vec::new();
             let hostile_color = color.opposite();
-            result.append(&mut get_sliding_moves_unsafe(game, from_position, hostile_color, 0));
-            result.append(&mut get_sliding_moves_unsafe(game, from_position, hostile_color, 2));
-            result.append(&mut get_sliding_moves_unsafe(game, from_position, hostile_color, 4));
-            result.append(&mut get_sliding_moves_unsafe(game, from_position, hostile_color, 6));
-            result.append(&mut get_sliding_moves_unsafe(game, from_position, hostile_color, 8));
-            result.append(&mut get_sliding_moves_unsafe(game, from_position, hostile_color, 10));
+            result.append(&mut get_sliding_moves_unsafe(hexchess, from_position, hostile_color, 0));
+            result.append(&mut get_sliding_moves_unsafe(hexchess, from_position, hostile_color, 2));
+            result.append(&mut get_sliding_moves_unsafe(hexchess, from_position, hostile_color, 4));
+            result.append(&mut get_sliding_moves_unsafe(hexchess, from_position, hostile_color, 6));
+            result.append(&mut get_sliding_moves_unsafe(hexchess, from_position, hostile_color, 8));
+            result.append(&mut get_sliding_moves_unsafe(hexchess, from_position, hostile_color, 10));
             result
         },
         None => vec![],
     }
 }
 
-pub fn get_queen_moves_unsafe(game: &Game, from_position: Position) -> Vec<San> {
-    match game.get_color(from_position) {
+pub fn get_queen_moves_unsafe(hexchess: &Hexchess, from_position: Position) -> Vec<San> {
+    match hexchess.get_color(from_position) {
         Some(color) => {
             // check all 12 directions (orthogonal + diagonal)
             let mut result = Vec::new();
             let hostile_color = color.opposite();
-            result.append(&mut get_sliding_moves_unsafe(game, from_position, hostile_color, 0));
-            result.append(&mut get_sliding_moves_unsafe(game, from_position, hostile_color, 1));
-            result.append(&mut get_sliding_moves_unsafe(game, from_position, hostile_color, 2));
-            result.append(&mut get_sliding_moves_unsafe(game, from_position, hostile_color, 3));
-            result.append(&mut get_sliding_moves_unsafe(game, from_position, hostile_color, 4));
-            result.append(&mut get_sliding_moves_unsafe(game, from_position, hostile_color, 5));
-            result.append(&mut get_sliding_moves_unsafe(game, from_position, hostile_color, 6));
-            result.append(&mut get_sliding_moves_unsafe(game, from_position, hostile_color, 7));
-            result.append(&mut get_sliding_moves_unsafe(game, from_position, hostile_color, 8));
-            result.append(&mut get_sliding_moves_unsafe(game, from_position, hostile_color, 9));
-            result.append(&mut get_sliding_moves_unsafe(game, from_position, hostile_color, 10));
-            result.append(&mut get_sliding_moves_unsafe(game, from_position, hostile_color, 11));
+            result.append(&mut get_sliding_moves_unsafe(hexchess, from_position, hostile_color, 0));
+            result.append(&mut get_sliding_moves_unsafe(hexchess, from_position, hostile_color, 1));
+            result.append(&mut get_sliding_moves_unsafe(hexchess, from_position, hostile_color, 2));
+            result.append(&mut get_sliding_moves_unsafe(hexchess, from_position, hostile_color, 3));
+            result.append(&mut get_sliding_moves_unsafe(hexchess, from_position, hostile_color, 4));
+            result.append(&mut get_sliding_moves_unsafe(hexchess, from_position, hostile_color, 5));
+            result.append(&mut get_sliding_moves_unsafe(hexchess, from_position, hostile_color, 6));
+            result.append(&mut get_sliding_moves_unsafe(hexchess, from_position, hostile_color, 7));
+            result.append(&mut get_sliding_moves_unsafe(hexchess, from_position, hostile_color, 8));
+            result.append(&mut get_sliding_moves_unsafe(hexchess, from_position, hostile_color, 9));
+            result.append(&mut get_sliding_moves_unsafe(hexchess, from_position, hostile_color, 10));
+            result.append(&mut get_sliding_moves_unsafe(hexchess, from_position, hostile_color, 11));
             result
         },
         None => vec![],
@@ -261,7 +261,7 @@ pub fn get_queen_moves_unsafe(game: &Game, from_position: Position) -> Vec<San> 
 }
 
 fn get_sliding_moves_unsafe(
-    game: &Game,
+    game: &Hexchess,
     from_position: Position,
     hostile_color: Color,
     direction: u8,
@@ -298,7 +298,7 @@ mod tests {
 
     #[test]
     fn test_sliding_moves_unsafe_from_empty() {
-        let game = Game::new();
+        let game = Hexchess::new();
         let bishop = get_bishop_moves_unsafe(&game, Position::F1);
         let rook = get_rook_moves_unsafe(&game, Position::F1);
         let queen = get_queen_moves_unsafe(&game, Position::F1);

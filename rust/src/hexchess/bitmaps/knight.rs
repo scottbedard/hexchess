@@ -1,7 +1,7 @@
 extern crate hexchess_bitmask;
 
 use crate::hexchess::bitboard::Bitboard;
-use crate::hexchess::game::Game;
+use crate::hexchess::hexchess::Hexchess;
 use crate::hexchess::position::Position;
 use crate::hexchess::san::San;
 use hexchess_bitmask::bitmask_csv;
@@ -105,11 +105,11 @@ pub fn get_knight_moves_bitmask(position: Position) -> u128 {
     KNIGHT_MOVES_BITMASKS[index]
 }
 
-pub fn get_knight_moves_unsafe(game: &Game, from: Position) -> Vec<San> {
+pub fn get_knight_moves_unsafe(hexchess: &Hexchess, from: Position) -> Vec<San> {
     let mut targets = Bitboard(get_knight_moves_bitmask(from));
 
-    match game.get_color(from) {
-        Some(color) => targets &= !game.get_color_bitboard(color),
+    match hexchess.get_color(from) {
+        Some(color) => targets &= !hexchess.get_color_bitboard(color),
         None => {}
     };
 
@@ -132,7 +132,7 @@ mod tests {
     fn test_get_knight_moves_unsafe_f11() {
         let expected = ["f11h8", "f11g8", "f11d8", "f11e8"];
 
-        let game = Game::new();
+        let game = Hexchess::new();
 
         let sans = get_knight_moves_unsafe(&game, Position::F11)
             .iter()
@@ -163,7 +163,7 @@ mod tests {
             "f6e3",
         ];
 
-        let game = Game::new();
+        let game = Hexchess::new();
 
         let sans = get_knight_moves_unsafe(&game, Position::F6)
             .iter()
@@ -181,7 +181,7 @@ mod tests {
     fn test_all_positions_have_moves() {
         for n in 0..91 {
             let position = Position::from_fen_index(n as u8);
-            let moves = get_knight_moves_unsafe(&Game::new(), position);
+            let moves = get_knight_moves_unsafe(&Hexchess::new(), position);
 
             assert!(moves.len() > 0);
         }

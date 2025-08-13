@@ -3,7 +3,7 @@
 extern crate test;
 extern crate hexchess;
 
-use hexchess::hexchess::game::Game;
+use hexchess::hexchess::hexchess::Hexchess;
 use test::Bencher;
 
 #[bench]
@@ -21,7 +21,7 @@ fn bench_initial_position(b: &mut Bencher) {
     // 646,839.55 ns/iter (+/- 6,157.47) - prevent extra hostile piece matches in is_threatened
 
     b.iter(|| {
-        let hexchess_0 = Game::init();
+        let hexchess_0 = Hexchess::init();
         let white_moves = hexchess_0.current_moves();
 
         for white_move in white_moves {

@@ -1,6 +1,6 @@
 use crate::yaml;
 use hexchess::hexchess::color::Color;
-use hexchess::hexchess::game::Game;
+use hexchess::hexchess::hexchess::Hexchess;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, PartialEq, Serialize, Deserialize)]
@@ -17,7 +17,7 @@ fn test_find_king() {
 
     for test in tests {
         let color = Color::from_string(&test.color);
-        let hexchess = Game::parse(&test.hexchess).unwrap();
+        let hexchess = Hexchess::parse(&test.hexchess).unwrap();
         let king = hexchess.find_king(color);
 
         match king {

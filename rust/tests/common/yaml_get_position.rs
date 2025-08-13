@@ -1,5 +1,5 @@
 use crate::yaml;
-use hexchess::hexchess::game::Game;
+use hexchess::hexchess::hexchess::Hexchess;
 use hexchess::hexchess::position::Position;
 use serde::{Deserialize, Serialize};
 
@@ -16,7 +16,7 @@ fn test_get_position() {
     let tests = yaml::<Test>("get-position.yaml");
 
     for test in tests {
-        let game = Game::parse(&test.hexchess).unwrap();
+        let game = Hexchess::parse(&test.hexchess).unwrap();
 
         let position = match Position::from_string(&test.position) {
             Ok(p) => p,

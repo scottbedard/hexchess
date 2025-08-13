@@ -24,7 +24,7 @@ use crate::hexchess::promotion_piece::PromotionPiece;
 use crate::hexchess::san::San;
 
 #[derive(Clone, Debug)]
-pub struct Game {
+pub struct Hexchess {
     pub bitboard_black_bishop: Bitboard,
     pub bitboard_black_king: Bitboard,
     pub bitboard_black_knight: Bitboard,
@@ -43,7 +43,7 @@ pub struct Game {
     pub turn: Color,
 }
 
-impl Game {
+impl Hexchess {
     /// apply a whitespace separated sequence of moves
     pub fn apply_sequence(&mut self, sequence: &str) -> Result<(), String> {
         let mut i: u32 = 0;
@@ -683,7 +683,7 @@ impl Game {
 }
 
 /// Display the game state as a FEN string.
-impl std::fmt::Display for Game {
+impl std::fmt::Display for Hexchess {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         let board = self.to_board_array();
         let mut blank: u8 = 0;
@@ -802,7 +802,7 @@ mod tests {
 
     #[test]
     fn test_new() {
-        let game = Game::new();
+        let game = Hexchess::new();
         assert_eq!(game.bitboard_black_bishop.0, 0);
         assert_eq!(game.bitboard_black_king.0, 0);
         assert_eq!(game.bitboard_black_knight.0, 0);
@@ -823,13 +823,13 @@ mod tests {
 
     #[test]
     fn test_get_piece() {
-        let game = Game::init();
+        let game = Hexchess::init();
         assert_eq!(game.get_position(Position::F11), Some(Piece::BlackBishop));
     }
 
     #[test]
     fn test_get_and_set_piece() {
-        let mut game = Game::new();
+        let mut game = Hexchess::new();
 
         game.set_position(Position::F1, Piece::BlackBishop);
         game.set_position(Position::F2, Piece::BlackPawn);
@@ -866,7 +866,7 @@ mod tests {
 
     #[test]
     fn test_setting_a_position_clears_other_bitboards() {
-        let mut game = Game::new();
+        let mut game = Hexchess::new();
         game.set_position(Position::F11, Piece::BlackBishop);
         assert_eq!(game.bitboard_black_bishop.is_position_set(Position::F11), true);
         game.set_position(Position::F11, Piece::BlackKing);
@@ -876,7 +876,7 @@ mod tests {
 
     #[test]
     fn test_clear_position() {
-        let mut game = Game::init();
+        let mut game = Hexchess::init();
         game.set_position(Position::F11, Piece::BlackBishop);
         game.clear_position(Position::F11);
         assert_eq!(game.get_position(Position::F11), None);
@@ -885,13 +885,13 @@ mod tests {
     #[test]
     fn test_bitmask() {
         let mask = bitmask!("x/3/5/7/9/11/11/11/11/11/11");
-        let game = Game::parse("p/3/5/7/9/11/11/11/11/11/11 w - 0 1").unwrap();
+        let game = Hexchess::parse("p/3/5/7/9/11/11/11/11/11/11 w - 0 1").unwrap();
         assert_eq!(game.bitboard_black_pawn.0, mask);
     }
 
     #[test]
     fn test_to_array() {
-        assert_eq!(Game::init().to_board_array(), [
+        assert_eq!(Hexchess::init().to_board_array(), [
             Some(Piece::BlackBishop),
             Some(Piece::BlackQueen),
             Some(Piece::BlackBishop),
@@ -988,14 +988,14 @@ mod tests {
 
     #[test]
     fn test_to_string() {
-        let game = Game::init();
+        let game = Hexchess::init();
 
         assert_eq!(game.to_string(), INITIAL_POSITION);
     }
 
     #[test]
     fn test_get_color_bitboard() {
-        let game = Game::init();
+        let game = Hexchess::init();
         let black = bitmask!("x/xxx/x1x1x/x5x/xxxxxxxxx/11/11/11/11/11/11");
         let white = bitmask!("1/3/5/7/9/11/5x5/4x1x4/3x1x1x3/2x2x2x2/1xxxxxxxxx1");
 
@@ -1005,7 +1005,7 @@ mod tests {
 
     #[test]
     fn test_is_position_occupied_friendly_or_hostile() {
-        let game = Game::init();
+        let game = Hexchess::init();
         assert_eq!(game.is_position_empty(Position::F11), false);
         assert_eq!(game.is_position_empty(Position::A1), true);
 
@@ -1025,7 +1025,7 @@ mod tests {
 
     #[test]
     fn test_find_king() {
-        let game = Game::parse("1/3/5/7/9/5k5/5P5/11/11/11/11 b - 0 1").unwrap();
+        let game = Hexchess::parse("1/3/5/7/9/5k5/5P5/11/11/11/11 b - 0 1").unwrap();
 
         assert_eq!(game.find_king(Color::Black), Some(Position::F6));
         assert_eq!(game.find_king(Color::White), None);
@@ -1033,21 +1033,21 @@ mod tests {
 
     #[test]
     fn test_white_is_check() {
-        let game = Game::parse("1/3/5/7/9/11/11/11/11/5q5/5K5 w - 0 1").unwrap();
+        let game = Hexchess::parse("1/3/5/7/9/11/11/11/11/5q5/5K5 w - 0 1").unwrap();
 
         assert_eq!(game.is_check(), true);
     }
 
     #[test]
     fn test_black_is_check() {
-        let game = Game::parse("k/1Q1/5/7/9/11/11/11/11/11/11 b - 0 1").unwrap();
+        let game = Hexchess::parse("k/1Q1/5/7/9/11/11/11/11/11/11 b - 0 1").unwrap();
 
         assert_eq!(game.is_check(), true);
     }
 
     #[test]
     fn test_king_does_not_self_check() {
-        let game = Game::parse("1/3/5/7/9/5k5/5P5/11/11/11/11 b - 0 1").unwrap();
+        let game = Hexchess::parse("1/3/5/7/9/5k5/5P5/11/11/11/11 b - 0 1").unwrap();
 
         let expected = vec![
             "f6f7", "f6g7",
@@ -1067,7 +1067,7 @@ mod tests {
 
     #[test]
     fn test_only_pawns_capture_en_passant() {
-        let mut game = Game::parse("b/qbk/n1b1n/r5r/ppppp1ppp/11/5Pp4/4P1PB3/3P1B1P3/2P5P2/1PRNQBKNRP1 w g6 0 2").unwrap();
+        let mut game = Hexchess::parse("b/qbk/n1b1n/r5r/ppppp1ppp/11/5Pp4/4P1PB3/3P1B1P3/2P5P2/1PRNQBKNRP1 w g6 0 2").unwrap();
         let _ = game.apply_sequence("h4g6");
         assert_eq!(game.to_string(), "b/qbk/n1b1n/r5r/ppppp1ppp/6B4/5Pp4/4P1P4/3P1B1P3/2P5P2/1PRNQBKNRP1 b - 1 2");
     }

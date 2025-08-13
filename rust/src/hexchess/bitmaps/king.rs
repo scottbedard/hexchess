@@ -1,13 +1,13 @@
 use crate::hexchess::bitboard::Bitboard;
-use crate::hexchess::game::Game;
+use crate::hexchess::hexchess::Hexchess;
 use crate::hexchess::position::Position;
 use crate::hexchess::san::San;
 
-pub fn get_king_moves_unsafe(game: &Game, from: Position) -> Vec<San> {
+pub fn get_king_moves_unsafe(hexchess: &Hexchess, from: Position) -> Vec<San> {
     let mut result = Bitboard(from.get_neighbors());
 
-    match game.get_color(from) {
-        Some(color) => result &= !game.get_color_bitboard(color),
+    match hexchess.get_color(from) {
+        Some(color) => result &= !hexchess.get_color_bitboard(color),
         None => {}
     };
     

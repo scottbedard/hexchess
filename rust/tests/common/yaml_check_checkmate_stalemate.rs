@@ -1,5 +1,5 @@
 use crate::yaml;
-use hexchess::hexchess::game::Game;
+use hexchess::hexchess::hexchess::Hexchess;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, PartialEq, Serialize, Deserialize)]
@@ -16,7 +16,7 @@ fn test_check_checkmate_stalemate() {
     let tests = yaml::<Test>("check-checkmate-stalemate.yaml");
 
     for test in tests {
-        let hexchess = Game::parse(&test.hexchess).unwrap();
+        let hexchess = Hexchess::parse(&test.hexchess).unwrap();
 
         assert_eq!(hexchess.is_check(), test.check, "check assertion failed: {}", test.description);
         assert_eq!(hexchess.is_checkmate(), test.checkmate, "checkmate assertion failed: {}", test.description);

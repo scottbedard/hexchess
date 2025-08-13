@@ -1,5 +1,5 @@
 use crate::yaml;
-use hexchess::hexchess::game::Game;
+use hexchess::hexchess::hexchess::Hexchess;
 use hexchess::hexchess::position::Position;
 use serde::{Deserialize, Serialize};
 
@@ -16,7 +16,7 @@ fn test_moves_file(file: &str) {
 
     for test in tests {
         let position = Position::from_string(&test.position).unwrap();
-        let game = Game::parse(&test.hexchess).unwrap();
+        let game = Hexchess::parse(&test.hexchess).unwrap();
         let moves = game.get_moves(position).into_iter().map(|san| san.to_string()).collect::<Vec<String>>();
 
         let mut expected = test.expected.clone();

@@ -1,5 +1,5 @@
 use crate::yaml;
-use hexchess::hexchess::game::Game;
+use hexchess::hexchess::hexchess::Hexchess;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, PartialEq, Serialize, Deserialize)]
@@ -15,7 +15,7 @@ fn test_parse_hexchess() {
     let tests = yaml::<Test>("parse-hexchess.yaml");
 
     for test in tests {
-        let hexchess = match Game::parse(&test.hexchess) {
+        let hexchess = match Hexchess::parse(&test.hexchess) {
             Ok(hexchess) => hexchess,
             Err(e) => {
                 assert!(test.error, "{}", e);

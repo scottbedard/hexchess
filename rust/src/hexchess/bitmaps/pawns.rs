@@ -1,7 +1,7 @@
 extern crate hexchess_bitmask;
 
 use crate::hexchess::color::Color;
-use crate::hexchess::game::Game;
+use crate::hexchess::hexchess::Hexchess;
 use crate::hexchess::position::Position;
 use crate::hexchess::promotion_piece::PromotionPiece;
 use crate::hexchess::san::San;
@@ -214,8 +214,8 @@ pub fn get_pawn_threats_bitmask(position: Position, color: Color) -> u128 {
 }
 
 /// get pawn moves unsafe
-pub fn get_pawn_moves_unsafe(game: &Game, from_position: Position) -> Vec<San> {
-    let color = match game.get_color(from_position) {
+pub fn get_pawn_moves_unsafe(hexchess: &Hexchess, from_position: Position) -> Vec<San> {
+    let color = match hexchess.get_color(from_position) {
         Some(color) => color,
         None => return Vec::new(),
     };
@@ -234,7 +234,7 @@ pub fn get_pawn_moves_unsafe(game: &Game, from_position: Position) -> Vec<San> {
 
     // advance forward
     match from_position.step(forward_direction) {
-        Some(forward_position) => if game.is_position_empty(forward_position) {
+        Some(forward_position) => if hexchess.is_position_empty(forward_position) {
             let forward_mask = forward_position.to_bitmask();
 
             if forward_mask & promotion_mask != 0 {
@@ -251,7 +251,7 @@ pub fn get_pawn_moves_unsafe(game: &Game, from_position: Position) -> Vec<San> {
                 if forward_mask & double_forward_mask != 0 {
                     let double_forward_position = forward_position.step(forward_direction).unwrap();
 
-                    if game.is_position_empty(double_forward_position) {
+                    if hexchess.is_position_empty(double_forward_position) {
                         output.push(San::new(from_position, double_forward_position));
                     }
                 }
@@ -261,15 +261,15 @@ pub fn get_pawn_moves_unsafe(game: &Game, from_position: Position) -> Vec<San> {
     };
     
     // captures
-    let ep_mask = match game.ep {   
-        Some(ep) => match game.turn == color {
+    let ep_mask = match hexchess.ep {   
+        Some(ep) => match hexchess.turn == color {
             true => ep.to_bitmask(),
             false => 0,
         },
         None => 0,
     };
 
-    let capturable_mask = ep_mask | *game.get_color_bitboard(color.opposite());
+    let capturable_mask = ep_mask | *hexchess.get_color_bitboard(color.opposite());
     
     match from_position.step(portside_direction) {
         Some(portside_position) => {
@@ -324,7 +324,7 @@ mod tests {
 
     #[test]
     fn test_moves_unsafe_from_empty() {
-        let game = Game::new();
+        let game = Hexchess::new();
 
         let sans = get_pawn_moves_unsafe(&game, Position::F1);
 

@@ -1,5 +1,5 @@
 use crate::yaml;
-use hexchess::hexchess::game::Game;
+use hexchess::hexchess::hexchess::Hexchess;
 use hexchess::hexchess::position::Position;
 use serde::{Deserialize, Serialize};
 
@@ -16,7 +16,7 @@ fn test_is_threatened() {
     let tests = yaml::<Test>("is-threatened.yaml");
 
     for test in tests {
-        let hexchess = match Game::parse(&test.hexchess) {
+        let hexchess = match Hexchess::parse(&test.hexchess) {
             Ok(hexchess) => hexchess,
             Err(e) => {
                 panic!("{}", e);

@@ -1,6 +1,6 @@
 use crate::yaml;
 use hexchess::hexchess::color::Color;
-use hexchess::hexchess::game::Game;
+use hexchess::hexchess::hexchess::Hexchess;
 use hexchess::hexchess::piece::Piece;
 use hexchess::hexchess::position::Position;
 use serde::{Deserialize, Serialize};
@@ -26,7 +26,7 @@ fn test_stringify_hexchess() {
     let tests = yaml::<Test>("stringify-hexchess.yaml");
 
     for test in tests {
-        let mut game = Game::new();
+        let mut game = Hexchess::new();
 
         let expected_array: [Option<Piece>; 91] = test
             .hexchess

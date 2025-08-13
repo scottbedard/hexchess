@@ -1,5 +1,5 @@
 use crate::yaml;
-use hexchess::hexchess::game::Game;
+use hexchess::hexchess::hexchess::Hexchess;
 use hexchess::hexchess::position::Position;
 use serde::{Deserialize, Serialize};
 
@@ -18,7 +18,7 @@ fn test_moves_from_unsafe() {
     for test in tests {
         let position = Position::from_string(&test.position).unwrap();
 
-            let result = Game::parse(&test.hexchess)
+            let result = Hexchess::parse(&test.hexchess)
                 .unwrap()
                 .get_moves_unsafe(position)
                 .into_iter()

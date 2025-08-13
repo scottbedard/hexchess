@@ -1,5 +1,5 @@
 use crate::yaml;
-use hexchess::hexchess::game::Game;
+use hexchess::hexchess::hexchess::Hexchess;
 use hexchess::hexchess::san::San;
 use serde::{Deserialize, Serialize};
 
@@ -16,7 +16,7 @@ fn test_move_legality() {
     let tests = yaml::<Test>("move-legality.yaml");
 
     for test in tests {
-        let game = Game::parse(&test.hexchess).unwrap();
+        let game = Hexchess::parse(&test.hexchess).unwrap();
         let san = San::from_string(&test.san);
 
         if san.is_err() {

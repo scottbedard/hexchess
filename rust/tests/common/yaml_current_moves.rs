@@ -1,5 +1,5 @@
 use crate::yaml;
-use hexchess::hexchess::game::Game;
+use hexchess::hexchess::hexchess::Hexchess;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, PartialEq, Serialize, Deserialize)]
@@ -14,7 +14,7 @@ fn test_current_moves() {
     let tests = yaml::<Test>("current-moves.yaml");
 
     for test in tests {
-        let game = Game::parse(&test.hexchess).unwrap();
+        let game = Hexchess::parse(&test.hexchess).unwrap();
         let moves = game.current_moves().into_iter().map(|san| san.to_string()).collect::<Vec<String>>();
 
         let mut expected = test.expected.clone();

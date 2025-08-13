@@ -1,6 +1,6 @@
 use crate::yaml;
 use hexchess::hexchess::color::Color;
-use hexchess::hexchess::game::Game;
+use hexchess::hexchess::hexchess::Hexchess;
 use hexchess::hexchess::position::Position;
 use serde::{Deserialize, Serialize};
 
@@ -18,7 +18,7 @@ fn test_get_color() {
 
     for test in tests {
         let color = Color::from_string(&test.color);
-        let hexchess = Game::parse(&test.hexchess).unwrap();
+        let hexchess = Hexchess::parse(&test.hexchess).unwrap();
         
         let mut actual = Vec::new();
 

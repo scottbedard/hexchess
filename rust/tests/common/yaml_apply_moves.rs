@@ -1,5 +1,5 @@
 use crate::yaml;
-use hexchess::hexchess::game::Game;
+use hexchess::hexchess::hexchess::Hexchess;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, PartialEq, Serialize, Deserialize)]
@@ -16,7 +16,7 @@ fn test_apply_moves() {
     let tests = yaml::<Test>("apply-moves.yaml");
 
     for test in tests {
-        let mut game = match Game::parse(&test.hexchess) {
+        let mut game = match Hexchess::parse(&test.hexchess) {
             Ok(g) => g,
             Err(_) => {
                 assert!(test.error, "{}", test.description);
@@ -31,7 +31,7 @@ fn test_apply_moves() {
             continue;
         }
 
-        let expected = Game::parse(&test.expected.unwrap()).unwrap();
+        let expected = Hexchess::parse(&test.expected.unwrap()).unwrap();
 
         assert_eq!(expected.to_string(), game.to_string(), "{}", test.description);
     }
