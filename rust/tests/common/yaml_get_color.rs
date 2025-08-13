@@ -1,7 +1,7 @@
 use crate::yaml;
-use hexchess::hexchess::color::Color;
-use hexchess::hexchess::hexchess::Hexchess;
-use hexchess::hexchess::position::Position;
+use hexchess::Color;
+use hexchess::Hexchess;
+use hexchess::Position;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, PartialEq, Serialize, Deserialize)]

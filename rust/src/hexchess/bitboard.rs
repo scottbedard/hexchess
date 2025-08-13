@@ -1,6 +1,6 @@
 extern crate hexchess_bitmask;
 
-use crate::hexchess::position::Position;
+use crate::Position;
 use hexchess_bitmask::bitmask;
 use std::ops::{Deref, DerefMut};
 

@@ -1,7 +1,7 @@
-use crate::hexchess::bitboard::Bitboard;
-use crate::hexchess::hexchess::Hexchess;
-use crate::hexchess::position::Position;
-use crate::hexchess::san::San;
+use crate::Bitboard;
+use crate::Hexchess;
+use crate::Position;
+use crate::San;
 
 pub fn get_king_moves_unsafe(hexchess: &Hexchess, from: Position) -> Vec<San> {
     let mut result = Bitboard(from.get_neighbors());

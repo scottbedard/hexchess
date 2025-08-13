@@ -1,5 +1,5 @@
 use crate::yaml;
-use hexchess::hexchess::position::Position;
+use hexchess::Position;
 
 #[test]
 fn test_positions() {

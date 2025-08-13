@@ -1,7 +1,7 @@
-use crate::hexchess::color::Color;
-use crate::hexchess::hexchess::Hexchess;
-use crate::hexchess::position::Position;
-use crate::hexchess::san::San;
+use crate::Color;
+use crate::Hexchess;
+use crate::Position;
+use crate::San;
 use hexchess_bitmask::{bitmask_csv};
 
 const DIAGONAL_BITMASKS: [u128; 91] = [

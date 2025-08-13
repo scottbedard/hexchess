@@ -1,5 +1,10 @@
+use crate::Bitboard;
+use crate::Color;
+use crate::Piece;
+use crate::Position;
+use crate::PromotionPiece;
+use crate::San;
 use crate::constants::INITIAL_POSITION;
-use crate::hexchess::bitboard::Bitboard;
 use crate::hexchess::bitmaps::king::get_king_moves_unsafe;
 use crate::hexchess::bitmaps::knight::{
     get_knight_moves_bitmask,
@@ -17,11 +22,6 @@ use crate::hexchess::bitmaps::sliding::{
     get_queen_moves_unsafe,
     get_rook_moves_unsafe,
 };
-use crate::hexchess::color::Color;
-use crate::hexchess::piece::Piece;
-use crate::hexchess::position::Position;
-use crate::hexchess::promotion_piece::PromotionPiece;
-use crate::hexchess::san::San;
 
 #[derive(Clone, Debug)]
 pub struct Hexchess {

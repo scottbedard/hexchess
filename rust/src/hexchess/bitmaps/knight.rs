@@ -1,9 +1,9 @@
 extern crate hexchess_bitmask;
 
-use crate::hexchess::bitboard::Bitboard;
-use crate::hexchess::hexchess::Hexchess;
-use crate::hexchess::position::Position;
-use crate::hexchess::san::San;
+use crate::Bitboard;
+use crate::Hexchess;
+use crate::Position;
+use crate::San;
 use hexchess_bitmask::bitmask_csv;
 
 const KNIGHT_MOVES_BITMASKS: [u128; 91] = [

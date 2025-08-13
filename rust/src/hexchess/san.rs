@@ -1,5 +1,5 @@
-use crate::hexchess::position::Position;
-use crate::hexchess::promotion_piece::PromotionPiece;
+use crate::Position;
+use crate::PromotionPiece;
 use std::fmt;
 
 /// Struct representing a single move.

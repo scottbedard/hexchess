@@ -1,6 +1,6 @@
 use crate::yaml;
-use hexchess::hexchess::hexchess::Hexchess;
-use hexchess::hexchess::san::San;
+use hexchess::Hexchess;
+use hexchess::San;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, PartialEq, Serialize, Deserialize)]

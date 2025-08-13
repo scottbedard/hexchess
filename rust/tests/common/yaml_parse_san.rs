@@ -1,7 +1,7 @@
 use crate::yaml;
-use hexchess::hexchess::position::Position;
-use hexchess::hexchess::promotion_piece::PromotionPiece;
-use hexchess::hexchess::san::San;
+use hexchess::Position;
+use hexchess::PromotionPiece;
+use hexchess::San;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, PartialEq, Serialize, Deserialize)]
