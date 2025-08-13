@@ -1920,6 +1920,14 @@ impl Position {
             Position::L1 => 90,
         }
     }
+
+    /// Walk in a given direction until the edge of board
+    pub fn walk(self, direction: u8) -> WalkIter {
+        WalkIter {
+            current: self.step(direction),
+            direction,
+        }
+    }
 }
 
 impl fmt::Display for Position {
@@ -2029,23 +2037,6 @@ impl Iterator for Position {
         // The default Iterator impl is not meaningful for Position.
         // Use `iter_direction` instead.
         None
-    }
-}
-
-impl Position {
-    /// Returns an iterator that yields all positions in the given direction starting from the next position.
-    ///
-    /// Example:
-    /// ```
-    /// for step in position.walk(4) {
-    ///     // ...
-    /// }
-    /// ```
-    pub fn walk(self, direction: u8) -> WalkIter {
-        WalkIter {
-            current: self.step(direction),
-            direction,
-        }
     }
 }
 
