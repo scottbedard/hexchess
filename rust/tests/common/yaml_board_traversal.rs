@@ -18,7 +18,6 @@ fn test_board_traversal() {
         for direction in 0u8..12 {
             let actual: Vec<String> = position
                 .walk(direction)
-                .iter()
                 .map(|p| p.to_string())
                 .collect();
 

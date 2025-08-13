@@ -1920,17 +1920,6 @@ impl Position {
             Position::L1 => 90,
         }
     }
-
-    /// Walk in a given direction, collecting positions until edge of board
-    pub fn walk(&self, direction: u8) -> Vec<Position> {
-        let mut path = Vec::new();
-        let mut current = *self;
-        while let Some(next) = current.step(direction) {
-            path.push(next);
-            current = next;
-        }
-        path
-    }
 }
 
 impl fmt::Display for Position {
@@ -2030,6 +2019,54 @@ impl fmt::Display for Position {
         };
     
         write!(f, "{}", position)
+    }
+}
+
+impl Iterator for Position {
+    type Item = Position;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        // The default Iterator impl is not meaningful for Position.
+        // Use `iter_direction` instead.
+        None
+    }
+}
+
+impl Position {
+    /// Returns an iterator that yields all positions in the given direction starting from the next position.
+    ///
+    /// Example:
+    /// ```
+    /// for step in position.walk(4) {
+    ///     // ...
+    /// }
+    /// ```
+    pub fn walk(self, direction: u8) -> WalkIter {
+        WalkIter {
+            current: self.step(direction),
+            direction,
+        }
+    }
+}
+
+/// Iterator over positions in a given direction from a starting position.
+pub struct WalkIter {
+    current: Option<Position>,
+    direction: u8,
+}
+
+impl Iterator for WalkIter {
+    type Item = Position;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        let position = self.current;
+
+        if let Some(p) = position {
+            self.current = p.step(self.direction);
+            Some(p)
+        } else {
+            None
+        }
     }
 }
 
