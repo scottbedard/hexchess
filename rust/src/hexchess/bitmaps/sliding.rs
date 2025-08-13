@@ -206,12 +206,12 @@ pub fn get_bishop_moves_unsafe(game: &Game, from_position: Position) -> Vec<San>
             // check all 6 diagonal directions
             let mut result = Vec::new();
             let hostile_color = color.opposite();
-            result.extend(get_sliding_moves_unsafe(game, from_position, hostile_color, 1));
-            result.extend(get_sliding_moves_unsafe(game, from_position, hostile_color, 3));
-            result.extend(get_sliding_moves_unsafe(game, from_position, hostile_color, 5));
-            result.extend(get_sliding_moves_unsafe(game, from_position, hostile_color, 7));
-            result.extend(get_sliding_moves_unsafe(game, from_position, hostile_color, 9));
-            result.extend(get_sliding_moves_unsafe(game, from_position, hostile_color, 11));
+            result.append(&mut get_sliding_moves_unsafe(game, from_position, hostile_color, 1));
+            result.append(&mut get_sliding_moves_unsafe(game, from_position, hostile_color, 3));
+            result.append(&mut get_sliding_moves_unsafe(game, from_position, hostile_color, 5));
+            result.append(&mut get_sliding_moves_unsafe(game, from_position, hostile_color, 7));
+            result.append(&mut get_sliding_moves_unsafe(game, from_position, hostile_color, 9));
+            result.append(&mut get_sliding_moves_unsafe(game, from_position, hostile_color, 11));
             result
         },
         None => vec![],
@@ -224,12 +224,12 @@ pub fn get_rook_moves_unsafe(game: &Game, from_position: Position) -> Vec<San> {
             // check all 6 orthogonal directions
             let mut result = Vec::new();
             let hostile_color = color.opposite();
-            result.extend(get_sliding_moves_unsafe(game, from_position, hostile_color, 0));
-            result.extend(get_sliding_moves_unsafe(game, from_position, hostile_color, 2));
-            result.extend(get_sliding_moves_unsafe(game, from_position, hostile_color, 4));
-            result.extend(get_sliding_moves_unsafe(game, from_position, hostile_color, 6));
-            result.extend(get_sliding_moves_unsafe(game, from_position, hostile_color, 8));
-            result.extend(get_sliding_moves_unsafe(game, from_position, hostile_color, 10));
+            result.append(&mut get_sliding_moves_unsafe(game, from_position, hostile_color, 0));
+            result.append(&mut get_sliding_moves_unsafe(game, from_position, hostile_color, 2));
+            result.append(&mut get_sliding_moves_unsafe(game, from_position, hostile_color, 4));
+            result.append(&mut get_sliding_moves_unsafe(game, from_position, hostile_color, 6));
+            result.append(&mut get_sliding_moves_unsafe(game, from_position, hostile_color, 8));
+            result.append(&mut get_sliding_moves_unsafe(game, from_position, hostile_color, 10));
             result
         },
         None => vec![],
@@ -242,18 +242,18 @@ pub fn get_queen_moves_unsafe(game: &Game, from_position: Position) -> Vec<San> 
             // check all 12 directions (orthogonal + diagonal)
             let mut result = Vec::new();
             let hostile_color = color.opposite();
-            result.extend(get_sliding_moves_unsafe(game, from_position, hostile_color, 0));
-            result.extend(get_sliding_moves_unsafe(game, from_position, hostile_color, 1));
-            result.extend(get_sliding_moves_unsafe(game, from_position, hostile_color, 2));
-            result.extend(get_sliding_moves_unsafe(game, from_position, hostile_color, 3));
-            result.extend(get_sliding_moves_unsafe(game, from_position, hostile_color, 4));
-            result.extend(get_sliding_moves_unsafe(game, from_position, hostile_color, 5));
-            result.extend(get_sliding_moves_unsafe(game, from_position, hostile_color, 6));
-            result.extend(get_sliding_moves_unsafe(game, from_position, hostile_color, 7));
-            result.extend(get_sliding_moves_unsafe(game, from_position, hostile_color, 8));
-            result.extend(get_sliding_moves_unsafe(game, from_position, hostile_color, 9));
-            result.extend(get_sliding_moves_unsafe(game, from_position, hostile_color, 10));
-            result.extend(get_sliding_moves_unsafe(game, from_position, hostile_color, 11));
+            result.append(&mut get_sliding_moves_unsafe(game, from_position, hostile_color, 0));
+            result.append(&mut get_sliding_moves_unsafe(game, from_position, hostile_color, 1));
+            result.append(&mut get_sliding_moves_unsafe(game, from_position, hostile_color, 2));
+            result.append(&mut get_sliding_moves_unsafe(game, from_position, hostile_color, 3));
+            result.append(&mut get_sliding_moves_unsafe(game, from_position, hostile_color, 4));
+            result.append(&mut get_sliding_moves_unsafe(game, from_position, hostile_color, 5));
+            result.append(&mut get_sliding_moves_unsafe(game, from_position, hostile_color, 6));
+            result.append(&mut get_sliding_moves_unsafe(game, from_position, hostile_color, 7));
+            result.append(&mut get_sliding_moves_unsafe(game, from_position, hostile_color, 8));
+            result.append(&mut get_sliding_moves_unsafe(game, from_position, hostile_color, 9));
+            result.append(&mut get_sliding_moves_unsafe(game, from_position, hostile_color, 10));
+            result.append(&mut get_sliding_moves_unsafe(game, from_position, hostile_color, 11));
             result
         },
         None => vec![],
