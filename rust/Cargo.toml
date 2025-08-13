@@ -26,7 +26,7 @@ path = "benches/bench_iter_bits.rs"
 default = []
 
 [dependencies]
-hexchess_macros = { path = "./hexchess_macros", version = "0.1.0" }
+hexchess_macros = { path = "./hexchess_macros" }
 rand = "0.9.2"
 serde = { version = "1.0.219", features = ["derive"] }
 serde_yaml = "0.9.34"
@@ -41,3 +41,7 @@ codegen-units = 1
 panic = "abort"
 strip = true
 overflow-checks = false
+
+[workspace]
+resolver = "3"
+members = ["hexchess_macros"]
