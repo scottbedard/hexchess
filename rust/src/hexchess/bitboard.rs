@@ -438,4 +438,22 @@ mod tests {
         let expected = bitmask!("x/3/5/7/9/11/11/11/11/11/11");
         assert_eq!(*actual, expected);
     }
+
+    #[test]
+    fn test_setting_invalid_position_string_panics() {
+        assert!(std::panic::catch_unwind(|| {
+            let mut bb = Bitboard::new();
+            bb.set_position_string("whoops");
+        }).is_err());
+    }
+
+    #[test]
+    fn test_deref() {
+        let foo = Bitboard::new();
+        assert_eq!(*foo, 0);
+
+        let mut bar = Bitboard::new();
+        *bar = 1;
+        assert_eq!(*bar, 1);
+    }
 }

@@ -11,7 +11,7 @@ use Bedard\Hexchess\Pieces\StraightLinePiece;
 
 class Hexchess
 {
-    /** @var array<int> */
+    /** @var array<int|null> */
     public array $board = [];
 
     /** @var 'w' | 'b' */
