@@ -1,5 +1,7 @@
 [package]
+description = "Helper macros for the hexchess library"
 edition = "2024"
+license = "MIT"
 name = "hexchess_macros"
 repository = "https://github.com/scottbedard/hexchess"
 version = "1.0.0"
