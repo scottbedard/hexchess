@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.3.0 (not released)
+
+- Refactored Rust library to `u128` bitboards for state, improving performance ~11%
+- Normalized tests and migrated from `json` to `yaml`
+- Added developer CLI, run `node hexchess` for docs
+
 ## 2.2.1
 
 - Various performance improvements to Rust library
