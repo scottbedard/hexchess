@@ -71,6 +71,18 @@
     moves: b1b2
     expected: b/qbk/n1b1n/r5r/ppp1ppppp/6P4/4pP5/4P6/3P1B1P3/1PP2B2P2/2RNQBKNRP1 b - 0 2
 -
+    description: sets en passant - 4
+    error: false
+    hexchess: b/qbk/n1b1n/r5r/ppppppppp/11/5P5/4P1P4/3P1B1P3/1PP2B2P2/2RNQBKNRP1 b - 0 1
+    moves: c7c5
+    expected: b/qbk/n1b1n/r5r/p1ppppppp/11/2p2P5/4P1P4/3P1B1P3/1PP2B2P2/2RNQBKNRP1 w c6 0 2
+-
+    description: sets en passant - 5
+    error: false
+    hexchess: b/qbk/n1b1n/r5r/ppp1ppppp/4P6/11/4P1P4/3P1B1P3/2P2B2P2/1PRNQBKNRP1 b - 0 2
+    moves: f7f5
+    expected: b/qbk/n1b1n/r5r/ppp2pppp/4P6/5p5/4P1P4/3P1B1P3/2P2B2P2/1PRNQBKNRP1 w f6 0 3
+-
     description: sets halfmove and fullmove - 1
     error: false
     hexchess: b/qbk/n1b1n/r5r/ppppppppp/11/5P5/4P1P4/3P1B1P3/2P2B2P2/1PRNQBKNRP1 w - 0 1
