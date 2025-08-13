@@ -261,7 +261,7 @@ pub fn get_queen_moves_unsafe(hexchess: &Hexchess, from_position: Position) -> V
 }
 
 fn get_sliding_moves_unsafe(
-    game: &Hexchess,
+    hexchess: &Hexchess,
     from_position: Position,
     hostile_color: Color,
     direction: u8,
@@ -273,7 +273,7 @@ fn get_sliding_moves_unsafe(
     while next_position.is_some() {
         let position = next_position.unwrap();
 
-        match game.get_color(position) {
+        match hexchess.get_color(position) {
             Some(color) => {
                 if color == hostile_color {
                     result.push(San { from: from_position, to: position, promotion: None });
