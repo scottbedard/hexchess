@@ -1,10 +1,10 @@
-extern crate hexchess_bitmask;
+extern crate hexchess_macros;
 
 use crate::Bitboard;
 use crate::Hexchess;
 use crate::Position;
 use crate::San;
-use hexchess_bitmask::bitmask_csv;
+use hexchess_macros::bitmask_csv;
 
 const KNIGHT_MOVES_BITMASKS: [u128; 91] = [
     bitmask_csv!("h8, g8, e8, d8"), // F11

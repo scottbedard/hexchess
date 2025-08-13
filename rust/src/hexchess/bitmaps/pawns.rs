@@ -1,11 +1,11 @@
-extern crate hexchess_bitmask;
+extern crate hexchess_macros;
 
 use crate::Color;
 use crate::Hexchess;
 use crate::Position;
 use crate::PromotionPiece;
 use crate::San;
-use hexchess_bitmask::{bitmask, bitmask_csv};
+use hexchess_macros::{bitmask, bitmask_csv};
 
 const BLACK_DOUBLE_FORWARD_MASK: u128 = bitmask!("1/3/5/7/9/1xxxxxxxxx1/11/11/11/11/11");
 

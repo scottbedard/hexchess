@@ -798,7 +798,7 @@ fn parse_board(source: &String) -> Result<[Option<Piece>; 91], String> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use hexchess_bitmask::bitmask;
+    use hexchess_macros::bitmask;
 
     #[test]
     fn test_new() {

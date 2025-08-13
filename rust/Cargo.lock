@@ -42,14 +42,14 @@ checksum = "9229cfe53dfd69f0609a49f65461bd93001ea1ef889cd5529dd176593f5338a1"
 name = "hexchess"
 version = "2.3.1"
 dependencies = [
- "hexchess_bitmask",
+ "hexchess_macros",
  "rand",
  "serde",
  "serde_yaml",
 ]
 
 [[package]]
-name = "hexchess_bitmask"
+name = "hexchess_macros"
 version = "0.1.0"
 dependencies = [
  "quote",

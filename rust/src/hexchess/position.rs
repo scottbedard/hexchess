@@ -1,4 +1,4 @@
-use hexchess_bitmask::{bitmask, bitmask_csv};
+use hexchess_macros::{bitmask, bitmask_csv};
 use serde::{Deserialize, Serialize};
 use std::fmt;
 

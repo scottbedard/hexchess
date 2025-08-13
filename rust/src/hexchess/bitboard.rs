@@ -1,7 +1,7 @@
-extern crate hexchess_bitmask;
+extern crate hexchess_macros;
 
 use crate::Position;
-use hexchess_bitmask::bitmask;
+use hexchess_macros::bitmask;
 use std::ops::{Deref, DerefMut};
 
 #[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
@@ -237,7 +237,7 @@ impl std::ops::ShrAssign<u8> for Bitboard {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use hexchess_bitmask::bitmask_csv;
+    use hexchess_macros::bitmask_csv;
 
     #[test]
     fn test_new() {

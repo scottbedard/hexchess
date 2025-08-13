@@ -2,7 +2,7 @@ use crate::Color;
 use crate::Hexchess;
 use crate::Position;
 use crate::San;
-use hexchess_bitmask::{bitmask_csv};
+use hexchess_macros::{bitmask_csv};
 
 const DIAGONAL_BITMASKS: [u128; 91] = [
     bitmask_csv!("g9, h7, i5, k3, l1, e9, d7, c5, b3, a1"), // F11
