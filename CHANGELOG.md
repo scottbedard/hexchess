@@ -1,6 +1,6 @@
 # Changelog
 
-## 2.3.0 (not released)
+## 2.3.0
 
 - Refactored Rust library to `u128` bitboards for state, improving performance ~11%
 - Normalized tests and migrated from `json` to `yaml`
