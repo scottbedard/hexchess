@@ -1,7 +1,8 @@
 [package]
-name = "hexchess_macros"
-version = "1.0.0"
 edition = "2024"
+name = "hexchess_macros"
+repository = "https://github.com/scottbedard/hexchess"
+version = "1.0.0"
 
 [lib]
 proc-macro = true
