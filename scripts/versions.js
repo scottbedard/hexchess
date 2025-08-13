@@ -19,7 +19,6 @@ export function versions(options) {
     throw new Error(`Version mismatch [npm: ${npm.version}, cargo: ${cargoVersion}, composer: ${composer.version}]`)
   }
 
-
   if (options?.release) {
     if (options.release !== npm.version) {
       throw new Error(`Release version mismatch [${options.release}]`)

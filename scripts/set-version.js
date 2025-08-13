@@ -1,8 +1,9 @@
 import { execAsync, read, write, green, dim } from './utils.js'
+import pkg from '../js/package.json' with { type: 'json' }
 
 export async function setVersion(options) {
   const startAt = Date.now()
-  const version = options.version
+  let version = options.version || pkg.version
 
   if (!version) {
     console.error('Missing version argument')
@@ -10,10 +11,25 @@ export async function setVersion(options) {
   }
 
   // validate version format (semver)
-  const semverRegex = /^\d+\.\d+\.\d+(-[a-zA-Z0-9.-]+)?(\+[a-zA-Z0-9.-]+)?$/
+  const semverRegex = /^(\d+)\.(\d+)\.(\d+)$/
+
   if (!semverRegex.test(version)) {
-    console.error('Invalid version format. Please use semantic versioning (e.g., 1.0.0, 2.1.0-beta.1)')
+    console.error('Invalid version format. Please use semantic versioning.')
     process.exit(1)
+  }
+
+  let [major, minor, patch] = version.split('.').map(Number)
+
+  if (!options.version) {
+    if (options?.major) {
+      major++
+    } else if (options?.minor) {
+      minor++
+    } else if (options?.patch) {
+      patch++
+    }
+
+    version = `${major}.${minor}.${patch}`
   }
 
   // composer.json

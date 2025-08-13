@@ -55,10 +55,18 @@ program
 //
 
 program
-  .command('set-version <version>')
+  .command('set-version [version]')
+  .option('-M, --major', 'Increment the major version')
+  .option('-m, --minor', 'Increment the minor version')
+  .option('-p, --patch', 'Increment the patch version')
   .description('Set the version of the project')
-  .action((version) => {
-    setVersion({ version })
+  .action((version, options) => {
+    setVersion({
+      major: options?.major,
+      minor: options?.minor,
+      patch: options?.patch,
+      version: version,
+    })
   })
 
 //
