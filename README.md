@@ -16,9 +16,29 @@ A cross-language library for [Gliński's hexagonal chess](https://en.wikipedia.o
   </a>
 </p>
 
-## Development
+## Libraries
 
-Clone the repository, and setup CLI
+Game libraries are available in [Rust](https://crates.io/crates/hexchess), [PHP](https://packagist.org/packages/bedard/hexchess), and [Typescript / JavaScript](https://www.npmjs.com/package/@bedard/hexchess). While these libraries offer similar abilities, they serve different purposes and are designed differently.
+
+For basic game logic, use the PHP or TypeScript / JavaScript libraries. These are not optimized for performance, and use a [position-centric](https://www.chessprogramming.org/Board_Representation#Square_Centric) game state. In other words, the board is stored as a flat array of values, with each value representing the occupying piece. This makes things like rendering and rules logic simpler.
+
+For game engines, use the Rust crate. It's optimized for performance, using [bitboards](https://www.chessprogramming.org/Bitboards) to represent game state. This allows for fast board querying using `u128` bitmasks.
+
+## Versioning
+
+Each library is tested against [a shared test suite](https://github.com/scottbedard/hexchess/tree/main/tests), and are versioned together with respect to these tests. Because of this, if a change is made in one library, it will cause the version numbers for all libraries to increment.
+
+Put simply, all libraries are versioned together to indicate that they support the same tests and are compatible with one another.
+
+## Local development
+
+Depending on which library you're working on, you'll need to install a few things.
+
+- [Rust](https://www.rust-lang.org/tools/install)
+- [PHP](https://www.php.net/)
+- [Node.js](https://nodejs.org/) and [pnpm](https://pnpm.io/installation)
+
+First, clone the repository, and setup the CLI.
 
 ```
 git clone git@github.com:scottbedard/hexchess.git
@@ -28,7 +48,7 @@ cd hexchess
 pnpm install
 ```
 
-To work with the different libraries, use the `node hexchess` script.
+Next run `node hexchess` to see the following commands available.
 
 ```
 Usage: hexchess [options] [command]
@@ -49,20 +69,6 @@ Commands:
   versions [options]     Check the versions of the dependencies
   help [command]         display help for command
 ```
-
-## Languages
-
-Game libraries are available in [Rust](https://crates.io/crates/hexchess), [PHP](https://packagist.org/packages/bedard/hexchess), and [Typescript / JavaScript](https://www.npmjs.com/package/@bedard/hexchess). While these libraries offer similar abilities, they serve different purposes and are designed differently.
-
-For basic game logic, use the PHP or TypeScript / JavaScript libraries. These are not optimized for performance, and use a [position-centric](https://www.chessprogramming.org/Board_Representation#Square_Centric) game state. In other words, the board is stored as a flat array of values, with each value representing the occupying piece. This makes things like rendering and rules logic simpler.
-
-For game engines, use the Rust crate. It is optimized for performance, and uses [bitboards](https://www.chessprogramming.org/Bitboards) to represent the game state. This allows for fast bitwise operations to compare boards using `u128` masks.
-
-## Versioning
-
-Each library is tested against [a shared test suite](https://github.com/scottbedard/hexchess/tree/main/tests), and are versioned together with respect to these tests. Because of this, if a change is made in one library, it will cause the version numbers for all libraries to increment.
-
-Put simply, all libraries are versioned together to indicate that they support the same tests and are compatible with one another.
 
 ## License
 
