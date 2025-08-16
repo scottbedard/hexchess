@@ -100,11 +100,6 @@ impl Bitboard {
         output
     }
 
-    /// Create a bitboard with random data.
-    pub fn random() -> Bitboard {
-        Bitboard(rand::random::<u128>())
-    }
-
     /// Set bit at the given index.
     /// Panics if `index` is out of bounds (0-127).
     pub fn set_bit(&mut self, index: u8) {
@@ -384,13 +379,6 @@ mod tests {
         assert!(!bb.is_position_set(Position::A1));
         bb.set_position_string("b1");
         assert!(bb.is_position_string_set("b1"));
-    }
-
-    #[test]
-    fn test_random() {
-        let bb = Bitboard::random();
-        assert!(bb.0 > 0);
-        assert!(bb.0 < u128::MAX);
     }
 
     #[test]
