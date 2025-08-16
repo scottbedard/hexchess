@@ -16,7 +16,7 @@ impl Bitboard {
     /// Clear bit at the given index.
     /// Panics if `index` is out of bounds (0-127).
     pub fn clear_bit(&mut self, index: u8) {
-        assert!(index < 128, "Bitboard index out of bounds");
+        debug_assert!(index < 128, "Bitboard index out of bounds");
         self.0 &= !(1u128 << index);
     }
 
@@ -38,7 +38,7 @@ impl Bitboard {
     /// Checks if a specific bit at `index` is set (1).
     /// Panics if `index` is out of bounds (0-127).
     pub fn is_bit_set(&self, index: u8) -> bool {
-        assert!(index < 128, "Index out of bounds for u128");
+        debug_assert!(index < 128, "Index out of bounds for u128");
         (self.0 >> index) & 1 == 1
     }
 
@@ -103,7 +103,7 @@ impl Bitboard {
     /// Set bit at the given index.
     /// Panics if `index` is out of bounds (0-127).
     pub fn set_bit(&mut self, index: u8) {
-        assert!(index < 128, "Bitboard index out of bounds");
+        debug_assert!(index < 128, "Bitboard index out of bounds");
         self.0 |= 1u128 << index;
     }
 
@@ -123,7 +123,7 @@ impl Bitboard {
     /// Toggles a specific bit at `index`.
     /// Panics if `index` is out of bounds (0-127).
     pub fn toggle_bit(&mut self, index: u8) {
-        assert!(index < 128, "Index out of bounds for u128");
+        debug_assert!(index < 128, "Index out of bounds for u128");
         self.0 ^= 1u128 << index;
     }
 
