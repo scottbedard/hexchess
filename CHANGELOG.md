@@ -1,5 +1,9 @@
 # Changelog
 
+# 2.3.5
+
+- Remove undocumented `random` constructor from `Bitboard` struct
+
 ## 2.3.4
 
 - Fix regression with [`Eq`](https://doc.rust-lang.org/std/cmp/trait.Eq.html) and [`Hash`](https://doc.rust-lang.org/std/hash/trait.Hash.html) attributes
