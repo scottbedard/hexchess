@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.3.4
+
+- Fix regression with [`Eq`](https://doc.rust-lang.org/std/cmp/trait.Eq.html) and [`Hash`](https://doc.rust-lang.org/std/hash/trait.Hash.html) attributes
+
 ## 2.3.0
 
 - Refactored Rust library to `u128` bitboards for state, improving performance ~11%
