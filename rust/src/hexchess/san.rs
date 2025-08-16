@@ -1,9 +1,10 @@
 use crate::Position;
 use crate::PromotionPiece;
+use serde::{Deserialize, Serialize};
 use std::fmt;
 
 /// Struct representing a single move.
-#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
+#[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, PartialEq, Serialize)]
 pub struct San {
     /// From position
     pub from: Position,
