@@ -23,7 +23,7 @@ use crate::hexchess::bitmaps::sliding::{
     get_rook_moves_unsafe,
 };
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Eq, Hash, PartialEq)]
 pub struct Hexchess {
     pub bitboard_black_bishop: Bitboard,
     pub bitboard_black_king: Bitboard,

@@ -4,7 +4,7 @@ use crate::Position;
 use hexchess_macros::bitmask;
 use std::ops::{Deref, DerefMut};
 
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Default, Eq, Hash, PartialEq)]
 pub struct Bitboard(pub u128);
 
 impl Bitboard {

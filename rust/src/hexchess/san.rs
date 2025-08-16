@@ -3,7 +3,7 @@ use crate::PromotionPiece;
 use std::fmt;
 
 /// Struct representing a single move.
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
 pub struct San {
     /// From position
     pub from: Position,
