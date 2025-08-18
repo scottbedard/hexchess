@@ -14,7 +14,7 @@ pub fn get_king_moves_unsafe(hexchess: &Hexchess, from: Position) -> Vec<San> {
     let mut output = Vec::with_capacity(result.count_ones() as usize);
 
     result.iter_bits(|index| {
-        let to = Position::from_bitboard_index(index as u8);
+        let to = Position::from_index(index);
         let san = San::new(from, to);
         output.push(san);
     });

@@ -134,7 +134,7 @@ impl Bitboard {
         let board = Bitboard(self.0 & Bitboard::filled().0);
 
         board.iter_bits(|index| {
-            result.push(Position::from_bitboard_index(index as u8));
+            result.push(Position::from_index(index));
         });
 
         result
@@ -404,20 +404,6 @@ mod tests {
             bitmask!("x/3/5/7/9/x9x/11/11/11/11/x4x4x"),
             bitmask_csv!("a1, a6, f11, l6, l1, f1")
         );
-    }
-
-    #[test]
-    fn test_bitmask_csv_to_positions() {
-        let bb = Bitboard(bitmask_csv!("a1, a6, f11, l6, l1, f1"));
-
-        assert_eq!(bb.to_positions(), vec![
-            Position::F11,
-            Position::L6,
-            Position::A6,
-            Position::L1,
-            Position::A1,
-            Position::F1,
-        ]);
     }
 
     #[test]

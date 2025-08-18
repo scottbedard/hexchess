@@ -23,7 +23,7 @@ fn test_get_color() {
         let mut actual = Vec::new();
 
         hexchess.get_color_bitboard(color).iter_bits(|index| {
-            actual.push(Position::from_bitboard_index(index as u8).to_string());
+            actual.push(Position::from_index(index).to_string());
         });
 
         for pos in &actual {

@@ -204,7 +204,7 @@ impl Hexchess {
         self
             .get_color_bitboard(self.turn)
             .iter_bits(|i| {
-                let position = Position::from_bitboard_index(i as u8);
+                let position = Position::from_index(i);
                 let moves = self.get_moves(position);
 
                 result.extend(moves);
@@ -253,7 +253,7 @@ impl Hexchess {
             return None;
         }
 
-        Some(Position::from_bitboard_index(king_index))
+        Some(Position::from_index(king_index))
     }
 
     /// Get the bitboard for all pieces.
@@ -570,7 +570,7 @@ impl Hexchess {
         };
 
         for (i, piece) in board.iter().enumerate() {
-            let position = Position::from_fen_index(i as u8);
+            let position = Position::from_index(i as u8);
 
             match piece {
                 None => continue,
@@ -640,7 +640,7 @@ impl Hexchess {
         self.clear_all_bitboards();
 
         for (i, piece) in board.iter().enumerate() {
-            let position = Position::from_fen_index(i as u8);
+            let position = Position::from_index(i as u8);
 
             match piece {
                 Some(p) => self.set_position(position, *p),
@@ -674,7 +674,7 @@ impl Hexchess {
         let mut arr: [Option<Piece>; 91] = [None; 91];
         
         for i in 0..91 {
-            let position = Position::from_fen_index(i as u8);
+            let position = Position::from_index(i as u8);
             arr[i] = self.get_position(position);
         }
 

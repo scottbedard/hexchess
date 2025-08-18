@@ -208,8 +208,8 @@ const WHITE_PROMOTION_POSITIONS: u128 = bitmask!("x/x1x/x3x/x5x/x7x/x9x/11/11/11
 /// get bitmask for pawn threats
 pub fn get_pawn_threats_bitmask(position: Position, color: Color) -> u128 {
     match color {
-        Color::Black => BLACK_PAWN_THREATS[position.to_fen_index() as usize],
-        Color::White => WHITE_PAWN_THREATS[position.to_fen_index() as usize],
+        Color::Black => BLACK_PAWN_THREATS[position as usize],
+        Color::White => WHITE_PAWN_THREATS[position as usize],
     }
 }
 
@@ -334,7 +334,7 @@ mod tests {
     #[test]
     fn test_all_bitmasks_return_number() {
         for n in 0..91 {
-            let position = Position::from_fen_index(n as u8);
+            let position = Position::from_index(n as u8);
 
             if position == Position::F1 {
                 assert_eq!(get_pawn_threats_bitmask(position, Color::Black), 0, "black {:?}", position);

@@ -19,6 +19,7 @@ fn bench_initial_position(b: &mut Bencher) {
     // 663,612.50 ns/iter (+/- 3,863.87) - pre-calc knight, pawn, and neighbor bitmasks
     // 654,495.80 ns/iter (+/- 47,311.67) - pre-calc sliding bitmasks
     // 646,839.55 ns/iter (+/- 6,157.47) - prevent extra hostile piece matches in is_threatened
+    // 614,970.83 ns/iter (+/- 8,537.56) - remove bitmask-index, only use fen-index
 
     b.iter(|| {
         let hexchess_0 = Hexchess::init();

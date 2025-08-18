@@ -193,11 +193,11 @@ const ORTHOGONAL_BITMASKS: [u128; 91] = [
 ];
 
 pub fn get_diagonal_bitmask(position: Position) -> u128 {
-    DIAGONAL_BITMASKS[position.to_fen_index() as usize]
+    DIAGONAL_BITMASKS[position as usize]
 }
 
 pub fn get_orthogonal_bitmask(position: Position) -> u128 {
-    ORTHOGONAL_BITMASKS[position.to_fen_index() as usize]
+    ORTHOGONAL_BITMASKS[position as usize]
 }
 
 pub fn get_bishop_moves_unsafe(hexchess: &Hexchess, from_position: Position) -> Vec<San> {
@@ -311,7 +311,7 @@ mod tests {
     #[test]
     fn test_all_bitmasks_are_non_zero() {
         for n in 0..91 {
-            let position = Position::from_fen_index(n as u8);
+            let position = Position::from_index(n as u8);
             assert!(get_diagonal_bitmask(position) > 0);
             assert!(get_orthogonal_bitmask(position) > 0);
         }

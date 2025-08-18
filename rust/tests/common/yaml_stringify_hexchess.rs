@@ -42,7 +42,7 @@ fn test_stringify_hexchess() {
 
         game.set_board_array(expected_array);
         game.ep = match test.hexchess.ep {
-            Some(ep) => Some(Position::from_fen_index(ep)),
+            Some(ep) => Some(Position::from_index(ep)),
             None => None,
         };
         game.fullmove = test.hexchess.fullmove;

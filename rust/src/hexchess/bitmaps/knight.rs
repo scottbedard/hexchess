@@ -101,8 +101,7 @@ const KNIGHT_MOVES_BITMASKS: [u128; 91] = [
 ];
 
 pub fn get_knight_moves_bitmask(position: Position) -> u128 {
-    let index = position.to_fen_index() as usize;
-    KNIGHT_MOVES_BITMASKS[index]
+    KNIGHT_MOVES_BITMASKS[position as usize]
 }
 
 pub fn get_knight_moves_unsafe(hexchess: &Hexchess, from: Position) -> Vec<San> {
@@ -116,7 +115,7 @@ pub fn get_knight_moves_unsafe(hexchess: &Hexchess, from: Position) -> Vec<San> 
     let mut output = Vec::with_capacity(targets.count_ones() as usize);
 
     targets.iter_bits(|index| {
-        let to = Position::from_bitboard_index(index as u8);
+        let to = Position::from_index(index);
         let san = San::new(from, to);
         output.push(san);
     });
@@ -180,7 +179,7 @@ mod tests {
     #[test]
     fn test_all_positions_have_moves() {
         for n in 0..91 {
-            let position = Position::from_fen_index(n as u8);
+            let position = Position::from_index(n as u8);
             let moves = get_knight_moves_unsafe(&Hexchess::new(), position);
 
             assert!(moves.len() > 0);
