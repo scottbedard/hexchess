@@ -1,7 +1,7 @@
 import { buildJs, buildRust } from './scripts/build.js'
-import { setVersion } from './scripts/set-version.js'
 import { dim, execAsync, green } from './scripts/utils.js'
 import { program } from 'commander'
+import { release } from './scripts/release.js'
 import { testJs, testPhp, testRust } from './scripts/test.js'
 import { versions } from './scripts/versions.js'
 import ora from 'ora'
@@ -51,17 +51,17 @@ program
   })
 
 //
-// set version
+// release
 //
 
 program
-  .command('set-version [version]')
+  .command('release [version]')
   .option('-M, --major', 'Increment the major version')
   .option('-m, --minor', 'Increment the minor version')
   .option('-p, --patch', 'Increment the patch version')
   .description('Set the version of the project')
   .action((version, options) => {
-    setVersion({
+    release({
       major: options?.major,
       minor: options?.minor,
       patch: options?.patch,

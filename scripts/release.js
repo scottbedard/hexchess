@@ -1,7 +1,7 @@
 import { execAsync, read, write, green, dim } from './utils.js'
 import pkg from '../js/package.json' with { type: 'json' }
 
-export async function setVersion(options) {
+export async function release(options) {
   const startAt = Date.now()
   let version = options.version || pkg.version
 
@@ -14,7 +14,7 @@ export async function setVersion(options) {
   const semverRegex = /^(\d+)\.(\d+)\.(\d+)$/
 
   if (!semverRegex.test(version)) {
-    console.error('Invalid version format. Please use semantic versioning.')
+    console.error('Invalid version format')
     process.exit(1)
   }
 
@@ -22,8 +22,11 @@ export async function setVersion(options) {
 
   if (!options.version) {
     if (options?.major) {
+      patch = 0
+      minor = 0
       major++
     } else if (options?.minor) {
+      patch = 0
       minor++
     } else if (options?.patch) {
       patch++
