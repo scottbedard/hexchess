@@ -47,14 +47,6 @@ impl Bitboard {
         self.is_bit_set(position as u8)
     }
 
-    /// Test if a position is set by string
-    pub fn is_position_string_set(&self, position: &str) -> bool {
-        match Position::from_string(position) {
-            Ok(position) => self.is_position_set(position),
-            Err(_) => panic!("Invalid position: {}", position),
-        }
-    }
-
     /// Iterates over the indices of the set bits.
     pub fn iter_bits(&self, mut f: impl FnMut(u8)) {
         let mut x = self.0;
@@ -125,19 +117,6 @@ impl Bitboard {
     pub fn toggle_bit(&mut self, index: u8) {
         debug_assert!(index < 128, "Index out of bounds for u128");
         self.0 ^= 1u128 << index;
-    }
-
-    /// Convert the bitboard to a vector of positions.
-    pub fn to_positions(&self) -> Vec<Position> {
-        let mut result = Vec::with_capacity(self.count_ones() as usize);
-
-        let board = Bitboard(self.0 & Bitboard::filled().0);
-
-        board.iter_bits(|index| {
-            result.push(Position::from_index(index));
-        });
-
-        result
     }
 }
 
@@ -377,8 +356,8 @@ mod tests {
         assert!(!bb.is_position_set(Position::A2));
         bb.clear_position(Position::A1);
         assert!(!bb.is_position_set(Position::A1));
-        bb.set_position_string("b1");
-        assert!(bb.is_position_string_set("b1"));
+        bb.set_position(Position::B1);
+        assert!(bb.is_position_set(Position::B1));
     }
 
     #[test]
