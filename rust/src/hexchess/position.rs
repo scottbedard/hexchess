@@ -98,24 +98,6 @@ const POSITION_NEIGHBORS: [u128; 91] = [
     bitmask_csv!("l2, k1, i2, k2, k3"), // L1
 ];
 
-/*
-    our state _could_ be stored using the following indices, enabling bitwise
-    shift steps. this might be a performance opportunity, but for now it seems
-    a large match statement is faster. see the `step` method for more info.
-
-    null,  null,  null,  null,  null,  f11,  g10,  h9,    i8,    k7,    l6,
-    null,  null,  null,  null,  e10,   f10,  g9,   h8,    i7,    k6,    l5,
-    null,  null,  null,  d9,    e9,    f9,   g8,   h7,    i6,    k5,    l4,
-    null,  null,  c8,    d8,    e8,    f8,   g7,   h6,    i5,    k4,    l3,
-    null,  b7,    c7,    d7,    e7,    f7,   g6,   h5,    i4,    k3,    l2,
-    a6,    b6,    c6,    d6,    e6,    f6,   g5,   h4,    i3,    k2,    l1,
-    a5,    b5,    c5,    d5,    e5,    f5,   g4,   h3,    i2,    k1,    null,
-    a4,    b4,    c4,    d4,    e4,    f4,   g3,   h2,    i1,    null,  null,
-    a3,    b3,    c3,    d3,    e3,    f3,   g2,   h1,    null,  null,  null,
-    a2,    b2,    c2,    d2,    e2,    f2,   g1,   null,  null,  null,  null,
-    a1,    b1,    c1,    d1,    e1,    f1,   null, null,  null,  null,  null,
-*/
-
 /// Position within a hexchess bitboard.
 #[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, PartialEq, Serialize)]
 #[repr(u8)]
@@ -1602,31 +1584,6 @@ impl Position {
                 _ => None,
             }
         }
-
-        // this logic represents possible bitmask shifting steps. i'm saving it
-        // here for now, it may warrant performance investigation later.
-
-        // let from = self.to_bitmask();
-        // let to = match direction {
-        //     0 => from >> 11,
-        //     1 => from >> 21,
-        //     2 => from >> 10,
-        //     3 => from >> 9,
-        //     4 => from << 1,
-        //     5 => from << 12,
-        //     6 => from << 11,
-        //     7 => from << 21,
-        //     8 => from << 10,
-        //     9 => from << 9,
-        //     10 => from >> 1,
-        //     11 => from >> 12,
-        //     _ => panic!("Invalid step direction: {}", direction),
-        // };
-
-        // match self.get_neighbors() & to {
-        //     0 => None,
-        //     _ => Some(Self::from_bitmask(to)),
-        // }
     }
 
     /// Convert the position to a bitmask.
