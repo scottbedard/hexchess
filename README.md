@@ -20,7 +20,7 @@ A cross-language library for [Gliński's hexagonal chess](https://en.wikipedia.o
 
 Game libraries are available in [Rust](https://crates.io/crates/hexchess), [PHP](https://packagist.org/packages/bedard/hexchess), and [TypeScript / JavaScript](https://www.npmjs.com/package/@bedard/hexchess). These libraries have similar APIs and abilities, but are designed for different purposes.
 
-For game logic, use the PHP or TypeScript / JavaScript libraries. They use a [position-centric](https://www.chessprogramming.org/Board_Representation#Square_Centric) game state, and are not optimized for performance. In other words, the board is stored as a flat array of values. This makes the ergonomics easier for move checks and rendering.
+For game logic, use the PHP or TypeScript / JavaScript libraries. They use a [position-centric](https://www.chessprogramming.org/Board_Representation#Square_Centric) game state, and are not optimized for performance. In other words, the board is stored as a flat array of values. This improves the ergonomics for game rules and rendering.
 
 For engines, use the Rust crate. It's optimized for performance, and uses [bitboards](https://www.chessprogramming.org/Bitboards) to represent the game state. This allows for fast board querying using `u128` bitmasks.
 
