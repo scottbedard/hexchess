@@ -18,21 +18,21 @@ A cross-language library for [Gliński's hexagonal chess](https://en.wikipedia.o
 
 ## Libraries
 
-Game libraries are available in [Rust](https://crates.io/crates/hexchess), [PHP](https://packagist.org/packages/bedard/hexchess), and [Typescript / JavaScript](https://www.npmjs.com/package/@bedard/hexchess). While these libraries offer similar abilities, they serve different purposes and are designed differently.
+Game libraries are available in [Rust](https://crates.io/crates/hexchess), [PHP](https://packagist.org/packages/bedard/hexchess), and [TypeScript / JavaScript](https://www.npmjs.com/package/@bedard/hexchess). While these libraries offer similar APIs and abilities, they are designed differently and serve different purposes.
 
-For basic game logic, use the PHP or TypeScript / JavaScript libraries. These are not optimized for performance, and use a [position-centric](https://www.chessprogramming.org/Board_Representation#Square_Centric) game state. In other words, the board is stored as a flat array of values, with each value representing the occupying piece. This makes things like rendering and rules logic simpler.
+For game logic, use the PHP or TypeScript / JavaScript libraries. They use a [position-centric](https://www.chessprogramming.org/Board_Representation#Square_Centric) game state, and are not optimized for performance. In other words, the board is stored as a flat array of values. This makes the ergonomics easier for move checks and rendering.
 
-For game engines, use the Rust crate. It's optimized for performance, and uses [bitboards](https://www.chessprogramming.org/Bitboards) to represent the game state. This allows for fast board querying using `u128` bitmasks.
+For engines, use the Rust crate. It's optimized for performance, and uses [bitboards](https://www.chessprogramming.org/Bitboards) to represent the game state. This allows for fast board querying using `u128` bitmasks.
 
 ## Versioning
 
 Each library is tested against [a shared test suite](https://github.com/scottbedard/hexchess/tree/main/tests), and are versioned together with respect to these tests. Because of this, if a change is made in one library, it will cause the version numbers for all libraries to increment.
 
-Put simply, all libraries are versioned together to indicate that they support the same tests and are compatible with one another.
+Put simply, the libraries are versioned together to to ensure they support the same test suite, allowing for reliable interop with one another.
 
 ## Local development
 
-Depending on which library you're working on, you'll need to install a few things.
+Depending on which library you're working on, you'll need to install a few dependencies.
 
 - [Rust](https://www.rust-lang.org/tools/install)
 - [PHP](https://www.php.net/)
@@ -48,7 +48,7 @@ cd hexchess
 pnpm install
 ```
 
-Next run `node hexchess` to see the following commands available.
+Next run `node hexchess` to see the following commands.
 
 ```
 Usage: hexchess [options] [command]
