@@ -54,20 +54,20 @@ Next run `node hexchess` to see the following commands available.
 Usage: hexchess [options] [command]
 
 Options:
-  -h, --help             display help for command
+  -h, --help                   display help for command
 
 Commands:
-  build                  Build all projects
-  build:js               Build NPM package
-  build:rs               Build Rust crate
-  lint:php               Run linting
-  set-version <version>  Set the version of the project
-  test                   Run all tests
-  test:js [options]      Run JavaScript tests
-  test:php [options]     Run PHP tests
-  test:rs [options]      Run Rust tests
-  versions [options]     Check the versions of the dependencies
-  help [command]         display help for command
+  build                        Build all projects
+  build:js                     Build NPM package
+  build:rs                     Build Rust crate
+  lint:php                     Run linting
+  release [options] [version]  Set the version of the project
+  test                         Run all tests
+  test:js [options]            Run JavaScript tests
+  test:php [options]           Run PHP tests
+  test:rs [options]            Run Rust tests
+  versions [options]           Check the versions of the dependencies
+  help [command]               display help for command
 ```
 
 ## License
