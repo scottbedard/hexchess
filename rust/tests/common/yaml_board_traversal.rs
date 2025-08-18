@@ -23,7 +23,7 @@ fn test_board_traversal() {
 
             let expected = test.expected[direction as usize].clone();
 
-            assert_eq!(actual, expected);
+            assert_eq!(actual, expected, "failed walk from {} in direction {}", test.position, direction);
         }
     }
 }
