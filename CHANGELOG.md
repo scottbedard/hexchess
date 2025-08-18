@@ -1,6 +1,10 @@
 # Changelog
 
-# 2.3.5
+## 2.4.0
+
+- Performance and inter-op improvements. The Rust library now only uses FEN index.
+
+## 2.3.5
 
 - Remove undocumented `random` constructor from `Bitboard` struct
 
