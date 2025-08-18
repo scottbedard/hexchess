@@ -1792,4 +1792,20 @@ mod tests {
         assert_eq!(Position::F6.step(10), Some(Position::E6));
         assert_eq!(Position::F6.step(11), Some(Position::E7));
     }
+
+    #[test]
+    fn test_walk_f11() {
+        let mut f1 = Position::F1.walk(0);
+        assert_eq!(f1.next(), Some(Position::F2));
+        assert_eq!(f1.next(), Some(Position::F3));
+        assert_eq!(f1.next(), Some(Position::F4));
+        assert_eq!(f1.next(), Some(Position::F5));
+        assert_eq!(f1.next(), Some(Position::F6));
+        assert_eq!(f1.next(), Some(Position::F7));
+        assert_eq!(f1.next(), Some(Position::F8));
+        assert_eq!(f1.next(), Some(Position::F9));
+        assert_eq!(f1.next(), Some(Position::F10));
+        assert_eq!(f1.next(), Some(Position::F11));
+        assert_eq!(f1.next(), None);
+    }
 }
