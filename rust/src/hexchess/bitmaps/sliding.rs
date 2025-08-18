@@ -203,15 +203,23 @@ pub fn get_orthogonal_bitmask(position: Position) -> u128 {
 pub fn get_bishop_moves_unsafe(hexchess: &Hexchess, from_position: Position) -> Vec<San> {
     match hexchess.get_color(from_position) {
         Some(color) => {
-            // check all 6 diagonal directions
-            let mut result = Vec::new();
             let hostile_color = color.opposite();
-            result.append(&mut get_sliding_moves_unsafe(hexchess, from_position, hostile_color, 1));
-            result.append(&mut get_sliding_moves_unsafe(hexchess, from_position, hostile_color, 3));
-            result.append(&mut get_sliding_moves_unsafe(hexchess, from_position, hostile_color, 5));
-            result.append(&mut get_sliding_moves_unsafe(hexchess, from_position, hostile_color, 7));
-            result.append(&mut get_sliding_moves_unsafe(hexchess, from_position, hostile_color, 9));
-            result.append(&mut get_sliding_moves_unsafe(hexchess, from_position, hostile_color, 11));
+
+            let one = get_sliding_moves_unsafe(hexchess, from_position, hostile_color, 1);
+            let three = get_sliding_moves_unsafe(hexchess, from_position, hostile_color, 3);
+            let five = get_sliding_moves_unsafe(hexchess, from_position, hostile_color, 5);
+            let seven = get_sliding_moves_unsafe(hexchess, from_position, hostile_color, 7);
+            let nine = get_sliding_moves_unsafe(hexchess, from_position, hostile_color, 9);
+            let eleven = get_sliding_moves_unsafe(hexchess, from_position, hostile_color, 11);
+            let total = one.len() + three.len() + five.len() + seven.len() + nine.len() + eleven.len();
+
+            let mut result = Vec::with_capacity(total);
+            result.extend(one);
+            result.extend(three);
+            result.extend(five);
+            result.extend(seven);
+            result.extend(nine);
+            result.extend(eleven);
             result
         },
         None => vec![],
@@ -221,15 +229,23 @@ pub fn get_bishop_moves_unsafe(hexchess: &Hexchess, from_position: Position) -> 
 pub fn get_rook_moves_unsafe(hexchess: &Hexchess, from_position: Position) -> Vec<San> {
     match hexchess.get_color(from_position) {
         Some(color) => {
-            // check all 6 orthogonal directions
-            let mut result = Vec::new();
             let hostile_color = color.opposite();
-            result.append(&mut get_sliding_moves_unsafe(hexchess, from_position, hostile_color, 0));
-            result.append(&mut get_sliding_moves_unsafe(hexchess, from_position, hostile_color, 2));
-            result.append(&mut get_sliding_moves_unsafe(hexchess, from_position, hostile_color, 4));
-            result.append(&mut get_sliding_moves_unsafe(hexchess, from_position, hostile_color, 6));
-            result.append(&mut get_sliding_moves_unsafe(hexchess, from_position, hostile_color, 8));
-            result.append(&mut get_sliding_moves_unsafe(hexchess, from_position, hostile_color, 10));
+
+            let zero = get_sliding_moves_unsafe(hexchess, from_position, hostile_color, 0);
+            let two = get_sliding_moves_unsafe(hexchess, from_position, hostile_color, 2);
+            let four = get_sliding_moves_unsafe(hexchess, from_position, hostile_color, 4);
+            let six = get_sliding_moves_unsafe(hexchess, from_position, hostile_color, 6);
+            let eight = get_sliding_moves_unsafe(hexchess, from_position, hostile_color, 8);
+            let ten = get_sliding_moves_unsafe(hexchess, from_position, hostile_color, 10);
+            let total = zero.len() + two.len() + four.len() + six.len() + eight.len() + ten.len();
+
+            let mut result = Vec::with_capacity(total);
+            result.extend(zero);
+            result.extend(two);
+            result.extend(four);
+            result.extend(six);
+            result.extend(eight);
+            result.extend(ten);
             result
         },
         None => vec![],
@@ -239,21 +255,49 @@ pub fn get_rook_moves_unsafe(hexchess: &Hexchess, from_position: Position) -> Ve
 pub fn get_queen_moves_unsafe(hexchess: &Hexchess, from_position: Position) -> Vec<San> {
     match hexchess.get_color(from_position) {
         Some(color) => {
-            // check all 12 directions (orthogonal + diagonal)
-            let mut result = Vec::new();
             let hostile_color = color.opposite();
-            result.append(&mut get_sliding_moves_unsafe(hexchess, from_position, hostile_color, 0));
-            result.append(&mut get_sliding_moves_unsafe(hexchess, from_position, hostile_color, 1));
-            result.append(&mut get_sliding_moves_unsafe(hexchess, from_position, hostile_color, 2));
-            result.append(&mut get_sliding_moves_unsafe(hexchess, from_position, hostile_color, 3));
-            result.append(&mut get_sliding_moves_unsafe(hexchess, from_position, hostile_color, 4));
-            result.append(&mut get_sliding_moves_unsafe(hexchess, from_position, hostile_color, 5));
-            result.append(&mut get_sliding_moves_unsafe(hexchess, from_position, hostile_color, 6));
-            result.append(&mut get_sliding_moves_unsafe(hexchess, from_position, hostile_color, 7));
-            result.append(&mut get_sliding_moves_unsafe(hexchess, from_position, hostile_color, 8));
-            result.append(&mut get_sliding_moves_unsafe(hexchess, from_position, hostile_color, 9));
-            result.append(&mut get_sliding_moves_unsafe(hexchess, from_position, hostile_color, 10));
-            result.append(&mut get_sliding_moves_unsafe(hexchess, from_position, hostile_color, 11));
+
+            let zero = get_sliding_moves_unsafe(hexchess, from_position, hostile_color, 0);
+            let two = get_sliding_moves_unsafe(hexchess, from_position, hostile_color, 2);
+            let four = get_sliding_moves_unsafe(hexchess, from_position, hostile_color, 4);
+            let six = get_sliding_moves_unsafe(hexchess, from_position, hostile_color, 6);
+            let eight = get_sliding_moves_unsafe(hexchess, from_position, hostile_color, 8);
+            let ten = get_sliding_moves_unsafe(hexchess, from_position, hostile_color, 10);
+
+            let one = get_sliding_moves_unsafe(hexchess, from_position, hostile_color, 1);
+            let three = get_sliding_moves_unsafe(hexchess, from_position, hostile_color, 3);
+            let five = get_sliding_moves_unsafe(hexchess, from_position, hostile_color, 5);
+            let seven = get_sliding_moves_unsafe(hexchess, from_position, hostile_color, 7);
+            let nine = get_sliding_moves_unsafe(hexchess, from_position, hostile_color, 9);
+            let eleven = get_sliding_moves_unsafe(hexchess, from_position, hostile_color, 11);
+
+            let total =
+                zero.len() +
+                one.len() +
+                two.len() +
+                three.len() +
+                four.len() +
+                five.len() +
+                six.len() +
+                seven.len() +
+                eight.len() +
+                nine.len() +
+                ten.len() +
+                eleven.len();
+
+            let mut result = Vec::with_capacity(total);
+            result.extend(zero);
+            result.extend(one);
+            result.extend(two);
+            result.extend(three);
+            result.extend(four);
+            result.extend(five);
+            result.extend(six);
+            result.extend(seven);
+            result.extend(eight);
+            result.extend(nine);
+            result.extend(ten);
+            result.extend(eleven);
             result
         },
         None => vec![],
