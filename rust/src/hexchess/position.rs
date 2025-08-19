@@ -1759,6 +1759,22 @@ mod tests {
         let from = Position::F11.to_bitmask();
         let to = Position::from_bitmask(from);
         assert_eq!(to, Position::F11);
+
+        let from_2 = Position::A4.to_bitmask();
+        let to_2 = Position::from_bitmask(from_2);
+        assert_eq!(to_2, Position::A4);
+
+        let from_3 = Position::G2.to_bitmask();
+        let to_3 = Position::from_bitmask(from_3);
+        assert_eq!(to_3, Position::G2);
+
+        let from_4 = Position::L1.to_bitmask();
+        let to_4 = Position::from_bitmask(from_4);
+        assert_eq!(to_4, Position::L1);
+
+        let from_5 = Position::L6.to_bitmask();
+        let to_5 = Position::from_bitmask(from_5);
+        assert_eq!(to_5, Position::L6);
     }
 
     #[test]
