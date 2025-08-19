@@ -28,7 +28,7 @@ For engines, use the Rust crate. It uses [bitboards](https://www.chessprogrammin
 
 Each library is tested against [a shared test suite](https://github.com/scottbedard/hexchess/tree/main/tests), and are versioned together with respect to these tests. Because of this, if a change is made in one library, it will cause the version numbers for all libraries to increment.
 
-Put simply, the libraries are versioned together to to ensure they support the same test suite, allowing for reliable interop with one another.
+Put simply, the libraries are versioned together to to ensure they support the same test suite, and are compatible with one another.
 
 ## Local development
 
