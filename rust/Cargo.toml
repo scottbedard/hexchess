@@ -21,7 +21,7 @@ path = "benches/bench_initial_position.rs"
 default = []
 
 [dependencies]
-hexchess_macros = { path = "./macros", version = "1" }
+hexchess_macros = { path = "./macros", version = "2" }
 serde = { version = "1.0.219", features = ["derive"] }
 serde_yaml = "0.9.34"
 
