@@ -100,6 +100,7 @@ const POSITION_NEIGHBORS: [u128; 91] = [
 
 /// Position within a hexchess bitboard.
 #[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, PartialEq, Serialize)]
+#[serde(into = "u8")]
 #[repr(u8)]
 pub enum Position {
     F11 = 0,
@@ -1710,6 +1711,12 @@ impl Iterator for Position {
     }
 }
 
+impl From<Position> for u8 {
+    fn from(val: Position) -> u8 {
+        val as u8
+    }
+}
+
 /// Iterator over positions in a given direction from a starting position.
 pub struct WalkIter {
     current: Option<Position>,
@@ -1823,5 +1830,12 @@ mod tests {
         assert_eq!(f1.next(), Some(Position::F10));
         assert_eq!(f1.next(), Some(Position::F11));
         assert_eq!(f1.next(), None);
+    }
+
+    #[test]
+    fn test_deserialize_position_index() {
+        let position = Position::A6;
+        let index: u8 = position.into();
+        assert_eq!(index, 25);
     }
 }
