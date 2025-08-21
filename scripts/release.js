@@ -115,6 +115,29 @@ export async function release(options) {
     process.exit(1)
   }
 
+  // Cargo.toml (macros)
+  try {
+    const cargoPath = 'rust/macros/Cargo.toml'
+    const cargoContent = read(cargoPath)
+    const oldVersion = cargoContent.match(/version = "([^"]+)"/)?.[1]
+
+    if (!oldVersion) {
+      console.error('Could not find version in macros/Cargo.toml')
+      process.exit(1)
+    }
+
+    const updatedContent = cargoContent.replace(
+      /version = "([^"]+)"/,
+      `version = "${version}"`
+    )
+
+    write(cargoPath, updatedContent)
+    console.log(`rust/macros/Cargo.toml: ${green(version)}`)
+  } catch (error) {
+    console.error('Failed to update rust/macros/Cargo.toml:', error)
+    process.exit(1)
+  }
+
   console.log()
   console.log(`${green('Done')} ${dim(`(${Date.now() - startAt}ms)`)}`)
 }

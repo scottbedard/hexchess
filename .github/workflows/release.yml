@@ -86,8 +86,10 @@ jobs:
 
       - name: Publish to Crates.io
         run: |
-          cd rust
+          cd rust/macros
           cargo login ${{ secrets.CARGO_TOKEN }}
+          cargo publish
+          cd ../
           cargo publish
 
       - name: Publish to Packagist
