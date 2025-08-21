@@ -26,9 +26,9 @@ export function versions(options) {
       throw new Error(`Release version mismatch [${options.release}]`)
     }
 
-    console.log(`Release:  ${green(options.release)}`)
+    console.log(`Release:         ${green(options.release)}`)
   } else {
-    console.log(`Release:  ${dim('None')}`)
+    console.log(`Release:         ${dim('None')}`)
   }
 
   console.log()
