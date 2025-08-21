@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.4.1
+
+- Fixed interop of Rust / JavaScript libraries by serializing `San` positions to their index, not enum name. 
+
 ## 2.4.0
 
 - Performance and inter-op improvements. The Rust library now only uses FEN index.
