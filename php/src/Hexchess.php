@@ -4,6 +4,7 @@ namespace Bedard\Hexchess;
 
 use Bedard\Hexchess\Board;
 use Bedard\Hexchess\Constants;
+use Bedard\Hexchess\Exceptions\IllegalMoveException;
 use Bedard\Hexchess\Pieces\King;
 use Bedard\Hexchess\Pieces\Knight;
 use Bedard\Hexchess\Pieces\Pawn;
@@ -117,7 +118,7 @@ class Hexchess
         $san = is_string($san) ? San::from($san) : $san;
 
         if (!$this->isLegal($san)) {
-            throw new \InvalidArgumentException("Illegal move: {$san}");
+            throw new IllegalMoveException($san);
         }
 
         $this->applyMoveUnsafe($san);
