@@ -6,12 +6,12 @@ use Exception;
 
 class IllegalMoveException extends Exception
 {
-  public string $san;
+    public string $san;
 
-  public function __construct(string $san)
-  {
-    $this->san = $san;
+    public function __construct(string $san)
+    {
+        $this->san = $san;
 
-    parent::__construct("Illegal move: {$san}");
-  }
+        parent::__construct("Illegal move: {$san}");
+    }
 }
