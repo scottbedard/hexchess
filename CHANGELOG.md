@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.4.3
+
+- Throw an explicit `IllegalMoveException` from PHP library
+
 ## 2.4.1
 
 - Fixed interop of Rust / JavaScript libraries by serializing `San` positions to their index, not enum name. 
