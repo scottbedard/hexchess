@@ -15,6 +15,7 @@ export default defineConfig({
       {
         text: 'Game Libraries',
         items: [
+          { text: 'Overview', link: '/libraries' },
           { text: 'Rust', link: '/rust' },
           { text: 'JavaScript', link: '/javascript' },
           { text: 'PHP', link: '/php' }

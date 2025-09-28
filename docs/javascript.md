@@ -2,4 +2,8 @@
 layout: doc
 ---
 
-No js docs yet
+# TypeScript / JavaScript Library
+
+```sh
+npm install @bedard/hexchess
+```

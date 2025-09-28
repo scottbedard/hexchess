@@ -2,4 +2,8 @@
 layout: doc
 ---
 
-No php docs yet
+# PHP Library
+
+```sh
+composer require bedard/hexchess
+```

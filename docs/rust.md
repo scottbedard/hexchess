@@ -2,4 +2,8 @@
 layout: doc
 ---
 
-No rust docs yet
+# Rust Library
+
+```sh
+cargo add hexchess
+```
