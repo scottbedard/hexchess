@@ -7,11 +7,11 @@ hero:
   tagline: A cross-language library for Gliński's hexagonal chess, and the brain of hexchess.club
   actions:
     - theme: brand
-      text: Getting started
-      link: /markdown-examples
+      text: Game Libraries
+      link: /libraries
     - theme: alt
       text: Engine development
-      link: /api-examples
+      link: /engine
 
 features:
   - title: Rust
