@@ -4,6 +4,8 @@
 bin
 coverage
 dist
+docs/.vitepress/cache
+docs/.vitepress/dist
 node_modules
 php/.pest
 php/junit.xml
