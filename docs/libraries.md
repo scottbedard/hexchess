@@ -11,6 +11,9 @@ For game logic, use the PHP or TypeScript / JavaScript libraries. They use a [po
 
 For engines, use the Rust crate. It uses [bitboards](https://www.chessprogramming.org/Bitboards), and is optimized for performance. Fast board queries can be performed using `u128` bitmasks.
 
+# Versioning
+
+
 ```sh
 # rust
 cargo add hexchess
