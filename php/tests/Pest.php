@@ -68,7 +68,11 @@ function testYaml(string $name, Closure $fn, string $primaryKey = 'description')
 
     return describe($name, function () use ($data, $fn, $primaryKey) {
         foreach ($data as $t) {
-            test($t[$primaryKey], fn () => $fn($t));
+            $test = test($t[$primaryKey], fn () => $fn($t));
+
+            if (array_key_exists('only', $t) && $t['only']) {
+                $test->only();
+            }
         }
     });
 }
