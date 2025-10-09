@@ -55,8 +55,7 @@
         - h5h3
 -
     # https://github.com/scottbedard/hexchess/issues/23
-    description: self-check bug
+    description: cannot self-check on 0th index (f11)
     hexchess: 1/1Rk/n3n/6r/ppp1p1ppp/5P5/11/2B8/5B1q3/2P2KN4/1P2Q2N3 b - 4 18
     position: g10
     expected: []
-    only: true

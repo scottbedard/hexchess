@@ -420,7 +420,7 @@ class Hexchess
             $clone = $this->clone()->applyMoveUnsafe($san);
             $king = $clone->findKing($color);
 
-            return $king
+            return $king !== null
                 ? !$clone->isThreatened($king)
                 : true;
         });
