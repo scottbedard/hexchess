@@ -1,4 +1,4 @@
-# [`hexchess`](https://hexchess.club)
+# [`hexchess`](https://docs.hexchess.club)
 
 [![Build](https://github.com/scottbedard/hexchess/actions/workflows/build.yml/badge.svg)](https://github.com/scottbedard/hexchess/actions/workflows/build.yml)
 [![Coverage](https://codecov.io/gh/scottbedard/hexchess/graph/badge.svg?token=uHmFqhQDps)](https://codecov.io/gh/scottbedard/hexchess)
@@ -13,8 +13,8 @@ A cross-language library for [Gliński's hexagonal chess](https://en.wikipedia.o
 [See documentation here &rarr;](https://docs.hexchess.club)
 
 <p align="center">
-  <a href="https://hexchess.club">
-    <img src="docs/public/hexchess.svg" width="500" />
+  <a href="https://docs.hexchess.club">
+    <img src="docs/public/hexchess.svg" width="350" />
   </a>
 </p>
 
