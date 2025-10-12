@@ -47,9 +47,15 @@ const hexchess = Hexchess.init()
 
 The following constants are also available.
 
-`emptyPosition` &rarr; `1/3/5/7/9/11/11/11/11/11/11 w - 0 1`
+- `emptyPosition`
+  ```
+  1/3/5/7/9/11/11/11/11/11/11 w - 0 1
+  ```
 
-`initialPosition` &rarr; `b/qbk/n1b1n/r5r/ppppppppp/11/5P5/4P1P4/3P1B1P3/2P2B2P2/1PRNQBKNRP1 w - 0 1`
+- `initialPosition`
+  ```
+  b/qbk/n1b1n/r5r/ppppppppp/11/5P5/4P1P4/3P1B1P3/2P2B2P2/1PRNQBKNRP1 w - 0 1
+  ```
 
 ## Available methods
 

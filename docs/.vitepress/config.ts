@@ -13,7 +13,7 @@ export default defineConfig({
 
     sidebar: [
       {
-        text: 'Game Libraries',
+        text: 'Libraries',
         items: [
           { text: 'Overview', link: '/libraries' },
           { text: 'Rust', link: '/rust' },
@@ -23,7 +23,7 @@ export default defineConfig({
       },
 
       {
-        text: 'Engine Development',
+        text: 'Engine',
         items: [
           { text: 'Sandbox', link: '/sandbox' }
         ]
