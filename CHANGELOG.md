@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.4.4
+
+- Fix JS and PHP libraries allowing self-check on f11 ([#23](https://github.com/scottbedard/hexchess/issues/23))
+
 ## 2.4.3
 
 - Throw an explicit `IllegalMoveException` from PHP library

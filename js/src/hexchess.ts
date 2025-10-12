@@ -360,7 +360,7 @@ export class Hexchess implements HexchessStruct {
       const clone = this.clone().applyMoveUnsafe(san)
       const king = clone.findKing(color)
 
-      return king
+      return king !== null
         ? !clone.isThreatened(king)
         : true
     })
