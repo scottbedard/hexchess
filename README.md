@@ -10,27 +10,16 @@
 
 A cross-language library for [Gliński's hexagonal chess](https://en.wikipedia.org/wiki/Hexagonal_chess#Gli%C5%84ski's_hexagonal_chess), and the brain of [hexchess.club](https://hexchess.club).
 
+[See documentation here &rarr;](https://docs.hexchess.club)
+
 <p align="center">
   <a href="https://hexchess.club">
     <img src="docs/public/hexchess.svg" width="500" />
   </a>
 </p>
 
-## Libraries
 
-Game libraries are available in [Rust](https://crates.io/crates/hexchess), [PHP](https://packagist.org/packages/bedard/hexchess), and [TypeScript / JavaScript](https://www.npmjs.com/package/@bedard/hexchess). These libraries have similar APIs and abilities, but are designed for different purposes.
-
-For game logic, use the PHP or TypeScript / JavaScript libraries. They use a [position-centric](https://www.chessprogramming.org/Board_Representation#Square_Centric) game state, and are not optimized for performance. In other words, the board is stored as a flat array of values, which provides better ergonomics for gameplay and rendering.
-
-For engines, use the Rust crate. It uses [bitboards](https://www.chessprogramming.org/Bitboards), and is optimized for performance. Fast board queries can be performed using `u128` bitmasks.
-
-## Versioning
-
-Each library is tested against [a shared test suite](https://github.com/scottbedard/hexchess/tree/main/tests), and are versioned together with respect to these tests. Because of this, if a change is made in one library, it will cause the version numbers for all libraries to increment.
-
-Put simply, the libraries are versioned together to to ensure they support the same test suite, and are compatible with one another.
-
-## Local development
+## Development
 
 Depending on which library you're working on, you'll need to install a few dependencies.
 
