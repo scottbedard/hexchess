@@ -12,7 +12,7 @@ A cross-language library for [Gliński's hexagonal chess](https://en.wikipedia.o
 
 <p align="center">
   <a href="https://hexchess.club">
-    <img src="assets/hexchess.svg" width="500" />
+    <img src="docs/public/hero.svg" width="500" />
   </a>
 </p>
 
