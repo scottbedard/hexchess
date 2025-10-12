@@ -4,7 +4,7 @@ layout: home
 
 hero:
   name: Hexchess
-  image: public/hexchess.svg
+  image: /hexchess.svg
   tagline: A cross-language library for Gliński's hexagonal chess, and the brain of hexchess.club.
   actions:
     - theme: brand
