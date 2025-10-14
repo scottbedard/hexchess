@@ -49,7 +49,7 @@ The following constants are also available on `hexchess::Constants`
 
 ## Macros
 
-The following macros are available to construct readable readable bitmasks at compile time. To use them, install the following crate.
+The following macros are available to construct more readable bitmasks at compile time. To use them, install the following crate.
 
 ```sh
 cargo add hexchess_macros
