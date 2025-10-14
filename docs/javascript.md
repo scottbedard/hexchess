@@ -157,7 +157,7 @@ Test if the board is in check.
 ```ts
 const hexchess = Hexchess.init()
 
-isCheck(hexckess) // false
+hexchess.isCheck() // false
 ```
 
 #### `isCheckmate`
@@ -167,7 +167,17 @@ Test if the game is in checkmate.
 ```ts
 const hexchess = Hexchess.init()
 
-isCheckmate(hexckess) // false
+hexchess.isCheckmate() // false
+```
+
+#### `isLegal`
+
+Test if a move is legal.
+
+```ts
+const hexchess = Hexchess.init()
+
+hexchess.isLegal('b1b6') // false
 ```
 
 #### `isStalemate`
@@ -177,7 +187,17 @@ Test if the game is in stalemate.
 ```ts
 const hexchess = Hexchess.init()
 
-isStalemate(hexckess) // false
+hexchess.isStalemate() // false
+```
+
+#### `isThreatened`
+
+Test if a position is threatened by unsafe captures. This does not include forward pawn moves.
+
+```ts
+const hexchess = Hexchess.init()
+
+hexchess.isThreatened('f6') // false
 ```
 
 #### `movesFrom`
