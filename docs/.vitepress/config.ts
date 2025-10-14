@@ -16,9 +16,9 @@ export default defineConfig({
         text: 'Libraries',
         items: [
           { text: 'Overview', link: '/libraries' },
+          { text: 'TypeScript', link: '/typescript' },
+          { text: 'PHP', link: '/php' },
           { text: 'Rust', link: '/rust' },
-          { text: 'JavaScript', link: '/javascript' },
-          { text: 'PHP', link: '/php' }
         ]
       },
 

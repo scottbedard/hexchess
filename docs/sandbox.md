@@ -2,4 +2,4 @@
 layout: doc
 ---
 
-No sandbox yet.
+The engine sandbox is not available yet.

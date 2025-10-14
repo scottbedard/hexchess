@@ -15,14 +15,14 @@ hero:
       link: /engine
 
 features:
-  - title: Rust
-    details: Install via Cargo
-    link: /rust
   - title: TypeScript / JavaScript
     details: Install via NPM
-    link: /javascript
+    link: /typescript
   - title: PHP
     details: Install via Composer
     link: /php
+  - title: Rust
+    details: Install via Cargo
+    link: /rust
 ---
 

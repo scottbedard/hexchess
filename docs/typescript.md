@@ -12,9 +12,9 @@ npm install @bedard/hexchess
 
 ## Basic usage
 
-The `Hexchess` class is a deserialized version of [Forsyth–Edwards Notation](https://en.wikipedia.org/wiki/Forsyth%E2%80%93Edwards_Notation). It contains the board state, current turn, en passant, and move numbers. Since castling is not a part of hexagonal chess, that section is omitted. The board data is stored as an array of `Piece | null`, sorted in FEN-order.
+The `Hexchess` class is a deserialized version of [Forsyth–Edwards Notation](https://en.wikipedia.org/wiki/Forsyth%E2%80%93Edwards_Notation). It contains the board state, current turn, en passant, and move numbers. Since castling is not a part of hexagonal chess, that section is omitted. The board data is stored as an array of `Piece` values, sorted in FEN-order.
 
-To create a game at the starting position, use `Hexchess.init`.
+To create a game at the starting position, use `Hexchess.init()`.
 
 ```ts
 import { Hexchess } from '@bedard/hexchess'
