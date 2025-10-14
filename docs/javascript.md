@@ -2,7 +2,7 @@
 layout: doc
 ---
 
-# TypeScript / JavaScript Library
+# TypeScript / JavaScript
 
 Install with the following command.
 
