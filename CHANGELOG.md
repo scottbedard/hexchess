@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.4.5
+
+- Ensure pawn advances aren't treated as capture threats
+- Add `EMPTY_POSITION` to Rust library constants
+
 ## 2.4.4
 
 - Fix JS and PHP libraries allowing self-check on f11 ([#23](https://github.com/scottbedard/hexchess/issues/23))
