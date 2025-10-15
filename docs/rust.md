@@ -2,7 +2,7 @@
 layout: doc
 ---
 
-# Rust Library
+# Rust
 
 Install with the following command.
 
