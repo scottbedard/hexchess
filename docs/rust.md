@@ -12,7 +12,7 @@ cargo add hexchess
 
 ## Basic usage
 
-The Hexchess struct is a deserialized version of [Forsyth–Edwards Notation](https://en.wikipedia.org/wiki/Forsyth%E2%80%93Edwards_Notation). It contains the board state, current turn, en passant, and move numbers. Since castling is not a part of hexagonal chess, that section is omitted. Board state consists of twelve `Bitboard` values, each stored as a `u128`.
+The `Hexchess` struct is a deserialized version of [Forsyth–Edwards Notation](https://en.wikipedia.org/wiki/Forsyth%E2%80%93Edwards_Notation). It contains the board state, current turn, en passant, and move numbers. Since castling is not a part of hexagonal chess, that section is omitted. Board state consists of twelve `Bitboard` values, each stored as a `u128`.
 
 ```rs
 pub struct Hexchess {
