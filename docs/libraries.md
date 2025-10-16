@@ -15,4 +15,4 @@ For engine development, the Rust crate is recommended. It uses [bitboard game st
 
 Each library is tested against [a shared test suite](https://github.com/scottbedard/hexchess/tree/main/tests), and are versioned together with respect to those tests. Because of this, a change made in one library will cause all library versions numbers to increment.
 
-Put simply, the libraries are versioned together to to ensure they support the same tests and are compatible with one another.
+Put simply, the libraries are versioned together to ensure they support the same tests and are compatible with one another.
