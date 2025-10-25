@@ -1,9 +1,16 @@
 import { positions } from '../../../js/src/constants'
-import { flip, hexagon, pivot, reflect, sum } from './helpers'
+import { flip, hexagon, pivot, reflect, sum } from './geometry'
 import type { Vec } from './types'
 
 /** svg viewbox, increasing this zooms out away from the board */
 export const box = 23.6
+
+/** position colors */
+export const colors: Vec<3, string> = [
+  'oklch(0.9015 0.0729 70.7)',
+  'oklch(0.8366 0.1165 66.29)',
+  'oklch(0.6806 0.1423 75.83)',
+]
 
 /** label offset */
 export const labelOffset = 1.7
