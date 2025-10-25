@@ -7,9 +7,9 @@
       :viewBox="`0 0 ${box} ${box}`">
       <!-- backdrop -->
       <path
-        class="pointer-events-none"
         :d="d(perimeter)"
-        :fill="colors[1]" />
+        :fill="colors[1]"
+        :style="{ pointerEvents: 'none' }" />
 
       <!-- positions -->
       <path
@@ -18,14 +18,36 @@
         :data-hexboard-position="i"
         :fill="fill(hex)"
         :key="i" />
+
+      <!-- labels -->
+      <text
+        v-for="[text, p, positionFlipped], i in labels"
+        v-text="text"
+        dominant-baseline="central"
+        style="font-size: .45px"
+        text-anchor="middle"
+        :key="i"
+        :style="{
+          fontSize: '.5px',
+          fill: 'oklch(70.4% 0.04 256.788)',
+          pointerEvents: 'none',
+        }"
+        :x="x(flipped ? positionFlipped[0] : p[0])"
+        :y="y(flipped ? positionFlipped[1] : p[1])" />
     </svg>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { board, box, colors, perimeter } from './constants'
+import { board, box, colors, labels, perimeter } from './constants'
 import { computed, ref } from 'vue'
-import { d } from './geometry'
+import { d, x, y } from './geometry'
+import { Hexchess } from '../../../js/src/hexchess'
+
+defineProps<{
+  flipped: boolean
+  hexchess: Hexchess
+}>()
 
 //
 // state

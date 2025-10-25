@@ -2,6 +2,14 @@ import { box } from './constants'
 import { sideLength } from './constants'
 import type { Vec } from './types'
 
+/** bilinearly interpolate between two points */
+export function bilerp(p1: Vec<2>, p2: Vec<2>, t: number): Vec<2> {
+  return [
+    p1[0] + (t * (p2[0] - p1[0])),
+    p1[1] + (t * (p2[1] - p1[1])),
+  ]
+}
+
 /** create svg vector path */
 export function d(arr: [number, number][]) {
   const p = 4 // <- svg rounding precision

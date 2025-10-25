@@ -1,5 +1,5 @@
 import { positions } from '../../../js/src/constants'
-import { flip, hexagon, pivot, reflect, sum } from './geometry'
+import { bilerp, flip, hexagon, pivot, reflect, sum } from './geometry'
 import type { Vec } from './types'
 
 /** svg viewbox, increasing this zooms out away from the board */
@@ -230,6 +230,45 @@ export const board: {
   { color: 0, origin: [i1, reflect(i1)], path: [hexagon(i1), flip(hexagon(i1))] },
   { color: 1, origin: [k1, reflect(k1)], path: [hexagon(k1), flip(hexagon(k1))] },
   { color: 2, origin: [l1, reflect(l1)], path: [hexagon(l1), flip(hexagon(l1))] },
+]
+
+/** board labels */
+export const labels: [string, Vec<2>, Vec<2>][] = [
+  ['11', bilerp(g10, f11, labelOffset), reflect(bilerp(g10, f11, labelOffset))],
+  ['10', bilerp(f10, e10, labelOffset), reflect(bilerp(f10, e10, labelOffset))],
+  ['9', bilerp(e9, d9, labelOffset), reflect(bilerp(e9, d9, labelOffset))],
+  ['8', bilerp(d8, c8, labelOffset), reflect(bilerp(d8, c8, labelOffset))],
+  ['7', bilerp(c7, b7, labelOffset), reflect(bilerp(c7, b7, labelOffset))],
+  ['6', bilerp(b6, a6, labelOffset), reflect(bilerp(b6, a6, labelOffset))],
+  ['5', bilerp(b5, a5, labelOffset), reflect(bilerp(b5, a5, labelOffset))],
+  ['4', bilerp(b4, a4, labelOffset), reflect(bilerp(b4, a4, labelOffset))],
+  ['3', bilerp(b3, a3, labelOffset), reflect(bilerp(b3, a3, labelOffset))],
+  ['2', bilerp(b2, a2, labelOffset), reflect(bilerp(b2, a2, labelOffset))],
+  ['1', bilerp(b1, a1, labelOffset), reflect(bilerp(b1, a1, labelOffset))],
+
+  ['a', bilerp(a2, a1, labelOffset), reflect(bilerp(a2, a1, labelOffset))],
+  ['b', bilerp(b2, b1, labelOffset), reflect(bilerp(b2, b1, labelOffset))],
+  ['c', bilerp(c2, c1, labelOffset), reflect(bilerp(c2, c1, labelOffset))],
+  ['d', bilerp(d2, d1, labelOffset), reflect(bilerp(d2, d1, labelOffset))],
+  ['e', bilerp(e2, e1, labelOffset), reflect(bilerp(e2, e1, labelOffset))],
+  ['f', bilerp(f2, f1, labelOffset), reflect(bilerp(f2, f1, labelOffset))],
+  ['g', bilerp(g2, g1, labelOffset), reflect(bilerp(g2, g1, labelOffset))],
+  ['h', bilerp(h2, h1, labelOffset), reflect(bilerp(h2, h1, labelOffset))],
+  ['i', bilerp(i2, i1, labelOffset), reflect(bilerp(i2, i1, labelOffset))],
+  ['k', bilerp(k2, k1, labelOffset), reflect(bilerp(k2, k1, labelOffset))],
+  ['l', bilerp(l2, l1, labelOffset), reflect(bilerp(l2, l1, labelOffset))],
+
+  ['1', bilerp(k1, l1, labelOffset), reflect(bilerp(k1, l1, labelOffset))],
+  ['2', bilerp(k2, l2, labelOffset), reflect(bilerp(k2, l2, labelOffset))],
+  ['3', bilerp(k3, l3, labelOffset), reflect(bilerp(k3, l3, labelOffset))],
+  ['4', bilerp(k4, l4, labelOffset), reflect(bilerp(k4, l4, labelOffset))],
+  ['5', bilerp(k5, l5, labelOffset), reflect(bilerp(k5, l5, labelOffset))],
+  ['6', bilerp(k6, l6, labelOffset), reflect(bilerp(k6, l6, labelOffset))],
+  ['7', bilerp(i7, k7, labelOffset), reflect(bilerp(i7, k7, labelOffset))],
+  ['8', bilerp(h8, i8, labelOffset), reflect(bilerp(h8, i8, labelOffset))],
+  ['9', bilerp(g9, h9, labelOffset), reflect(bilerp(g9, h9, labelOffset))],
+  ['10', bilerp(f10, g10, labelOffset), reflect(bilerp(f10, g10, labelOffset))],
+  ['11', bilerp(e10, f11, labelOffset), reflect(bilerp(e10, f11, labelOffset))],
 ]
 
 /** perimeter of the board, used to create a constant background for light/dark mode */
