@@ -2,4 +2,8 @@
 layout: doc
 ---
 
-The engine sandbox is not available yet.
+<Sandbox />
+
+<script setup>
+import Sandbox from './sandbox/Sandbox.vue'
+</script>
