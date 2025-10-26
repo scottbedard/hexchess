@@ -7,9 +7,9 @@
       :viewBox="`0 0 ${box} ${box}`">
       <!-- backdrop -->
       <path
+        class="pointer-events-none"
         :d="d(perimeter)"
         :fill="colors[1]"
-        :style="{ pointerEvents: 'none' }"
       />
 
       <!-- positions -->
@@ -26,14 +26,10 @@
       <text
         v-for="[text, p, positionFlipped], i in labels"
         v-text="text"
+        class="fill-gray-400 pointer-events-none text-[.5px]"
         dominant-baseline="central"
         text-anchor="middle"
         :key="`label-${i}`"
-        :style="{
-          fill: 'oklch(70.4% 0.04 256.788)',
-          fontSize: '.5px',
-          pointerEvents: 'none',
-        }"
         :x="x(flipped ? positionFlipped[0] : p[0])"
         :y="y(flipped ? positionFlipped[1] : p[1])"
       />
@@ -41,8 +37,8 @@
       <!-- pieces -->
       <Piece
         v-for="type, i in pieces"
+        class="pointer-events-none"
         :key="`piece-${i}`"
-        :style="{ pointerEvents: 'none' }"
         :type
         :x="x(board[i]!.origin[flipped ? 1 : 0][0] - (pieceSize / 2))"
         :y="y(board[i]!.origin[flipped ? 1 : 0][1] + (pieceSize / 2))"
@@ -50,13 +46,12 @@
 
       <circle
         v-for="san in targets"
-        fill="oklch(63.7% 0.237 25.331)"
+        class="fill-red-500 pointer-events-none"
         :cx="x(board[san.to]!.origin[flipped ? 1 : 0][0])"
         :cy="y(board[san.to]!.origin[flipped ? 1 : 0][1])"
         :data-hexboard-target="san.to"
         :key="`target-${san.to}`"
         :r=".3"
-        :style="{ pointerEvents: 'none' }"
       />
     </svg>
   </div>

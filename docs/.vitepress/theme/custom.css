@@ -1,3 +1,6 @@
+@import "tailwindcss";
+@source "../../**/*.{md,vue}";
+
 :root {
   --vp-c-brand-1: oklch(76.9% 0.188 70.08);
   --vp-c-brand-2: oklch(82.8% 0.189 84.429);
