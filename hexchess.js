@@ -40,6 +40,31 @@ program
   .action(buildRust)
 
 //
+// docs
+//
+
+program
+  .command('docs:dev')
+  .description('Develop docs')
+  .action(async () => {
+    await execAsync('./node_modules/.bin/vitepress', ['dev', 'docs'])
+  })
+
+program
+  .command('docs:build')
+  .description('Build docs')
+  .action(async () => {
+    await execAsync('./node_modules/.bin/vitepress', ['build', 'docs'])
+  })
+
+program
+  .command('docs:preview')
+  .description('Preview docs')
+  .action(async () => {
+    await execAsync('./node_modules/.bin/vitepress', ['preview', 'docs'])
+  })
+
+//
 // lint
 //
 

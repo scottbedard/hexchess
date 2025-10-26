@@ -49,6 +49,9 @@ Commands:
   build                        Build all projects
   build:js                     Build NPM package
   build:rs                     Build Rust crate
+  docs:dev                     Develop docs
+  docs:build                   Build docs
+  docs:preview                 Preview docs
   lint:php                     Run linting
   release [options] [version]  Set the version of the project
   test                         Run all tests
