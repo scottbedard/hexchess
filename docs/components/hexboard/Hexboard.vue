@@ -20,15 +20,22 @@
         :fill="selected === i ? 'oklch(63.7% 0.237 25.331)' : fill(hex)"
         :key="`position-${i}`"
         @click.stop="$emit('positionClick', i)"
+        @mouseenter="mouseover = i"
+        @mouseleave="mouseover = null"
       />
 
       <!-- labels -->
       <text
         v-for="[text, p, positionFlipped], i in labels"
         v-text="text"
-        class="fill-gray-400 pointer-events-none text-[.5px]"
         dominant-baseline="central"
         text-anchor="middle"
+        :class="[
+          'font-bold pointer-events-none select-none text-[.5px]',
+          mouseover !== null && (position(mouseover).startsWith(text) || position(mouseover).endsWith(text))
+            ? 'fill-(--vp-code-color)'
+            : 'fill-gray-400'
+        ]"
         :key="`label-${i}`"
         :x="x(flipped ? positionFlipped[0] : p[0])"
         :y="y(flipped ? positionFlipped[1] : p[1])"
@@ -61,7 +68,7 @@
 import { board, box, colors, labels, perimeter, pieceSize } from './constants'
 import { computed, ref } from 'vue'
 import { d, x, y } from './geometry'
-import { Hexchess, San } from '../../../js/src'
+import { Hexchess, San, position } from '../../../js/src'
 import Piece from './Piece.vue'
 
 const props = defineProps<{
@@ -74,6 +81,12 @@ const props = defineProps<{
 defineEmits<{
   positionClick: [position: number]
 }>()
+
+//
+// state
+//
+
+const mouseover = ref<number | null>(null)
 
 //
 // computed
