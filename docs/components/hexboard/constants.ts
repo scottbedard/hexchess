@@ -15,6 +15,9 @@ export const colors: Vec<3, string> = [
 /** label offset */
 export const labelOffset = 1.7
 
+/** piece size */
+export const pieceSize = 1.7
+
 /** side length of regular hexagon circumscribed around a unit circle */
 export const sideLength = 2 / Math.sqrt(3)
 

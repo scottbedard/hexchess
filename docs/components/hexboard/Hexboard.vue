@@ -9,7 +9,8 @@
       <path
         :d="d(perimeter)"
         :fill="colors[1]"
-        :style="{ pointerEvents: 'none' }" />
+        :style="{ pointerEvents: 'none' }"
+      />
 
       <!-- positions -->
       <path
@@ -17,7 +18,8 @@
         :d="d(flipped ? hex.path[1] : hex.path[0])"
         :data-hexboard-position="i"
         :fill="fill(hex)"
-        :key="i" />
+        :key="i"
+      />
 
       <!-- labels -->
       <text
@@ -33,18 +35,29 @@
           pointerEvents: 'none',
         }"
         :x="x(flipped ? positionFlipped[0] : p[0])"
-        :y="y(flipped ? positionFlipped[1] : p[1])" />
+        :y="y(flipped ? positionFlipped[1] : p[1])"
+      />
+
+      <!-- pieces -->
+      <Piece
+        v-for="type, i in pieces"
+        :key="i"
+        :type
+        :x="x(board[i]!.origin[flipped ? 1 : 0][0] - (pieceSize / 2))"
+        :y="y(board[i]!.origin[flipped ? 1 : 0][1] + (pieceSize / 2))"
+      />
     </svg>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { board, box, colors, labels, perimeter } from './constants'
+import { board, box, colors, labels, perimeter, pieceSize } from './constants'
 import { computed, ref } from 'vue'
 import { d, x, y } from './geometry'
 import { Hexchess } from '../../../js/src/hexchess'
+import Piece from './Piece.vue'
 
-defineProps<{
+const props = defineProps<{
   flipped: boolean
   hexchess: Hexchess
 }>()
@@ -60,7 +73,11 @@ const flipped = ref(false)
 //
 
 const cursor = computed(() => {
-  return 'pointer'
+  return 'auto'
+})
+
+const pieces = computed(() => {
+  return props.hexchess.board
 })
 
 //
