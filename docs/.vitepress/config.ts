@@ -26,6 +26,7 @@ export default defineConfig({
       {
         text: 'Engine',
         items: [
+          { text: 'Overview', link: '/engine' },
           { text: 'Sandbox', link: '/sandbox' }
         ]
       }
