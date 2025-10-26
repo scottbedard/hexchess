@@ -10,7 +10,7 @@
 
 A cross-language library for [Gliński's hexagonal chess](https://en.wikipedia.org/wiki/Hexagonal_chess#Gli%C5%84ski's_hexagonal_chess), and the brain of [hexchess.club](https://hexchess.club).
 
-[See documentation here &rarr;](https://docs.hexchess.club)
+[View documentation &rarr;](https://docs.hexchess.club)
 
 <p align="center">
   <a href="https://docs.hexchess.club">
