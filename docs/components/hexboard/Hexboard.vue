@@ -76,12 +76,6 @@ defineEmits<{
 }>()
 
 //
-// state
-//
-
-const flipped = ref(false)
-
-//
 // computed
 //
 
@@ -99,10 +93,6 @@ const pieces = computed(() => {
 
 /** fill color of position */
 function fill(hex: typeof board[number]) {
-  // if (selected.value === board.indexOf(hex)) {
-  //   return props.theme.selectedColor
-  // }
-
   return colors[hex.color]
 }
 </script>
