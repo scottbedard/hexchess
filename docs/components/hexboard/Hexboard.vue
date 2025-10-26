@@ -18,7 +18,8 @@
         :d="d(flipped ? hex.path[1] : hex.path[0])"
         :data-hexboard-position="i"
         :fill="fill(hex)"
-        :key="i"
+        :key="`position-${i}`"
+        @click="$emit('positionClick', i)"
       />
 
       <!-- labels -->
@@ -26,12 +27,11 @@
         v-for="[text, p, positionFlipped], i in labels"
         v-text="text"
         dominant-baseline="central"
-        style="font-size: .45px"
         text-anchor="middle"
-        :key="i"
+        :key="`label-${i}`"
         :style="{
-          fontSize: '.5px',
           fill: 'oklch(70.4% 0.04 256.788)',
+          fontSize: '.5px',
           pointerEvents: 'none',
         }"
         :x="x(flipped ? positionFlipped[0] : p[0])"
@@ -41,10 +41,22 @@
       <!-- pieces -->
       <Piece
         v-for="type, i in pieces"
-        :key="i"
+        :key="`piece-${i}`"
+        :style="{ pointerEvents: 'none' }"
         :type
         :x="x(board[i]!.origin[flipped ? 1 : 0][0] - (pieceSize / 2))"
         :y="y(board[i]!.origin[flipped ? 1 : 0][1] + (pieceSize / 2))"
+      />
+
+      <circle
+        v-for="san in targets"
+        fill="oklch(63.7% 0.237 25.331)"
+        :cx="x(board[san.to]!.origin[flipped ? 1 : 0][0])"
+        :cy="y(board[san.to]!.origin[flipped ? 1 : 0][1])"
+        :data-hexboard-target="san.to"
+        :key="`target-${san.to}`"
+        :r=".3"
+        :style="{ pointerEvents: 'none' }"
       />
     </svg>
   </div>
@@ -54,12 +66,17 @@
 import { board, box, colors, labels, perimeter, pieceSize } from './constants'
 import { computed, ref } from 'vue'
 import { d, x, y } from './geometry'
-import { Hexchess } from '../../../js/src/hexchess'
+import { Hexchess, San } from '../../../js/src/hexchess'
 import Piece from './Piece.vue'
 
 const props = defineProps<{
   flipped: boolean
   hexchess: Hexchess
+  targets: San[]
+}>()
+
+defineEmits<{
+  positionClick: [position: number]
 }>()
 
 //
