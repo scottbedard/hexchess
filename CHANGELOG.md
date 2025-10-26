@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.4.6
+
+- Unify documentation and add sandbox page
+
 ## 2.4.5
 
 - Ensure pawn advances aren't treated as capture threats
