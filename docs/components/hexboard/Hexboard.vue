@@ -66,7 +66,7 @@
 import { board, box, colors, labels, perimeter, pieceSize } from './constants'
 import { computed, ref } from 'vue'
 import { d, x, y } from './geometry'
-import { Hexchess, San } from '../../../js/src/hexchess'
+import { Hexchess, San } from '../../../js/src'
 import Piece from './Piece.vue'
 
 const props = defineProps<{
