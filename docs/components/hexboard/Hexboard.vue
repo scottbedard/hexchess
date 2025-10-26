@@ -17,9 +17,9 @@
         v-for="hex, i in board"
         :d="d(flipped ? hex.path[1] : hex.path[0])"
         :data-hexboard-position="i"
-        :fill="fill(hex)"
+        :fill="selected === i ? 'oklch(63.7% 0.237 25.331)' : fill(hex)"
         :key="`position-${i}`"
-        @click="$emit('positionClick', i)"
+        @click.stop="$emit('positionClick', i)"
       />
 
       <!-- labels -->
@@ -72,6 +72,7 @@ import Piece from './Piece.vue'
 const props = defineProps<{
   flipped: boolean
   hexchess: Hexchess
+  selected: number | null
   targets: San[]
 }>()
 

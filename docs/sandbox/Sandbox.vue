@@ -3,6 +3,7 @@
     <Hexboard
       :flipped
       :hexchess
+      :selected
       :targets
       @position-click="onPositionClick"
     />
@@ -10,9 +11,10 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref } from 'vue'
-import Hexboard from '../components/hexboard/Hexboard.vue'
+import { computed, onMounted, ref } from 'vue'
 import { Hexchess } from '../../js/src/hexchess'
+import { useEventListener } from '@vueuse/core'
+import Hexboard from '../components/hexboard/Hexboard.vue'
 
 //
 // state
@@ -33,8 +35,26 @@ const targets = computed(() => {
 })
 
 //
+// lifecycle
+//
+
+onMounted(() => {
+  useEventListener(document.body, 'click', deselect)
+
+  useEventListener(window, 'keydown', (evt) => {
+    if (evt.key === 'Escape') {
+      deselect()
+    }
+  })
+})
+
+//
 // methods
 //
+
+function deselect() {
+  selected.value = null
+}
 
 function onPositionClick(position: number) {
   selected.value = position

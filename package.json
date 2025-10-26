@@ -8,6 +8,7 @@
     "vue": "^3.5.22"
   },
   "dependencies": {
+    "@vueuse/core": "^14.0.0",
     "commander": "^14.0.0",
     "es-toolkit": "^1.39.9"
   },
