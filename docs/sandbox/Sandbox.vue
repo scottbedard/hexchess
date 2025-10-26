@@ -12,7 +12,7 @@
 
 <script lang="ts" setup>
 import { computed, onMounted, ref } from 'vue'
-import { Hexchess } from '../../js/src/hexchess'
+import { Hexchess, San } from '../../js/src'
 import { useEventListener } from '@vueuse/core'
 import Hexboard from '../components/hexboard/Hexboard.vue'
 
@@ -30,9 +30,7 @@ const selected = ref<number | null>(null)
 // computed
 //
 
-const targets = computed(() => {
-  return selected.value ? hexchess.value.movesFrom(selected.value) : []
-})
+const targets = computed(() => selected.value ? hexchess.value.movesFrom(selected.value) : [])
 
 //
 // lifecycle
@@ -56,7 +54,27 @@ function deselect() {
   selected.value = null
 }
 
+function handleMove(from: number, to: number) {
+  const san = new San({ from, to })
+
+  hexchess.value.applyMoveUnsafe(san)
+}
+
 function onPositionClick(position: number) {
+  if (selected.value === position) {
+    deselect()
+    return
+  }
+
+  if (
+    selected.value !== null &&
+    targets.value.some(p => p.to === position)
+  ) {
+    handleMove(selected.value, position)
+    deselect()
+    return
+  }
+
   selected.value = position
 }
 </script>
