@@ -6,9 +6,11 @@ coverage
 dist
 docs/.vitepress/cache
 docs/.vitepress/dist
+js/README.md
 node_modules
 php/.pest
 php/junit.xml
+rust/README.md
 sandbox.mjs
 target
 vendor

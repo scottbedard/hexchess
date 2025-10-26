@@ -19,7 +19,7 @@ export async function buildJs(options) {
 
   copy('LICENSE', 'js/dist/LICENSE')
   copy('js/package.json', 'js/dist/package.json')
-  copy('js/README.md', 'js/dist/README.md')
+  copy('README.md', 'js/dist/README.md')
 
   // set version numbers
   const pkg = JSON.parse(read('js/package.json'))
@@ -27,6 +27,8 @@ export async function buildJs(options) {
 }
 
 export async function buildRust(options) {
+  copy('README.md', 'rust/README.md')
+
   await execAsync('cargo', ['build', '--release'], {
     cwd: 'rust',
     silent: options?.silent,
