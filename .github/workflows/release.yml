@@ -86,6 +86,8 @@ jobs:
 
       - name: Publish to Crates.io
         run: |
+          cp README.md rust/README.md
+          cp LICENSE rust/LICENSE
           cd rust/macros
           cargo login ${{ secrets.CARGO_TOKEN }}
           cargo publish
