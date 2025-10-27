@@ -87,7 +87,7 @@ onMounted(() => {
   useEventListener(window, 'keydown', (evt) => {
     if (evt.key === 'Escape') {
       deselect()
-    } else if (evt.key === 'Delete' && selected.value !== null) {
+    } else if ((evt.key === 'Delete' || evt.key === 'Backspace') && selected.value !== null) {
       hexchess.value.board[selected.value] = null
       deselect()
     } else if (selected.value !== null && ['p', 'b', 'n', 'r', 'q', 'k', 'P', 'B', 'N', 'R', 'Q', 'K'].includes(evt.key)) {
