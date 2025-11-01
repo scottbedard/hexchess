@@ -1,4 +1,4 @@
-import { exec, spawn } from 'child_process'
+import { spawn } from 'child_process'
 import { fileURLToPath } from 'url'
 import fs from 'node:fs'
 import path from 'node:path'
@@ -50,11 +50,11 @@ export function read(file) {
 }
 
 /** resolve a path from the project root */
-export function resolve(file) {
+export function resolve(...paths) {
   const __filename = fileURLToPath(import.meta.url)
   const __dirname = path.dirname(__filename)
 
-  return path.resolve(__dirname, '..', file)
+  return path.resolve(__dirname, '..', ...paths)
 }
 
 /** write a file to the project root */

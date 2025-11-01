@@ -1,5 +1,6 @@
 import { copy, execAsync, read, resolve, write } from './utils.js'
 
+/** build js library for npm */
 export async function buildJs(options) {
   // cleanup
   await execAsync('rm', ['-rf', resolve('js/dist')], {
@@ -24,13 +25,4 @@ export async function buildJs(options) {
   // set version numbers
   const pkg = JSON.parse(read('js/package.json'))
   write('js/dist/index.mjs', read('js/dist/index.mjs').replace('x.y.z', pkg.version))
-}
-
-export async function buildRust(options) {
-  copy('README.md', 'rust/README.md')
-
-  await execAsync('cargo', ['build', '--release'], {
-    cwd: 'rust',
-    silent: options?.silent,
-  })
 }

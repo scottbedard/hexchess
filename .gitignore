@@ -6,6 +6,7 @@ coverage
 dist
 docs/.vitepress/cache
 docs/.vitepress/dist
+engine/pkg
 js/README.md
 node_modules
 php/.pest
