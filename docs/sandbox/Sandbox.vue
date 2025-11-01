@@ -98,7 +98,7 @@ onMounted(() => {
     } else if ((evt.key === 'Delete' || evt.key === 'Backspace') && selected.value !== null) {
       hexchess.value.board[selected.value] = null
       deselect()
-    } else if (selected.value !== null && ['p', 'b', 'n', 'r', 'q', 'k', 'P', 'B', 'N', 'R', 'Q', 'K'].includes(evt.key)) {
+    } else if (selected.value !== null && 'pbnrqkPBNRQK'.includes(evt.key)) {
       hexchess.value.board[selected.value] = evt.key as any
     }
   })
