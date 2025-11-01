@@ -65,6 +65,19 @@ program
   })
 
 //
+// engine
+//
+
+program
+  .command('engine:build')
+  .description('Build engine')
+  .action(async () => {
+    await execAsync('../node_modules/.bin/wasm-pack', ['build', '--release'], {
+      cwd: 'engine',
+    })
+  })
+
+//
 // lint
 //
 
