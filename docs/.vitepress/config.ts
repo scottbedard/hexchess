@@ -1,4 +1,5 @@
 import { defineConfig } from 'vitepress'
+import wasm from 'vite-plugin-wasm'
 import tailwindcss from '@tailwindcss/vite'
 
 // https://vitepress.dev/reference/site-config
@@ -39,6 +40,7 @@ export default defineConfig({
   vite: {
     plugins: [
       tailwindcss(),
+      wasm(),
     ]
   }
 })

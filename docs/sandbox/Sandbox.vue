@@ -51,11 +51,12 @@
 </template>
 
 <script lang="ts" setup>
-import Input from '../components/Input.vue'
 import { computed, onMounted, ref } from 'vue'
 import { Hexchess, San } from '../../js/src'
 import { useEventListener } from '@vueuse/core'
+import * as engine from '../../engine/pkg/hexchess_engine.js'
 import Hexboard from '../components/hexboard/Hexboard.vue'
+import Input from '../components/Input.vue'
 
 //
 // state
