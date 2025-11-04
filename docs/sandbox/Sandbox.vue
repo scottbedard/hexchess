@@ -3,6 +3,7 @@
     <Hexboard
       :flipped
       :hexchess
+      :highlighted
       :selected
       :targets
       @position-click="onPositionClick"
@@ -66,6 +67,8 @@ const { evaluate } = useEngine()
 
 const flipped = ref(false)
 
+const highlighted = ref<number[]>([])
+
 const hexchess = ref(Hexchess.init())
 
 const selected = ref<number | null>(null)
@@ -112,6 +115,7 @@ onMounted(() => {
 //
 
 function deselect() {
+  highlighted.value = []
   selected.value = null
 }
 
@@ -119,10 +123,12 @@ function handleMove(from: number, to: number) {
   const san = new San({ from, to })
 
   hexchess.value.applyMoveUnsafe(san)
+  highlighted.value = []
 }
 
 function onClearClick() {
   hexchess.value = new Hexchess()
+  highlighted.value = []
 }
 
 function onFlipClick() {
@@ -139,6 +145,7 @@ async function onPlayClick() {
     const best = result.sans[0]
     
     hexchess.value.applyMoveUnsafe(best.san)
+    highlighted.value = [best.san.from, best.san.to]
   }
 }
 
@@ -162,5 +169,6 @@ function onPositionClick(position: number) {
 
 function onResetClick() {
   hexchess.value = Hexchess.init()
+  highlighted.value = []
 }
 </script>
