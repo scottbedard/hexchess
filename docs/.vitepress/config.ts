@@ -1,8 +1,12 @@
 import { defineConfig } from 'vitepress'
+import wasm from 'vite-plugin-wasm'
 import tailwindcss from '@tailwindcss/vite'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
+  head: [
+    ['script', { src: '/engine/worker.js', type: 'module' }],
+  ],
   title: 'Hexchess',
   description: 'The brain of hexchess.club',
   themeConfig: {
@@ -39,6 +43,7 @@ export default defineConfig({
   vite: {
     plugins: [
       tailwindcss(),
+      wasm(),
     ]
   }
 })

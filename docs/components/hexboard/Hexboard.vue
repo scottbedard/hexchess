@@ -12,17 +12,27 @@
         :fill="colors[1]"
       />
 
-      <!-- positions -->
-      <path
+      <!-- positions & highlights -->
+      <template
         v-for="hex, i in board"
-        :d="d(flipped ? hex.path[1] : hex.path[0])"
-        :data-hexboard-position="i"
-        :fill="selected === i ? 'oklch(63.7% 0.237 25.331)' : fill(hex)"
-        :key="`position-${i}`"
-        @click.stop="$emit('positionClick', i)"
-        @mouseenter="mouseover = i"
-        @mouseleave="mouseover = null"
-      />
+        :key="i">
+        <path
+          :d="d(flipped ? hex.path[1] : hex.path[0])"
+          :data-hexboard-position="i"
+          :fill="selected === i ? 'oklch(63.7% 0.237 25.331)' : fill(hex)"
+          @click.stop="$emit('positionClick', i)"
+          @mouseenter="mouseover = i"
+          @mouseleave="mouseover = null"
+        />
+
+        <path
+          v-if="highlighted.includes(i)"
+          class="opacity-85 pointer-events-none"
+          fill="oklch(90.5% 0.182 98.111)"
+          :d="d(flipped ? hex.path[1] : hex.path[0])"
+          :data-hexboard-position="i"
+        />
+      </template>
 
       <!-- labels -->
       <text
@@ -74,6 +84,7 @@ import Piece from './Piece.vue'
 const props = defineProps<{
   flipped: boolean
   hexchess: Hexchess
+  highlighted: number[]
   selected: number | null
   targets: San[]
 }>()

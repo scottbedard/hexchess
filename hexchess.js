@@ -1,4 +1,6 @@
-import { buildJs, buildRust } from './scripts/build.js'
+import { buildEngine } from './scripts/build-engine.js'
+import { buildJs } from './scripts/build-js.js'
+import { buildRust } from './scripts/build-rust.js'
 import { dim, execAsync, green } from './scripts/utils.js'
 import { program } from 'commander'
 import { release } from './scripts/release.js'
@@ -28,6 +30,11 @@ program
     console.log()
     console.log(green('Done'), dim(`(${Date.now() - startAt}ms)`))
   })
+
+program
+  .command('build:engine')
+  .description('Build engine package')
+  .action(buildEngine)
 
 program
   .command('build:js')

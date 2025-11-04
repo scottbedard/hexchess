@@ -3,6 +3,7 @@
     <Hexboard
       :flipped
       :hexchess
+      :highlighted
       :selected
       :targets
       @position-click="onPositionClick"
@@ -38,22 +39,35 @@
       
         Flip
       </button>
+
+      <button
+        class="flex gap-x-1.5 items-center text-sm tracking-wide hover:text-(--vp-code-color)!"
+        @click="onPlayClick">
+        <svg xmlns="http://www.w3.org/2000/svg" class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg>
+
+        Play
+      </button>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import Input from '../components/Input.vue'
 import { computed, onMounted, ref } from 'vue'
 import { Hexchess, San } from '../../js/src'
+import { useEngine } from './use-engine'
 import { useEventListener } from '@vueuse/core'
 import Hexboard from '../components/hexboard/Hexboard.vue'
+import Input from '../components/Input.vue'
+
+const { evaluate } = useEngine()
 
 //
 // state
 //
 
 const flipped = ref(false)
+
+const highlighted = ref<number[]>([])
 
 const hexchess = ref(Hexchess.init())
 
@@ -90,7 +104,7 @@ onMounted(() => {
     } else if ((evt.key === 'Delete' || evt.key === 'Backspace') && selected.value !== null) {
       hexchess.value.board[selected.value] = null
       deselect()
-    } else if (selected.value !== null && ['p', 'b', 'n', 'r', 'q', 'k', 'P', 'B', 'N', 'R', 'Q', 'K'].includes(evt.key)) {
+    } else if (selected.value !== null && 'pbnrqkPBNRQK'.includes(evt.key)) {
       hexchess.value.board[selected.value] = evt.key as any
     }
   })
@@ -101,6 +115,7 @@ onMounted(() => {
 //
 
 function deselect() {
+  highlighted.value = []
   selected.value = null
 }
 
@@ -108,14 +123,30 @@ function handleMove(from: number, to: number) {
   const san = new San({ from, to })
 
   hexchess.value.applyMoveUnsafe(san)
+  highlighted.value = []
 }
 
 function onClearClick() {
   hexchess.value = new Hexchess()
+  highlighted.value = []
 }
 
 function onFlipClick() {
   flipped.value = !flipped.value
+}
+
+async function onPlayClick() {
+  const result = await evaluate({
+    depth: 1,
+    fen: hexchess.value,
+  })
+  
+  if (result.sans.length > 0) {
+    const best = result.sans[0]
+    
+    hexchess.value.applyMoveUnsafe(best.san)
+    highlighted.value = [best.san.from, best.san.to]
+  }
 }
 
 function onPositionClick(position: number) {
@@ -138,5 +169,6 @@ function onPositionClick(position: number) {
 
 function onResetClick() {
   hexchess.value = Hexchess.init()
+  highlighted.value = []
 }
 </script>
