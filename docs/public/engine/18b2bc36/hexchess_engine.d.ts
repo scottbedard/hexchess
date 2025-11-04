@@ -1,14 +1,44 @@
 /* tslint:disable */
 /* eslint-disable */
-export function init(): string;
+export function evaluate(fen: string, depth: number): SearchResult;
+export interface SearchResult {
+    /**
+     * depth of search
+     */
+    depth: number;
+    /**
+     * number of times the evaluation function was executed
+     */
+    evaluations: number;
+    /**
+     * ordered list of possible sans, sorted by score best to worst
+     */
+    sans: ScoredSan[];
+}
+
+export interface ScoredSan {
+    /**
+     * fen of the position
+     */
+    san: San;
+    /**
+     * score of the position
+     */
+    score: number;
+}
+
 
 export type InitInput = RequestInfo | URL | Response | BufferSource | WebAssembly.Module;
 
 export interface InitOutput {
   readonly memory: WebAssembly.Memory;
-  readonly init: () => [number, number];
-  readonly __wbindgen_externrefs: WebAssembly.Table;
+  readonly evaluate: (a: number, b: number, c: number) => any;
   readonly __wbindgen_free: (a: number, b: number, c: number) => void;
+  readonly __wbindgen_exn_store: (a: number) => void;
+  readonly __externref_table_alloc: () => number;
+  readonly __wbindgen_externrefs: WebAssembly.Table;
+  readonly __wbindgen_malloc: (a: number, b: number) => number;
+  readonly __wbindgen_realloc: (a: number, b: number, c: number, d: number) => number;
   readonly __wbindgen_start: () => void;
 }
 

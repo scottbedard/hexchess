@@ -2,13 +2,23 @@ import * as engine from './pkg/hexchess_engine.js'
 
 await engine.default()
 
+console.log('worker loaded')
+
 onmessage = evt => {
   const key = evt.data.key
+  const token = evt.data.token
 
-  if (key === '@bedard/hexchess::evaluate') {
-    console.log({
-      key: 'evaluate',
-      result: engine.init(),
+  if (typeof key !== 'string' || typeof token !== 'number') {
+    return
+  }
+
+  if (key === 'hexchess/evaluate') {
+    const { fen, depth } = evt.data.options
+
+    postMessage({
+      key: 'hexchess/evaluate/response',
+      result: engine.evaluate(fen, depth),
+      token,
     })
   }
 }

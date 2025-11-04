@@ -53,9 +53,12 @@
 <script lang="ts" setup>
 import { computed, onMounted, ref } from 'vue'
 import { Hexchess, San } from '../../js/src'
+import { useEngine } from './use-engine'
 import { useEventListener } from '@vueuse/core'
 import Hexboard from '../components/hexboard/Hexboard.vue'
 import Input from '../components/Input.vue'
+
+const { evaluate } = useEngine()
 
 //
 // state
@@ -126,8 +129,17 @@ function onFlipClick() {
   flipped.value = !flipped.value
 }
 
-function onPlayClick() {
-  console.log('play', postMessage({ key: '@bedard/hexchess::evaluate' }))
+async function onPlayClick() {
+  const result = await evaluate({
+    depth: 1,
+    fen: hexchess.value,
+  })
+  
+  if (result.sans.length > 0) {
+    const best = result.sans[0]
+    
+    hexchess.value.applyMoveUnsafe(best.san)
+  }
 }
 
 function onPositionClick(position: number) {
