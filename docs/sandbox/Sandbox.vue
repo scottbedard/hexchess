@@ -54,7 +54,6 @@
 import { computed, onMounted, ref } from 'vue'
 import { Hexchess, San } from '../../js/src'
 import { useEventListener } from '@vueuse/core'
-import * as engine from '../../engine/pkg/hexchess_engine.js'
 import Hexboard from '../components/hexboard/Hexboard.vue'
 import Input from '../components/Input.vue'
 
@@ -128,7 +127,7 @@ function onFlipClick() {
 }
 
 function onPlayClick() {
-  console.log('play')
+  console.log('play', postMessage({ key: '@bedard/hexchess::evaluate' }))
 }
 
 function onPositionClick(position: number) {

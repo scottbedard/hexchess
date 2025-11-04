@@ -1,6 +1,7 @@
 mod utils;
 
 use wasm_bindgen::prelude::*;
+use hexchess::Hexchess;
 
 #[wasm_bindgen]
 extern "C" {
@@ -8,6 +9,6 @@ extern "C" {
 }
 
 #[wasm_bindgen]
-pub fn add(a: i32, b: i32) -> i32 {
-    a + b
+pub fn init() -> String {
+    Hexchess::init().to_string()
 }

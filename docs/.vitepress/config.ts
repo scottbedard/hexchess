@@ -4,6 +4,9 @@ import tailwindcss from '@tailwindcss/vite'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
+  head: [
+    ['script', { src: '/engine/worker.js', type: 'module' }],
+  ],
   title: 'Hexchess',
   description: 'The brain of hexchess.club',
   themeConfig: {
