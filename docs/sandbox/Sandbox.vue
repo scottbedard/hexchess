@@ -42,9 +42,9 @@
 
     <div class="h-8 relative">
       <EvaluationResult
-        v-if="evaluation"
         class="absolute top-2"
-        :result="evaluation" />
+        v-model:depth="depth"
+        :evaluation />
     </div>
 
     <Hexboard
@@ -72,6 +72,8 @@ const { evaluate, loading } = useEngine()
 //
 // state
 //
+
+const depth = ref(3)
 
 const flipped = ref(false)
 
@@ -153,7 +155,7 @@ async function onPlayClick() {
   }
 
   const result = await evaluate({
-    depth: 3,
+    depth: depth.value,
     fen: hexchess.value,
   })
 
