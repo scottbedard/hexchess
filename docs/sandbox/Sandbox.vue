@@ -32,6 +32,7 @@
 
       <button
         class="flex gap-x-1.5 items-center text-sm tracking-wide hover:text-(--vp-code-color)!"
+        :disabled="loading"
         @click="onPlayClick">
         <svg xmlns="http://www.w3.org/2000/svg" class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg>
 
@@ -39,6 +40,12 @@
       </button>
     </div>
 
+    <div class="h-8 relative">
+      <EvaluationResult
+        v-if="evaluation"
+        class="absolute top-2"
+        :result="evaluation" />
+    </div>
 
     <Hexboard
       :flipped
@@ -54,12 +61,13 @@
 <script lang="ts" setup>
 import { computed, onMounted, ref } from 'vue'
 import { Hexchess, San } from '../../js/src'
-import { useEngine } from './use-engine'
+import { useEngine, type SearchResult } from './use-engine'
 import { useEventListener } from '@vueuse/core'
+import EvaluationResult from './EvaluationResult.vue'
 import Hexboard from '../components/hexboard/Hexboard.vue'
 import Input from '../components/Input.vue'
 
-const { evaluate } = useEngine()
+const { evaluate, loading } = useEngine()
 
 //
 // state
@@ -72,6 +80,8 @@ const highlighted = ref<number[]>([])
 const hexchess = ref(Hexchess.init())
 
 const selected = ref<number | null>(null)
+
+const evaluation = ref<SearchResult | null>(null)
 
 //
 // computed
@@ -122,11 +132,13 @@ function deselect() {
 function handleMove(from: number, to: number) {
   const san = new San({ from, to })
 
+  evaluation.value = null
   hexchess.value.applyMoveUnsafe(san)
   highlighted.value = []
 }
 
 function onClearClick() {
+  evaluation.value = null
   hexchess.value = new Hexchess()
   highlighted.value = []
 }
@@ -136,16 +148,29 @@ function onFlipClick() {
 }
 
 async function onPlayClick() {
+  if (loading.value) {
+    return
+  }
+
   const result = await evaluate({
-    depth: 1,
+    depth: 3,
     fen: hexchess.value,
   })
+
+  evaluation.value = result
   
   if (result.sans.length > 0) {
     const best = result.sans[0]
-    
-    hexchess.value.applyMoveUnsafe(best.san)
-    highlighted.value = [best.san.from, best.san.to]
+
+    const next = hexchess.value.clone()
+
+    try {
+      next.applyMoveUnsafe(best.san)
+      hexchess.value = next
+      highlighted.value = [best.san.from, best.san.to]
+    } catch {
+      return
+    }
   }
 }
 

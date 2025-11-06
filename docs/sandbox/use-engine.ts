@@ -7,14 +7,16 @@ export interface EvaluateOptions {
   fen: MaybeRef<Hexchess>
 }
 
-interface SearchResult {
+export interface SearchResult {
   depth: number
+  duration: number
   evaluations: number
   sans: { san: San, score: number }[]
 }
 
 export function useEngine() {
   let i = 0
+
   const loading = computed(() => reqs.value.length > 0)
 
   const reqs = shallowRef<[number, (result: SearchResult) => void][]>([])
@@ -23,12 +25,17 @@ export function useEngine() {
     const t = ++i
 
     const p = new Promise<SearchResult>((resolve) => {
-      reqs.value.push([t, (r: SearchResult) => resolve(r)])
+      const startAt = performance.now()
+    
+      reqs.value.push([t, (r: SearchResult) => {
+        r.duration = performance.now() - startAt
+        return resolve(r)
+      }])
 
       postMessage({
         key: 'hexchess/evaluate',
         options: {
-          depth: toValue(options.depth) ?? 1,
+          depth: toValue(options.depth) ?? 3,
           fen: toValue(options.fen).toString(),
         },
         token: t,
