@@ -130,6 +130,6 @@ function labelFill(text: string) {
     return 'fill-(--vp-code-color)'
   }
 
-  return 'fill-gray-300 dark:fill-gray-600'
+  return 'fill-gray-400/50'
 }
 </script>
