@@ -40,7 +40,7 @@
       </button>
     </div>
 
-    <div class="h-8 relative">
+    <div class="h-12 relative">
       <EvaluationResult
         class="absolute top-2"
         v-model:depth="depth"

@@ -6,6 +6,7 @@
       <div class="flex items-center gap-x-1">
         <button
           class="cursor-pointer hover:text-(--vp-code-color)!"
+          title="Increase depth"
           @click="onIncrementClick"
         >
           <svg class="size-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
@@ -13,6 +14,7 @@
 
         <button
           class="cursor-pointer hover:text-(--vp-code-color)!"
+          title="Decrease depth"
           @click="onDecrementClick"
         >
           <svg class="size-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/></svg>
