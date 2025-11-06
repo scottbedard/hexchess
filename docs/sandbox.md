@@ -4,7 +4,7 @@ layout: doc
 
 # Sandbox
 
-Clear positions using the `Delete` or `Backspace` key, and input pieces using their FEN character. (`p`, `b`, `n`, `r`, `q`, `k`, and `P`, `B`, `N`, `R`, `Q`, `K`).
+Clear positions with `Delete` or `Backspace`, and input pieces by their FEN character.
 
 <Sandbox />
 

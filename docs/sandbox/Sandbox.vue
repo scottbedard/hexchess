@@ -1,17 +1,7 @@
 <template>
   <div>
-    <Hexboard
-      :flipped
-      :hexchess
-      :highlighted
-      :selected
-      :targets
-      @position-click="onPositionClick"
-    />
-
     <Input
       v-model="fen"
-      label="FEN"
       name="fen"
       select-all />
 
@@ -48,6 +38,16 @@
         Play
       </button>
     </div>
+
+
+    <Hexboard
+      :flipped
+      :hexchess
+      :highlighted
+      :selected
+      :targets
+      @position-click="onPositionClick"
+    />
   </div>
 </template>
 

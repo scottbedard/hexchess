@@ -42,9 +42,7 @@
         text-anchor="middle"
         :class="[
           'font-bold pointer-events-none select-none text-[.5px]',
-          mouseover !== null && (position(mouseover).startsWith(text) || position(mouseover).endsWith(text))
-            ? 'fill-(--vp-code-color)'
-            : 'fill-gray-400'
+          labelFill(text),
         ]"
         :key="`label-${i}`"
         :x="x(flipped ? positionFlipped[0] : p[0])"
@@ -118,5 +116,20 @@ const pieces = computed(() => {
 /** fill color of position */
 function fill(hex: typeof board[number]) {
   return colors[hex.color]
+}
+
+function labelFill(text: string) {
+  if (mouseover.value === null) {
+    return 'fill-gray-400'
+  }
+
+  if (
+    position(mouseover.value).startsWith(text) ||
+    position(mouseover.value).endsWith(text)
+  ) {
+    return 'fill-(--vp-code-color)'
+  }
+
+  return 'fill-gray-300 dark:fill-gray-600'
 }
 </script>
