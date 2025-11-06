@@ -2,8 +2,6 @@ import * as engine from './18b2bc36/hexchess_engine.js'
 
 await engine.default()
 
-console.log('worker loaded')
-
 onmessage = evt => {
   const key = evt.data.key
   const token = evt.data.token
