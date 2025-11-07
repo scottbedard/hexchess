@@ -44,7 +44,7 @@ pub fn search(root: &Hexchess, depth: u8) -> SearchResult {
         .collect();
 
     // sort best moves first, from perspective of the current player
-    sans.sort_by(|a, b| b.score.total_cmp(&a.score));
+    sans.sort_by(|a, b| a.score.total_cmp(&b.score));
 
     SearchResult {
         depth,
