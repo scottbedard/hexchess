@@ -154,12 +154,16 @@ async function onPlayClick() {
     return
   }
 
+  console.log({ depth: depth.value, fen: hexchess.value })
+
   const result = await evaluate({
     depth: depth.value,
     fen: hexchess.value,
   })
 
   evaluation.value = result
+
+  console.log({ result })
   
   if (result.sans.length > 0) {
     const best = result.sans[0]

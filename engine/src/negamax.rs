@@ -1,8 +1,7 @@
-use crate::evaluation::evaluate;
+use crate::evaluate::evaluate::evaluate;
 use crate::ordering::optimize_for_branch_pruning;
 use crate::structs::{ScoredSan, SearchResult};
 use hexchess::{Color, Hexchess};
-use std::cmp::max;
 use std::collections::HashMap;
 
 #[derive(Clone, Copy)]
@@ -15,7 +14,7 @@ enum Flag {
 struct SearchedNode {
     depth: u8,
     flag: Flag,
-    value: i32,
+    value: f32,
 }
 
 /// search position to a given depth
@@ -35,8 +34,8 @@ pub fn search(root: &Hexchess, depth: u8) -> SearchResult {
                 &mut transposition_table,
                 &child,
                 depth - 1,
-                i32::MIN,
-                i32::MAX,
+                f32::MIN,
+                f32::MAX,
                 &mut evaluations,
             );
 
@@ -45,7 +44,7 @@ pub fn search(root: &Hexchess, depth: u8) -> SearchResult {
         .collect();
 
     // sort best moves first, from perspective of the current player
-    sans.sort_by_key(|s| s.score);
+    sans.sort_by(|a, b| b.score.total_cmp(&a.score));
 
     SearchResult {
         depth,
@@ -58,10 +57,10 @@ fn negamax(
     table: &mut HashMap<Hexchess, SearchedNode>,
     hexchess: &Hexchess,
     depth: u8,
-    mut alpha: i32,
-    beta: i32,
+    mut alpha: f32,
+    beta: f32,
     evals: &mut u32,
-) -> i32 {
+) -> f32 {
     let alpha_orig = alpha;
 
     // check if our result has already been computed
@@ -95,18 +94,17 @@ fn negamax(
     // for example, we should probably investigate captures before non-captures
     optimize_for_branch_pruning(hexchess, &mut current_moves);
 
-    let mut value = i32::MIN;
+    let mut value = f32::MIN;
 
     for san in current_moves {
         let mut child = hexchess.clone();
         let _ = child.apply_move(&san);
 
-        value = max(
-            value,
+        value = value.max(
             -negamax(table, &child, depth - 1, -beta, -alpha, evals),
         );
 
-        alpha = max(alpha, value);
+        alpha = alpha.max(value);
 
         if alpha >= beta {
             break;

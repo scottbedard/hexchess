@@ -2,10 +2,10 @@ use crate::structs::SearchResult;
 use hexchess::Hexchess;
 use wasm_bindgen::prelude::*;
 
-mod evaluation;
-mod negamax;
-mod ordering;
-mod structs;
+pub mod evaluate;
+pub mod negamax;
+pub mod ordering;
+pub mod structs;
 
 fn set_panic_hook() {
     // When the `console_error_panic_hook` feature is enabled, we can call the

@@ -23,5 +23,5 @@ pub struct ScoredSan {
     pub san: San,
 
     /// score of the position
-    pub score: i32,
+    pub score: f32,
 }
