@@ -160,8 +160,6 @@ async function onPlayClick() {
   })
 
   evaluation.value = result
-
-  console.log({ result })
   
   if (result.sans.length > 0) {
     const best = result.sans[0]
