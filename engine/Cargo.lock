@@ -35,6 +35,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "engine_macros"
+version = "0.1.0"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn",
+]
+
+[[package]]
 name = "equivalent"
 version = "1.0.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -79,6 +88,7 @@ name = "hexchess-engine"
 version = "0.1.0"
 dependencies = [
  "console_error_panic_hook",
+ "engine_macros",
  "hexchess",
  "serde",
  "tsify",

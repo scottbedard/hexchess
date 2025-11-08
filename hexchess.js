@@ -4,7 +4,7 @@ import { buildRust } from './scripts/build-rust.js'
 import { dim, execAsync, green } from './scripts/utils.js'
 import { program } from 'commander'
 import { release } from './scripts/release.js'
-import { testJs, testPhp, testRust } from './scripts/test.js'
+import { testEngine, testJs, testPhp, testRust } from './scripts/test.js'
 import { versions } from './scripts/versions.js'
 import ora from 'ora'
 
@@ -110,21 +110,43 @@ program
   .description('Run all tests')
   .action(async () => {
     const startAt = Date.now()
-
+  
+    const rustStartAt = Date.now()
     const rust = ora('Rust...').start()
     await testRust({ silent: true })
-    rust.succeed(`Rust ${dim(`(${Date.now() - startAt}ms)`)}`)
+    rust.succeed(`Rust ${dim(`(${Date.now() - rustStartAt}ms)`)}`)
 
+    const phpStartAt = Date.now()
     const php = ora('PHP...').start()
     await testPhp({ silent: true })
-    php.succeed(`PHP ${dim(`(${Date.now() - startAt}ms)`)}`)
+    php.succeed(`PHP ${dim(`(${Date.now() - phpStartAt}ms)`)}`)
 
+    const jsStartAt = Date.now()
     const js = ora('JavaScript...').start()
     await testJs({ silent: true })
-    js.succeed(`JavaScript ${dim(`(${Date.now() - startAt}ms)`)}`)
+    js.succeed(`JavaScript ${dim(`(${Date.now() - jsStartAt}ms)`)}`)
+
+    const engineStartAt = Date.now()
+    const engine = ora('Engine...').start()
+    await testEngine({ silent: true })
+    engine.succeed(`Engine ${dim(`(${Date.now() - engineStartAt}ms)`)}`)
 
     console.log()
     console.log(green('Done'), dim(`(${Date.now() - startAt}ms)`))
+  })
+
+program
+  .command('test:engine')
+  .description('Run engine tests')
+  .option('-c, --coverage', 'Generate coverage report')
+  .option('-f, --filter <filter>', 'Filter tests by name')
+  .option('-s, --silent', 'Run tests silently')
+  .action(async (options) => {
+    await testEngine({
+      coverage: options?.coverage,
+      filter: options?.filter,
+      silent: options?.silent,
+    })
   })
 
 program

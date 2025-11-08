@@ -1,5 +1,39 @@
 import { execAsync, resolve } from './utils.js'
 
+export async function testEngine(options) {
+  const args = [
+    'test',
+    '--all-features',
+  ]
+  
+  if (options?.coverage) {
+    args.push('--coverage')
+  }
+
+  if (options?.filter) {
+    args.push(`--filter="${options.filter}"`)
+  }
+  
+  if (options?.coverage) {
+    args.length = 0
+
+    args.push(
+      '+nightly',
+      'tarpaulin',
+      '--verbose',
+      '--all-features',
+      '--workspace',
+      '--timeout=120',
+      '--out=xml'
+    )
+  }
+
+  await execAsync('cargo', args, {
+    cwd: resolve('engine'),
+    silent: options?.silent,
+  })
+}
+
 export async function testJs(options) {
   const args = [
     'vitest',

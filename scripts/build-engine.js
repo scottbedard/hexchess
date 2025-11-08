@@ -5,7 +5,7 @@ import { existsSync, rmSync } from 'node:fs'
 export async function buildEngine() {
   const pkg = resolve('./engine/pkg')
   const wasmPack = resolve('./node_modules/.bin/wasm-pack')
-  const fingerprint = hashDir('engine/pkg').slice(0, 8)
+  const fingerprint = hashDir('engine/src').slice(0, 7)
   const workerPath = resolve('docs/public/engine/worker.js')
 
   // rebuild wasm package
