@@ -1,6 +1,6 @@
 use hexchess::{Color, Hexchess, Position};
 
-pub fn evaluate_pawn(hexchess: &Hexchess, index: u8, color: Color) -> f32 {
+pub fn evaluate_pawn(_hexchess: &Hexchess, index: u8, color: Color) -> f32 {
     let position = Position::from_index(index);
     let advancement_bonus = 10.0 * pawn_advancement_scalar(position, color);
     let base_value = 10.0;
