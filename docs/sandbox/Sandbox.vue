@@ -154,8 +154,6 @@ async function onPlayClick() {
     return
   }
 
-  console.log({ depth: depth.value, fen: hexchess.value })
-
   const result = await evaluate({
     depth: depth.value,
     fen: hexchess.value,
