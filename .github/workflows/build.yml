@@ -90,6 +90,27 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           fail_ci_if_error: true
 
+  engine:
+    name: Engine
+    runs-on: ubuntu-latest
+    container:
+      image: xd009642/tarpaulin:develop-nightly
+      options: --security-opt seccomp=unconfined
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        name: Install pnpm
+        with:
+          version: 9
+          run_install: false
+      - name: Install dependencies
+        run: pnpm install --no-frozen-lockfile
+      - name: Build
+        run: node hexchess build:engine
+      - name: Test
+        run: node hexchess test:engine
+  
   php:
     name: PHP
     runs-on: ubuntu-latest
@@ -126,9 +147,7 @@ jobs:
 
   versions:
     name: Check versions
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v4
 

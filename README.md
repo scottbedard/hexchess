@@ -47,6 +47,7 @@ Options:
 
 Commands:
   build                        Build all projects
+  build:engine                 Build engine package
   build:js                     Build NPM package
   build:rs                     Build Rust crate
   docs:dev                     Develop docs
@@ -55,6 +56,7 @@ Commands:
   lint:php                     Run linting
   release [options] [version]  Set the version of the project
   test                         Run all tests
+  test:engine [options]        Run engine tests
   test:js [options]            Run JavaScript tests
   test:php [options]           Run PHP tests
   test:rs [options]            Run Rust tests

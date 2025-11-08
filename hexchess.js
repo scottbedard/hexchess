@@ -4,7 +4,7 @@ import { buildRust } from './scripts/build-rust.js'
 import { dim, execAsync, green } from './scripts/utils.js'
 import { program } from 'commander'
 import { release } from './scripts/release.js'
-import { testJs, testPhp, testRust } from './scripts/test.js'
+import { testEngine, testJs, testPhp, testRust } from './scripts/test.js'
 import { versions } from './scripts/versions.js'
 import ora from 'ora'
 
@@ -125,6 +125,20 @@ program
 
     console.log()
     console.log(green('Done'), dim(`(${Date.now() - startAt}ms)`))
+  })
+
+program
+  .command('test:engine')
+  .description('Run engine tests')
+  .option('-c, --coverage', 'Generate coverage report')
+  .option('-f, --filter <filter>', 'Filter tests by name')
+  .option('-s, --silent', 'Run tests silently')
+  .action(async (options) => {
+    await testEngine({
+      coverage: options?.coverage,
+      filter: options?.filter,
+      silent: options?.silent,
+    })
   })
 
 program
