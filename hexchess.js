@@ -110,18 +110,26 @@ program
   .description('Run all tests')
   .action(async () => {
     const startAt = Date.now()
-
+  
+    const rustStartAt = Date.now()
     const rust = ora('Rust...').start()
     await testRust({ silent: true })
-    rust.succeed(`Rust ${dim(`(${Date.now() - startAt}ms)`)}`)
+    rust.succeed(`Rust ${dim(`(${Date.now() - rustStartAt}ms)`)}`)
 
+    const phpStartAt = Date.now()
     const php = ora('PHP...').start()
     await testPhp({ silent: true })
-    php.succeed(`PHP ${dim(`(${Date.now() - startAt}ms)`)}`)
+    php.succeed(`PHP ${dim(`(${Date.now() - phpStartAt}ms)`)}`)
 
+    const jsStartAt = Date.now()
     const js = ora('JavaScript...').start()
     await testJs({ silent: true })
-    js.succeed(`JavaScript ${dim(`(${Date.now() - startAt}ms)`)}`)
+    js.succeed(`JavaScript ${dim(`(${Date.now() - jsStartAt}ms)`)}`)
+
+    const engineStartAt = Date.now()
+    const engine = ora('Engine...').start()
+    await testEngine({ silent: true })
+    engine.succeed(`Engine ${dim(`(${Date.now() - engineStartAt}ms)`)}`)
 
     console.log()
     console.log(green('Done'), dim(`(${Date.now() - startAt}ms)`))
