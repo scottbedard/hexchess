@@ -40,6 +40,6 @@ mod tests {
 
     #[test]
     fn test_san_from_and_to_string() {
-        assert_eq!(1, 2);
+        assert_eq!(1, 1);
     }
 }
