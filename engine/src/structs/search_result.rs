@@ -33,13 +33,3 @@ where
 {
     serializer.serialize_str(&san.to_string())
 }
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn test_san_from_and_to_string() {
-        assert_eq!(1, 1);
-    }
-}
