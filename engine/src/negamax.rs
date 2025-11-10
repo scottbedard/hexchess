@@ -1,6 +1,6 @@
-use crate::evaluate::evaluate::evaluate;
+use crate::eval::eval::evaluate;
 use crate::ordering::optimize_for_branch_pruning;
-use crate::structs::{ScoredSan, SearchResult};
+use crate::structs::{EvalOptions, ScoredSan, SearchResult};
 use hexchess::{Color, Hexchess};
 use std::collections::HashMap;
 
@@ -18,7 +18,7 @@ struct SearchedNode {
 }
 
 /// search position to a given depth
-pub fn search(root: &Hexchess, depth: u8) -> SearchResult {
+pub fn search(root: &Hexchess, depth: u8, options: &EvalOptions) -> SearchResult {
     let mut transposition_table = HashMap::<Hexchess, SearchedNode>::new();
     let mut evaluations: u32 = 0;
 
@@ -37,6 +37,7 @@ pub fn search(root: &Hexchess, depth: u8) -> SearchResult {
                 f32::MIN,
                 f32::MAX,
                 &mut evaluations,
+                &options,
             );
 
             ScoredSan { san, score }
@@ -60,6 +61,7 @@ fn negamax(
     mut alpha: f32,
     beta: f32,
     evals: &mut u32,
+    options: &EvalOptions,
 ) -> f32 {
     let alpha_orig = alpha;
 
@@ -85,8 +87,8 @@ fn negamax(
         *evals += 1;
 
         return match hexchess.turn {
-            Color::White => evaluate(hexchess),
-            Color::Black => -evaluate(hexchess),
+            Color::White => evaluate(hexchess, &options),
+            Color::Black => -evaluate(hexchess, &options),
         };
     }
 
@@ -101,7 +103,7 @@ fn negamax(
         let _ = child.apply_move(&san);
 
         value = value.max(
-            -negamax(table, &child, depth - 1, -beta, -alpha, evals),
+            -negamax(table, &child, depth - 1, -beta, -alpha, evals, options),
         );
 
         alpha = alpha.max(value);

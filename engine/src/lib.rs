@@ -1,8 +1,8 @@
-use crate::structs::SearchResult;
+use crate::structs::{EvalOptions, SearchResult};
 use hexchess::Hexchess;
 use wasm_bindgen::prelude::*;
 
-pub mod evaluate;
+pub mod eval;
 pub mod negamax;
 pub mod ordering;
 pub mod structs;
@@ -24,5 +24,7 @@ pub fn evaluate(fen: String, depth: u8) -> SearchResult {
 
     let hexchess = Hexchess::parse(&fen).unwrap();
 
-    negamax::search(&hexchess, depth)
+    let options = EvalOptions::default();
+
+    negamax::search(&hexchess, depth, &options)
 }

@@ -1,5 +1,6 @@
-use hexchess::{Color, Hexchess, Position};
+use crate::structs::EvalOptions;
 use hexchess_macros::bitmask_csv;
+use hexchess::{Color, Hexchess};
 
 const KNIGHT_MOVES_BITMASKS: [u128; 91] = [
     bitmask_csv!("h8, g8, e8, d8"), // F11
@@ -95,9 +96,12 @@ const KNIGHT_MOVES_BITMASKS: [u128; 91] = [
     bitmask_csv!("h2, h3, i4, k4"), // L1
 ];
 
-pub fn evaluate_knight(hexchess: &Hexchess, index: u8, color: Color) -> f32 {
-    let base_value = 30.0;
-
+pub fn eval_knight(
+    hexchess: &Hexchess,
+    index: u8,
+    color: Color,
+    options: &EvalOptions,
+) -> f32 {
     let opposing_king_bitmask = match color {
         Color::White => hexchess.bitboard_black_king,
         Color::Black => hexchess.bitboard_white_king,
@@ -110,5 +114,5 @@ pub fn evaluate_knight(hexchess: &Hexchess, index: u8, color: Color) -> f32 {
         _ => 10.0,
     };
 
-    base_value + check_bonus
+    options.knight_value + check_bonus
 }

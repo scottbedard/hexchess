@@ -1,4 +1,4 @@
-import * as engine from './e16bb92/hexchess_engine.js'
+import * as engine from './b9fedcb/hexchess_engine.js'
 
 await engine.default()
 
