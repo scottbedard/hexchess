@@ -1,10 +1,9 @@
 use hexchess::{Color, Hexchess, Piece};
 use crate::evaluate::evaluate_pawn::evaluate_pawn;
+use crate::evaluate::evaluate_knight::evaluate_knight;
 
 pub fn evaluate(hexchess: &Hexchess) -> f32 {
     let score = score_material(hexchess);
-
-    // @todo: apply heuristic functions to modify score...
 
     score
 }
@@ -15,13 +14,13 @@ fn score_material(hexchess: &Hexchess) -> f32 {
     for (index, piece) in hexchess.to_board_array().iter().enumerate() {
         score += match piece {
             Some(Piece::BlackPawn) => -evaluate_pawn(hexchess, index as u8, Color::Black),
-            Some(Piece::BlackKnight) => -knight_weight(hexchess, index),
+            Some(Piece::BlackKnight) => -evaluate_knight(hexchess, index as u8, Color::Black),
             Some(Piece::BlackBishop) => -bishop_weight(hexchess, index),
             Some(Piece::BlackRook) => -rook_weight(hexchess, index),
             Some(Piece::BlackQueen) => -queen_weight(hexchess, index),
             Some(Piece::BlackKing) => -king_weight(hexchess, index),
             Some(Piece::WhitePawn) => evaluate_pawn(hexchess, index as u8, Color::White),
-            Some(Piece::WhiteKnight) => knight_weight(hexchess, index),
+            Some(Piece::WhiteKnight) => evaluate_knight(hexchess, index as u8, Color::White),
             Some(Piece::WhiteBishop) => bishop_weight(hexchess, index),
             Some(Piece::WhiteRook) => rook_weight(hexchess, index),
             Some(Piece::WhiteQueen) => queen_weight(hexchess, index),   
@@ -34,12 +33,6 @@ fn score_material(hexchess: &Hexchess) -> f32 {
 }
 
 fn bishop_weight(_hexchess: &Hexchess, _index: usize) -> f32 {
-    let weight: f32 = 30.0;
-
-    weight * 1.0
-}
-
-fn knight_weight(_hexchess: &Hexchess, _index: usize) -> f32 {
     let weight: f32 = 30.0;
 
     weight * 1.0
