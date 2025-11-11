@@ -7,10 +7,32 @@ use crate::eval::eval_queen::eval_queen;
 use crate::eval::eval_rook::eval_rook;
 use crate::structs::EvalOptions;
 
-pub fn evaluate(hexchess: &Hexchess, options: &EvalOptions) -> f32 {
-    let score = score_material(hexchess, options);
+pub fn evaluate(hexchess: &Hexchess, opts: &EvalOptions) -> f32 {
+    let game_state = score_game_state(hexchess, opts);
 
-    score
+    if game_state == f32::INFINITY {
+        return f32::INFINITY;
+    }
+
+    score_material(hexchess, opts)
+        + game_state
+}
+
+fn score_game_state(hexchess: &Hexchess, opts: &EvalOptions) -> f32 {
+    let sign = match hexchess.turn {
+        Color::White => 1.0,
+        Color::Black => -1.0,
+    };
+
+    if hexchess.is_checkmate() {
+        sign * opts.checkmate_value
+    } else if hexchess.is_stalemate() {
+        sign * opts.stalemate_value
+    } else if hexchess.is_check() {
+        sign * opts.check_value
+    } else {
+        0.0
+    }
 }
 
 fn score_material(hexchess: &Hexchess, opts: &EvalOptions) -> f32 {
