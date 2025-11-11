@@ -73,7 +73,7 @@ const { evaluate, loading } = useEngine()
 // state
 //
 
-const depth = ref(3)
+const depth = ref(1)
 
 const flipped = ref(false)
 
