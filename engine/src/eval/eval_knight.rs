@@ -97,22 +97,10 @@ const KNIGHT_MOVES_BITMASKS: [u128; 91] = [
 ];
 
 pub fn eval_knight(
-    hexchess: &Hexchess,
-    index: u8,
-    color: Color,
+    _hexchess: &Hexchess,
+    _index: u8,
+    _color: Color,
     options: &EvalOptions,
 ) -> f32 {
-    let opposing_king_bitmask = match color {
-        Color::White => hexchess.bitboard_black_king,
-        Color::Black => hexchess.bitboard_white_king,
-    };
-
-    let threatened_positions = KNIGHT_MOVES_BITMASKS[index as usize];
-
-    let check_bonus = match *opposing_king_bitmask & threatened_positions {
-        0 => 0.0,
-        _ => 10.0,
-    };
-
-    options.knight_value + check_bonus
+    options.knight_value
 }
