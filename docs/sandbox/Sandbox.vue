@@ -66,6 +66,7 @@ import { useEventListener } from '@vueuse/core'
 import EvaluationResult from './EvaluationResult.vue'
 import Hexboard from '../components/hexboard/Hexboard.vue'
 import Input from '../components/Input.vue'
+import { ping } from '../../engine/index'
 
 const { evaluate, loading } = useEngine()
 
@@ -131,12 +132,18 @@ function deselect() {
   selected.value = null
 }
 
-function handleMove(from: number, to: number) {
-  const san = new San({ from, to })
+async function handleMove(from: number, to: number) {
+  console.log('handleMove', { from, to })
 
-  evaluation.value = null
-  hexchess.value.applyMoveUnsafe(san)
-  highlighted.value = []
+  const pong = await ping()
+
+  console.log('pong', pong)
+
+  // const san = new San({ from, to })
+
+  // evaluation.value = null
+  // hexchess.value.applyMoveUnsafe(san)
+  // highlighted.value = []
 }
 
 function onClearClick() {

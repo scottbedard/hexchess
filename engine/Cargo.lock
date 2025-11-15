@@ -36,7 +36,7 @@ dependencies = [
 
 [[package]]
 name = "engine_macros"
-version = "0.1.0"
+version = "0.0.1"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -84,15 +84,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "hexchess_macros"
-version = "2.4.7"
-dependencies = [
- "quote",
- "syn",
-]
-
-[[package]]
-name = "hexfish"
+name = "hexchess_engine"
 version = "0.0.1"
 dependencies = [
  "console_error_panic_hook",
@@ -103,6 +95,14 @@ dependencies = [
  "tsify",
  "wasm-bindgen",
  "wasm-bindgen-test",
+]
+
+[[package]]
+name = "hexchess_macros"
+version = "2.4.7"
+dependencies = [
+ "quote",
+ "syn",
 ]
 
 [[package]]

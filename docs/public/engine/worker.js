@@ -3,20 +3,30 @@ import * as engine from './b9fedcb/hexchess_engine.js'
 await engine.default()
 
 onmessage = evt => {
-  const key = evt.data.key
-  const token = evt.data.token
+  const { command, token, options } = evt.data
 
-  if (typeof key !== 'string' || typeof token !== 'number') {
-    return
+  if (
+    typeof command === 'string' &&
+    typeof token === 'number'
+  ) {
+    const post = (response = {}) => postMessage({ response, options, token })
+
+    switch (command) {
+      case 'hexchess/ping':
+        post({ now: Date.now() })
+        break
+    }
   }
 
-  if (key === 'hexchess/evaluate') {
-    const { fen, depth } = evt.data.options
+  
 
-    postMessage({
-      key: 'hexchess/evaluate/response',
-      result: engine.evaluate(fen, depth),
-      token,
-    })
-  }
+  // if (command === 'hexchess/evaluate') {
+  //   const { fen, depth } = evt.data.options
+
+  //   postMessage({
+  //     id,
+  //     key: 'hexchess/evaluate',
+  //     result: engine.evaluate(fen, depth),
+  //   })
+  // }
 }

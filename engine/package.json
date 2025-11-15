@@ -1,12 +1,10 @@
 {
-  "description": "A game engine for Gliński's hexagonal chess",
   "author": "Scott Bedard",
-  "keywords": [],
+  "description": "A game engine for Gliński's hexagonal chess",
+  "keywords": ["hexchess"],
   "license": "MIT",
   "main": "index.js",
   "name": "@bedard/hexfish",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "type": "module",
   "version": "0.0.1"
 }
