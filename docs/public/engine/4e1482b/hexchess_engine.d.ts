@@ -1,6 +1,21 @@
 /* tslint:disable */
 /* eslint-disable */
-export function evaluate(fen: string, depth: number): SearchResult;
+export function evaluate(options: EvaluateOptions): EvaluateResponse;
+export interface EvaluateResponse {
+    /**
+     * depth of search
+     */
+    depth: number;
+    /**
+     * number of times the evaluation function was executed
+     */
+    evaluations: number;
+    /**
+     * ordered list of possible sans, sorted by score best to worst
+     */
+    sans: ScoredSan[];
+}
+
 export interface SearchResult {
     /**
      * depth of search
@@ -27,18 +42,46 @@ export interface ScoredSan {
     score: number;
 }
 
+export interface ScoredSan {
+    /**
+     * fen of the position
+     */
+    san: San;
+    /**
+     * score of the position
+     */
+    score: number;
+}
+
+export interface EvaluateOptions {
+    depth: number;
+    position: string;
+}
+
+export interface EvalOptions {
+    bishop_value: number;
+    king_value: number;
+    knight_value: number;
+    pawn_value: number;
+    queen_value: number;
+    rook_value: number;
+    check_value: number;
+    checkmate_value: number;
+    stalemate_value: number;
+}
+
 
 export type InitInput = RequestInfo | URL | Response | BufferSource | WebAssembly.Module;
 
 export interface InitOutput {
   readonly memory: WebAssembly.Memory;
-  readonly evaluate: (a: number, b: number, c: number) => any;
+  readonly evaluate: (a: any) => any;
+  readonly __wbindgen_malloc: (a: number, b: number) => number;
+  readonly __wbindgen_realloc: (a: number, b: number, c: number, d: number) => number;
   readonly __wbindgen_free: (a: number, b: number, c: number) => void;
   readonly __wbindgen_exn_store: (a: number) => void;
   readonly __externref_table_alloc: () => number;
   readonly __wbindgen_externrefs: WebAssembly.Table;
-  readonly __wbindgen_malloc: (a: number, b: number) => number;
-  readonly __wbindgen_realloc: (a: number, b: number, c: number, d: number) => number;
   readonly __wbindgen_start: () => void;
 }
 

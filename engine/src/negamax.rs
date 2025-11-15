@@ -1,6 +1,6 @@
 use crate::eval::eval::evaluate;
 use crate::ordering::optimize_for_branch_pruning;
-use crate::structs::{EvalOptions, ScoredSan, SearchResult};
+use crate::structs::{EvalOptions, EvaluateResponse, ScoredSan};
 use hexchess::{Color, Hexchess};
 use std::collections::HashMap;
 
@@ -18,7 +18,7 @@ struct SearchedNode {
 }
 
 /// search position to a given depth
-pub fn search(root: &Hexchess, depth: u8, options: &EvalOptions) -> SearchResult {
+pub fn search(root: &Hexchess, depth: u8, options: &EvalOptions) -> EvaluateResponse {
     let mut transposition_table = HashMap::<Hexchess, SearchedNode>::new();
     let mut evaluations: u32 = 0;
 
@@ -47,7 +47,7 @@ pub fn search(root: &Hexchess, depth: u8, options: &EvalOptions) -> SearchResult
     // sort best moves first, from perspective of the current player
     sans.sort_by(|a, b| a.score.total_cmp(&b.score));
 
-    SearchResult {
+    EvaluateResponse {
         depth,
         evaluations,
         sans,

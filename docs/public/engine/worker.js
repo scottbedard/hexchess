@@ -1,4 +1,4 @@
-import * as engine from './b9fedcb/hexchess_engine.js'
+import * as engine from './4e1482b/hexchess_engine.js'
 
 await engine.default()
 
@@ -12,21 +12,12 @@ onmessage = evt => {
     const post = (response = {}) => postMessage({ response, options, token })
 
     switch (command) {
+      case 'hexchess/evaluate':
+        post(engine.evaluate(options))
+        break
       case 'hexchess/ping':
         post({ now: Date.now() })
         break
     }
   }
-
-  
-
-  // if (command === 'hexchess/evaluate') {
-  //   const { fen, depth } = evt.data.options
-
-  //   postMessage({
-  //     id,
-  //     key: 'hexchess/evaluate',
-  //     result: engine.evaluate(fen, depth),
-  //   })
-  // }
 }

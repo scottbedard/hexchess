@@ -61,12 +61,12 @@
 <script lang="ts" setup>
 import { computed, onMounted, ref } from 'vue'
 import { Hexchess, San } from '../../js/src'
-import { useEngine, type SearchResult } from './use-engine'
+import { useEngine } from './use-engine'
 import { useEventListener } from '@vueuse/core'
 import EvaluationResult from './EvaluationResult.vue'
 import Hexboard from '../components/hexboard/Hexboard.vue'
 import Input from '../components/Input.vue'
-import { ping } from '../../engine/index'
+import type { EvaluateResponse } from '../../engine/index'
 
 const { evaluate, loading } = useEngine()
 
@@ -84,7 +84,7 @@ const hexchess = ref(Hexchess.init())
 
 const selected = ref<number | null>(null)
 
-const evaluation = ref<SearchResult | null>(null)
+const evaluation = ref<EvaluateResponse | null>(null)
 
 //
 // computed
@@ -133,17 +133,11 @@ function deselect() {
 }
 
 async function handleMove(from: number, to: number) {
-  console.log('handleMove', { from, to })
+  const san = new San({ from, to })
 
-  const pong = await ping()
-
-  console.log('pong', pong)
-
-  // const san = new San({ from, to })
-
-  // evaluation.value = null
-  // hexchess.value.applyMoveUnsafe(san)
-  // highlighted.value = []
+  evaluation.value = null
+  hexchess.value.applyMoveUnsafe(san)
+  highlighted.value = []
 }
 
 function onClearClick() {
@@ -157,26 +151,26 @@ function onFlipClick() {
 }
 
 async function onPlayClick() {
-  if (loading.value) {
+  const data = await evaluate({
+    depth: depth.value,
+    position: hexchess.value.toString(),
+  })
+
+  if (!data) {
     return
   }
 
-  const result = await evaluate({
-    depth: depth.value,
-    fen: hexchess.value,
-  })
-
-  evaluation.value = result
+  evaluation.value = data?.response
   
-  if (result.sans.length > 0) {
-    const best = result.sans[0]
-
+  if (data.response.sans.length > 0) {
+    const best = data.response.sans[0]
+    const san = San.from(best.san)
     const next = hexchess.value.clone()
 
     try {
-      next.applyMoveUnsafe(best.san)
+      next.applyMoveUnsafe(san)
       hexchess.value = next
-      highlighted.value = [best.san.from, best.san.to]
+      highlighted.value = [san.from, san.to]
     } catch {
       return
     }
