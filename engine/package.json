@@ -1,5 +1,8 @@
 {
   "author": "Scott Bedard",
+  "bugs": {
+    "url": "https://github.com/scottbedard/hexchess/issues"
+  },
   "description": "A game engine for Gliński's hexagonal chess",
   "keywords": [
     "hexchess"
@@ -7,6 +10,10 @@
   "license": "MIT",
   "main": "index.js",
   "name": "@bedard/hexchess-engine",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/scottbedard/hexchess.git"
+  },
   "type": "module",
   "version": "0.0.2"
 }
