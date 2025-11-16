@@ -3,6 +3,10 @@ name: Release Engine
 on:
   workflow_dispatch:
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   run-manually:
     runs-on: ubuntu-latest
