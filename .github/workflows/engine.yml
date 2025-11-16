@@ -36,10 +36,8 @@ jobs:
         run: node hexchess test:engine
       - name: Prepare clean publish directory
         run: |
-          sudo apt-get update && sudo apt-get install -y rsync
           mkdir engine-publish
-          rsync -av --copy-links ./engine/pkg/ engine-publish/ \
-            --exclude=.git
+          cp -a --dereference ./engine/pkg/. engine-publish/
 
       - name: Publish to NPM
         working-directory: engine-publish
