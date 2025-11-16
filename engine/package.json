@@ -10,10 +10,14 @@
   "license": "MIT",
   "main": "index.js",
   "name": "@bedard/hexchess-engine",
+  "publishConfig": {
+    "access": "public"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/scottbedard/hexchess.git"
   },
   "type": "module",
+  "types": "index.d.ts",
   "version": "0.0.2"
 }
