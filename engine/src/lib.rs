@@ -1,4 +1,4 @@
-use crate::structs::{EvalOptions, SearchResult};
+use crate::structs::{EvalOptions, EvaluateOptions, EvaluateResponse};
 use hexchess::Hexchess;
 use wasm_bindgen::prelude::*;
 
@@ -19,12 +19,12 @@ fn set_panic_hook() {
 }
 
 #[wasm_bindgen]
-pub fn evaluate(fen: String, depth: u8) -> SearchResult {
+pub fn evaluate(options: EvaluateOptions) -> EvaluateResponse {
     set_panic_hook();
 
-    let hexchess = Hexchess::parse(&fen).unwrap();
+    let hexchess = Hexchess::parse(&options.position).unwrap();
 
-    let options = EvalOptions::default();
+    let eval_opts = EvalOptions::default();
 
-    negamax::search(&hexchess, depth, &options)
+    negamax::search(&hexchess, options.depth, &eval_opts)
 }

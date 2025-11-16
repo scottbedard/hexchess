@@ -36,7 +36,7 @@ dependencies = [
 
 [[package]]
 name = "engine_macros"
-version = "0.1.0"
+version = "0.0.1"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -84,8 +84,8 @@ dependencies = [
 ]
 
 [[package]]
-name = "hexchess-engine"
-version = "0.1.0"
+name = "hexchess_engine"
+version = "0.0.1"
 dependencies = [
  "console_error_panic_hook",
  "engine_macros",

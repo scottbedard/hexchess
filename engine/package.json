@@ -1,0 +1,10 @@
+{
+  "author": "Scott Bedard",
+  "description": "A game engine for Gliński's hexagonal chess",
+  "keywords": ["hexchess"],
+  "license": "MIT",
+  "main": "index.js",
+  "name": "@bedard/hexchess-engine",
+  "type": "module",
+  "version": "0.0.1"
+}

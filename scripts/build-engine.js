@@ -1,11 +1,12 @@
 import { copy, copyDir, execAsync, hashDir, read, resolve, write } from './utils.js'
 import { existsSync, rmSync } from 'node:fs'
 
-/** build engine package */
-export async function buildEngine() {
-  const pkg = resolve('./engine/pkg')
-  const wasmPack = resolve('./node_modules/.bin/wasm-pack')
+/** build engine packages */
+export async function buildEngine(options) {
   const fingerprint = hashDir('engine/src').slice(0, 7)
+  const pkg = resolve('./engine/pkg')
+  const tsc = resolve('./node_modules/.bin/tsc')
+  const wasmPack = resolve('./node_modules/.bin/wasm-pack')
   const workerPath = resolve('docs/public/engine/worker.js')
 
   // rebuild wasm package
@@ -13,7 +14,7 @@ export async function buildEngine() {
 
   await execAsync(wasmPack, ['build', '--release', '--target', 'web'], { cwd: 'engine' })
 
-  // remove obsolete files
+  // remove unnecessary files
   for (const file of [
     resolve('docs/public/engine'),
     resolve(pkg, '.gitignore'),
@@ -26,14 +27,17 @@ export async function buildEngine() {
       rmSync(filePath, { recursive: true, force: true })
     }
   }
-  
-  // create vitepress public files
-  copyDir('engine/pkg', resolve(`docs/public/engine/${fingerprint}`))
 
+  // build worker files
+  copyDir(pkg, resolve(`docs/public/engine/${fingerprint}`))
   copy('engine/worker.js', workerPath)
-
   write(workerPath, read(workerPath).replace(`'./pkg/hexchess_engine.js'`, `'./${fingerprint}/hexchess_engine.js'`))
+  write('engine/pkg/worker.js', read('engine/worker.js').replace(`'./pkg/hexchess_engine.js'`, `'./hexchess_engine.js'`))
 
-  // copy license
+  // copy package files
+  copy('engine/package.json', resolve(pkg, 'package.json'))
   copy('LICENSE', resolve(pkg, 'LICENSE'))
+
+  // build library interface and copy a local version for docs to use
+  await execAsync(tsc, ['--project', resolve('engine/tsconfig.json')], { cwd: 'engine' })
 }

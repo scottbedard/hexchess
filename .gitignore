@@ -6,6 +6,8 @@ coverage
 dist
 docs/.vitepress/cache
 docs/.vitepress/dist
+engine/*.d.ts
+engine/*.js
 engine/pkg
 js/README.md
 node_modules

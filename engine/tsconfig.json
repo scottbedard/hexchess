@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "lib": ["ES2020", "DOM"],
+    "module": "commonjs",
+    "outDir": "./pkg",
+    "rootDir": ".",
+    "skipLibCheck": true,
+    "strict": true,
+    "target": "ES2020"
+  },
+  "include": ["index.ts", "worker.js"],
+  "exclude": ["node_modules", "dist"]
+}

@@ -1,3 +1,8 @@
+use serde::{Deserialize, Serialize};
+use tsify::Tsify;
+
+#[derive(Tsify, Serialize, Deserialize)]
+#[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct EvalOptions {
     pub bishop_value: f32,
     pub king_value: f32,
@@ -22,7 +27,7 @@ impl Default for EvalOptions {
             rook_value: 50.0,
 
             check_value: 1.0,
-            checkmate_value: f32::INFINITY,
+            checkmate_value: 99999.9,
             stalemate_value: 2.0,
         }
     }

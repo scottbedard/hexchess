@@ -9,7 +9,7 @@
       <button
         class="flex gap-x-1.5 items-center text-sm tracking-wide hover:text-(--vp-code-color)!"
         @click="onResetClick">
-        <svg xmlns="http://www.w3.org/2000/svg" class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+        <svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
         
         Reset
       </button>
@@ -17,7 +17,7 @@
       <button
         class="flex gap-x-1.5 items-center text-sm tracking-wide hover:text-(--vp-code-color)!"
         @click="onClearClick">
-        <svg xmlns="http://www.w3.org/2000/svg" class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 21H8a2 2 0 0 1-1.42-.587l-3.994-3.999a2 2 0 0 1 0-2.828l10-10a2 2 0 0 1 2.829 0l5.999 6a2 2 0 0 1 0 2.828L12.834 21"/><path d="m5.082 11.09 8.828 8.828"/></svg>
+        <svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 21H8a2 2 0 0 1-1.42-.587l-3.994-3.999a2 2 0 0 1 0-2.828l10-10a2 2 0 0 1 2.829 0l5.999 6a2 2 0 0 1 0 2.828L12.834 21"/><path d="m5.082 11.09 8.828 8.828"/></svg>
       
         Clear
       </button>
@@ -25,17 +25,26 @@
       <button
         class="flex gap-x-1.5 items-center text-sm tracking-wide hover:text-(--vp-code-color)!"
         @click="onFlipClick">
-        <svg xmlns="http://www.w3.org/2000/svg" class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21 16-4 4-4-4"/><path d="M17 20V4"/><path d="m3 8 4-4 4 4"/><path d="M7 4v16"/></svg>
+        <svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21 16-4 4-4-4"/><path d="M17 20V4"/><path d="m3 8 4-4 4 4"/><path d="M7 4v16"/></svg>
       
         Flip
       </button>
 
       <button
-        class="flex gap-x-1.5 items-center text-sm tracking-wide hover:text-(--vp-code-color)!"
+        :class="[
+          'flex gap-x-1.5 items-center text-sm tracking-wide hover:text-(--vp-code-color)!',
+          loading && 'opacity-50 pointer-events-none',
+        ]"
         :disabled="loading"
         @click="onPlayClick">
-        <svg xmlns="http://www.w3.org/2000/svg" class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg>
-
+        <Spinner
+          v-if="loading"
+          class="size-4" />
+          
+        <svg
+          v-else
+          class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20v2"/><path d="M12 2v2"/><path d="M17 20v2"/><path d="M17 2v2"/><path d="M2 12h2"/><path d="M2 17h2"/><path d="M2 7h2"/><path d="M20 12h2"/><path d="M20 17h2"/><path d="M20 7h2"/><path d="M7 20v2"/><path d="M7 2v2"/><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="8" y="8" width="8" height="8" rx="1"/></svg>
+        
         Play
       </button>
     </div>
@@ -61,11 +70,13 @@
 <script lang="ts" setup>
 import { computed, onMounted, ref } from 'vue'
 import { Hexchess, San } from '../../js/src'
-import { useEngine, type SearchResult } from './use-engine'
+import { useEngine } from './use-engine'
 import { useEventListener } from '@vueuse/core'
 import EvaluationResult from './EvaluationResult.vue'
 import Hexboard from '../components/hexboard/Hexboard.vue'
 import Input from '../components/Input.vue'
+import Spinner from '../components/Spinner.vue'
+import type { EvaluateResponse } from '../../engine/index'
 
 const { evaluate, loading } = useEngine()
 
@@ -73,7 +84,7 @@ const { evaluate, loading } = useEngine()
 // state
 //
 
-const depth = ref(1)
+const depth = ref(3)
 
 const flipped = ref(false)
 
@@ -83,7 +94,7 @@ const hexchess = ref(Hexchess.init())
 
 const selected = ref<number | null>(null)
 
-const evaluation = ref<SearchResult | null>(null)
+const evaluation = ref<EvaluateResponse | null>(null)
 
 //
 // computed
@@ -131,7 +142,7 @@ function deselect() {
   selected.value = null
 }
 
-function handleMove(from: number, to: number) {
+async function handleMove(from: number, to: number) {
   const san = new San({ from, to })
 
   evaluation.value = null
@@ -150,26 +161,26 @@ function onFlipClick() {
 }
 
 async function onPlayClick() {
-  if (loading.value) {
+  const data = await evaluate({
+    depth: depth.value,
+    position: hexchess.value.toString(),
+  })
+
+  if (!data) {
     return
   }
 
-  const result = await evaluate({
-    depth: depth.value,
-    fen: hexchess.value,
-  })
-
-  evaluation.value = result
+  evaluation.value = data?.response
   
-  if (result.sans.length > 0) {
-    const best = result.sans[0]
-
+  if (data.response.sans.length > 0) {
+    const best = data.response.sans[0]
+    const san = San.from(best.san)
     const next = hexchess.value.clone()
 
     try {
-      next.applyMoveUnsafe(best.san)
+      next.applyMoveUnsafe(san)
       hexchess.value = next
-      highlighted.value = [best.san.from, best.san.to]
+      highlighted.value = [san.from, san.to]
     } catch {
       return
     }

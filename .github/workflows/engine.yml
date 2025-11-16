@@ -1,0 +1,11 @@
+name: Release Engine
+
+on:
+  workflow_dispatch:
+
+jobs:
+  run-manually:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Say Hello
+        run: echo "This workflow ran because someone pressed the button!"

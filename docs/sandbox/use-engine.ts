@@ -1,70 +1,33 @@
-import { computed, onMounted, shallowRef, toValue, type MaybeRef } from 'vue'
-import { useEventListener } from '@vueuse/core'
-import type { Hexchess, San } from '../../js/src'
-
-export interface EvaluateOptions {
-  depth?: MaybeRef<number>
-  fen: MaybeRef<Hexchess>
-}
-
-export interface SearchResult {
-  depth: number
-  duration: number
-  evaluations: number
-  sans: { san: San, score: number }[]
-}
+import { onUnmounted, ref } from 'vue'
+import {
+  evaluate as evaluateCommand,
+  type EvaluateOptions
+} from '../../engine/index'
 
 export function useEngine() {
-  let i = 0
+  const worker = new Worker(new URL('/engine/worker.js', location.origin), { type: 'module' })
 
-  const loading = computed(() => reqs.value.length > 0)
-
-  const reqs = shallowRef<[number, (result: SearchResult) => void][]>([])
+  const loading = ref(false)
 
   const evaluate = async (options: EvaluateOptions) => {
-    const t = ++i
+    if (loading.value) {
+      return
+    }
 
-    const p = new Promise<SearchResult>((resolve) => {
-      const startAt = performance.now()
-    
-      reqs.value.push([t, (r: SearchResult) => {
-        r.duration = performance.now() - startAt
-        return resolve(r)
-      }])
+    loading.value = true
 
-      postMessage({
-        key: 'hexchess/evaluate',
-        options: {
-          depth: toValue(options.depth) ?? 3,
-          fen: toValue(options.fen).toString(),
-        },
-        token: t,
-      })
-    })
-
-    return p
+    try {
+      const result = await evaluateCommand(worker, options)
+      loading.value = false
+      return result
+    } catch (err) {
+      console.error(err)
+      loading.value = false
+    }
   }
 
-  onMounted(() => {
-    useEventListener(window, 'message', (evt: MessageEvent) => {
-      const { key, token } = evt.data
-
-      if (typeof key !== 'string' || typeof token !== 'number') {
-        return
-      }
-      
-      if (key === 'hexchess/evaluate/response') {
-        const { result } = evt.data
-        
-        for (const [t, resolve] of reqs.value) {
-          if (t === token) {
-            reqs.value = reqs.value.filter(([val]) => val !== t)
-            resolve(result)
-            return
-          }
-        }
-      }
-    })
+  onUnmounted(() => {
+    worker.terminate()
   })
 
   return {
