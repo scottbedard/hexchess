@@ -34,8 +34,13 @@ jobs:
         run: node hexchess build:engine
       - name: Test
         run: node hexchess test:engine
-      - name: Publish to NPM
+      - name: Prepare clean publish directory
         run: |
-          cd engine
-          npm config set registry https://registry.npmjs.org/
-          npm publish --provenance --access public
+          rm -rf engine-publish
+          mkdir engine-publish
+          rsync -av --copy-links ./engine/pkg/ engine-publish/ \
+            --exclude=.git
+
+      - name: Publish to NPM
+        working-directory: engine-publish
+        run: npm publish --provenance --access public
