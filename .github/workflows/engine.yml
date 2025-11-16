@@ -6,6 +6,26 @@ on:
 jobs:
   run-manually:
     runs-on: ubuntu-latest
+    container:
+      image: xd009642/tarpaulin:develop-nightly
+      options: --security-opt seccomp=unconfined
     steps:
-      - name: Say Hello
-        run: echo "This workflow ran because someone pressed the button!"
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - uses: pnpm/action-setup@v4
+        name: Install pnpm
+        with:
+          version: 9
+          run_install: false
+      - name: Install dependencies
+        run: pnpm install --no-frozen-lockfile
+      - name: Build
+        run: node hexchess build:engine
+      - name: Test
+        run: node hexchess test:engine
+      - name: Publish to NPM
+        run: pnpm publish --provenance --access public
