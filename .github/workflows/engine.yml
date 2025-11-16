@@ -8,7 +8,7 @@ permissions:
   contents: read
 
 jobs:
-  run-manually:
+  release:
     runs-on: ubuntu-latest
     container:
       image: xd009642/tarpaulin:develop-nightly
