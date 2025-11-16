@@ -37,6 +37,7 @@ export async function buildEngine(options) {
   // copy package files
   copy('engine/package.json', resolve(pkg, 'package.json'))
   copy('LICENSE', resolve(pkg, 'LICENSE'))
+  copy('README.md', resolve(pkg, 'README.md'))
 
   // build library interface and copy a local version for docs to use
   await execAsync(tsc, ['--project', resolve('engine/tsconfig.json')], { cwd: 'engine' })

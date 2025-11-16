@@ -3,9 +3,9 @@ import { buildJs } from './scripts/build-js.js'
 import { buildRust } from './scripts/build-rust.js'
 import { dim, execAsync, green } from './scripts/utils.js'
 import { program } from 'commander'
-import { release } from './scripts/release.js'
 import { testEngine, testJs, testPhp, testRust } from './scripts/test.js'
-import { versions } from './scripts/versions.js'
+import { versionCheck } from './scripts/version-check.js'
+import { version } from './scripts/version.js'
 import ora from 'ora'
 
 //
@@ -80,25 +80,6 @@ program
   .description('Run linting')
   .action(async () => {
     await execAsync('./vendor/bin/php-cs-fixer', ['fix', '.', '--dry-run', '--diff', '--format=txt'])
-  })
-
-//
-// release
-//
-
-program
-  .command('release [version]')
-  .option('-M, --major', 'Increment the major version')
-  .option('-m, --minor', 'Increment the minor version')
-  .option('-p, --patch', 'Increment the patch version')
-  .description('Set the version of the project')
-  .action((version, options) => {
-    release({
-      major: options?.major,
-      minor: options?.minor,
-      patch: options?.patch,
-      version: version,
-    })
   })
 
 //
@@ -191,15 +172,32 @@ program
   })
 
 //
-// versions
+// version
 //
 
 program
-  .command('versions')
+  .command('version [version]')
+  .option('-M, --major', 'Increment the major version')
+  .option('-m, --minor', 'Increment the minor version')
+  .option('-p, --patch', 'Increment the patch version')
+  .option('-e, --engine', 'Increment the engine version')
+  .description('Set the version of the project')
+  .action((versionArg, options) => {
+    version({
+      major: options?.major,
+      minor: options?.minor,
+      patch: options?.patch,
+      engine: options?.engine,
+      version: versionArg,
+    })
+  })
+
+program
+  .command('version:check')
   .description('Check the versions of the dependencies')
   .option('-r, --release <release>', 'Release version')
   .action((options) => {
-    versions({
+    versionCheck({
       release: options?.release,
     })
   })

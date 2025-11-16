@@ -72,7 +72,7 @@ jobs:
           pnpm install
 
       - name: Check versions
-        run: node hexchess versions --release=${{ github.ref_name }}
+        run: node hexchess version:check --release=${{ github.ref_name }}
   
       - name: Build package
         run: node hexchess build:js
