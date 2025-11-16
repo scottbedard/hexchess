@@ -9,6 +9,30 @@ export function versionCheck(options) {
   const cargoVersion = cargo.package.version
   const macrosVersion = toml.parse(read('rust/macros/Cargo.toml')).package.version
 
+  // Validate version formats
+  const semverRegex = /^(\d+)\.(\d+)\.(\d+)$/
+  const engineVersionRegex = /^(\d+\.\d+\.\d+)-engine\.(\d+)$/
+
+  if (!semverRegex.test(npm.version)) {
+    throw new Error(`Invalid NPM version format: ${npm.version} (expected x.y.z)`)
+  }
+
+  if (!semverRegex.test(composer.version)) {
+    throw new Error(`Invalid Composer version format: ${composer.version} (expected x.y.z)`)
+  }
+
+  if (!semverRegex.test(cargoVersion)) {
+    throw new Error(`Invalid Cargo version format: ${cargoVersion} (expected x.y.z)`)
+  }
+
+  if (!semverRegex.test(macrosVersion)) {
+    throw new Error(`Invalid Cargo (macros) version format: ${macrosVersion} (expected x.y.z)`)
+  }
+
+  if (!engineVersionRegex.test(engine.version)) {
+    throw new Error(`Invalid Engine version format: ${engine.version} (expected x.y.z-engine.n)`)
+  }
+
   console.log('Checking versions...')
   console.log()
   console.log(`NPM:             ${npm.version}`)
