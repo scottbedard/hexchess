@@ -19,6 +19,8 @@ export async function release(options) {
   }
 
   let [major, minor, patch] = version.split('.').map(Number)
+  const versionIncremented = options?.major || options?.minor || options?.patch
+  const explicitVersion = !!options.version
 
   if (!options.version) {
     if (options?.major) {
@@ -136,6 +138,44 @@ export async function release(options) {
   } catch (error) {
     console.error('Failed to update rust/macros/Cargo.toml:', error)
     process.exit(1)
+  }
+
+  // engine/package.json
+  // Update if explicit version provided (resets dot version to 0, ignores --engine)
+  // OR if major/minor/patch were incremented (resets dot version to 0, ignores --engine)
+  // OR if --engine flag is set (increments dot version)
+  if (explicitVersion || versionIncremented || options?.engine) {
+    try {
+      const enginePackagePath = 'engine/package.json'
+      const enginePackage = JSON.parse(read(enginePackagePath))
+      const currentEngineVersion = enginePackage.version
+
+      // Parse version format: MAJOR.MINOR.PATCH-engine.N
+      const versionRegex = /^(\d+\.\d+\.\d+)-engine\.(\d+)$/
+      const match = currentEngineVersion.match(versionRegex)
+
+      let newEngineVersion
+
+      if (explicitVersion || versionIncremented) {
+        // Explicit version provided or major/minor/patch were incremented, reset dot version to 0 (--engine flag is ignored)
+        newEngineVersion = `${version}-engine.0`
+      } else if (match) {
+        // Version already in -engine.N format, increment the dot number (--engine flag was used)
+        const [, baseVersion, engineNumber] = match
+        const newEngineNumber = parseInt(engineNumber, 10) + 1
+        newEngineVersion = `${baseVersion}-engine.${newEngineNumber}`
+      } else {
+        // Version not in -engine.N format, create it with the current base version
+        newEngineVersion = `${currentEngineVersion}-engine.0`
+      }
+
+      enginePackage.version = newEngineVersion
+      write(enginePackagePath, JSON.stringify(enginePackage, null, 2) + '\n')
+      console.log(`engine/package.json: ${green(newEngineVersion)}`)
+    } catch (error) {
+      console.error('Failed to update engine/package.json:', error)
+      process.exit(1)
+    }
   }
 
   console.log()

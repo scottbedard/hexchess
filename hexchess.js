@@ -91,12 +91,14 @@ program
   .option('-M, --major', 'Increment the major version')
   .option('-m, --minor', 'Increment the minor version')
   .option('-p, --patch', 'Increment the patch version')
+  .option('-e, --engine', 'Increment the engine version')
   .description('Set the version of the project')
   .action((version, options) => {
     release({
       major: options?.major,
       minor: options?.minor,
       patch: options?.patch,
+      engine: options?.engine,
       version: version,
     })
   })
