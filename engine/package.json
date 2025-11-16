@@ -4,7 +4,7 @@
   "keywords": ["hexchess"],
   "license": "MIT",
   "main": "index.js",
-  "name": "@bedard/hexfish",
+  "name": "@bedard/hexchess-engine",
   "type": "module",
   "version": "0.0.1"
 }

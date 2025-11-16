@@ -20,13 +20,17 @@ export interface ExecuteResponse<T extends Record<string, any> = {}> {
 }
 
 /** execute a command with the engine worker */
-export function execute<T extends Record<string, any> = {}>(command: string, options: Record<string, any> = {}) {
-  const token = Math.random()
+export function execute<T extends Record<string, any> = {}>(
+  worker: Worker,
+  command: string,
+  options: Record<string, any> = {}
+) {
+  const id = crypto.randomUUID()
 
-  return new Promise<ExecuteResponse<T>>((resolve, reject) => {
+  return new Promise<ExecuteResponse<T>>((resolve) => {
     const listener = (evt: MessageEvent) => {
-      if (evt.data.token === token && typeof evt.data.response === 'object') {
-        globalThis.removeEventListener('message', listener)
+      if (evt.data.id === id && typeof evt.data.response === 'object') {
+        worker.removeEventListener('message', listener)
 
         resolve({
           command,
@@ -36,17 +40,17 @@ export function execute<T extends Record<string, any> = {}>(command: string, opt
       }
     }
 
-    globalThis.addEventListener('message', listener)
-    globalThis.postMessage({ command, token, options })
+    worker.addEventListener('message', listener)
+    worker.postMessage({ command, id, options })
   });
 }
 
 /** evaluate a position */
-export function evaluate(options: EvaluateOptions) {
-  return execute<EvaluateResponse>('hexchess/evaluate', options)
+export function evaluate(worker: Worker, options: EvaluateOptions) {
+  return execute<EvaluateResponse>(worker, 'hexchess/evaluate', options)
 }
 
 /** test for a connection with the engine worker */
-export function ping() {
-  return execute<PingResponse>('hexchess/ping')
+export function ping(worker: Worker) {
+  return execute<PingResponse>(worker, 'hexchess/ping')
 }
