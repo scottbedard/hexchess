@@ -34,6 +34,8 @@ jobs:
         run: node hexchess build:engine
       - name: Test
         run: node hexchess test:engine
+      - name: Check versions
+        run: node hexchess version:check
       - name: Prepare clean publish directory
         run: |
           mkdir engine-publish
