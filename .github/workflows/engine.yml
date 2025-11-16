@@ -32,4 +32,6 @@ jobs:
       - name: Test
         run: node hexchess test:engine
       - name: Publish to NPM
-        run: pnpm publish --provenance --access public
+        run: |
+          cd engine
+          pnpm publish --provenance --access public
