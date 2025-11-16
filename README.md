@@ -5,6 +5,7 @@
 [![Crates.io](https://img.shields.io/crates/v/hexchess?logo=rust&logoColor=%23f74c00&label=cargo)](https://crates.io/crates/hexchess)
 [![NPM](https://img.shields.io/npm/v/%40bedard%2Fhexchess?logo=javascript&logoColor=%23f7df1e)](https://www.npmjs.com/package/@bedard/hexchess)
 [![Packagist](https://img.shields.io/packagist/v/bedard/hexchess?logo=php&color=%23777BB3)](https://packagist.org/packages/bedard/hexchess)
+[![Engine version](https://img.shields.io/npm/v/%40bedard%2Fhexchess-engine?label=engine)](https://www.npmjs.com/package/@bedard/hexchess-engine)
 [![Bundlephobia](https://img.shields.io/bundlephobia/minzip/%40bedard%2Fhexchess?label=size)](https://bundlephobia.com/package/@bedard/hexchess)
 [![License](https://img.shields.io/badge/license-MIT-blue)](https://github.com/scottbedard/hexchess/blob/main/LICENSE)
 
