@@ -19,6 +19,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
+          registry-url: https://registry.npmjs.org
       - uses: pnpm/action-setup@v4
         name: Install pnpm
         with:
@@ -33,5 +34,4 @@ jobs:
       - name: Publish to NPM
         run: |
           cd engine
-          npm config set registry https://registry.npmjs.org/
           npm publish --provenance --access public
