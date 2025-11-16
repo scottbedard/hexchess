@@ -1,7 +1,7 @@
 import { dim, green, read } from './utils.js'
 import toml from 'smol-toml'
 
-export function versions(options) {
+export function versionCheck(options) {
   const cargo = toml.parse(read('rust/Cargo.toml'))
   const composer = JSON.parse(read('composer.json'))
   const engine = JSON.parse(read('engine/package.json'))
@@ -42,3 +42,4 @@ export function versions(options) {
   console.log()
   console.log(green('Success'))
 }
+

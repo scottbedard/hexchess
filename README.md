@@ -55,13 +55,13 @@ Commands:
   docs:build                   Build docs
   docs:preview                 Preview docs
   lint:php                     Run linting
-  release [options] [version]  Set the version of the project
   test                         Run all tests
   test:engine [options]        Run engine tests
   test:js [options]            Run JavaScript tests
   test:php [options]           Run PHP tests
   test:rs [options]            Run Rust tests
-  versions [options]           Check the versions of the dependencies
+  version [options] [version]  Set the version of the project
+  version:check [options]      Check the versions of the dependencies
   help [command]               display help for command
 ```
 

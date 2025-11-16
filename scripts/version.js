@@ -1,7 +1,7 @@
 import { execAsync, read, write, green, dim } from './utils.js'
 import pkg from '../js/package.json' with { type: 'json' }
 
-export async function release(options) {
+export async function version(options) {
   const startAt = Date.now()
   let version = options.version || pkg.version
 
@@ -181,3 +181,4 @@ export async function release(options) {
   console.log()
   console.log(`${green('Done')} ${dim(`(${Date.now() - startAt}ms)`)}`)
 }
+
