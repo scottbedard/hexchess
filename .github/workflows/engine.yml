@@ -34,4 +34,5 @@ jobs:
       - name: Publish to NPM
         run: |
           cd engine
+          npm config set registry https://registry.npmjs.org/
           npm publish --provenance --access public
