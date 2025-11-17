@@ -5,8 +5,8 @@
 [![Crates.io](https://img.shields.io/crates/v/hexchess?label=cargo)](https://crates.io/crates/hexchess)
 [![NPM](https://img.shields.io/npm/v/%40bedard%2Fhexchess)](https://www.npmjs.com/package/@bedard/hexchess)
 [![Packagist](https://img.shields.io/packagist/v/bedard/hexchess?color=%23777BB3)](https://packagist.org/packages/bedard/hexchess)
-[![Engine version](https://img.shields.io/npm/v/%40bedard%2Fhexchess-engine?label=engine)](https://www.npmjs.com/package/@bedard/hexchess-engine)
-[![Bundlephobia](https://img.shields.io/bundlephobia/minzip/%40bedard%2Fhexchess?label=size)](https://bundlephobia.com/package/@bedard/hexchess)
+[![Engine version](https://img.shields.io/npm/v/%40bedard%2Fhexchess-engine?label=engine&color=orange
+)](https://www.npmjs.com/package/@bedard/hexchess-engine)
 [![License](https://img.shields.io/badge/license-MIT-blue)](https://github.com/scottbedard/hexchess/blob/main/LICENSE)
 
 A cross-language library for [Gliński's hexagonal chess](https://en.wikipedia.org/wiki/Hexagonal_chess#Gli%C5%84ski's_hexagonal_chess), and the brain of [hexchess.club](https://hexchess.club).
