@@ -2,13 +2,52 @@ name: Release Engine
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - 'engine/package.json'
+      - '.github/workflows/engine.yml'
 
 permissions:
   id-token: write
   contents: read
 
 jobs:
+  check-version:
+    runs-on: ubuntu-latest
+    outputs:
+      should-publish: ${{ steps.check.outputs.should-publish }}
+      local-version: ${{ steps.check.outputs.local-version }}
+      npm-version: ${{ steps.check.outputs.npm-version }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Check versions and determine if publish needed
+        id: check
+        run: |
+          LOCAL_VERSION=$(node -p "JSON.parse(require('fs').readFileSync('./engine/package.json', 'utf8')).version")
+          echo "local-version=$LOCAL_VERSION" >> $GITHUB_OUTPUT
+          echo "Local version: $LOCAL_VERSION"
+          
+          NPM_VERSION=$(npm view @bedard/hexchess-engine version 2>/dev/null || echo "")
+          echo "npm-version=$NPM_VERSION" >> $GITHUB_OUTPUT
+          echo "NPM version: $NPM_VERSION"
+          if [ "$LOCAL_VERSION" != "$NPM_VERSION" ]; then
+            echo "Versions differ, will publish"
+            echo "should-publish=true" >> $GITHUB_OUTPUT
+          else
+            echo "Versions match, skipping publish"
+            echo "should-publish=false" >> $GITHUB_OUTPUT
+          fi
+
   release:
+    needs: check-version
+    if: needs.check-version.outputs.should-publish == 'true'
     runs-on: ubuntu-latest
     container:
       image: xd009642/tarpaulin:develop-nightly
