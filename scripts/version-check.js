@@ -11,7 +11,7 @@ export function versionCheck(options) {
 
   // Validate version formats
   const semverRegex = /^(\d+)\.(\d+)\.(\d+)$/
-  const engineVersionRegex = /^(\d+\.\d+\.\d+)\+engine\.(\d+)$/
+  const engineVersionRegex = /^(\d+\.\d+\.\d+)-engine\.(\d+)$/
 
   if (!semverRegex.test(npm.version)) {
     throw new Error(`Invalid NPM version format: ${npm.version} (expected x.y.z)`)
@@ -30,7 +30,7 @@ export function versionCheck(options) {
   }
 
   if (!engineVersionRegex.test(engine.version)) {
-    throw new Error(`Invalid Engine version format: ${engine.version} (expected x.y.z+engine.n)`)
+    throw new Error(`Invalid Engine version format: ${engine.version} (expected x.y.z-engine.n)`)
   }
 
   console.log('Checking versions...')
@@ -46,7 +46,7 @@ export function versionCheck(options) {
     npm.version,
     cargoVersion,
     macrosVersion,
-    engine.version.split('+').shift(),
+    engine.version.split('-').shift(),
   ]
 
   if (!versions.every(val => val === versions[0])) {

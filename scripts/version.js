@@ -150,23 +150,23 @@ export async function version(options) {
     // if major/minor/patch were incremented (resets dot version to 0, ignores --engine)
     // if --engine flag is set (increments dot version)
     if (explicitVersion || versionIncremented || options?.engine) {
-      // parse version format: MAJOR.MINOR.PATCH+engine.N
-      const versionRegex = /^(\d+\.\d+\.\d+)\+engine\.(\d+)$/
+      // parse version format: MAJOR.MINOR.PATCH-engine.N
+      const versionRegex = /^(\d+\.\d+\.\d+)-engine\.(\d+)$/
       const match = currentEngineVersion.match(versionRegex)
 
       let newEngineVersion
 
       if (explicitVersion || versionIncremented) {
         // explicit version provided or major/minor/patch were incremented, reset dot version to 0 (--engine flag is ignored)
-        newEngineVersion = `${version}+engine.0`
+        newEngineVersion = `${version}-engine.0`
       } else if (match) {
-        // version already in +engine.N format, increment the dot number (--engine flag was used)
+        // version already in -engine.N format, increment the dot number (--engine flag was used)
         const [, baseVersion, engineNumber] = match
         const newEngineNumber = parseInt(engineNumber, 10) + 1
-        newEngineVersion = `${baseVersion}+engine.${newEngineNumber}`
+        newEngineVersion = `${baseVersion}-engine.${newEngineNumber}`
       } else {
-        // version not in +engine.N format, create it with the current base version
-        newEngineVersion = `${currentEngineVersion}+engine.0`
+        // version not in -engine.N format, create it with the current base version
+        newEngineVersion = `${currentEngineVersion}-engine.0`
       }
 
       enginePackage.version = newEngineVersion

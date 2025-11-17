@@ -82,4 +82,4 @@ jobs:
 
       - name: Publish to NPM
         working-directory: engine-publish
-        run: npm publish --provenance --access public
+        run: npm publish --provenance --access public --tag latest
