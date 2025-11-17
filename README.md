@@ -2,9 +2,9 @@
 
 [![Build](https://github.com/scottbedard/hexchess/actions/workflows/build.yml/badge.svg)](https://github.com/scottbedard/hexchess/actions/workflows/build.yml)
 [![Coverage](https://codecov.io/gh/scottbedard/hexchess/graph/badge.svg?token=uHmFqhQDps)](https://codecov.io/gh/scottbedard/hexchess)
-[![Crates.io](https://img.shields.io/crates/v/hexchess?label=cargo)](https://crates.io/crates/hexchess)
-[![NPM](https://img.shields.io/npm/v/%40bedard%2Fhexchess)](https://www.npmjs.com/package/@bedard/hexchess)
+[![Crates.io](https://img.shields.io/crates/v/hexchess?label=cargo&color=28607F)](https://crates.io/crates/hexchess)
 [![Packagist](https://img.shields.io/packagist/v/bedard/hexchess?color=%23777BB3)](https://packagist.org/packages/bedard/hexchess)
+[![NPM](https://img.shields.io/npm/v/%40bedard%2Fhexchess?color=F0DB4F)](https://www.npmjs.com/package/@bedard/hexchess)
 [![Engine version](https://img.shields.io/npm/v/%40bedard%2Fhexchess-engine?label=engine&color=orange
 )](https://www.npmjs.com/package/@bedard/hexchess-engine)
 [![License](https://img.shields.io/badge/license-MIT-blue)](https://github.com/scottbedard/hexchess/blob/main/LICENSE)
