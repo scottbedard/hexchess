@@ -14,12 +14,12 @@ A cross-language library for [Gliński's hexagonal chess](https://en.wikipedia.o
 
 <p align="center">
   <a href="https://docs.hexchess.club">
-    <img src="docs/public/hexchess.svg" width="350" />
+    <img src="docs/public/hexchess.svg" width="540" />
   </a>
 </p>
 
 
-## Development
+## Local Development
 
 Depending on which library you're working on, you'll need to install a few dependencies.
 
