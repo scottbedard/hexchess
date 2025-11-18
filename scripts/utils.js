@@ -50,9 +50,12 @@ export function green(text) {
   return `\x1b[32m${text}\x1b[0m`
 }
 
-/**
- * Recursively hash all files in a directory
- */
+/** hash a string */
+export function hash(str) {
+  return crypto.createHash('sha256').update(str).digest('hex')
+}
+
+/** recursively hash all files in a directory */
 export function hashDir(dir) {
   const read = dir => {
     const entries = fs.readdirSync(dir, { withFileTypes: true })
@@ -70,11 +73,13 @@ export function hashDir(dir) {
 
   const files = read(resolve(dir)).sort()
 
-  return crypto.createHash('sha256').update(files.join('')).digest('hex')
+  return hash(files.join(''))
 }
 
-
-
+/** hash a file */
+export function hashFile(file) {
+  return hash(read(file))
+}
 
 /** read a file from the project root */
 export function read(file) {

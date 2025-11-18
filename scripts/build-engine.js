@@ -1,9 +1,19 @@
-import { copy, copyDir, execAsync, hashDir, read, resolve, write } from './utils.js'
+import { copy, copyDir, execAsync, hash, hashDir, hashFile, read, resolve, write } from './utils.js'
 import { existsSync, rmSync } from 'node:fs'
 
 /** build engine packages */
 export async function buildEngine(options) {
-  const fingerprint = hashDir('engine/src').slice(0, 7)
+  const fingerprint = hash(`
+    ${hashDir('engine/macros')}
+    ${hashDir('engine/src')}
+    ${hashFile('engine/Cargo.lock')}
+    ${hashFile('engine/Cargo.toml')}
+    ${hashFile('engine/index.ts')}
+    ${hashFile('engine/package.json')}
+    ${hashFile('engine/tsconfig.json')}
+    ${hashFile('engine/worker.js')}
+  `).slice(0, 7)
+
   const pkg = resolve('./engine/pkg')
   const tsc = resolve('./node_modules/.bin/tsc')
   const wasmPack = resolve('./node_modules/.bin/wasm-pack')
