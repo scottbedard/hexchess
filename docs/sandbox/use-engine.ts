@@ -5,7 +5,7 @@ import {
 } from '../../engine/index'
 
 export function useEngine() {
-  const worker = new Worker(new URL('/engine/worker.js', location.origin))
+  const worker = new Worker(new URL('/engine/worker.js', location.origin), { type: 'module' })
 
   const loading = ref(false)
 
