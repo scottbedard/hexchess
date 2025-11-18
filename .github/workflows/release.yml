@@ -86,7 +86,7 @@ jobs:
 
       - name: Publish to NPM
         working-directory: js-publish
-        run: npm publish --access public
+        run: npm publish --provenance --access public
 
       - name: Publish to Crates.io
         run: |
