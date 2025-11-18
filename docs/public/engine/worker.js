@@ -1,20 +1,26 @@
-import * as engine from './4e1482b/hexchess_engine.js'
+(function() {
+  'use strict';
 
-await engine.default()
+  importScripts('./hexchess_engine.js');
 
-onmessage = evt => {
-  const { command, id, options } = evt.data
+  (async function() {
+    await wasm_bindgen.default();
 
-  if (typeof command === 'string' && typeof id === 'string') {
-    const post = (response = {}) => postMessage({ id, response, options })
+    onmessage = evt => {
+      const { command, id, options } = evt.data
 
-    switch (command) {
-      case 'hexchess/evaluate':
-        post(engine.evaluate(options))
-        break
-      case 'hexchess/ping':
-        post({ now: Date.now() })
-        break
+      if (typeof command === 'string' && typeof id === 'string') {
+        const post = (response = {}) => postMessage({ id, response, options })
+
+        switch (command) {
+          case 'hexchess/evaluate':
+            post(wasm_bindgen.evaluate(options))
+            break
+          case 'hexchess/ping':
+            post({ now: Date.now() })
+            break
+        }
+      }
     }
-  }
-}
+  })();
+})();

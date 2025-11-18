@@ -25,9 +25,9 @@ export default defineConfig({
       },
 
       {
-        text: 'Engine',
+        text: 'Game engine',
         items: [
-          { text: 'Overview', link: '/engine' },
+          { text: 'Basic usage', link: '/engine' },
           { text: 'Sandbox', link: '/sandbox' }
         ]
       }

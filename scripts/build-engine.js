@@ -12,7 +12,7 @@ export async function buildEngine(options) {
   // rebuild wasm package
   rmSync(pkg, { recursive: true, force: true })
 
-  await execAsync(wasmPack, ['build', '--release', '--target', 'web'], { cwd: 'engine' })
+  await execAsync(wasmPack, ['build', '--release', '--target', 'no-modules'], { cwd: 'engine' })
 
   // remove unnecessary files
   for (const file of [
