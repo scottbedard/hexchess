@@ -77,12 +77,14 @@ jobs:
       - name: Build package
         run: node hexchess build:js
 
-      - name: Publish to NPM
+      - name: Prepare clean publish directory
         run: |
-          cd js/dist
-          npm publish --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          mkdir js-publish
+          cp -a --dereference ./js/dist/. js-publish/
+
+      - name: Publish to NPM
+        working-directory: js-publish
+        run: npm publish --access public
 
       - name: Publish to Crates.io
         run: |
