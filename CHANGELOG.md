@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.5.0
+
+- Publish [`@bedard/hexchess-engine`](https://www.npmjs.com/package/@bedard/hexchess-engine) library
+
 ## 2.4.6
 
 - Unify documentation and add sandbox page
