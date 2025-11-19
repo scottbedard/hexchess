@@ -10,21 +10,6 @@ export function bilerp(p1: Vec<2>, p2: Vec<2>, t: number): Vec<2> {
   ]
 }
 
-/** create svg vector path */
-export function d(arr: [number, number][]) {
-  const p = 4 // <- svg rounding precision
-
-  const [origin, ...points] = arr
-
-  let path = `M ${x(origin[0]).toFixed(p)} ${y(origin[1]).toFixed(p)} L `
-
-  for (const point of points) {
-    path += `${x(point[0]).toFixed(p)} ${y(point[1]).toFixed(p)} `
-  }
-
-  return `${path} Z`
-}
-
 /** reflect a path of points across the origin */
 export function flip<T extends Vec<2>[]>(path: T) {
   return path.map(reflect) as T

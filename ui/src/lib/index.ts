@@ -1,1 +1,1 @@
-export { Hexboard } from './hexboard'
+export { HexchessBoard } from './board'
