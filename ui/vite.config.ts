@@ -2,6 +2,7 @@ import { defineConfig } from 'vite'
 import { fileURLToPath } from 'node:url'
 import { resolve } from 'node:path'
 import dts from 'vite-plugin-dts'
+import vue from '@vitejs/plugin-vue'
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url))
 
@@ -11,7 +12,14 @@ export default defineConfig({
       include: ['src/**/*'],
       outDir: 'dist',
       rollupTypes: true
-    })
+    }),
+    vue({
+      template: {
+        compilerOptions: {
+          isCustomElement: tag => ['hexchess-board'].includes(tag)
+        }
+      }
+    }),
   ],
   build: {
     lib: {
