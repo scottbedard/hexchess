@@ -1,1 +1,1 @@
-export { HexchessBoard } from './board'
+export { default as Hexboard } from './hexboard/Hexboard.vue'
