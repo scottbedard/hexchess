@@ -114,6 +114,32 @@ jobs:
         run: node hexchess build:engine
       - name: Test
         run: node hexchess test:engine
+
+  ui:
+    name: UI
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - uses: pnpm/action-setup@v4
+        name: Install pnpm
+        with:
+          version: 9
+          run_install: false
+      - name: Install dependencies
+        run: |
+          pnpm install --no-frozen-lockfile
+          cd ui
+          pnpm install --no-frozen-lockfile
+      - name: Install Playwright browsers
+        run: cd ui && pnpm exec playwright install --with-deps chromium
+      - name: Build
+        run: cd ui && pnpm build
+      - name: Test
+        run: cd ui && pnpm test
   
   php:
     name: PHP
