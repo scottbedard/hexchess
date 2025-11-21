@@ -3,46 +3,74 @@
     <svg
       xmlns="http://www.w3.org/2000/svg"
       :viewBox="`0 0 ${box} ${box}`">
-
       <!-- backdrop -->
       <path
-        class="pointer-events-none"
         :d="d(perimeter)"
         :fill="colors[1]"
+        :style="{
+          pointerEvents: 'none',
+        }"
       />
 
-      <!-- positions & highlights -->
-      
+      <!-- positions -->
+      <g>
+        <path
+          v-for="position, index in board"
+          :key="index"
+          :d="d(flipped ? position[4] : position[3])"
+          :fill="fill(index)"
+        />
+      </g>
 
-      <slot name="P" />
-      <slot name="N" />
-      <slot name="B" />
-      <slot name="R" />
-      <slot name="Q" />
-      <slot name="K" />
-      <slot name="p" />
-      <slot name="n" />
-      <slot name="b" />
-      <slot name="r" />
-      <slot name="q" />
-      <slot name="k" />
+      <!-- pieces -->
+      <g v-if="hexchess">
+        <template v-for="index in 91">
+          <Component
+            v-if="hexchess.board[index]"
+            :is="pieces"
+            :height="pieceSize"
+            :type="hexchess.board[index]!"
+            :width="pieceSize"
+            :x="x(board[index][flipped ? 1 : 2][0] - (pieceSize / 2))"
+            :y="y(board[index][flipped ? 1 : 2][1] + (pieceSize / 2))"
+          />
+        </template>
+      </g>
     </svg>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { box, emptyPosition } from './constants'
-import { colors, perimeter } from './constants'
+import { board, box, colors, initialPosition, pieceSize, perimeter } from './constants'
+import { computed, type Component } from 'vue'
 import { d } from './dom'
+import { Hexchess } from '@bedard/hexchess'
+import { x, y } from './geometry'
 
-withDefaults(
+const props = withDefaults(
   defineProps<{
     flipped?: boolean
+    pieces: Component
     position?: string
   }>(),
   {
     flipped: false,
-    position: emptyPosition
+    position: initialPosition
   }
 )
+
+//
+// computed
+//
+
+const hexchess = computed(() => Hexchess.parse(props.position))
+
+//
+// methods
+//
+
+/** fill color of position */
+function fill(i: number) {
+  return colors[board[i][0]]
+}
 </script>

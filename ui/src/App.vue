@@ -1,61 +1,18 @@
 <template>
   <div>
-    <Hexboard>
-      <template #p>
-        ...pawn svg...
-      </template>
+    <input type="checkbox" id="flipped" v-model="flipped" />
+    <label for="flipped">Flipped</label>
 
-      <template #d>
-        bishop
-      </template>
-
-      <template #n>
-        ...knight svg...
-      </template>
-
-      <template #b>
-        ...bishop svg...
-      </template>
-
-      <template #r>
-        ...rook svg...
-      </template>
-
-      <template #q>
-        ...queen svg...
-      </template>
-
-      <template #k>
-        ...king svg...
-      </template>
-
-      <template #P>
-        <svg xmlns="http://www.w3.org/2000/svg" height="1.7" width="1.7" viewBox="0 0 50 50"><defs><linearGradient id="gioco-a-wp" gradientTransform="matrix(.94331 0 0 1 615.66 493.37)" gradientUnits="userSpaceOnUse" x1="-639.4" x2="-612.91" y1="-465.15" y2="-465.15"><stop offset="0" stop-color="#fff"></stop><stop offset="1" stop-color="#bba38a"></stop></linearGradient></defs><path d="M25 12.264c-3.56 0-6.447 2.655-6.447 5.93 0 1.705.799 3.326 2.19 4.45h-1.666c-1.312 0-2.4.978-2.4 2.158v.438c0 1.18 1.088 2.157 2.4 2.157h2.376c0 7.293-9.342 6.457-8.689 16.78L25 44.167l12.236.008c.653-10.323-8.689-9.486-8.689-16.779h2.376c1.312 0 2.4-.978 2.4-2.157v-.438c0-1.18-1.087-2.157-2.4-2.157h-1.666c1.391-1.125 2.19-2.747 2.19-4.45 0-3.276-2.886-5.93-6.446-5.931z" fill="url(#gioco-a-wp)" stroke="#323232" stroke-linejoin="round" stroke-width="1.6"></path><path d="M24.999 12.264c-.521 0-1.028.058-1.513.166 6.257.692 7.675 6.466 4.917 9.222-2.016 1.69-7.662.993-7.662.993 2.56.443 4.97 1.954 7.252 2.488-6.033 11.435 9.7 9.026 9.242 19.043.995-10.592-7.673-8.148-8.689-16.78h2.377c1.312 0 2.398-.977 2.398-2.156v-.438c0-1.18-1.086-2.158-2.398-2.158h-1.667c1.391-1.125 2.191-2.746 2.19-4.449 0-3.276-2.886-5.932-6.447-5.932z" opacity=".15"></path><path d="M22.959 13.401c-1.77 1.602-2.968 3.612-3.476 6.19 0 0-1.16-4.235 3.476-6.19zM13.342 43.419c.273-5.321 2.572-6.184 7.538-11.434-1.03 3.566-7.387 5.868-7.538 11.434z" fill="#fff"></path></svg>
-      </template>
-
-      <template #N>
-        ...knight svg...
-      </template>
-
-      <template #B>
-        ...bishop svg...
-      </template>
-
-      <template #R>
-        ...rook svg...
-      </template>
-
-      <template #Q>
-        ...queen svg...
-      </template>
-
-      <template #K>
-        ...king svg...
-      </template>
-    </Hexboard>
+    <Hexboard
+      :flipped
+      :pieces="GiocoPieces"
+    />
   </div>
 </template>
 
 <script lang="ts" setup>
-import { Hexboard } from './lib'
+import { GiocoPieces, Hexboard } from './lib'
+import { ref } from 'vue'
+
+const flipped = ref(false)
 </script>
