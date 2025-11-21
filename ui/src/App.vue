@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="fixed p-3 w-40">
+    <div class="gap-3 grid p-3 w-60">
       <Select
         v-model="selectedSet"
         class="w-full"
