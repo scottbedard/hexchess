@@ -1,14 +1,15 @@
 <template>
   <div>
-    <div class="p-3">
+    <div class="fixed p-3 w-40">
+      <Select
+        v-model="selectedSet"
+        class="w-full"
+        label="Pieces"
+        :items="pieceItems" />
+
       <Checkbox
         v-model="flipped"
         label="Flipped" />
-
-      <Combobox
-        v-model="selectedSet"
-        label="Pieces"
-        :items="Object.keys(allPieces)" />
     </div>
 
     <Hexboard
@@ -20,7 +21,7 @@
 </template>
 
 <script lang="ts" setup>
-import { Checkbox, Combobox } from './components'
+import { Checkbox, Select } from './components'
 import {
   AlphaPieces,
   AnarcandyPieces,
@@ -109,7 +110,14 @@ const allPieces = {
 
 const flipped = ref(false)
 
-const selectedSet = ref<keyof typeof allPieces>('alpha')
+const pieceItems = computed(() =>
+  Object.keys(allPieces).map(key => ({
+    display: key,
+    value: key,
+  }))
+)
 
-const pieces = computed(() => allPieces[selectedSet.value])
+const selectedSet = ref<{ display: string; value: string }>({ display: 'alpha', value: 'alpha' })
+
+const pieces = computed(() => allPieces[selectedSet.value.value as keyof typeof allPieces])
 </script>
