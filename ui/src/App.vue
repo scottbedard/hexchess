@@ -21,13 +21,16 @@
 
 <script lang="ts" setup>
 import { Checkbox, Combobox } from './components'
-import { AlphaPieces, AnarcandyPieces, CalientePieces, GiocoPieces, Hexboard } from './lib'
+import { AlphaPieces, AnarcandyPieces, CalientePieces, CaliforniaPieces, CardinalPieces, CburnettPieces, GiocoPieces, Hexboard } from './lib'
 import { computed, ref } from 'vue'
 
 const allPieces = {
   alpha: AlphaPieces,
   anarcandy: AnarcandyPieces,
   caliente: CalientePieces,
+  california: CaliforniaPieces,
+  cardinal: CardinalPieces,
+  cburnett: CburnettPieces,
   gioco: GiocoPieces,
 }
 

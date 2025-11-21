@@ -1,5 +1,8 @@
 export { default as AlphaPieces } from './pieces/AlphaPieces.vue'
 export { default as AnarcandyPieces } from './pieces/AnarcandyPieces.vue'
 export { default as CalientePieces } from './pieces/CalientePieces.vue'
+export { default as CaliforniaPieces } from './pieces/CaliforniaPieces.vue'
+export { default as CardinalPieces } from './pieces/CardinalPieces.vue'
+export { default as CburnettPieces } from './pieces/CburnettPieces.vue'
 export { default as GiocoPieces } from './pieces/GiocoPieces.vue'
 export { default as Hexboard } from './hexboard/Hexboard.vue'
