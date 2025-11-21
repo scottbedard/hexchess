@@ -23,18 +23,18 @@
       </g>
 
       <!-- pieces -->
-      <g v-if="hexchess">
-        <template v-for="index in 91">
-          <Component
-            v-if="hexchess.board[index]"
-            :is="pieces"
-            :height="pieceSize"
-            :type="hexchess.board[index]!"
-            :width="pieceSize"
-            :x="x(board[index][flipped ? 1 : 2][0] - (pieceSize / 2))"
-            :y="y(board[index][flipped ? 1 : 2][1] + (pieceSize / 2))"
-          />
-        </template>
+      <g 
+        v-if="hexchess"
+        v-for="piece, index in hexchess.board">
+        <Component
+          v-if="piece"
+          :is="pieces"
+          :height="pieceSize"
+          :type="piece"
+          :width="pieceSize"
+          :x="x(board[index][flipped ? 1 : 2][0] - (pieceSize / 2))"
+          :y="y(board[index][flipped ? 1 : 2][1] + (pieceSize / 2))"
+        />
       </g>
     </svg>
   </div>
