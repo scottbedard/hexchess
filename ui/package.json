@@ -15,9 +15,14 @@
     "@tailwindcss/vite": "^4.1.17",
     "@types/node": "^22.17.1",
     "@vitejs/plugin-vue": "^6.0.2",
+    "@vitest/browser": "^4.0.12",
+    "@vitest/ui": "^4.0.12",
+    "@vue/test-utils": "^2.4.6",
+    "playwright": "^1.56.1",
     "typescript": "^5.9.2",
     "vite": "^6.3.5",
     "vite-plugin-dts": "^4.5.4",
+    "vitest": "^4.0.12",
     "vue": "^3.5.24",
     "vue-tsc": "^3.1.4"
   }

@@ -9,15 +9,20 @@
     <Hexboard
       class="max-w-3xl mx-auto"
       :flipped
-      :pieces="GiocoPieces"
+      :pieces="AlphaPieces"
     />
   </div>
 </template>
 
 <script lang="ts" setup>
 import { Checkbox } from './components'
-import { GiocoPieces, Hexboard } from './lib'
+import { AlphaPieces, GiocoPieces, Hexboard } from './lib'
 import { ref } from 'vue'
 
 const flipped = ref(false)
+
+const pieces = ref([
+  'alpha',
+  'gioco',
+])
 </script>
