@@ -1,28 +1,24 @@
 import { defineConfig } from 'vitest/config'
 import { fileURLToPath } from 'node:url'
+import { playwright } from '@vitest/browser-playwright'
 import { resolve } from 'node:path'
-import vue from '@vitejs/plugin-vue'
 import tailwindcss from '@tailwindcss/vite'
+import vue from '@vitejs/plugin-vue'
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url))
 
 export default defineConfig({
   plugins: [
     tailwindcss(),
-    vue({
-      template: {
-        compilerOptions: {
-          isCustomElement: tag => ['hexchess-board'].includes(tag)
-        }
-      }
-    }),
+    vue(),
   ],
   test: {
     browser: {
+      provider: playwright(),
       enabled: true,
-      name: 'chromium',
-      provider: 'playwright',
-      headless: true,
+      instances: [
+        { browser: 'chromium' },
+      ],
     },
     environment: 'jsdom',
     globals: true,

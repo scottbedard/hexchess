@@ -15,13 +15,7 @@ export default defineConfig({
       rollupTypes: true
     }),
     tailwindcss(),
-    vue({
-      template: {
-        compilerOptions: {
-          isCustomElement: tag => ['hexchess-board'].includes(tag)
-        }
-      }
-    }),
+    vue(),
   ],
   build: {
     lib: {
