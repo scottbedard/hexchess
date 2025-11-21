@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="min-h-screen bg-white dark:bg-gray-900">
     <div class="gap-3 grid p-3 w-60">
       <Select
         v-model="selectedSet"
