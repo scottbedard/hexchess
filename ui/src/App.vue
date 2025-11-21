@@ -1,9 +1,13 @@
 <template>
   <div>
-    <input type="checkbox" id="flipped" v-model="flipped" />
-    <label for="flipped">Flipped</label>
+    <div class="p-3">
+      <Checkbox
+        v-model="flipped"
+        label="Flipped" />
+    </div>
 
     <Hexboard
+      class="max-w-3xl mx-auto"
       :flipped
       :pieces="GiocoPieces"
     />
@@ -11,6 +15,7 @@
 </template>
 
 <script lang="ts" setup>
+import { Checkbox } from './components'
 import { GiocoPieces, Hexboard } from './lib'
 import { ref } from 'vue'
 

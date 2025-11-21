@@ -32,8 +32,8 @@
           :height="pieceSize"
           :type="piece"
           :width="pieceSize"
-          :x="x(board[index][flipped ? 1 : 2][0] - (pieceSize / 2))"
-          :y="y(board[index][flipped ? 1 : 2][1] + (pieceSize / 2))"
+          :x="x(board[index][flipped ? 2 : 1][0] - (pieceSize / 2))"
+          :y="y(board[index][flipped ? 2 : 1][1] + (pieceSize / 2))"
         />
       </g>
     </svg>
