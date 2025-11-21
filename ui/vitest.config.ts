@@ -4,6 +4,7 @@ import { playwright } from '@vitest/browser-playwright'
 import { resolve } from 'node:path'
 import tailwindcss from '@tailwindcss/vite'
 import vue from '@vitejs/plugin-vue'
+import vueJsx from '@vitejs/plugin-vue-jsx'
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url))
 
@@ -11,6 +12,7 @@ export default defineConfig({
   plugins: [
     tailwindcss(),
     vue(),
+    vueJsx(),
   ],
   test: {
     browser: {

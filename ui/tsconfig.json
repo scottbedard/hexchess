@@ -17,7 +17,8 @@
     "declaration": true,
     "declarationMap": true,
     "outDir": "dist",
-    "rootDir": "src"
+    "rootDir": "src",
+    "jsx": "preserve"
   },
   "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]
