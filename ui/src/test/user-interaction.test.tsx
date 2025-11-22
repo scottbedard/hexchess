@@ -3,7 +3,7 @@ import { expect, test, vi } from 'vitest'
 import { Hexboard } from '../lib'
 import { index, position, positions } from '@bedard/hexchess'
 import { page } from 'vitest/browser'
-import { ref } from 'vue'
+import { ref, nextTick } from 'vue'
 import { render } from 'vitest-browser-vue'
 
 test('update mouseover position on hover', async () => {
@@ -16,17 +16,17 @@ test('update mouseover position on hover', async () => {
 
         <div
           v-text={position(mouseover.value)}
-          data-testid="assert" />
+          data-testid="assertion" />
       </>
-    }
+    },
   })
 
-  const assertLocator = page.getByTestId('assert')
-  await expect.element(assertLocator).toBeInTheDocument()
+  const assertiontLocator = page.getByTestId('assertion')
+  await expect.element(assertiontLocator).toBeInTheDocument()
   
   for (const p of positions) {
     await page.getByTestId(`position-${p}`).hover()
-    await expect.element(assertLocator).toHaveTextContent(p)
+    await expect.element(assertiontLocator).toHaveTextContent(p)
   }
 })
 
@@ -38,10 +38,38 @@ test('calls handler on position click', async () => {
       return () => <>
         <Hexboard onClickPosition={onClickPosition} />
       </>
-    }
+    },
   })
 
   await page.getByTestId('position-f6').click()
   await expect(onClickPosition).toHaveBeenCalledOnce()
   await expect(onClickPosition).toHaveBeenCalledWith(index('f6'))
+})
+
+test('flipped board', async () => {
+  const flipped = ref(false)
+
+  render({
+    setup() {
+      return () => <>
+        <Hexboard flipped={flipped.value} />
+      </>
+    },
+  })
+
+  const { y: startY } = page
+    .getByTestId('position-f1')
+    .element()
+    .getBoundingClientRect()
+
+  flipped.value = true
+
+  await nextTick()
+
+  const { y: endY } = page
+    .getByTestId('position-f1')
+    .element()
+    .getBoundingClientRect()
+  
+  await expect(startY).toBeGreaterThan(endY) // f1 starts at the bottom, then moves to top
 })
