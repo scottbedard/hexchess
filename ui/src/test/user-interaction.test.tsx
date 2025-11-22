@@ -1,32 +1,46 @@
 /** @jsxImportSource vue */
 import { expect, test, vi } from 'vitest'
 import { Hexboard } from '../lib'
-import { index, positions } from '@bedard/hexchess'
+import { index } from '@bedard/hexchess'
 import { ref, nextTick } from 'vue'
 
 test('update mouseover position on hover', async () => {
+  const active = ref(false)
   const mouseover = ref(-1)
 
   setup(() => {
-    return () => <>
-      <Hexboard v-model:mouseover-position={mouseover.value} />
-    </>
+    return () => <Hexboard
+      active={active.value}
+      v-model:mouseover-position={mouseover.value}
+    />
   })
 
-  for (const p of positions) {
-    await page.getByTestId(`position-${p}`).hover()
-    await expect(mouseover.value).toBe(index(p))
-  }
+  await page.getByTestId('position-f6').hover()
+  await expect(mouseover.value).toBe(-1)
+
+  active.value = true
+  await nextTick()
+
+  await page.getByTestId('position-f1').hover()
+  await expect(mouseover.value).toBe(index('f1'))
 })
 
 test('calls handler on position click', async () => {
+  const active = ref(false)
   const onClickPosition = vi.fn()
 
   setup(() => {
-    return () => <>
-      <Hexboard onClickPosition={onClickPosition} />
-    </>
+    return () => <Hexboard
+      active={active.value}
+      onClickPosition={onClickPosition}
+    />
   })
+
+  await page.getByTestId('position-f6').click()
+  await expect(onClickPosition).not.toHaveBeenCalled()
+
+  active.value = true
+  await nextTick()
 
   await page.getByTestId('position-f6').click()
   await expect(onClickPosition).toHaveBeenCalledOnce()
@@ -37,9 +51,7 @@ test('flipped board', async () => {
   const flipped = ref(false)
 
   setup(() => {
-    return () => <>
-      <Hexboard flipped={flipped.value} />
-    </>
+    return () => <Hexboard flipped={flipped.value} />
   })
 
   const { y: startY } = page
@@ -61,13 +73,11 @@ test('flipped board', async () => {
 
 test('custom colors', async () => {
   setup(() => {
-    return () => <>
-      <Hexboard
-        options={{
-          colors: ['red', 'green', 'blue'],
-        }}
-      />
-    </>
+    return () => <Hexboard
+      options={{
+        colors: ['red', 'green', 'blue'],
+      }}
+    />
   })
 
   await page.getByTestId('position-a6').hover()
@@ -81,16 +91,17 @@ test('custom colors', async () => {
 })
 
 test('label colors', async () => {
+  const active = ref(false)
+
   setup(() => {
-    return () => <>
-      <Hexboard
-        options={{
-          labelColor: 'red',
-          labelActiveColor: 'green',
-          labelInactiveColor: 'blue',
-        }}
-      />
-    </>
+    return () => <Hexboard
+      active={active.value}
+      options={{
+        labelColor: 'red',
+        labelActiveColor: 'green',
+        labelInactiveColor: 'blue',
+      }}
+    />
   })
 
   // When no mouseover, all labels should have default labelColor (red)
@@ -98,11 +109,20 @@ test('label colors', async () => {
   await expect.element(page.getByTestId('label-b')).toHaveStyle({ fill: 'red' })
   await expect.element(page.getByTestId('label-c')).toHaveStyle({ fill: 'red' })
 
-  // When hovering over f6, labels 'f' and '6' should be active (green)
+  // No mouse events should be bound when inactive
   await page.getByTestId('position-f6').hover()
+  await nextTick()
+  await expect.element(page.getByTestId('label-a')).toHaveStyle({ fill: 'red' })
+  await expect.element(page.getByTestId('label-b')).toHaveStyle({ fill: 'red' })
+  await expect.element(page.getByTestId('label-c')).toHaveStyle({ fill: 'red' })
+
+  // When hovering over f6, labels 'f' and '6' should be active (green)
+  active.value = true
+  await nextTick()
+  await page.getByTestId('position-f5').hover()
   await expect.element(page.getByTestId('label-f')).toHaveStyle({ fill: 'green' })
-  await expect.element(page.getByTestId('label-6').first()).toHaveStyle({ fill: 'green' })
-  await expect.element(page.getByTestId('label-6').last()).toHaveStyle({ fill: 'green' })
+  await expect.element(page.getByTestId('label-5').first()).toHaveStyle({ fill: 'green' })
+  await expect.element(page.getByTestId('label-5').last()).toHaveStyle({ fill: 'green' })
 
   // Other labels should be inactive (blue)
   await expect.element(page.getByTestId('label-a')).toHaveStyle({ fill: 'blue' })

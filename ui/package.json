@@ -24,6 +24,7 @@
     "@vitest/browser-playwright": "^4.0.12",
     "@vitest/ui": "^4.0.12",
     "@vue/test-utils": "^2.4.6",
+    "es-toolkit": "^1.42.0",
     "jsdom": "^27.2.0",
     "playwright": "^1.56.1",
     "typescript": "^5.9.2",

@@ -17,9 +17,11 @@
         :data-testid="`position-${indexToPosition(index)}`"
         :fill="fill(index)"
         :key="index"
-        @click="onClickPosition(index)"
-        @mouseenter="onMouseenterPosition(index)"
-        @mouseleave="onMouseleavePosition"
+        v-bind="active ? {
+          onClick: () => onClickPosition(index),
+          onMouseenter: () => onMouseenterPosition(index),
+          onMouseleave: () => onMouseleavePosition(),
+        } : {}"
       />
 
       <!-- labels -->
@@ -74,12 +76,14 @@ import type { HexboardOptions } from './types'
 
 const props = withDefaults(
   defineProps<{
+    active?: boolean
     flipped?: boolean
     pieces?: Component
     position?: string
     options?: Partial<HexboardOptions>
   }>(),
   {
+    active: false,
     flipped: false,
     options: () => ({}),
     pieces: () => GiocoPieces,

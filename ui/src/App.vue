@@ -1,24 +1,32 @@
 <template>
   <div class="min-h-screen bg-white dark:bg-gray-900">
-    <div class="gap-3 grid p-3 w-60">
+    <div class="gap-3 grid p-3">
       <Select
         v-model="selectedSet"
-        class="w-full"
+        class="max-w-40 w-full"
         label="Pieces"
         :items="pieceItems" />
 
-      <Checkbox
-        v-model="flipped"
-        label="Flipped" />
+      <div class="flex flex-wrap gap-6">
+        <Checkbox
+          v-model="active"
+          label="Active" />
+
+        <Checkbox
+          v-model="flipped"
+          label="Flipped" />
+      </div>
     </div>
 
     <Hexboard
       class="max-w-3xl mx-auto"
+      :active
       :flipped
       :pieces
       :options="{
         // ...
       }"
+      @click-position="onClickPosition"
     />
   </div>
 </template>
@@ -111,6 +119,8 @@ const allPieces = {
   xkcd: XkcdPieces,
 }
 
+const active = ref(true)
+
 const flipped = ref(false)
 
 const pieceItems = computed(() =>
@@ -123,4 +133,8 @@ const pieceItems = computed(() =>
 const selectedSet = ref<{ display: string; value: string }>({ display: 'alpha', value: 'alpha' })
 
 const pieces = computed(() => allPieces[selectedSet.value.value as keyof typeof allPieces])
+
+function onClickPosition(position: number) {
+  console.log('onClickPosition', position)
+}
 </script>
