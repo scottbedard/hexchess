@@ -1,3 +1,15 @@
+/** hexboard options */
+export interface HexboardOptions {
+  /** position colors */
+  colors: [string, string, string]
+  /** color of active label relative to mouseover */
+  labelActiveColor: string
+  /** label color */
+  labelColor: string
+  /** fill color of inactive label relative to mouseover */
+  labelInactiveColor: string
+}
+
 /** uniform tuple of length `T`, `number` by default */
 export type Vec<
   T extends number,

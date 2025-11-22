@@ -6,7 +6,7 @@
       <!-- backdrop -->
       <path
         :d="d(perimeter)"
-        :fill="colors[1]"
+        :fill="normalizedOptions.colors[1]"
         :style="{ pointerEvents: 'none' }"
       />
 
@@ -20,6 +20,24 @@
         @click="onClickPosition(index)"
         @mouseenter="onMouseenterPosition(index)"
         @mouseleave="onMouseleavePosition"
+      />
+
+      <!-- labels -->
+      <text
+        v-for="[text, p, positionFlipped], i in labels"
+        v-text="text"
+        :data-testid="`label-${text}`"
+        dominant-baseline="central"
+        text-anchor="middle"
+        :key="`label-${i}`"
+        :style="{
+          fill: getLabelFill(text),
+          fontSize: '.5px',
+          pointerEvents: 'none',
+          userSelect: 'none',
+        }"
+        :x="x(flipped ? positionFlipped[0] : p[0])"
+        :y="y(flipped ? positionFlipped[1] : p[1])"
       />
 
       <!-- pieces -->
@@ -42,12 +60,13 @@
 </template>
 
 <script lang="ts" setup>
-import { board, box, colors, initialPosition, pieceSize, perimeter } from './constants'
+import { board, box, defaultOptions, initialPosition, labels, pieceSize, perimeter } from './constants'
 import { computed, type Component } from 'vue'
 import { d } from './dom'
 import { Hexchess, position as indexToPosition } from '@bedard/hexchess'
 import { x, y } from './geometry'
 import GiocoPieces from '../pieces/GiocoPieces.vue'
+import type { HexboardOptions } from './types'
 
 //
 // props
@@ -58,11 +77,13 @@ const props = withDefaults(
     flipped?: boolean
     pieces?: Component
     position?: string
+    options?: Partial<HexboardOptions>
   }>(),
   {
     flipped: false,
+    options: () => ({}),
     pieces: () => GiocoPieces,
-    position: initialPosition
+    position: initialPosition,
   }
 )
 
@@ -84,7 +105,13 @@ const emit = defineEmits<{
 // computed
 //
 
+/** current hexchess state */
 const hexchess = computed(() => Hexchess.parse(props.position))
+
+/** normalized options */
+const normalizedOptions = computed(() => {
+  return { ...defaultOptions, ...props.options }
+})
 
 //
 // methods
@@ -92,7 +119,22 @@ const hexchess = computed(() => Hexchess.parse(props.position))
 
 /** fill color of position */
 function fill(i: number) {
-  return colors[board[i][0]]
+  return normalizedOptions.value.colors[board[i][0]]
+}
+
+function getLabelFill(text: string) {
+  if (mouseoverPosition.value === null) {
+    return normalizedOptions.value.labelColor
+  }
+
+  if (
+    indexToPosition(mouseoverPosition.value)?.startsWith(text) ||
+    indexToPosition(mouseoverPosition.value)?.endsWith(text)
+  ) {
+    return normalizedOptions.value.labelActiveColor
+  }
+
+  return normalizedOptions.value.labelInactiveColor
 }
 
 /** handle click on position */

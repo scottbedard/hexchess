@@ -16,6 +16,9 @@
       class="max-w-3xl mx-auto"
       :flipped
       :pieces
+      :options="{
+        // ...
+      }"
     />
   </div>
 </template>
