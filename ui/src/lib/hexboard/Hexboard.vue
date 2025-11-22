@@ -17,9 +17,9 @@
         :data-testid="`position-${indexToPosition(index)}`"
         :fill="fill(index)"
         :key="index"
-        @click="onClick(index)"
-        @mouseenter="onMouseenter(index)"
-        @mouseleave="onMouseleave"
+        @click="onClickPosition(index)"
+        @mouseenter="onMouseenterPosition(index)"
+        @mouseleave="onMouseleavePosition"
       />
 
       <!-- pieces -->
@@ -70,14 +70,14 @@ const props = withDefaults(
 // models
 //
 
-const mouseover = defineModel<number | null>('mouseover', { default: null, required: false })
+const mouseoverPosition = defineModel<number | null>('mouseover-position', { default: null, required: false })
 
 //
 // events
 //
 
 const emit = defineEmits<{
-  positionClick: [position: number]
+  clickPosition: [position: number]
 }>()
 
 //
@@ -96,17 +96,17 @@ function fill(i: number) {
 }
 
 /** handle click on position */
-function onClick(index: number) {
-  emit('positionClick', index)
+function onClickPosition(index: number) {
+  emit('clickPosition', index)
 }
 
 /** handle mouse enter on position */
-function onMouseenter(index: number) {
-  mouseover.value = index
+function onMouseenterPosition(index: number) {
+  mouseoverPosition.value = index
 }
 
 /** handle mouse leave on position */
-function onMouseleave() {
-  mouseover.value = null
+function onMouseleavePosition() {
+  mouseoverPosition.value = null
 }
 </script>

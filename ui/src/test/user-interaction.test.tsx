@@ -1,18 +1,18 @@
 /** @jsxImportSource vue */
-import { expect, test } from 'vitest'
+import { expect, test, vi } from 'vitest'
 import { Hexboard } from '../lib'
-import { position, positions } from '@bedard/hexchess'
+import { index, position, positions } from '@bedard/hexchess'
 import { page } from 'vitest/browser'
 import { ref } from 'vue'
 import { render } from 'vitest-browser-vue'
 
-test('properly handles form inputs', async () => {
+test('update mouseover position on hover', async () => {
   render({
     setup() {
       const mouseover = ref(-1)
 
       return () => <>
-        <Hexboard v-model:mouseover={mouseover.value} />
+        <Hexboard v-model:mouseover-position={mouseover.value} />
 
         <div
           v-text={position(mouseover.value)}
@@ -28,4 +28,20 @@ test('properly handles form inputs', async () => {
     await page.getByTestId(`position-${p}`).hover()
     await expect.element(assertLocator).toHaveTextContent(p)
   }
+})
+
+test('calls handler on position click', async () => {
+  const onClickPosition = vi.fn()
+
+  render({
+    setup() {
+      return () => <>
+        <Hexboard onClickPosition={onClickPosition} />
+      </>
+    }
+  })
+
+  await page.getByTestId('position-f6').click()
+  await expect(onClickPosition).toHaveBeenCalledOnce()
+  await expect(onClickPosition).toHaveBeenCalledWith(index('f6'))
 })
