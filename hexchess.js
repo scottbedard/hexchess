@@ -28,6 +28,11 @@ program
     await buildRust({ silent: true })
     rust.succeed(`Rust crate ${dim(`(${Date.now() - rustStart}ms)`)}`)
 
+    const ui = ora('Building UI library...').start()
+    const uiStart = Date.now()
+    await buildUi({ silent: true })
+    ui.succeed(`UI package ${dim(`(${Date.now() - uiStart}ms)`)}`)
+
     console.log()
     console.log(green('Done'), dim(`(${Date.now() - startAt}ms)`))
   })
@@ -117,6 +122,11 @@ program
     const engine = ora('Engine...').start()
     await testEngine({ silent: true })
     engine.succeed(`Engine ${dim(`(${Date.now() - engineStartAt}ms)`)}`)
+
+    const uiStartAt = Date.now()
+    const ui = ora('UI...').start()
+    await testUi({ silent: true })
+    ui.succeed(`UI ${dim(`(${Date.now() - uiStartAt}ms)`)}`)
 
     console.log()
     console.log(green('Done'), dim(`(${Date.now() - startAt}ms)`))

@@ -103,6 +103,7 @@ export async function testRust(options) {
 export async function testUi(options) {
   const args = [
     'vitest',
+    '--browser.headless'
   ]
 
   if (options?.filter) {
