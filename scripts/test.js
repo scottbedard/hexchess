@@ -99,3 +99,26 @@ export async function testRust(options) {
     silent: options?.silent,
   })
 }
+
+export async function testUi(options) {
+  const args = [
+    'vitest',
+  ]
+
+  if (options?.filter) {
+    args.push(options.filter)
+  }
+
+  if (options?.coverage) {
+    args.push('--coverage')
+  }
+
+  if (options?.ui) {
+    args.push('--ui')
+  }
+
+  await execAsync('npx', args, {
+    cwd: resolve('ui'),
+    silent: options?.silent,
+  })
+}

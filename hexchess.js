@@ -1,9 +1,10 @@
 import { buildEngine } from './scripts/build-engine.js'
 import { buildJs } from './scripts/build-js.js'
 import { buildRust } from './scripts/build-rust.js'
-import { dim, execAsync, green } from './scripts/utils.js'
+import { buildUi } from './scripts/build-ui.js'
+import { dim, execAsync, green, resolve } from './scripts/utils.js'
 import { program } from 'commander'
-import { testEngine, testJs, testPhp, testRust } from './scripts/test.js'
+import { testEngine, testJs, testPhp, testRust, testUi } from './scripts/test.js'
 import { versionCheck } from './scripts/version-check.js'
 import { version } from './scripts/version.js'
 import ora from 'ora'
@@ -45,6 +46,11 @@ program
   .command('build:rs')
   .description('Build Rust crate')
   .action(buildRust)
+
+program
+  .command('build:ui')
+  .description('Build UI package')
+  .action(buildUi)
 
 //
 // docs
@@ -168,6 +174,44 @@ program
     await testRust({
       coverage: options?.coverage,
       silent: options?.silent,
+    })
+  })
+
+program
+  .command('test:ui')
+  .description('Run UI tests')
+  .option('-c, --coverage', 'Generate coverage report')
+  .option('-f, --filter <filter>', 'Filter tests by name')
+  .option('-s, --silent', 'Run tests silently')
+  .option('-u, --ui', 'Run tests with UI')
+  .action(async (options) => {
+    await testUi({
+      coverage: options?.coverage,
+      filter: options?.filter,
+      silent: options?.silent,
+      ui: options?.ui,
+    })
+  })
+
+//
+// ui
+//
+
+program
+  .command('ui:dev')
+  .description('Develop UI')
+  .action(async () => {
+    await execAsync('npx', ['vite'], {
+      cwd: resolve('ui'),
+    })
+  })
+
+program
+  .command('ui:preview')
+  .description('Preview UI build')
+  .action(async () => {
+    await execAsync('npx', ['vite', 'preview'], {
+      cwd: resolve('ui'),
     })
   })
 

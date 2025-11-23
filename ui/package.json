@@ -5,13 +5,6 @@
   "main": "dist/index.js",
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview",
-    "test": "vitest",
-    "test:ui": "vitest --ui"
-  },
   "peerDependencies": {
     "@bedard/hexchess": "^2.5.0",
     "vue": "^3.5.0"
