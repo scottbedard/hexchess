@@ -159,3 +159,31 @@ test('targets array controls rendering of target circles', async () => {
   await expect.element(page.getByTestId('target-a1')).toBeVisible()
   await expect.element(page.getByTestId('target-a1')).toHaveStyle({ fill: 'red' })
 })
+
+test('selected model is set when clicking a position', async () => {
+  const active = ref(false)
+  const selected = ref<number | null>(null)
+
+  setup(() => {
+    return () => <Hexboard
+      active={active.value}
+      v-model:selected={selected.value}
+    />
+  })
+
+  // Clicking when inactive should not set selected
+  await page.getByTestId('position-f6').click()
+  await expect(selected.value).toBeNull()
+
+  // Activate the board
+  active.value = true
+  await nextTick()
+
+  // Clicking when active should set selected
+  await page.getByTestId('position-f6').click()
+  await expect(selected.value).toBe(index('f6'))
+
+  // Clicking another position should update selected
+  await page.getByTestId('position-a1').click()
+  await expect(selected.value).toBe(index('a1'))
+})

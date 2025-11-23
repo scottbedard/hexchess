@@ -116,6 +116,8 @@ const props = withDefaults(
 
 const mouseoverPosition = defineModel<number | null>('mouseover-position', { default: null, required: false })
 
+const selected = defineModel<number | null>('selected', { default: null, required: false })
+
 //
 // state
 //
@@ -186,6 +188,8 @@ function getLabelFill(text: string) {
 
 /** click position */
 function onClickPosition(index: number) {
+  selected.value = index
+
   emit('clickPosition', index)
 }
 
