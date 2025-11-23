@@ -138,3 +138,24 @@ test('labels and label colors', async () => {
   await expect.element(page.getByTestId('label-1').first()).toHaveStyle({ fill: 'blue' })
   await expect.element(page.getByTestId('label-1').last()).toHaveStyle({ fill: 'blue' })
 })
+
+test('targets array controls rendering of target circles', async () => {
+  const targets = ref<number[]>([])
+
+  setup(() => {
+    return () => <Hexboard
+      active={true}
+      targets={targets.value}
+      options={{
+        targetColor: 'red',
+      }}
+    />
+  })
+
+  await expect.element(page.getByTestId('target-a1')).not.toBeInTheDocument()
+
+  targets.value = [index('a1')]
+
+  await expect.element(page.getByTestId('target-a1')).toBeVisible()
+  await expect.element(page.getByTestId('target-a1')).toHaveStyle({ fill: 'red' })
+})

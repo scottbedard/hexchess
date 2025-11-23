@@ -14,6 +14,7 @@ export const defaultOptions: HexboardOptions = {
   labelColor: 'oklch(55.4% 0.046 257.417)',
   labelInactiveColor: 'oklch(70.4% 0.04 256.788)',
   labels: true,
+  targetColor: 'oklch(63.7% 0.237 25.331)',
 } as const
 
 /** empty position */

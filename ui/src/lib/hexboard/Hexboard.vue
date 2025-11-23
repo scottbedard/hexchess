@@ -64,11 +64,12 @@
       <!-- targets -->
       <circle
         v-for="targetIndex in targets"
+        :data-testid="`target-${indexToPosition(targetIndex)}`"
         :key="`target-${indexToPosition(targetIndex)}`"
         :cx="x(board[targetIndex][flipped ? 2 : 1][0])"
         :cy="y(board[targetIndex][flipped ? 2 : 1][1])"
         :r="0.2"
-        fill="red"
+        :fill="normalizedOptions.targetColor"
         :style="{ pointerEvents: 'none' }"
       />
     </svg>

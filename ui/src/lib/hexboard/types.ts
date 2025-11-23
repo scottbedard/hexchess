@@ -10,6 +10,8 @@ export interface HexboardOptions {
   labelInactiveColor: string
   /** show labels */
   labels: boolean
+  /** color of target circles */
+  targetColor: string
 }
 
 /** uniform tuple of length `T`, `number` by default */
