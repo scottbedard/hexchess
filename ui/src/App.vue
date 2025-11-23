@@ -130,7 +130,7 @@ const pieceItems = computed(() =>
   }))
 )
 
-const selectedSet = ref<{ display: string; value: string }>({ display: 'alpha', value: 'alpha' })
+const selectedSet = ref<{ display: string; value: string }>({ display: 'gioco', value: 'gioco' })
 
 const pieces = computed(() => allPieces[selectedSet.value.value as keyof typeof allPieces])
 
