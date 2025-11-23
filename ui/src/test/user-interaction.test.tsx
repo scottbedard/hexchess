@@ -161,6 +161,21 @@ test('targets array controls rendering of target circles', async () => {
   await expect.element(page.getByTestId('target-a1')).toHaveStyle({ fill: 'red' })
 })
 
+test('autoselect targets', async () => {
+  const targets = ref<number[]>([])
+
+  setup(() => {
+    return () => <Hexboard
+      active
+      autoselect
+      targets={targets.value}
+    />
+  })
+
+  await page.getByTestId('position-f5').click()
+  await expect.element(page.getByTestId('target-f6')).toBeVisible()
+})
+
 test('select options and logic', async () => {
   const active = ref(false)
   const selected = ref<number | null>(null)

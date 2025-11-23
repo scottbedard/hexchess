@@ -121,7 +121,6 @@ const props = withDefaults(
     pieces?: Component
     playing?: Color | boolean
     position?: string
-    targets?: number[]
   }>(),
   {
     active: false,
@@ -132,7 +131,6 @@ const props = withDefaults(
     pieces: () => GiocoPieces,
     playing: false,
     position: initialPosition,
-    targets: () => [],
   }
 )
 
@@ -155,6 +153,11 @@ const mouseoverPosition = defineModel<number | null>('mouseover-position', {
 
 const selected = defineModel<number | null>('selected', {
   default: null,
+  required: false,
+})
+
+const targets = defineModel<number[]>('targets', {
+  default: () => [],
   required: false,
 })
 
@@ -267,9 +270,13 @@ function listen() {
 function onClickPosition(index: number, e: MouseEvent) {
   emit('clickPosition', index)
 
-  if (props.autoselect && hexchess.value.board[index]) {
+  if (
+    props.autoselect &&
+    hexchess.value.board[index]
+  ) {
     e.stopPropagation()
     selected.value = index
+    targets.value = hexchess.value.movesFrom(index).map(san => san.to)
   }
 }
 
@@ -277,6 +284,7 @@ function onClickPosition(index: number, e: MouseEvent) {
 function onKeyupWindow(evt: KeyboardEvent) {
   if (props.autoselect && evt.key === 'Escape') {
     selected.value = null
+    targets.value = []
   }
 }
 
@@ -309,6 +317,7 @@ function onMousemoveWindow(evt: MouseEvent) {
 function onClickWindow() {
   if (props.autoselect) {
     selected.value = null
+    targets.value = []
   }
 }
 
