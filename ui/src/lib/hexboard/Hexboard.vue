@@ -101,7 +101,7 @@
 import { board, box, defaultOptions, initialPosition, labels, pieceSize, perimeter } from './constants'
 import { computed, onMounted, onUnmounted, shallowRef, watch, type Component } from 'vue'
 import { d } from './dom'
-import { Hexchess, position as indexToPosition } from '@bedard/hexchess'
+import { Hexchess, position as indexToPosition, type Color } from '@bedard/hexchess'
 import { x, y } from './geometry'
 import GiocoPieces from '../pieces/GiocoPieces.vue'
 import type { HexboardOptions } from './types'
@@ -117,6 +117,7 @@ const props = withDefaults(
     highlight?: number[]
     options?: Partial<HexboardOptions>
     pieces?: Component
+    playing?: Color | boolean
     position?: string
     targets?: number[]
   }>(),
@@ -126,6 +127,7 @@ const props = withDefaults(
     highlight: () => [],
     options: () => ({}),
     pieces: () => GiocoPieces,
+    playing: false,
     position: initialPosition,
     targets: () => [],
   }
@@ -231,7 +233,7 @@ function onMouseleavePosition() {
 
 /** mouseup position */
 function onMouseupPosition(index: number) {
-  console.log('onMouseupPosition', index)
+  // ...
 }
 
 /** mousemove window */

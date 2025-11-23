@@ -135,6 +135,6 @@ const selectedSet = ref<{ display: string; value: string }>({ display: 'gioco', 
 const pieces = computed(() => allPieces[selectedSet.value.value as keyof typeof allPieces])
 
 function onClickPosition(position: number) {
-  console.log('onClickPosition', position)
+  // ...
 }
 </script>
