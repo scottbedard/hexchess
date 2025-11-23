@@ -3,6 +3,7 @@ import { expect, test, vi } from 'vitest'
 import { Hexboard } from '../lib'
 import { index } from '@bedard/hexchess'
 import { ref, nextTick } from 'vue'
+import { userEvent } from 'vitest/browser'
 
 test('update mouseover position on hover', async () => {
   const active = ref(false)
@@ -160,18 +161,26 @@ test('targets array controls rendering of target circles', async () => {
   await expect.element(page.getByTestId('target-a1')).toHaveStyle({ fill: 'red' })
 })
 
-test('selected model is set when clicking a position', async () => {
+test('select options and logic', async () => {
   const active = ref(false)
   const selected = ref<number | null>(null)
 
   setup(() => {
-    return () => <Hexboard
-      active={active.value}
-      v-model:selected={selected.value}
-      options={{
-        selectedColor: 'red',
-      }}
-    />
+    return () => <>
+      <Hexboard
+        v-model:selected={selected.value}
+        active={active.value}
+        autoselect
+        playing
+        options={{
+          selectedColor: 'red',
+        }}
+      />
+
+      <div
+        v-text={selected.value}
+        data-testid="assertion" />
+    </>
   })
 
   // Initially, no selected path should be in the document
@@ -188,17 +197,20 @@ test('selected model is set when clicking a position', async () => {
   await nextTick()
 
   // Clicking when active should set selected
-  await page.getByTestId('position-f6').click()
-  await expect(selected.value).toBe(index('f6'))
-  await expect.element(page.getByTestId('selected-f6')).toBeVisible()
-  await expect.element(page.getByTestId('selected-f6')).toHaveStyle({ fill: 'red' })
+  await page.getByTestId('position-f5').click()
+  await expect(selected.value).toBe(index('f5'))
+  await expect.element(page.getByTestId('selected-f5')).toBeVisible()
+  await expect.element(page.getByTestId('selected-f5')).toHaveStyle({ fill: 'red' })
 
-  // Clicking another position should update selected
+  // Clicking an unoccupied position should update selected
   await page.getByTestId('position-a1').click()
-  await expect(selected.value).toBe(index('a1'))
-  await expect.element(page.getByTestId('selected-f6')).not.toBeInTheDocument()
-  await expect.element(page.getByTestId('selected-a1')).toBeVisible()
-  await expect.element(page.getByTestId('selected-a1')).toHaveStyle({ fill: 'red' })
+  await expect.element(page.getByTestId('assertion')).toHaveTextContent('')
+
+  // Escape should clear selected
+  await page.getByTestId('position-f5').click()
+  await expect.element(page.getByTestId('assertion')).toHaveTextContent(index('f5'))
+  userEvent.keyboard('{Escape}')
+  await expect.element(page.getByTestId('assertion')).toHaveTextContent('')
 })
 
 test('highlight array controls rendering of highlight paths', async () => {

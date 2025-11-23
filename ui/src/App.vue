@@ -27,7 +27,9 @@
     </div>
 
     <Hexboard
+      v-model:selected="selected"
       class="max-w-3xl mx-auto"
+      autoselect
       :active
       :flipped
       :pieces="selectedPieces"
@@ -37,6 +39,8 @@
       :playing
       @click-position="onClickPosition"
     />
+
+    {{ { selected } }}
   </div>
 </template>
 
@@ -56,7 +60,7 @@ import {
   ChessnutPieces,
   CompanionPieces,
   // CookePieces,
-  DisguisedPieces,
+  // DisguisedPieces,
   DubrovnyPieces,
   // FantasyPieces,
   FiriPieces,
@@ -140,6 +144,8 @@ const active = ref(true)
 
 const flipped = ref(false)
 
+const selected = ref<number | null>(null)
+
 const pieceItems: Array<{
   display: string
   value: Component
@@ -148,8 +154,6 @@ const pieceItems: Array<{
 const selectedPieces = shallowRef<Component>(pieces.gioco)
 
 const playing = ref<Color | boolean>(true)
-
-// const pieces = computed(() => pieces[selectedSet.value.value as keyof typeof pieces])
 
 function onClickPosition(position: number) {
   // ...

@@ -17,7 +17,7 @@
       <path
         v-for="position, index in board"
         v-bind="active ? {
-          onClick: () => onClickPosition(index),
+          onClick: e => onClickPosition(index, e),
           onMousedown: () => onMousedownPosition(index),
           onMouseenter: () => onMouseenterPosition(index),
           onMouseleave: () => onMouseleavePosition(),
@@ -114,6 +114,7 @@ import type { HexboardOptions } from './types'
 const props = withDefaults(
   defineProps<{
     active?: boolean
+    autoselect?: boolean
     flipped?: boolean
     highlight?: number[]
     options?: Partial<HexboardOptions>
@@ -124,6 +125,7 @@ const props = withDefaults(
   }>(),
   {
     active: false,
+    autoselect: false,
     flipped: false,
     highlight: () => [],
     options: () => ({}),
@@ -218,21 +220,19 @@ const mouseoverPiece = computed(() => {
 
 onMounted(() => {
   if (props.active) {
-    trackMousemove()
+    listen()
   }
 })
 
-onUnmounted(() => {
-  stopTrackingMousemove()
-})
+onUnmounted(unlisten)
 
 //
 // watchers
 //
 
-watch(() => props.active, (active) => {
-  if (active) trackMousemove()
-  else stopTrackingMousemove()
+watch(() => props.active, active => {
+  if (active) listen()
+  else unlisten()
 })
 
 //
@@ -254,16 +254,35 @@ function getLabelFill(text: string) {
   return normalizedOptions.value.labelInactiveColor
 }
 
-/** click position */
-function onClickPosition(index: number) {
-  selected.value = index
+/** listen for events */
+function listen() {
+  mousePosition.value = { x: 0, y: 0 }
 
+  window.addEventListener('click', onClickWindow)
+  window.addEventListener('mousemove', onMousemoveWindow)
+  window.addEventListener('keyup', onKeyupWindow)
+}
+
+/** click position */
+function onClickPosition(index: number, e: MouseEvent) {
   emit('clickPosition', index)
+
+  if (props.autoselect && hexchess.value.board[index]) {
+    e.stopPropagation()
+    selected.value = index
+  }
+}
+
+/** keyup window */
+function onKeyupWindow(evt: KeyboardEvent) {
+  if (props.autoselect && evt.key === 'Escape') {
+    selected.value = null
+  }
 }
 
 /** mousedown on position */
 function onMousedownPosition(index: number) {
-  console.log('onMousedownPosition', index)
+  // ...
 }
 
 /** mouseenter position */
@@ -286,15 +305,19 @@ function onMousemoveWindow(evt: MouseEvent) {
   mousePosition.value = { x: evt.clientX, y: evt.clientY }
 }
 
-/** track mousemove */
-function trackMousemove() {
-  window.addEventListener('mousemove', onMousemoveWindow)
-  mousePosition.value = { x: 0, y: 0 }
+/** window click */
+function onClickWindow() {
+  if (props.autoselect) {
+    selected.value = null
+  }
 }
 
-/** stop tracking mousemove */
-function stopTrackingMousemove() {
-  window.removeEventListener('mousemove', onMousemoveWindow)
+/** stop listening for events */
+function unlisten() {
   mousePosition.value = { x: -1, y: -1 }
+
+  window.removeEventListener('click', onClickWindow)
+  window.removeEventListener('keyup', onKeyupWindow)
+  window.removeEventListener('mousemove', onMousemoveWindow)
 }
 </script>
