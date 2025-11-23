@@ -200,3 +200,41 @@ test('selected model is set when clicking a position', async () => {
   await expect.element(page.getByTestId('selected-a1')).toBeVisible()
   await expect.element(page.getByTestId('selected-a1')).toHaveStyle({ fill: 'red' })
 })
+
+test('highlight array controls rendering of highlight paths', async () => {
+  const highlight = ref<number[]>([])
+
+  setup(() => {
+    return () => <Hexboard
+      highlight={highlight.value}
+      options={{
+        highlightColor: 'pink',
+      }}
+    />
+  })
+
+  // Initially, no highlight paths should be in the document
+  await expect.element(page.getByTestId('highlight-f6')).not.toBeInTheDocument()
+  await expect.element(page.getByTestId('highlight-a1')).not.toBeInTheDocument()
+
+  // Setting highlight to a single position should render one path
+  highlight.value = [index('f6')]
+  await nextTick()
+  await expect.element(page.getByTestId('highlight-f6')).toBeVisible()
+  await expect.element(page.getByTestId('highlight-f6')).toHaveStyle({ fill: 'pink' })
+  await expect.element(page.getByTestId('highlight-a1')).not.toBeInTheDocument()
+
+  // Setting highlight to multiple positions should render multiple paths
+  highlight.value = [index('f6'), index('a1')]
+  await nextTick()
+  await expect.element(page.getByTestId('highlight-f6')).toBeVisible()
+  await expect.element(page.getByTestId('highlight-f6')).toHaveStyle({ fill: 'pink' })
+  await expect.element(page.getByTestId('highlight-a1')).toBeVisible()
+  await expect.element(page.getByTestId('highlight-a1')).toHaveStyle({ fill: 'pink' })
+
+  // Clearing highlight should remove all paths
+  highlight.value = []
+  await nextTick()
+  await expect.element(page.getByTestId('highlight-f6')).not.toBeInTheDocument()
+  await expect.element(page.getByTestId('highlight-a1')).not.toBeInTheDocument()
+})

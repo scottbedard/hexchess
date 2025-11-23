@@ -26,6 +26,16 @@
         :key="index"
       />
 
+      <!-- highlighted positions -->
+      <path
+        v-for="highlightIndex in highlight"
+        :key="`highlight-${highlightIndex}`"
+        :d="d(flipped ? board[highlightIndex][4] : board[highlightIndex][3])"
+        :data-testid="`highlight-${indexToPosition(highlightIndex)}`"
+        :fill="normalizedOptions.highlightColor"
+        :style="{ pointerEvents: 'none' }"
+      />
+
       <!-- selected position -->
       <path
         v-if="selected !== null"
@@ -104,6 +114,7 @@ const props = withDefaults(
   defineProps<{
     active?: boolean
     flipped?: boolean
+    highlight?: number[]
     options?: Partial<HexboardOptions>
     pieces?: Component
     position?: string
@@ -112,6 +123,7 @@ const props = withDefaults(
   {
     active: false,
     flipped: false,
+    highlight: () => [],
     options: () => ({}),
     pieces: () => GiocoPieces,
     position: initialPosition,
