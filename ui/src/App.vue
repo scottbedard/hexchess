@@ -1,11 +1,19 @@
 <template>
   <div class="min-h-screen bg-white dark:bg-gray-900">
     <div class="gap-3 grid p-3">
-      <Select
-        v-model="selectedSet"
-        class="max-w-40 w-full"
-        label="Pieces"
-        :items="pieceItems" />
+      <div class="flex flex-wrap gap-6">
+        <Select
+          v-model="selectedPieces"
+          class="max-w-32 w-full"
+          label="Pieces"
+          :items="pieceItems" />
+
+        <Select
+          v-model="playing"
+          class="max-w-32 w-full"
+          label="Playing"
+          :items="playingItems"/>
+      </div>
 
       <div class="flex flex-wrap gap-6">
         <Checkbox
@@ -22,7 +30,7 @@
       class="max-w-3xl mx-auto"
       :active
       :flipped
-      :pieces
+      :pieces="selectedPieces"
       :options="{
         // ...
       }"
@@ -32,6 +40,8 @@
 </template>
 
 <script lang="ts" setup>
+import type { Color } from '@bedard/hexchess'
+import { ref, shallowRef, type Component } from 'vue'
 import { Checkbox, Select } from './components'
 import {
   AlphaPieces,
@@ -75,9 +85,8 @@ import {
   XkcdPieces,
   Hexboard
 } from './lib'
-import { computed, ref } from 'vue'
 
-const allPieces = {
+const pieces = {
   alpha: AlphaPieces,
   anarcandy: AnarcandyPieces,
   caliente: CalientePieces,
@@ -89,7 +98,7 @@ const allPieces = {
   chessnut: ChessnutPieces,
   companion: CompanionPieces,
   // cooke: CookePieces,
-  disguised: DisguisedPieces,
+  // disguised: DisguisedPieces,
   dubrovny: DubrovnyPieces,
   // fantasy: FantasyPieces,
   firi: FiriPieces,
@@ -119,20 +128,27 @@ const allPieces = {
   xkcd: XkcdPieces,
 }
 
+const playingItems: Array<{ display: string; value: Color | boolean }> = [
+  { display: 'Black', value: 'b' },
+  { display: 'White', value: 'w' },
+  { display: 'Both', value: true },
+  { display: 'None', value: false },
+] as const
+
 const active = ref(true)
 
 const flipped = ref(false)
 
-const pieceItems = computed(() =>
-  Object.keys(allPieces).map(key => ({
-    display: key,
-    value: key,
-  }))
-)
+const pieceItems: Array<{
+  display: string
+  value: Component
+}> = Object.entries(pieces).map(([display, value]) => ({ display, value }))
 
-const selectedSet = ref<{ display: string; value: string }>({ display: 'gioco', value: 'gioco' })
+const selectedPieces = shallowRef<Component>(pieces.gioco)
 
-const pieces = computed(() => allPieces[selectedSet.value.value as keyof typeof allPieces])
+const playing = ref<Color | boolean>(true)
+
+// const pieces = computed(() => pieces[selectedSet.value.value as keyof typeof pieces])
 
 function onClickPosition(position: number) {
   // ...
