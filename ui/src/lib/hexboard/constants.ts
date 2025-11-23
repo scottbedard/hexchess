@@ -10,9 +10,9 @@ export const defaultOptions: HexboardOptions = {
     'oklch(0.8366 0.1165 66.29)',
     'oklch(0.6806 0.1423 75.83)',
   ],
-  labelActiveColor: 'green',
-  labelColor: 'red',
-  labelInactiveColor: 'blue',
+  labelActiveColor: 'oklch(66.6% 0.179 58.318)',
+  labelColor: 'oklch(55.4% 0.046 257.417)',
+  labelInactiveColor: 'oklch(70.4% 0.04 256.788)',
 } as const
 
 /** empty position */

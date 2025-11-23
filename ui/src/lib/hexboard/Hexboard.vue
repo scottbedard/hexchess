@@ -13,15 +13,17 @@
       <!-- positions -->
       <path
         v-for="position, index in board"
-        :d="d(flipped ? position[4] : position[3])"
-        :data-testid="`position-${indexToPosition(index)}`"
-        :fill="fill(index)"
-        :key="index"
         v-bind="active ? {
           onClick: () => onClickPosition(index),
+          onMousedown: () => onMousedownPosition(index),
           onMouseenter: () => onMouseenterPosition(index),
           onMouseleave: () => onMouseleavePosition(),
+          onMouseup: () => onMouseupPosition(index),
         } : {}"
+        :d="d(flipped ? position[4] : position[3])"
+        :data-testid="`position-${indexToPosition(index)}`"
+        :fill="normalizedOptions.colors[board[index][0]]"
+        :key="index"
       />
 
       <!-- labels -->
@@ -58,12 +60,14 @@
         />
       </template>
     </svg>
+
+    <pre>{{ { mousePosition } }}</pre>
   </div>
 </template>
 
 <script lang="ts" setup>
 import { board, box, defaultOptions, initialPosition, labels, pieceSize, perimeter } from './constants'
-import { computed, type Component } from 'vue'
+import { computed, onMounted, onUnmounted, shallowRef, watch, type Component } from 'vue'
 import { d } from './dom'
 import { Hexchess, position as indexToPosition } from '@bedard/hexchess'
 import { x, y } from './geometry'
@@ -98,6 +102,12 @@ const props = withDefaults(
 const mouseoverPosition = defineModel<number | null>('mouseover-position', { default: null, required: false })
 
 //
+// state
+//
+
+const mousePosition = shallowRef<{ x: number; y: number } | null>(null)
+
+//
 // events
 //
 
@@ -118,13 +128,31 @@ const normalizedOptions = computed(() => {
 })
 
 //
-// methods
+// lifecycle
 //
 
-/** fill color of position */
-function fill(i: number) {
-  return normalizedOptions.value.colors[board[i][0]]
-}
+onMounted(() => {
+  if (props.active) {
+    trackMousemove()
+  }
+})
+
+onUnmounted(() => {
+  stopTrackingMousemove()
+})
+
+//
+// watchers
+//
+
+watch(() => props.active, (active) => {
+  if (active) trackMousemove()
+  else stopTrackingMousemove()
+})
+
+//
+// methods
+//
 
 function getLabelFill(text: string) {
   if (mouseoverPosition.value === null) {
@@ -141,18 +169,45 @@ function getLabelFill(text: string) {
   return normalizedOptions.value.labelInactiveColor
 }
 
-/** handle click on position */
+/** click position */
 function onClickPosition(index: number) {
   emit('clickPosition', index)
 }
 
-/** handle mouse enter on position */
+/** mousedown on position */
+function onMousedownPosition(index: number) {
+  console.log('onMousedownPosition', index)
+}
+
+/** mouseenter position */
 function onMouseenterPosition(index: number) {
   mouseoverPosition.value = index
 }
 
-/** handle mouse leave on position */
+/** mouseleave position */
 function onMouseleavePosition() {
   mouseoverPosition.value = null
+}
+
+/** mouseup position */
+function onMouseupPosition(index: number) {
+  console.log('onMouseupPosition', index)
+}
+
+/** mousemove window */
+function onMousemoveWindow(evt: MouseEvent) {
+  mousePosition.value = { x: evt.clientX, y: evt.clientY }
+}
+
+/** track mousemove */
+function trackMousemove() {
+  window.addEventListener('mousemove', onMousemoveWindow)
+  mousePosition.value = { x: 0, y: 0 }
+}
+
+/** stop tracking mousemove */
+function stopTrackingMousemove() {
+  window.removeEventListener('mousemove', onMousemoveWindow)
+  mousePosition.value = { x: -1, y: -1 }
 }
 </script>
