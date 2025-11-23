@@ -90,19 +90,28 @@ test('custom colors', async () => {
   await expect(page.getByTestId('position-c8')).toHaveStyle({ fill: 'blue' })
 })
 
-test('label colors', async () => {
+test('labels and label colors', async () => {
   const active = ref(false)
+  const labels = ref(false)
 
   setup(() => {
     return () => <Hexboard
       active={active.value}
       options={{
+        labels: labels.value,
         labelColor: 'red',
         labelActiveColor: 'green',
         labelInactiveColor: 'blue',
       }}
     />
   })
+
+  // Labels only show when enabled
+  await expect.element(page.getByTestId('position-a1')).toBeInTheDocument()
+  await expect.element(page.getByTestId('label-a')).not.toBeInTheDocument()
+  labels.value = true
+  await nextTick()
+  await expect.element(page.getByTestId('label-a')).toBeVisible()
 
   // When no mouseover, all labels should have default labelColor (red)
   await expect.element(page.getByTestId('label-a')).toHaveStyle({ fill: 'red' })

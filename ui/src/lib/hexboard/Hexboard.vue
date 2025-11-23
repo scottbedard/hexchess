@@ -28,6 +28,7 @@
 
       <!-- labels -->
       <text
+        v-if="normalizedOptions.labels"
         v-for="[text, p, positionFlipped], i in labels"
         v-text="text"
         :data-testid="`label-${text}`"
@@ -59,9 +60,20 @@
           :y="y(board[index][flipped ? 2 : 1][1] + (pieceSize / 2))"
         />
       </template>
+
+      <!-- targets -->
+      <circle
+        v-for="targetIndex in targets"
+        :key="`target-${indexToPosition(targetIndex)}`"
+        :cx="x(board[targetIndex][flipped ? 2 : 1][0])"
+        :cy="y(board[targetIndex][flipped ? 2 : 1][1])"
+        :r="0.2"
+        fill="red"
+        :style="{ pointerEvents: 'none' }"
+      />
     </svg>
 
-    <pre>{{ { mousePosition } }}</pre>
+    <pre>{{ { normalizedOptions } }}</pre>
   </div>
 </template>
 
@@ -82,9 +94,10 @@ const props = withDefaults(
   defineProps<{
     active?: boolean
     flipped?: boolean
+    options?: Partial<HexboardOptions>
     pieces?: Component
     position?: string
-    options?: Partial<HexboardOptions>
+    targets?: number[]
   }>(),
   {
     active: false,
@@ -92,6 +105,7 @@ const props = withDefaults(
     options: () => ({}),
     pieces: () => GiocoPieces,
     position: initialPosition,
+    targets: () => [],
   }
 )
 

@@ -8,6 +8,8 @@ export interface HexboardOptions {
   labelColor: string
   /** fill color of inactive label relative to mouseover */
   labelInactiveColor: string
+  /** show labels */
+  labels: boolean
 }
 
 /** uniform tuple of length `T`, `number` by default */
