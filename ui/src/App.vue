@@ -34,6 +34,7 @@
       :options="{
         // ...
       }"
+      :playing
       @click-position="onClickPosition"
     />
   </div>

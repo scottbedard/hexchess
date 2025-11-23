@@ -2,6 +2,9 @@
   <div>
     <svg
       xmlns="http://www.w3.org/2000/svg"
+      :style="{
+        cursor,
+      }"
       :viewBox="`0 0 ${box} ${box}`">
       <!-- backdrop -->
       <path
@@ -92,8 +95,6 @@
         :style="{ pointerEvents: 'none' }"
       />
     </svg>
-
-    <pre>{{ { normalizedOptions } }}</pre>
   </div>
 </template>
 
@@ -134,20 +135,6 @@ const props = withDefaults(
 )
 
 //
-// models
-//
-
-const mouseoverPosition = defineModel<number | null>('mouseover-position', { default: null, required: false })
-
-const selected = defineModel<number | null>('selected', { default: null, required: false })
-
-//
-// state
-//
-
-const mousePosition = shallowRef<{ x: number; y: number } | null>(null)
-
-//
 // events
 //
 
@@ -156,8 +143,48 @@ const emit = defineEmits<{
 }>()
 
 //
+// models
+//
+
+const mouseoverPosition = defineModel<number | null>('mouseover-position', {
+  default: null,
+  required: false,
+})
+
+const selected = defineModel<number | null>('selected', {
+  default: null,
+  required: false,
+})
+
+//
+// state
+//
+
+const mousePosition = shallowRef<{ x: number; y: number } | null>(null)
+
+//
 // computed
 //
+
+const cursor = computed(() => {
+  if (
+    !props.active ||
+    !props.playing ||
+    !mouseoverColor.value ||
+    mouseoverPosition.value === null
+  ) {
+    return undefined
+  }
+
+  if (
+    hexchess.value.turn === mouseoverColor.value &&
+    (props.playing === true || props.playing === mouseoverColor.value)
+  ) {
+    return 'grab'
+  }
+
+  return 'pointer'
+})
 
 /** current hexchess state */
 const hexchess = computed(() => Hexchess.parse(props.position))
@@ -165,6 +192,24 @@ const hexchess = computed(() => Hexchess.parse(props.position))
 /** normalized options */
 const normalizedOptions = computed(() => {
   return { ...defaultOptions, ...props.options }
+})
+
+/** color of piece at mouseover position */
+const mouseoverColor = computed<Color | null>(() => {
+  if (!mouseoverPiece.value) {
+    return null
+  }
+
+  return mouseoverPiece.value === mouseoverPiece.value.toLowerCase() ? 'b' : 'w'
+})
+
+/** piece at mouseover position */
+const mouseoverPiece = computed(() => {
+  if (mouseoverPosition.value === null) {
+    return null
+  }
+
+  return hexchess.value.board[mouseoverPosition.value]
 })
 
 //
