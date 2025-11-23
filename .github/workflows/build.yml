@@ -137,9 +137,9 @@ jobs:
       - name: Install Playwright browsers
         run: cd ui && pnpm exec playwright install --with-deps chromium
       - name: Build
-        run: cd ui && pnpm build
+        run: node hexchess build:ui
       - name: Test
-        run: cd ui && pnpm test
+        run: node hexchess test:ui
   
   php:
     name: PHP
