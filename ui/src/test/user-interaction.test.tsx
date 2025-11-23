@@ -168,12 +168,20 @@ test('selected model is set when clicking a position', async () => {
     return () => <Hexboard
       active={active.value}
       v-model:selected={selected.value}
+      options={{
+        selectedColor: 'red',
+      }}
     />
   })
+
+  // Initially, no selected path should be in the document
+  await expect.element(page.getByTestId('selected-f6')).not.toBeInTheDocument()
+  await expect.element(page.getByTestId('selected-a1')).not.toBeInTheDocument()
 
   // Clicking when inactive should not set selected
   await page.getByTestId('position-f6').click()
   await expect(selected.value).toBeNull()
+  await expect.element(page.getByTestId('selected-f6')).not.toBeInTheDocument()
 
   // Activate the board
   active.value = true
@@ -182,8 +190,13 @@ test('selected model is set when clicking a position', async () => {
   // Clicking when active should set selected
   await page.getByTestId('position-f6').click()
   await expect(selected.value).toBe(index('f6'))
+  await expect.element(page.getByTestId('selected-f6')).toBeVisible()
+  await expect.element(page.getByTestId('selected-f6')).toHaveStyle({ fill: 'red' })
 
   // Clicking another position should update selected
   await page.getByTestId('position-a1').click()
   await expect(selected.value).toBe(index('a1'))
+  await expect.element(page.getByTestId('selected-f6')).not.toBeInTheDocument()
+  await expect.element(page.getByTestId('selected-a1')).toBeVisible()
+  await expect.element(page.getByTestId('selected-a1')).toHaveStyle({ fill: 'red' })
 })

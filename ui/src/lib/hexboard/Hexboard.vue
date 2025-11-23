@@ -26,6 +26,15 @@
         :key="index"
       />
 
+      <!-- selected position -->
+      <path
+        v-if="selected !== null"
+        :d="d(flipped ? board[selected][4] : board[selected][3])"
+        :data-testid="`selected-${indexToPosition(selected)}`"
+        :fill="normalizedOptions.selectedColor"
+        :style="{ pointerEvents: 'none' }"
+      />
+
       <!-- labels -->
       <text
         v-if="normalizedOptions.labels"

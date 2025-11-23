@@ -12,6 +12,8 @@ export interface HexboardOptions {
   labels: boolean
   /** color of target circles */
   targetColor: string
+  /** color of selected position */
+  selectedColor: string
 }
 
 /** uniform tuple of length `T`, `number` by default */
