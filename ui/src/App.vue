@@ -1,7 +1,7 @@
 <template>
   <div class="min-h-screen bg-white dark:bg-gray-900">
     <div class="gap-3 grid p-3">
-      <div class="flex flex-wrap gap-6">
+      <div class="flex flex-wrap gap-x-6 gap-y-3">
         <Select
           v-model="selectedPieces"
           class="max-w-32 w-full"
@@ -39,8 +39,6 @@
       :playing
       @click-position="onClickPosition"
     />
-
-    {{ { selected } }}
   </div>
 </template>
 
