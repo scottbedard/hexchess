@@ -11,7 +11,7 @@ export const defaultOptions: HexboardOptions = {
     'oklch(0.6806 0.1423 75.83)',
   ],
   highlightColor: 'oklch(90.5% 0.182 98.111 / 75%)', // yellow-300 / 75% opacity
-  labelActiveColor: 'oklch(70.5% 0.213 47.604)', // orange-500
+  labelActiveColor: 'oklch(76.9% 0.188 70.08)', // amber-500
   labelColor: 'oklch(55.4% 0.046 257.417)', // slate-500
   labelInactiveColor: 'oklch(70.4% 0.04 256.788)', // slate-400
   labels: true,
