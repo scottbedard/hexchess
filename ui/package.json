@@ -12,6 +12,10 @@
     "test": "vitest",
     "test:ui": "vitest --ui"
   },
+  "peerDependencies": {
+    "@bedard/hexchess": "^2.5.0",
+    "vue": "^3.5.0"
+  },
   "devDependencies": {
     "@bedard/hexchess": "^2.5.0",
     "@headlessui/vue": "^1.7.23",

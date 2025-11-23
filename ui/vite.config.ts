@@ -24,6 +24,9 @@ export default defineConfig({
       fileName: 'index',
       formats: ['es']
     },
+    rollupOptions: {
+      external: ['@bedard/hexchess', 'vue']
+    }
   },
   server: {
     port: 3000,
