@@ -1,10 +1,9 @@
 <template>
-  <div>
+  <div class="border-4 border-[red]">
     <svg
+      ref="svgEl"
       xmlns="http://www.w3.org/2000/svg"
-      :style="{
-        cursor,
-      }"
+      :style="{ cursor }"
       :viewBox="`0 0 ${box} ${box}`">
       <!-- backdrop -->
       <path
@@ -17,7 +16,7 @@
       <path
         v-for="position, index in board"
         v-bind="active ? {
-          onClick: e => onClickPosition(index, e),
+          onClick: evt => onClickPosition(index, evt),
           onMousedown: () => onMousedownPosition(index),
           onMouseenter: () => onMouseenterPosition(index),
           onMouseleave: () => onMouseleavePosition(),
@@ -72,7 +71,7 @@
         v-if="hexchess"
         v-for="piece, index in hexchess.board">
         <Component
-          v-if="piece"
+          v-if="piece && index !== mousedownPosition"
           :height="pieceSize"
           :is="pieces"
           :style="{ pointerEvents: 'none' }"
@@ -95,12 +94,38 @@
         :style="{ pointerEvents: 'none' }"
       />
     </svg>
+
+    <!-- draggable piece -->
+    <svg
+      v-if="dragPiece"
+      xmlns="http://www.w3.org/2000/svg"
+      :style="{
+        height: svgRect.height + 'px',
+        left: '0px',
+        pointerEvents: 'none',
+        position: 'fixed',
+        top: '0px',
+        transform: `translate(${dragCoords.x}px, ${dragCoords.y}px) scale(1.1)`,
+        width: svgRect.width + 'px',
+        willChange: 'transform',
+      }"
+      :viewBox="`0 0 ${box} ${box}`">
+      <Component
+        :height="pieceSize"
+        :is="pieces"
+        :style="{ pointerEvents: 'none' }"
+        :type="dragPiece"
+        :width="pieceSize"
+        :x="x(pieceSize / -2)"
+        :y="y(pieceSize / 2)"
+      />
+    </svg>
   </div>
 </template>
 
 <script lang="ts" setup>
 import { board, box, defaultOptions, initialPosition, labels, pieceSize, perimeter } from './constants'
-import { computed, onMounted, onUnmounted, shallowRef, watch, type Component } from 'vue'
+import { computed, onMounted, onUnmounted, shallowRef, useTemplateRef, watch, type Component } from 'vue'
 import { d } from './dom'
 import { Hexchess, position as indexToPosition, type Color } from '@bedard/hexchess'
 import { x, y } from './geometry'
@@ -165,13 +190,27 @@ const targets = defineModel<number[]>('targets', {
 // state
 //
 
-const mousePosition = shallowRef<{ x: number; y: number } | null>(null)
+/** current mouse coordinates */
+const mouseCoords = shallowRef({ x: 0, y: 0 })
+
+/** fen position of mousedown */
+const mousedownPosition = shallowRef<number | null>(null)
+
+/** svg rect */
+const svgEl = useTemplateRef('svgEl')
+
+/** rect of svg element on mousedown */
+const svgRect = shallowRef<DOMRect>(new DOMRect())
 
 //
 // computed
 //
 
 const cursor = computed(() => {
+  if (dragPiece.value) {
+    return 'grabbing' // global cursor
+  }
+
   if (
     !props.active ||
     !props.playing ||
@@ -189,6 +228,23 @@ const cursor = computed(() => {
   }
 
   return 'pointer'
+})
+
+/** coordinates of drag transformation */
+const dragCoords = computed(() => {
+  return {
+    x: mouseCoords.value.x - (svgRect.value.width / 2),
+    y: mouseCoords.value.y - (svgRect.value.height / 2),
+  }
+})
+
+/** piece being dragged */
+const dragPiece = computed(() => {
+  if (mousedownPosition.value === null) {
+    return null
+  }
+
+  return hexchess.value.board[mousedownPosition.value]
 })
 
 /** current hexchess state */
@@ -233,6 +289,10 @@ onUnmounted(unlisten)
 // watchers
 //
 
+watch(cursor, val => {
+  document.body.style.setProperty('cursor', val === 'grabbing' ? 'grabbing' : null)
+})
+
 watch(() => props.active, active => {
   if (active) listen()
   else unlisten()
@@ -242,6 +302,7 @@ watch(() => props.active, active => {
 // methods
 //
 
+/** get fill color of label */
 function getLabelFill(text: string) {
   if (mouseoverPosition.value === null) {
     return normalizedOptions.value.labelColor
@@ -259,11 +320,19 @@ function getLabelFill(text: string) {
 
 /** listen for events */
 function listen() {
-  mousePosition.value = { x: 0, y: 0 }
+  mouseCoords.value = { x: 0, y: 0 }
 
   window.addEventListener('click', onClickWindow)
   window.addEventListener('mousemove', onMousemoveWindow)
   window.addEventListener('keyup', onKeyupWindow)
+}
+
+/** window click */
+function onClickWindow() {
+  if (props.autoselect) {
+    selected.value = null
+    targets.value = []
+  }
 }
 
 /** click position */
@@ -290,7 +359,11 @@ function onKeyupWindow(evt: KeyboardEvent) {
 
 /** mousedown on position */
 function onMousedownPosition(index: number) {
-  // ...
+  mousedownPosition.value = index
+
+  if (svgEl.value instanceof Element) {
+    svgRect.value = svgEl.value.getBoundingClientRect()
+  }
 }
 
 /** mouseenter position */
@@ -305,26 +378,25 @@ function onMouseleavePosition() {
 
 /** mouseup position */
 function onMouseupPosition(index: number) {
-  // ...
+  console.log('mouseup', index)
+  resetState()
 }
 
 /** mousemove window */
 function onMousemoveWindow(evt: MouseEvent) {
-  mousePosition.value = { x: evt.clientX, y: evt.clientY }
+  mouseCoords.value = { x: evt.clientX, y: evt.clientY }
 }
 
-/** window click */
-function onClickWindow() {
-  if (props.autoselect) {
-    selected.value = null
-    targets.value = []
-  }
+/** reset state */
+function resetState() {
+  document.body.style.setProperty('cursor', null)
+  mousedownPosition.value = null
+  svgRect.value = new DOMRect()
 }
 
 /** stop listening for events */
 function unlisten() {
-  mousePosition.value = { x: -1, y: -1 }
-
+  resetState()
   window.removeEventListener('click', onClickWindow)
   window.removeEventListener('keyup', onKeyupWindow)
   window.removeEventListener('mousemove', onMousemoveWindow)
