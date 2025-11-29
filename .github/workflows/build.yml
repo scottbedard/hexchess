@@ -116,7 +116,7 @@ jobs:
         run: node hexchess test:engine
 
   ui:
-    name: UI (${{ matrix.browser }})
+    name: ${{ matrix.browser }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
