@@ -98,6 +98,7 @@
     <!-- draggable piece -->
     <svg
       v-if="dragPiece"
+      data-testid="drag-piece"
       xmlns="http://www.w3.org/2000/svg"
       :style="{
         height: svgRect.height + 'px',

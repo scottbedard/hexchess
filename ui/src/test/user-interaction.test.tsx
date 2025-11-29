@@ -389,3 +389,47 @@ test('pieces of any color can be selected, but only playing color is draggable',
   await expect.element(page.getByTestId('assertion')).toHaveTextContent(index('b7'))
 })
 
+test('dragging piece off board results in selection only, dragging state resets', async () => {
+  const selected = ref<number | null>(null)
+  const targets = ref<number[]>([])
+
+  setup(() => {
+    return () => <>
+      <Hexboard
+        active
+        autoselect
+        playing={'w'}
+        v-model:selected={selected.value}
+        v-model:targets={targets.value}
+      />
+      <div
+        v-text={selected.value}
+        data-testid="assertion" />
+    </>
+  })
+
+  const whitePiecePosition = page.getByTestId('position-f5')
+
+  // Start dragging the piece (mousedown)
+  await whitePiecePosition.element().dispatchEvent(new MouseEvent('mousedown', { bubbles: true }))
+  await nextTick()
+
+  // Verify dragging started - draggable piece SVG should be visible
+  await expect.element(page.getByTestId('drag-piece')).toBeVisible()
+
+  // Move mouse off the board (simulate mousemove on window)
+  window.dispatchEvent(new MouseEvent('mousemove', { clientX: 0, clientY: 0, bubbles: true }))
+  await nextTick()
+
+  // Release mouse (mouseup on window) - this should reset dragging state
+  window.dispatchEvent(new MouseEvent('mouseup', { bubbles: true }))
+  await nextTick()
+
+  // Verify piece is still selected (autoselect should have set it on mousedown)
+  await expect.element(page.getByTestId('selected-f5')).toBeVisible()
+  await expect.element(page.getByTestId('assertion')).toHaveTextContent(index('f5'))
+
+  // Verify dragging state is reset - draggable piece SVG should no longer exist
+  await expect.element(page.getByTestId('drag-piece')).not.toBeInTheDocument()
+})
+
