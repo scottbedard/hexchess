@@ -116,8 +116,11 @@ jobs:
         run: node hexchess test:engine
 
   ui:
-    name: UI
+    name: UI (${{ matrix.browser }})
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        browser: [chromium, firefox, webkit]
     steps:
       - uses: actions/checkout@v4
       - name: Setup Node
@@ -135,10 +138,12 @@ jobs:
           cd ui
           pnpm install --no-frozen-lockfile
       - name: Install Playwright browsers
-        run: cd ui && pnpm exec playwright install --with-deps chromium
+        run: cd ui && pnpm exec playwright install --with-deps ${{ matrix.browser }}
       - name: Build
         run: node hexchess build:ui
       - name: Test
+        env:
+          VITEST_BROWSER: ${{ matrix.browser }}
         run: node hexchess test:ui
   
   php:

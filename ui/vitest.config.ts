@@ -8,6 +8,9 @@ import vueJsx from '@vitejs/plugin-vue-jsx'
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url))
 
+// Get browser from environment variable, default to chromium
+const browser = (process.env.VITEST_BROWSER || 'chromium') as 'chromium' | 'firefox' | 'webkit'
+
 export default defineConfig({
   plugins: [
     tailwindcss(),
@@ -19,7 +22,7 @@ export default defineConfig({
       provider: playwright(),
       enabled: true,
       instances: [
-        { browser: 'chromium' },
+        { browser },
       ],
     },
     environment: 'jsdom',
