@@ -145,7 +145,7 @@ test('targets array controls rendering of target circles', async () => {
 
   setup(() => {
     return () => <Hexboard
-      active={true}
+      active
       targets={targets.value}
       options={{
         targetColor: 'red',
@@ -217,15 +217,15 @@ test('select options and logic', async () => {
   await expect.element(page.getByTestId('selected-f5')).toBeVisible()
   await expect.element(page.getByTestId('selected-f5')).toHaveStyle({ fill: 'red' })
 
-  // Clicking an unoccupied position should update selected
+  // Clicking an unoccupied position should deselect
   await page.getByTestId('position-a1').click()
-  await expect.element(page.getByTestId('assertion')).toHaveTextContent('')
+  await expect.element(page.getByTestId('assertion')).toBeEmptyDOMElement()
 
   // Escape should clear selected
   await page.getByTestId('position-f5').click()
   await expect.element(page.getByTestId('assertion')).toHaveTextContent(index('f5'))
   userEvent.keyboard('{Escape}')
-  await expect.element(page.getByTestId('assertion')).toHaveTextContent('')
+  await expect.element(page.getByTestId('assertion')).toBeEmptyDOMElement()
 })
 
 test('highlight array controls rendering of highlight paths', async () => {
@@ -265,3 +265,127 @@ test('highlight array controls rendering of highlight paths', async () => {
   await expect.element(page.getByTestId('highlight-f6')).not.toBeInTheDocument()
   await expect.element(page.getByTestId('highlight-a1')).not.toBeInTheDocument()
 })
+
+test('cursor shows grab for playable pieces', async () => {
+  setup(() => {
+    return () => <Hexboard
+      active
+      playing
+    />
+  })
+
+  const svg = page.getByTestId('position-f5').element().closest('svg') as SVGElement
+
+  // Hover over a white piece (initial position has white to move)
+  // f5 should have a white piece in initial position
+  await page.getByTestId('position-f5').hover()
+  await nextTick()
+  await expect(svg).toHaveStyle({ cursor: 'grab' }) // White's turn, so grab
+})
+
+test('cursor shows grab only when user can drag piece', async () => {
+  setup(() => {
+    return () => <Hexboard
+      active
+      playing={'w'}
+    />
+  })
+
+  // Hover over a white piece when it's white's turn and user is playing white
+  // Should show "grab" cursor
+  await page.getByTestId('position-f5').hover()
+  const svg = page.getByTestId('position-f5').element().closest('svg') as SVGElement
+  await expect(svg).toHaveStyle({ cursor: 'grab' })
+
+  // Hover over an empty position when user is only playing white
+  // Should show "auto" cursor (no piece to interact with)
+  await page.getByTestId('position-a6').hover()
+  await expect(svg).toHaveStyle({ cursor: 'auto' })
+
+  // Hover over a black piece when user is only playing white
+  // Should show "pointer" cursor (can't drag black piece as white)
+  await page.getByTestId('position-f7').hover()
+  await expect(svg).toHaveStyle({ cursor: 'pointer' })
+})
+
+test('cursor behavior when playing both colors', async () => {
+  setup(() => {
+    return () => <Hexboard
+      active
+      playing
+    />
+  })
+
+  const svg = page.getByTestId('position-f5').element().closest('svg') as SVGElement
+
+  // Initial position is white's turn, so white pieces show "grab"
+  await page.getByTestId('position-f5').hover()
+  await expect(svg).toHaveStyle({ cursor: 'grab' })
+
+  // Black pieces show "pointer" because it's not black's turn
+  await page.getByTestId('position-b7').hover()
+  await expect(svg).toHaveStyle({ cursor: 'pointer' })
+
+  // Empty positions show "auto" because there's no piece
+  await page.getByTestId('position-a6').hover()
+  await expect(svg).toHaveStyle({ cursor: 'auto' })
+})
+
+test('cursor shows pointer when user is not playing', async () => {
+  setup(() => {
+    return () => <Hexboard
+      active
+      playing={false}
+    />
+  })
+
+  // When playing is false, should show pointer for any piece
+  await page.getByTestId('position-f5').hover()
+  const svg = page.getByTestId('position-f5').element().closest('svg') as SVGElement
+  await expect(svg).toHaveStyle({ cursor: 'pointer' })
+
+  await page.getByTestId('position-f7').hover()
+  await expect(svg).toHaveStyle({ cursor: 'pointer' })
+})
+
+test('pieces of any color can be selected, but only playing color is draggable', async () => {
+  const selected = ref<number | null>(null)
+  const targets = ref<number[]>([])
+
+  setup(() => {
+    return () => <>
+      <Hexboard
+        active
+        autoselect
+        playing={'w'}
+        v-model:selected={selected.value}
+        v-model:targets={targets.value}
+      />
+      <div
+        v-text={selected.value}
+        data-testid="assertion" />
+    </>
+  })
+
+  const svg = page.getByTestId('position-f5').element().closest('svg') as SVGElement
+
+  // White piece shows grab cursor (user can drag)
+  const whitePiecePosition = page.getByTestId('position-f5')
+  await whitePiecePosition.hover()
+  await expect(svg).toHaveStyle({ cursor: 'grab' })
+
+  // Black piece shows pointer cursor (user cannot drag)
+  const blackPiecePosition = page.getByTestId('position-b7')
+  await blackPiecePosition.hover()
+  await expect(svg).toHaveStyle({ cursor: 'pointer' })
+
+  // Both pieces can be selected
+  await whitePiecePosition.click()
+  await expect.element(page.getByTestId('selected-f5')).toBeVisible()
+  await expect.element(page.getByTestId('assertion')).toHaveTextContent(index('f5'))
+
+  await blackPiecePosition.click()
+  await expect.element(page.getByTestId('selected-b7')).toBeVisible()
+  await expect.element(page.getByTestId('assertion')).toHaveTextContent(index('b7'))
+})
+

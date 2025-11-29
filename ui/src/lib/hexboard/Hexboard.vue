@@ -213,14 +213,15 @@ const cursor = computed(() => {
 
   if (
     !props.active ||
-    !props.playing ||
-    !mouseoverColor.value ||
+    !mouseoverPiece.value ||
     mouseoverPosition.value === null
   ) {
     return undefined
   }
 
+  // When playing is true or a color, check if piece is draggable
   if (
+    props.playing &&
     hexchess.value.turn === mouseoverColor.value &&
     (props.playing === true || props.playing === mouseoverColor.value)
   ) {
@@ -333,6 +334,12 @@ function onClickPosition(index: number, evt: MouseEvent) {
     return
   }
 
+  // If autoselect is enabled and clicking an unoccupied position, deselect
+  if (props.autoselect && !hexchess.value.board[index]) {
+    selected.value = null
+    targets.value = []
+  }
+
   emit('clickPosition', index)
 }
 
@@ -346,18 +353,28 @@ function onKeyupWindow(evt: KeyboardEvent) {
 
 /** mousedown on position */
 function onMousedownPosition(index: number) {
+  const piece = hexchess.value.board[index]
+  
+  if (!piece) {
+    return
+  }
+
+  const pieceColor: Color = piece === piece.toLowerCase() ? 'b' : 'w'
+  const isPlayingColor = props.playing === true || props.playing === pieceColor
+
+  if (props.autoselect) {
+    selected.value = index
+    targets.value = hexchess.value.movesFrom(index).map(san => san.to)
+  }
+
+  if (!isPlayingColor) {
+    return
+  }
+
   mousedownPosition.value = index
 
   if (svgEl.value instanceof Element) {
     svgRect.value = svgEl.value.getBoundingClientRect()
-  }
-
-  if (
-    props.autoselect &&
-    hexchess.value.board[index]
-  ) {
-    selected.value = index
-    targets.value = hexchess.value.movesFrom(index).map(san => san.to)
   }
 }
 
