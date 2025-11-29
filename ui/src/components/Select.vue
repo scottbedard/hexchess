@@ -25,7 +25,7 @@
 </template>
 
 <script setup lang="ts" generic="T extends string | number | boolean | object | null | undefined">
-import { computed, defineModel } from 'vue'
+import { computed } from 'vue'
 import { Listbox, ListboxButton, ListboxLabel, ListboxOption, ListboxOptions } from '@headlessui/vue'
 import { ChevronUpDownIcon } from '@heroicons/vue/16/solid'
 import { CheckIcon } from '@heroicons/vue/20/solid'
