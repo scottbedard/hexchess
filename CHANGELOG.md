@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.5.1
+
+- Expose `isPromotionPosition` method from TypeScript library
+
 ## 2.5.0
 
 - Publish [`@bedard/hexchess-engine`](https://www.npmjs.com/package/@bedard/hexchess-engine) library

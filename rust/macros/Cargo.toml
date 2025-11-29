@@ -4,7 +4,7 @@ edition = "2024"
 license = "MIT"
 name = "hexchess_macros"
 repository = "https://github.com/scottbedard/hexchess"
-version = "2.5.0"
+version = "2.5.1"
 
 [lib]
 proc-macro = true

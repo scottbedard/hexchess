@@ -76,7 +76,7 @@ checksum = "5419bdc4f6a9207fbeba6d11b604d481addf78ecd10c11ad51e76c2f6482748d"
 
 [[package]]
 name = "hexchess"
-version = "2.5.0"
+version = "2.5.1"
 dependencies = [
  "hexchess_macros",
  "serde",
@@ -99,7 +99,7 @@ dependencies = [
 
 [[package]]
 name = "hexchess_macros"
-version = "2.5.0"
+version = "2.5.1"
 dependencies = [
  "quote",
  "syn",
