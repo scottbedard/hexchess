@@ -1,7 +1,7 @@
 /** @jsxImportSource vue */
 import { expect, test, vi } from 'vitest'
 import { Hexboard } from '../lib'
-import { index } from '@bedard/hexchess'
+import { index, San } from '@bedard/hexchess'
 import { ref, nextTick } from 'vue'
 import { userEvent } from 'vitest/browser'
 
@@ -432,4 +432,118 @@ test('dragging piece off board results in selection only, dragging state resets'
   // Verify dragging state is reset - draggable piece SVG should no longer exist
   await expect.element(page.getByTestId('drag-piece')).not.toBeInTheDocument()
 })
+
+test('drag and drop piece emits move event', async () => {
+  const selected = ref<number | null>(null)
+  const targets = ref<number[]>([])
+  const onMove = vi.fn()
+
+  setup(() => {
+    return () => <>
+      <Hexboard
+        active
+        autoselect
+        playing={'w'}
+        v-model:selected={selected.value}
+        v-model:targets={targets.value}
+        onMove={onMove}
+      />
+    </>
+  })
+
+  const fromPosition = page.getByTestId('position-f5')
+  const toPosition = page.getByTestId('position-f6')
+
+  // Start dragging the piece (mousedown)
+  await fromPosition.element().dispatchEvent(new MouseEvent('mousedown', { bubbles: true }))
+  await nextTick()
+
+  // Verify dragging started
+  await expect.element(page.getByTestId('drag-piece')).toBeVisible()
+
+  // Move mouse to target position and release (mouseup)
+  await toPosition.element().dispatchEvent(new MouseEvent('mouseup', { bubbles: true }))
+  await nextTick()
+
+  // Verify move event was emitted with correct San object
+  await expect(onMove).toHaveBeenCalledOnce()
+  await expect(onMove).toHaveBeenCalledWith(expect.any(San))
+  const san = onMove.mock.calls[0][0] as San
+  await expect(san.from).toBe(index('f5'))
+  await expect(san.to).toBe(index('f6'))
+})
+
+test('click to move piece emits move event', async () => {
+  const selected = ref<number | null>(null)
+  const targets = ref<number[]>([])
+  const onMove = vi.fn()
+
+  setup(() => {
+    return () => <>
+      <Hexboard
+        active
+        autoselect
+        playing={'w'}
+        v-model:selected={selected.value}
+        v-model:targets={targets.value}
+        onMove={onMove}
+      />
+    </>
+  })
+
+  // Click on a piece to select it (f5 should have a white piece)
+  await page.getByTestId('position-f5').click()
+  await nextTick()
+
+  // Verify piece is selected and targets are shown
+  await expect.element(page.getByTestId('selected-f5')).toBeVisible()
+  await expect.element(page.getByTestId('target-f6')).toBeVisible()
+
+  // Click on a target position to move
+  await page.getByTestId('position-f6').click()
+  await nextTick()
+
+  // Verify move event was emitted with correct San object
+  await expect(onMove).toHaveBeenCalledOnce()
+  await expect(onMove).toHaveBeenCalledWith(expect.any(San))
+  const san = onMove.mock.calls[0][0] as San
+  await expect(san.from).toBe(index('f5'))
+  await expect(san.to).toBe(index('f6'))
+})
+
+test('cannot move piece of other turn color', async () => {
+  const selected = ref<number | null>(null)
+  const targets = ref<number[]>([])
+  const onMove = vi.fn()
+
+  setup(() => {
+    return () => <>
+      <Hexboard
+        active
+        autoselect
+        playing={true}
+        v-model:selected={selected.value}
+        v-model:targets={targets.value}
+        onMove={onMove}
+      />
+    </>
+  })
+
+  // Initial position is white's turn, so try to move a black piece
+  // Click on a black piece (b7 should have a black rook in initial position)
+  await page.getByTestId('position-b7').click()
+  await nextTick()
+
+  // Verify piece is selected and targets are shown
+  await expect.element(page.getByTestId('selected-b7')).toBeVisible()
+  await expect.element(page.getByTestId('target-b6')).toBeVisible()
+
+  // Try to click on a target position to move
+  await page.getByTestId('position-b6').click()
+  await nextTick()
+
+  // Verify move event was NOT called (can't move black piece on white's turn)
+  await expect(onMove).not.toHaveBeenCalled()
+})
+
 
