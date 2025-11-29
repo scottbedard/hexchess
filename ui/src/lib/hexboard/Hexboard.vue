@@ -16,11 +16,11 @@
       <path
         v-for="position, index in board"
         v-bind="active ? {
-          onClick: evt => onClickPosition(index, evt),
+          onClick: () => onClickPosition(index),
           onMousedown: () => onMousedownPosition(index),
           onMouseenter: () => onMouseenterPosition(index),
           onMouseleave: () => onMouseleavePosition(),
-          onMouseup: () => onMouseupPosition(index),
+          onMouseup: () => onMouseupPosition(),
         } : {}"
         :d="d(flipped ? position[4] : position[3])"
         :data-testid="`position-${indexToPosition(index)}`"
@@ -329,7 +329,7 @@ function listen() {
 }
 
 /** click position */
-function onClickPosition(index: number, evt: MouseEvent) {
+function onClickPosition(index: number) {
   if (!props.active) {
     return
   }
@@ -389,7 +389,7 @@ function onMouseleavePosition() {
 }
 
 /** mouseup position */
-function onMouseupPosition(index: number) {
+function onMouseupPosition() {
   resetState()
 }
 

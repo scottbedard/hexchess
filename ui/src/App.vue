@@ -153,7 +153,7 @@ const selectedPieces = shallowRef<Component>(pieces.gioco)
 
 const playing = ref<Color | boolean>(true)
 
-function onClickPosition(position: number) {
+function onClickPosition() {
   // ...
 }
 </script>
