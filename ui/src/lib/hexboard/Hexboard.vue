@@ -322,31 +322,18 @@ function getLabelFill(text: string) {
 function listen() {
   mouseCoords.value = { x: 0, y: 0 }
 
-  window.addEventListener('click', onClickWindow)
-  window.addEventListener('mousemove', onMousemoveWindow)
   window.addEventListener('keyup', onKeyupWindow)
-}
-
-/** window click */
-function onClickWindow() {
-  if (props.autoselect) {
-    selected.value = null
-    targets.value = []
-  }
+  window.addEventListener('mousemove', onMousemoveWindow)
+  window.addEventListener('mouseup', onMouseupWindow)
 }
 
 /** click position */
-function onClickPosition(index: number, e: MouseEvent) {
-  emit('clickPosition', index)
-
-  if (
-    props.autoselect &&
-    hexchess.value.board[index]
-  ) {
-    e.stopPropagation()
-    selected.value = index
-    targets.value = hexchess.value.movesFrom(index).map(san => san.to)
+function onClickPosition(index: number, evt: MouseEvent) {
+  if (!props.active) {
+    return
   }
+
+  emit('clickPosition', index)
 }
 
 /** keyup window */
@@ -364,6 +351,14 @@ function onMousedownPosition(index: number) {
   if (svgEl.value instanceof Element) {
     svgRect.value = svgEl.value.getBoundingClientRect()
   }
+
+  if (
+    props.autoselect &&
+    hexchess.value.board[index]
+  ) {
+    selected.value = index
+    targets.value = hexchess.value.movesFrom(index).map(san => san.to)
+  }
 }
 
 /** mouseenter position */
@@ -378,13 +373,17 @@ function onMouseleavePosition() {
 
 /** mouseup position */
 function onMouseupPosition(index: number) {
-  console.log('mouseup', index)
   resetState()
 }
 
 /** mousemove window */
 function onMousemoveWindow(evt: MouseEvent) {
   mouseCoords.value = { x: evt.clientX, y: evt.clientY }
+}
+
+/** mouseup window */
+function onMouseupWindow() {
+  resetState()
 }
 
 /** reset state */
@@ -397,8 +396,8 @@ function resetState() {
 /** stop listening for events */
 function unlisten() {
   resetState()
-  window.removeEventListener('click', onClickWindow)
   window.removeEventListener('keyup', onKeyupWindow)
   window.removeEventListener('mousemove', onMousemoveWindow)
+  window.removeEventListener('mouseup', onMouseupWindow)
 }
 </script>
