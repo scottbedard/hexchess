@@ -128,7 +128,7 @@
 import { board, box, defaultOptions, initialPosition, labels, pieceSize, perimeter } from './constants'
 import { computed, onMounted, onUnmounted, shallowRef, useTemplateRef, watch, type Component } from 'vue'
 import { d } from './dom'
-import { Hexchess, position as indexToPosition, San, type Color } from '@bedard/hexchess'
+import { isPromotionPosition, Hexchess, position as indexToPosition, San, type Color } from '@bedard/hexchess'
 import { x, y } from './geometry'
 import GiocoPieces from '../pieces/GiocoPieces.vue'
 import type { HexboardOptions } from './types'
@@ -321,6 +321,31 @@ watch(() => props.active, active => {
 // methods
 //
 
+/** attempt to move piece from source to target position */
+function attemptMove(from: number, to: number): boolean {
+  // Check if target is valid
+  if (!targets.value.includes(to)) {
+    return false
+  }
+
+  const piece = hexchess.value.board[from]
+  
+  if (!piece) {
+    return false
+  }
+
+  const pieceColor: Color = piece === piece.toLowerCase() ? 'b' : 'w'
+  const isCurrentTurn = hexchess.value.turn === pieceColor
+  
+  // Only call onPieceMove if playing this color and it's their turn
+  if (isPlayingPosition(from) && isCurrentTurn) {
+    onPieceMove(from, to)
+    return true
+  }
+
+  return false
+}
+
 /** check if user is playing the color at a position */
 function isPlayingPosition(index: number): boolean {
   const piece = hexchess.value.board[index]
@@ -432,31 +457,6 @@ function onMouseleavePosition() {
 function onPieceMove(from: number, to: number) {
   const san = new San({ from, to })
   emit('move', san)
-}
-
-/** attempt to move piece from source to target position */
-function attemptMove(from: number, to: number): boolean {
-  // Check if target is valid
-  if (!targets.value.includes(to)) {
-    return false
-  }
-
-  const piece = hexchess.value.board[from]
-  
-  if (!piece) {
-    return false
-  }
-
-  const pieceColor: Color = piece === piece.toLowerCase() ? 'b' : 'w'
-  const isCurrentTurn = hexchess.value.turn === pieceColor
-  
-  // Only call onPieceMove if playing this color and it's their turn
-  if (isPlayingPosition(from) && isCurrentTurn) {
-    onPieceMove(from, to)
-    return true
-  }
-
-  return false
 }
 
 /** mouseup position */
