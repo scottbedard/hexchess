@@ -9,8 +9,8 @@ importers:
   .:
     devDependencies:
       '@bedard/hexchess':
-        specifier: ^2.5.0
-        version: 2.5.0
+        specifier: ^2.5.1
+        version: 2.5.1
       '@headlessui/vue':
         specifier: ^1.7.23
         version: 1.7.23(vue@3.5.24(typescript@5.9.3))
@@ -210,8 +210,8 @@ packages:
     resolution: {integrity: sha512-6zABk/ECA/QYSCQ1NGiVwwbQerUCZ+TQbp64Q3AgmfNvurHH0j8TtXa1qbShXA6qqkpAj4V5W8pP6mLe1mcMqA==}
     engines: {node: '>=18'}
 
-  '@bedard/hexchess@2.5.0':
-    resolution: {integrity: sha512-KwThpuP8zD2tk8NytA+U/6pZqmZUMdWh8xH3LFLWYa9GvFBwZwqbW1q+tGqytBxFmFKoryV3hr9yN6PtC8B2lA==}
+  '@bedard/hexchess@2.5.1':
+    resolution: {integrity: sha512-vuuL1CmGWL/kPrGPSi2wZcZahabp7cF2O6f0azsSHnc5YJxsDO8m5dRRyv/qNjCxF7L9An+TIFO2tExOA5YEJA==}
 
   '@csstools/color-helpers@5.1.0':
     resolution: {integrity: sha512-S11EXWJyy0Mz5SYvRmY8nJYTFFd1LCNV+7cXyAgQtOOuzb4EsgfqDufL+9esx72/eLhsRdGZwaldu/h+E4t4BA==}
@@ -2025,7 +2025,7 @@ snapshots:
 
   '@bcoe/v8-coverage@1.0.2': {}
 
-  '@bedard/hexchess@2.5.0': {}
+  '@bedard/hexchess@2.5.1': {}
 
   '@csstools/color-helpers@5.1.0': {}
 

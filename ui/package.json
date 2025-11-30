@@ -10,7 +10,7 @@
     "vue": "^3.5.0"
   },
   "devDependencies": {
-    "@bedard/hexchess": "^2.5.0",
+    "@bedard/hexchess": "^2.5.1",
     "@headlessui/vue": "^1.7.23",
     "@heroicons/vue": "^2.2.0",
     "@tailwindcss/vite": "^4.1.17",
