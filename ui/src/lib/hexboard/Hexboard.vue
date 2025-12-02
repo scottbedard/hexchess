@@ -1,5 +1,5 @@
 <template>
-  <div class="border-4 border-[red]">
+  <div>
     <svg
       ref="svgEl"
       xmlns="http://www.w3.org/2000/svg"
@@ -68,8 +68,8 @@
 
       <!-- pieces -->
       <template
-        v-if="hexchess"
-        v-for="piece, index in hexchess.board">
+        v-if="currentHexchess"
+        v-for="piece, index in currentHexchess.board">
         <Component
           v-if="piece && index !== mousedownPosition"
           :height="pieceSize"
@@ -142,6 +142,7 @@ const props = withDefaults(
     active?: boolean
     autoselect?: boolean
     flipped?: boolean
+    hexchess?: Hexchess
     highlight?: number[]
     options?: Partial<HexboardOptions>
     pieces?: Component
@@ -204,6 +205,9 @@ const svgEl = useTemplateRef('svgEl')
 /** rect of svg element on mousedown */
 const svgRect = shallowRef<DOMRect>(new DOMRect())
 
+/** whether a pawn is promoting */
+const isPromoting = shallowRef(false)
+
 //
 // computed
 //
@@ -222,10 +226,10 @@ const cursor = computed(() => {
     selected.value !== null &&
     targets.value.includes(mouseoverPosition.value)
   ) {
-    const selectedPiece = hexchess.value.board[selected.value]
+    const selectedPiece = currentHexchess.value.board[selected.value]
     if (selectedPiece) {
       const selectedPieceColor: Color = selectedPiece === selectedPiece.toLowerCase() ? 'b' : 'w'
-      const isSelectedTurn = hexchess.value.turn === selectedPieceColor
+      const isSelectedTurn = currentHexchess.value.turn === selectedPieceColor
       
       if (isSelectedTurn && isPlayingPosition(selected.value)) {
         return 'pointer'
@@ -240,7 +244,7 @@ const cursor = computed(() => {
   // When playing is true or a color, check if piece is draggable
   if (
     props.playing &&
-    hexchess.value.turn === mouseoverColor.value &&
+    currentHexchess.value.turn === mouseoverColor.value &&
     (props.playing === true || props.playing === mouseoverColor.value)
   ) {
     return 'grab'
@@ -263,11 +267,17 @@ const dragPiece = computed(() => {
     return null
   }
 
-  return hexchess.value.board[mousedownPosition.value]
+  return currentHexchess.value.board[mousedownPosition.value]
 })
 
 /** current hexchess state */
-const hexchess = computed(() => Hexchess.parse(props.position))
+const currentHexchess = computed(() => {
+  if (props.hexchess) {
+    return props.hexchess
+  }
+
+  return Hexchess.init()
+})
 
 /** normalized options */
 const normalizedOptions = computed(() => {
@@ -289,7 +299,7 @@ const mouseoverPiece = computed(() => {
     return null
   }
 
-  return hexchess.value.board[mouseoverPosition.value]
+  return currentHexchess.value.board[mouseoverPosition.value]
 })
 
 //
@@ -322,38 +332,45 @@ watch(() => props.active, active => {
 //
 
 /** attempt to move piece from source to target position */
-function attemptMove(from: number, to: number): boolean {
+function attemptMove(from: number, to: number) {
   // Check if target is valid
   if (!targets.value.includes(to)) {
-    return false
+    return
   }
 
-  const piece = hexchess.value.board[from]
+  const piece = currentHexchess.value.board[from]
   
   if (!piece) {
-    return false
+    return
   }
 
-  const pieceColor: Color = piece === piece.toLowerCase() ? 'b' : 'w'
-  const isCurrentTurn = hexchess.value.turn === pieceColor
+  const pieceColor = piece === piece.toLowerCase() ? 'b' : 'w'
+
+  const isCurrentTurn = currentHexchess.value.turn === pieceColor
+  
+  // Check if this is a pawn promotion move
+  if ((piece === 'p' || piece === 'P') && isPromotionPosition(to, pieceColor)) {
+    isPromoting.value = true
+    // ...
+    return
+  }
   
   // Only call onPieceMove if playing this color and it's their turn
   if (isPlayingPosition(from) && isCurrentTurn) {
     onPieceMove(from, to)
-    return true
   }
-
-  return false
 }
 
 /** check if user is playing the color at a position */
 function isPlayingPosition(index: number): boolean {
-  const piece = hexchess.value.board[index]
+  const piece = currentHexchess.value.board[index]
+
   if (!piece) {
     return false
   }
   
   const pieceColor: Color = piece === piece.toLowerCase() ? 'b' : 'w'
+
   return props.playing === true || props.playing === pieceColor
 }
 
@@ -395,7 +412,7 @@ function onClickPosition(index: number) {
   }
 
   // If autoselect is enabled and clicking an unoccupied position, deselect
-  if (props.autoselect && !hexchess.value.board[index]) {
+  if (props.autoselect && !currentHexchess.value.board[index]) {
     selected.value = null
     targets.value = []
   }
@@ -413,7 +430,7 @@ function onKeyupWindow(evt: KeyboardEvent) {
 
 /** mousedown on position */
 function onMousedownPosition(index: number) {
-  const piece = hexchess.value.board[index]
+  const piece = currentHexchess.value.board[index]
   
   if (!piece) {
     return
@@ -421,7 +438,7 @@ function onMousedownPosition(index: number) {
 
   if (props.autoselect) {
     selected.value = index
-    targets.value = hexchess.value.movesFrom(index).map(san => san.to)
+    targets.value = currentHexchess.value.movesFrom(index).map(san => san.to)
   }
 
   if (!isPlayingPosition(index)) {
@@ -430,7 +447,7 @@ function onMousedownPosition(index: number) {
 
   // Only allow dragging if it's the piece's turn
   const pieceColor: Color = piece === piece.toLowerCase() ? 'b' : 'w'
-  const isCurrentTurn = hexchess.value.turn === pieceColor
+  const isCurrentTurn = currentHexchess.value.turn === pieceColor
   
   if (!isCurrentTurn) {
     return
@@ -456,7 +473,14 @@ function onMouseleavePosition() {
 /** handle piece move */
 function onPieceMove(from: number, to: number) {
   const san = new San({ from, to })
+
   emit('move', san)
+
+  if (props.hexchess) {
+    props.hexchess.applyMoveUnsafe(san)
+    selected.value = null
+    targets.value = []
+  }
 }
 
 /** mouseup position */
@@ -482,6 +506,7 @@ function onMouseupWindow() {
 /** reset state */
 function resetState() {
   document.body.style.setProperty('cursor', null)
+  isPromoting.value = false
   mousedownPosition.value = null
   svgRect.value = new DOMRect()
 }

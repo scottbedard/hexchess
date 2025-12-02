@@ -27,6 +27,7 @@
     </div>
 
     <Hexboard
+      v-model:hexchess="hexchess"
       v-model:selected="selected"
       class="max-w-3xl mx-auto"
       autoselect
@@ -38,12 +39,13 @@
       }"
       :playing
       @click-position="onClickPosition"
+      @move="onMove"
     />
   </div>
 </template>
 
 <script lang="ts" setup>
-import type { Color } from '@bedard/hexchess'
+import { Hexchess, type Color, type San } from '@bedard/hexchess'
 import { ref, shallowRef, type Component } from 'vue'
 import { Checkbox, Select } from './components'
 import {
@@ -142,6 +144,8 @@ const active = ref(true)
 
 const flipped = ref(false)
 
+const hexchess = ref(Hexchess.init())
+
 const selected = ref<number | null>(null)
 
 const pieceItems: Array<{
@@ -153,7 +157,13 @@ const selectedPieces = shallowRef<Component>(pieces.gioco)
 
 const playing = ref<Color | boolean>(true)
 
-function onClickPosition() {
-  // ...
+/** handle click position */
+function onClickPosition(index: number) {
+  console.log('onClickPosition', index)
+}
+
+/** handle move */
+function onMove(san: San) {
+  console.log('onMove', san)
 }
 </script>

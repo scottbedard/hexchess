@@ -1,7 +1,9 @@
 /** @jsxImportSource vue */
 import { expect, test, vi } from 'vitest'
 import { Hexboard } from '../lib'
+import { Hexchess } from '@bedard/hexchess'
 import { index, San } from '@bedard/hexchess'
+import { movePiece } from './utils'
 import { ref, nextTick } from 'vue'
 import { userEvent } from 'vitest/browser'
 
@@ -546,4 +548,21 @@ test('cannot move piece of other turn color', async () => {
   await expect(onMove).not.toHaveBeenCalled()
 })
 
+test('promotion', async () => {
+  const onMove = vi.fn()
 
+  setup(() => {
+    const hexchess = ref(Hexchess.parse('1/1P1/5/7/9/11/11/11/11/11/11 w - 0 1'))
+    return () => <>
+      <Hexboard
+        active
+        autoselect
+        playing={'w'}
+        hexchess={hexchess.value}
+        onMove={onMove}
+      />
+    </>
+  })
+
+  await movePiece(page, 'f10', 'f11')
+})
