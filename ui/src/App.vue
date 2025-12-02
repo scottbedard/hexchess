@@ -144,7 +144,7 @@ const active = ref(true)
 
 const flipped = ref(false)
 
-const hexchess = ref(Hexchess.init())
+const hexchess = ref(Hexchess.parse('1/1P1/5/7/9/11/11/11/11/11/11 w - 0 1'))
 
 const selected = ref<number | null>(null)
 
