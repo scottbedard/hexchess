@@ -16,13 +16,14 @@
       <path
         v-for="position, index in board"
         v-bind="active ? {
-          onClick: () => onClickPosition(index),
-          onMousedown: () => onMousedownPosition(index),
-          onMouseenter: () => onMouseenterPosition(index),
-          onMouseleave: () => onMouseleavePosition(),
-          onMouseup: evt => onMouseupPosition(index, evt),
+          onClick: evt => onClickPosition(index, evt),
+          onPointerdown: evt => onPointerdownPosition(index, evt),
+          onPointerenter: () => onPointerenter(index),
+          onPointerleave: () => onPointerleave(),
+          onPointerup: evt => onMouseupPosition(index, evt),
         } : {}"
         :d="d(flipped ? position[4] : position[3])"
+        :data-hexboard-position="index"
         :data-testid="`position-${indexToPosition(index)}`"
         :fill="normalizedOptions.colors[board[index][0]]"
         :key="index"
@@ -41,6 +42,7 @@
       <!-- selected position -->
       <path
         v-if="typeof currentSelected === 'number'"
+        ref="selectedEl"
         :d="d(flipped ? board[currentSelected][4] : board[currentSelected][3])"
         :data-testid="`selected-${indexToPosition(currentSelected)}`"
         :fill="normalizedOptions.selectedColor"
@@ -122,7 +124,21 @@
       />
     </svg>
 
-    <pre>{{ { staging } }}</pre>
+    <div 
+      v-if="promotionRect.height | promotionRect.width | promotionRect.left | promotionRect.top"
+      class="border border-[red]"
+      :style="{
+        height: promotionRect.height + 'px',
+        left: promotionRect.left + 'px',
+        pointerEvents: 'none',
+        position: 'fixed',
+        top: promotionRect.top + 'px',
+        width: promotionRect.width + 'px',
+      }">
+      <slot name="promotion" />
+    </div>
+
+    <pre>{{  { mouseCoords } }}</pre>
   </div>
 </template>
 
@@ -201,6 +217,12 @@ const mouseCoords = shallowRef({ x: 0, y: 0 })
 /** fen position of mousedown */
 const mousedownPosition = shallowRef<number | null>(null)
 
+/** rect of promotion anchor element */
+const promotionRect = shallowRef<DOMRect>(new DOMRect())
+
+/** selected element */
+const selectedEl = useTemplateRef('selectedEl')
+
 /** staging display data */
 const staging = shallowRef<{
   hexchess: Hexchess | null
@@ -245,12 +267,13 @@ const currentHexchess = computed(() => {
 /** current selected position */
 const currentSelected = computed(() => {
   if (typeof staging.value.selected === 'number') {
-    return staging.value.selected
+    return null
   }
 
   return selected.value
 })
 
+/** cursor type */
 const cursor = computed(() => {
   if (dragPiece.value) {
     return 'grabbing' // global cursor
@@ -356,17 +379,14 @@ watch(cursor, val => {
   document.body.style.setProperty('cursor', val === 'grabbing' ? 'grabbing' : null)
 })
 
-watch(() => props.active, active => {
-  if (active) listen()
-  else unlisten()
-})
+watch(() => props.active, val => val ? listen() : unlisten())
 
 //
 // methods
 //
 
 /** attempt to move piece from source to target position */
-function attemptMove(from: number, to: number) {
+function attemptMove(from: number, to: number, evt: MouseEvent) {
   // Check if target is valid
   if (!targets.value.includes(to)) {
     return
@@ -395,7 +415,11 @@ function attemptMove(from: number, to: number) {
       hexchess: clone,
       selected: to,
     }
-    console.log('staging', staging.value)
+
+    if (evt.target instanceof Element) {
+      promotionRect.value = evt.target.getBoundingClientRect()
+    }
+
     return
   }
   
@@ -439,19 +463,30 @@ function listen() {
   mouseCoords.value = { x: 0, y: 0 }
 
   window.addEventListener('keyup', onKeyupWindow)
-  window.addEventListener('mousemove', onMousemoveWindow)
-  window.addEventListener('mouseup', onMouseupWindow)
+  window.addEventListener('pointermove', onMousemoveWindow)
+  window.addEventListener('pointerup', onMouseupWindow)
+  window.addEventListener('resize', measurePromotionRect)
+  window.addEventListener('scroll', measurePromotionRect)
+}
+
+
+
+/** measure promotion element rect */
+function measurePromotionRect() {
+  if (selectedEl.value instanceof Element) {
+    promotionRect.value = selectedEl.value.getBoundingClientRect()
+  }
 }
 
 /** click position */
-function onClickPosition(index: number) {
+function onClickPosition(index: number, evt: MouseEvent) {
   if (!props.active) {
     return
   }
 
   // If there's a selected piece and clicking a target, attempt to move
   if (selected.value !== null && targets.value.includes(index)) {
-    attemptMove(selected.value, index)
+    attemptMove(selected.value, index, evt)
     return
   }
 
@@ -472,8 +507,54 @@ function onKeyupWindow(evt: KeyboardEvent) {
   }
 }
 
-/** mousedown on position */
-function onMousedownPosition(index: number) {
+/** handle piece move */
+function onPieceMove(from: number, to: number) {
+  const san = new San({ from, to })
+
+  emit('move', san)
+
+  if (props.hexchess) {
+    props.hexchess.applyMoveUnsafe(san)
+    selected.value = null
+    targets.value = []
+  }
+}
+
+/** mouseup position */
+function onMouseupPosition(index: number, evt: MouseEvent) {
+  evt.stopPropagation()
+
+  // Check if we're dropping a piece on a valid target
+  if (mousedownPosition.value !== null) {
+    attemptMove(mousedownPosition.value, index, evt)
+  }
+
+  /** do nothing if staging is set */
+  if (staging.value.hexchess) {
+    return
+  }
+
+  resetState()
+}
+
+/** mousemove window */
+function onMousemoveWindow(evt: MouseEvent) {
+  if (!props.active) {
+    return
+  }
+
+  mouseCoords.value = { x: evt.clientX, y: evt.clientY }
+}
+
+/** mouseup window */
+function onMouseupWindow() {
+  resetState()
+}
+
+/** pointerdown on position */
+function onPointerdownPosition(index: number, evt: PointerEvent) {
+  evt.preventDefault()
+
   const piece = props.hexchess?.board[index]
   
   if (!piece) {
@@ -505,53 +586,13 @@ function onMousedownPosition(index: number) {
 }
 
 /** mouseenter position */
-function onMouseenterPosition(index: number) {
+function onPointerenter(index: number) {
   mouseoverPosition.value = index
 }
 
 /** mouseleave position */
-function onMouseleavePosition() {
+function onPointerleave() {
   mouseoverPosition.value = null
-}
-
-/** handle piece move */
-function onPieceMove(from: number, to: number) {
-  const san = new San({ from, to })
-
-  emit('move', san)
-
-  if (props.hexchess) {
-    props.hexchess.applyMoveUnsafe(san)
-    selected.value = null
-    targets.value = []
-  }
-}
-
-/** mouseup position */
-function onMouseupPosition(index: number, evt: MouseEvent) {
-  evt.stopPropagation()
-
-  // Check if we're dropping a piece on a valid target
-  if (mousedownPosition.value !== null) {
-    attemptMove(mousedownPosition.value, index)
-  }
-
-  /** do nothing if staging is set */
-  if (staging.value.hexchess) {
-    return
-  }
-
-  resetState()
-}
-
-/** mousemove window */
-function onMousemoveWindow(evt: MouseEvent) {
-  mouseCoords.value = { x: evt.clientX, y: evt.clientY }
-}
-
-/** mouseup window */
-function onMouseupWindow() {
-  resetState()
 }
 
 /** reset state */
@@ -570,7 +611,9 @@ function resetState() {
 function unlisten() {
   resetState()
   window.removeEventListener('keyup', onKeyupWindow)
-  window.removeEventListener('mousemove', onMousemoveWindow)
-  window.removeEventListener('mouseup', onMouseupWindow)
+  window.removeEventListener('pointermove', onMousemoveWindow)
+  window.removeEventListener('pointerup', onMouseupWindow)
+  window.removeEventListener('resize', measurePromotionRect)
+  window.removeEventListener('scroll', measurePromotionRect)
 }
 </script>

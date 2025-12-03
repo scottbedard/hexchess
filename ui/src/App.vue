@@ -39,8 +39,11 @@
       }"
       :playing
       @click-position="onClickPosition"
-      @move="onMove"
-    />
+      @move="onMove">
+      <template #promotion>
+        promotion
+      </template>
+    </Hexboard>
   </div>
 </template>
 
