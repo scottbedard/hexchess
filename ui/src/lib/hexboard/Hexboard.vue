@@ -136,9 +136,13 @@
       @pointerup.stop>
       <slot
         name="promotion"
+        :b="promotionPieces.b"
         :file="indexToPosition(staging.selected)[0]"
-        :rank="Number(indexToPosition(staging.selected).slice(1))"
-        :promote />
+        :n="promotionPieces.n"
+        :promote
+        :q="promotionPieces.q"
+        :r="promotionPieces.r"
+        :rank="Number(indexToPosition(staging.selected).slice(1))" />
     </div>
 
     <Teleport to="body">
@@ -152,7 +156,7 @@
 
 <script lang="ts" setup>
 import { board, box, defaultOptions, initialPosition, labels, pieceSize, perimeter } from './constants'
-import { computed, onMounted, onUnmounted, shallowRef, useTemplateRef, watch, type Component } from 'vue'
+import { computed, h, onMounted, onUnmounted, shallowRef, useTemplateRef, watch, type Component } from 'vue'
 import { d } from './dom'
 import { isPromotionPosition, Hexchess, position as indexToPosition, San, type Color } from '@bedard/hexchess'
 import { x, y } from './geometry'
@@ -374,6 +378,23 @@ const mouseoverPiece = computed(() => {
   }
 
   return currentHexchess.value?.board[mouseoverPosition.value] ?? null
+})
+
+/** promotion piece components for the promoting color */
+const promotionPieces = computed(() => {
+  const piece = staging.value.hexchess?.board[staging.value.selected ?? -1]
+  const isWhite = piece === piece?.toUpperCase()
+  
+  const createPiece = (type: string) => {
+    return (attrs: Record<string, unknown>) => h(props.pieces, { ...attrs, type })
+  }
+  
+  return {
+    n: createPiece(isWhite ? 'N' : 'n'),
+    b: createPiece(isWhite ? 'B' : 'b'),
+    r: createPiece(isWhite ? 'R' : 'r'),
+    q: createPiece(isWhite ? 'Q' : 'q'),
+  }
 })
 
 //

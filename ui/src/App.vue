@@ -42,7 +42,7 @@
       :playing
       @click-position="onClickPosition"
       @move="onMove">
-      <template #promotion="{ file, promote }">
+      <template #promotion="{ file, promote, b, n, q, r }">
         <div
           class="absolute inset-0 shadow-lg"
           ref="promotionEl">
@@ -61,27 +61,27 @@
             <div
               class="bg-gray-200 flex my-2 rounded-lg dark:bg-gray-800">
               <button
-                class="border-r border-gray-500/50 cursor-pointer rounded-l-lg size-14 dark:hover:bg-gray-700"
+                class="border-r border-gray-500/50 cursor-pointer rounded-l-lg p-2 size-14 dark:hover:bg-gray-700"
                 @click="promote('q')">
-                q
+                <Component :is="q" />
               </button>
 
               <button
-                class="border-r border-gray-500/50 cursor-pointer size-14 dark:hover:bg-gray-700"
+                class="border-r border-gray-500/50 cursor-pointer p-2 size-14 dark:hover:bg-gray-700"
                 @click="promote('r')">
-                r
+                <Component :is="r" />
               </button>
 
               <button
-                class="border-r border-gray-500/50 cursor-pointer size-14 dark:hover:bg-gray-700"
+                class="border-r border-gray-500/50 cursor-pointer p-2 size-14 dark:hover:bg-gray-700"
                 @click="promote('b')">
-                b
+                <Component :is="b" />
               </button>
 
               <button
-                class="cursor-pointer rounded-r-lg size-14 dark:hover:bg-gray-700"
+                class="cursor-pointer rounded-r-lg p-2 size-14 dark:hover:bg-gray-700"
                 @click="promote('n')">
-                n
+                <Component :is="n" />
               </button>
             </div>
           </div>
@@ -208,7 +208,7 @@ const active = shallowRef(true)
 
 const flipped = shallowRef(false)
 
-const hexchess = ref(Hexchess.parse('b/qbk/n1b1n/r5r/ppppppppp/11/5P5/4P1P4/3P1B1P3/2P2B2P2/1PRNQBKNRP1 w - 0 1'))
+const hexchess = ref(Hexchess.parse('1/1P1/5/7/9/11/11/11/11/5p5/11 w - 0 1'))
 
 const selected = shallowRef<number | null>(null)
 
