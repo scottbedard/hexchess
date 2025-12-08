@@ -26,6 +26,8 @@
       </div>
     </div>
 
+    <div class="h-200" />
+
     <Hexboard
       v-model:hexchess="hexchess"
       v-model:selected="selected"
@@ -40,17 +42,62 @@
       :playing
       @click-position="onClickPosition"
       @move="onMove">
-      <template #promotion>
-        promotion
+      <template #promotion="{ file, promote }">
+        <div
+          class="absolute inset-0 shadow-lg"
+          ref="promotionEl">
+          <div
+            ref="promotionContentEl"
+            :class="[
+              'absolute',
+              {
+                'bottom-full': promotionTop,
+                'left-0': 'ab'.includes(file),
+                'left-1/2 -translate-x-1/2': 'cdefghi'.includes(file),
+                'right-0': 'kl'.includes(file),
+                'top-full': !promotionTop,
+              }
+            ]">
+            <div
+              class="bg-gray-200 flex my-2 rounded-lg dark:bg-gray-800">
+              <button
+                class="border-r border-gray-500/50 cursor-pointer rounded-l-lg size-14 dark:hover:bg-gray-700"
+                @click="promote('q')">
+                q
+              </button>
+
+              <button
+                class="border-r border-gray-500/50 cursor-pointer size-14 dark:hover:bg-gray-700"
+                @click="promote('r')">
+                r
+              </button>
+
+              <button
+                class="border-r border-gray-500/50 cursor-pointer size-14 dark:hover:bg-gray-700"
+                @click="promote('b')">
+                b
+              </button>
+
+              <button
+                class="cursor-pointer rounded-r-lg size-14 dark:hover:bg-gray-700"
+                @click="promote('n')">
+                n
+              </button>
+            </div>
+          </div>
+        </div>
       </template>
     </Hexboard>
+
+    <div class="h-200" />
   </div>
 </template>
 
 <script lang="ts" setup>
 import { Hexchess, type Color, type San } from '@bedard/hexchess'
-import { ref, shallowRef, type Component } from 'vue'
+import { computed, nextTick, ref, shallowRef, type Component, useTemplateRef, watch } from 'vue'
 import { Checkbox, Select } from './components'
+import { useDomRect } from './composables/use-dom-rect'
 import {
   AlphaPieces,
   AnarcandyPieces,
@@ -143,13 +190,27 @@ const playingItems: Array<{ display: string; value: Color | boolean }> = [
   { display: 'None', value: false },
 ] as const
 
-const active = ref(true)
+const promotionEl = useTemplateRef('promotionEl')
 
-const flipped = ref(false)
+const promotionContentEl = useTemplateRef('promotionContentEl')
 
-const hexchess = ref(Hexchess.parse('1/1P1/5/7/9/11/11/11/11/11/11 w - 0 1'))
+const {
+  measure: measurePromotionRect,
+  rect: promotionRect
+} = useDomRect(promotionEl)
 
-const selected = ref<number | null>(null)
+const {
+  measure: measurePromotionContentRect,
+  rect: promotionContentRect
+} = useDomRect(promotionContentEl)
+
+const active = shallowRef(true)
+
+const flipped = shallowRef(false)
+
+const hexchess = ref(Hexchess.parse('b/qbk/n1b1n/r5r/ppppppppp/11/5P5/4P1P4/3P1B1P3/2P2B2P2/1PRNQBKNRP1 w - 0 1'))
+
+const selected = shallowRef<number | null>(null)
 
 const pieceItems: Array<{
   display: string
@@ -158,7 +219,25 @@ const pieceItems: Array<{
 
 const selectedPieces = shallowRef<Component>(pieces.gioco)
 
-const playing = ref<Color | boolean>(true)
+const playing = shallowRef<Color | boolean>(true)
+
+const promotionTop = computed(() => {
+  return promotionRect.value.top - promotionContentRect.value.height > 0
+})
+
+//
+// watchers
+//
+
+watch(promotionEl, async () => {
+  await nextTick()
+  measurePromotionContentRect()
+  measurePromotionRect()
+})
+
+//
+// methods
+//
 
 /** handle click position */
 function onClickPosition(index: number) {
@@ -167,6 +246,7 @@ function onClickPosition(index: number) {
 
 /** handle move */
 function onMove(san: San) {
-  console.log('onMove', san)
+  console.log({ san })
+  hexchess.value.applyMoveUnsafe(san)
 }
 </script>

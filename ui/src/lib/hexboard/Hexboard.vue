@@ -125,20 +125,21 @@
     </svg>
 
     <div 
-      v-if="promotionRect.height | promotionRect.width | promotionRect.left | promotionRect.top"
-      class="border border-[red]"
+      v-if="typeof staging.selected === 'number'"
       :style="{
         height: promotionRect.height + 'px',
         left: promotionRect.left + 'px',
-        pointerEvents: 'none',
         position: 'fixed',
         top: promotionRect.top + 'px',
         width: promotionRect.width + 'px',
-      }">
-      <slot name="promotion" />
+      }"
+      @pointerup.stop>
+      <slot
+        name="promotion"
+        :file="indexToPosition(staging.selected)[0]"
+        :rank="Number(indexToPosition(staging.selected).slice(1))"
+        :promote />
     </div>
-
-    <pre>{{  { mouseCoords } }}</pre>
   </div>
 </template>
 
@@ -220,15 +221,18 @@ const mousedownPosition = shallowRef<number | null>(null)
 /** rect of promotion anchor element */
 const promotionRect = shallowRef<DOMRect>(new DOMRect())
 
-/** selected element */
-const selectedEl = useTemplateRef('selectedEl')
-
 /** staging display data */
 const staging = shallowRef<{
   hexchess: Hexchess | null
+  promotionEl: Element | null
+  promotionFrom: number | null
+  promotionTo: number | null
   selected: number | null
 }>({
   hexchess: null,
+  promotionEl: null,
+  promotionFrom: null,
+  promotionTo: null,
   selected: null,
 })
 
@@ -386,15 +390,20 @@ watch(() => props.active, val => val ? listen() : unlisten())
 //
 
 /** attempt to move piece from source to target position */
-function attemptMove(from: number, to: number, evt: MouseEvent) {
+function attemptMove(
+  san: San,
+  evt?: MouseEvent
+) {
   // Check if target is valid
-  if (!targets.value.includes(to)) {
+  if (!targets.value.includes(san.to)) {
+    console.log('target not found', san.to)
     return
   }
 
-  const piece = props.hexchess?.board[from]
+  const piece = props.hexchess?.board[san.from]
   
   if (!piece) {
+    console.log('piece not found', san.from)
     return
   }
 
@@ -406,17 +415,20 @@ function attemptMove(from: number, to: number, evt: MouseEvent) {
   if (
     props.hexchess &&
     (piece === 'p' || piece === 'P') &&
-    isPromotionPosition(to, pieceColor)
+    isPromotionPosition(san.to, pieceColor)
   ) {
     const clone = props.hexchess.clone()
-    clone.board[from] = null
-    clone.board[to] = piece
+    clone.board[san.from] = null
+    clone.board[san.to] = piece
     staging.value = {
       hexchess: clone,
-      selected: to,
+      promotionEl: evt?.target instanceof Element ? evt.target : null,
+      promotionFrom: san.from,
+      promotionTo: san.to,
+      selected: san.to,
     }
 
-    if (evt.target instanceof Element) {
+    if (evt?.target instanceof Element) {
       promotionRect.value = evt.target.getBoundingClientRect()
     }
 
@@ -424,8 +436,8 @@ function attemptMove(from: number, to: number, evt: MouseEvent) {
   }
   
   // Only call onPieceMove if playing this color and it's their turn
-  if (isPlayingPosition(from) && isCurrentTurn) {
-    onPieceMove(from, to)
+  if (isPlayingPosition(san.from) && isCurrentTurn) {
+    onPieceMove(san)
   }
 }
 
@@ -469,13 +481,9 @@ function listen() {
   window.addEventListener('scroll', measurePromotionRect)
 }
 
-
-
 /** measure promotion element rect */
 function measurePromotionRect() {
-  if (selectedEl.value instanceof Element) {
-    promotionRect.value = selectedEl.value.getBoundingClientRect()
-  }
+  promotionRect.value = staging.value.promotionEl?.getBoundingClientRect() ?? new DOMRect()
 }
 
 /** click position */
@@ -486,7 +494,8 @@ function onClickPosition(index: number, evt: MouseEvent) {
 
   // If there's a selected piece and clicking a target, attempt to move
   if (selected.value !== null && targets.value.includes(index)) {
-    attemptMove(selected.value, index, evt)
+    const san = new San({ from: selected.value, to: index })
+    attemptMove(san, evt)
     return
   }
 
@@ -508,8 +517,8 @@ function onKeyupWindow(evt: KeyboardEvent) {
 }
 
 /** handle piece move */
-function onPieceMove(from: number, to: number) {
-  const san = new San({ from, to })
+function onPieceMove(san: San) {
+  console.log('onPieceMove', san)
 
   emit('move', san)
 
@@ -526,7 +535,8 @@ function onMouseupPosition(index: number, evt: MouseEvent) {
 
   // Check if we're dropping a piece on a valid target
   if (mousedownPosition.value !== null) {
-    attemptMove(mousedownPosition.value, index, evt)
+    const san = new San({ from: mousedownPosition.value, to: index })
+    attemptMove(san, evt)
   }
 
   /** do nothing if staging is set */
@@ -595,13 +605,34 @@ function onPointerleave() {
   mouseoverPosition.value = null
 }
 
+/** promote piece */
+function promote(promotion: 'n' | 'b' | 'r' | 'q') {
+  if (
+    typeof staging.value.promotionFrom === 'number' &&
+    isPlayingPosition(staging.value.promotionFrom)
+  ) {
+    const san = new San({
+      from: staging.value.promotionFrom ?? 0,
+      to: staging.value.promotionTo ?? 0,
+      promotion: promotion,
+    })
+
+    emit('move', san)
+
+    resetState()
+  }
+}
+
 /** reset state */
 function resetState() {
-  console.log('resetState')
   document.body.style.setProperty('cursor', null)
   mousedownPosition.value = null
+  selected.value = null
   staging.value = {
     hexchess: null,
+    promotionEl: null,
+    promotionFrom: null,
+    promotionTo: null,
     selected: null,
   }
   svgRect.value = new DOMRect()
