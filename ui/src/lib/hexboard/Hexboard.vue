@@ -140,6 +140,13 @@
         :rank="Number(indexToPosition(staging.selected).slice(1))"
         :promote />
     </div>
+
+    <Teleport to="body">
+      <pre class="fixed left-0 bottom-0 z-10 text-sm leading-loose text-gray-300 p-6">{{ {
+        selected,
+        targets,
+      } }}</pre>
+    </Teleport>
   </div>
 </template>
 
@@ -297,7 +304,8 @@ const cursor = computed(() => {
       const selectedPieceColor: Color = selectedPiece === selectedPiece.toLowerCase() ? 'b' : 'w'
       const isSelectedTurn = currentHexchess.value?.turn === selectedPieceColor
       
-      if (isSelectedTurn && isPlayingPosition(selected.value)) {
+      // Allow moving if playing both colors, or if it's the selected piece's turn
+      if ((props.playing === true || isSelectedTurn) && isPlayingPosition(selected.value)) {
         return 'pointer'
       }
     }
@@ -307,11 +315,16 @@ const cursor = computed(() => {
     return undefined
   }
 
-  // When playing is true or a color, check if piece is draggable
+  // When playing both colors, any piece is draggable
+  if (props.playing === true) {
+    return 'grab'
+  }
+
+  // When playing a single color, check if piece is draggable (must be their turn)
   if (
     props.playing &&
     mouseoverColor.value === currentHexchess.value?.turn &&
-    (props.playing === true || props.playing === mouseoverColor.value)
+    props.playing === mouseoverColor.value
   ) {
     return 'grab'
   }
@@ -435,8 +448,8 @@ function attemptMove(
     return
   }
   
-  // Only call onPieceMove if playing this color and it's their turn
-  if (isPlayingPosition(san.from) && isCurrentTurn) {
+  // Only call onPieceMove if playing both colors, or playing this color and it's their turn
+  if (isPlayingPosition(san.from) && (props.playing === true || isCurrentTurn)) {
     onPieceMove(san)
   }
 }
@@ -518,15 +531,9 @@ function onKeyupWindow(evt: KeyboardEvent) {
 
 /** handle piece move */
 function onPieceMove(san: San) {
-  console.log('onPieceMove', san)
-
   emit('move', san)
 
-  if (props.hexchess) {
-    props.hexchess.applyMoveUnsafe(san)
-    selected.value = null
-    targets.value = []
-  }
+  resetState()
 }
 
 /** mouseup position */
@@ -580,11 +587,11 @@ function onPointerdownPosition(index: number, evt: PointerEvent) {
     return
   }
 
-  // Only allow dragging if it's the piece's turn
+  // Only allow dragging if playing both colors, or if it's the piece's turn
   const pieceColor: Color = piece === piece.toLowerCase() ? 'b' : 'w'
   const isCurrentTurn = props.hexchess?.turn === pieceColor
   
-  if (!isCurrentTurn) {
+  if (props.playing !== true && !isCurrentTurn) {
     return
   }
 
@@ -616,10 +623,8 @@ function promote(promotion: 'n' | 'b' | 'r' | 'q') {
       to: staging.value.promotionTo ?? 0,
       promotion: promotion,
     })
-
-    emit('move', san)
-
-    resetState()
+    
+    onPieceMove(san)
   }
 }
 
@@ -636,6 +641,8 @@ function resetState() {
     selected: null,
   }
   svgRect.value = new DOMRect()
+  targets.value = []
+  console.log('resetState')
 }
 
 /** stop listening for events */

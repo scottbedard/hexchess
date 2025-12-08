@@ -29,16 +29,16 @@
     <div class="h-200" />
 
     <Hexboard
-      v-model:hexchess="hexchess"
       v-model:selected="selected"
       class="max-w-3xl mx-auto"
       autoselect
       :active
       :flipped
-      :pieces="selectedPieces"
+      :hexchess
       :options="{
         // ...
       }"
+      :pieces="selectedPieces"
       :playing
       @click-position="onClickPosition"
       @move="onMove">
