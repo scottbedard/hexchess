@@ -15,7 +15,7 @@
       <!-- positions -->
       <path
         v-for="position, index in board"
-        v-bind="active ? {
+        v-bind="active && !staging.hexchess ? {
           onClick: evt => onClickPosition(index, evt),
           onPointerdown: evt => onPointerdownPosition(index, evt),
           onPointerenter: () => onPointerenter(index),
@@ -137,6 +137,7 @@
       <slot
         name="promotion"
         :b="promotionPieces.b"
+        :cancel="cancelPromotion"
         :file="indexToPosition(staging.selected)[0]"
         :n="promotionPieces.n"
         :promote
@@ -294,7 +295,7 @@ const cursor = computed(() => {
     return 'grabbing' // global cursor
   }
 
-  if (!props.active || mouseoverPosition.value === null) {
+  if (!props.active || mouseoverPosition.value === null || staging.value.hexchess) {
     return undefined
   }
 
@@ -544,9 +545,18 @@ function onClickPosition(index: number, evt: MouseEvent) {
 
 /** keyup window */
 function onKeyupWindow(evt: KeyboardEvent) {
-  if (props.autoselect && evt.key === 'Escape') {
-    selected.value = null
-    targets.value = []
+  if (evt.key === 'Escape') {
+    // If staging a promotion, cancel it
+    if (staging.value.hexchess) {
+      cancelPromotion()
+      return
+    }
+    
+    // Otherwise deselect if autoselect is enabled
+    if (props.autoselect) {
+      selected.value = null
+      targets.value = []
+    }
   }
 }
 
@@ -586,7 +596,34 @@ function onMousemoveWindow(evt: MouseEvent) {
 
 /** mouseup window */
 function onMouseupWindow() {
+  // If staging a promotion, cancel it but keep the original piece selected
+  if (staging.value.hexchess) {
+    cancelPromotion()
+    return
+  }
+
   resetState()
+}
+
+/** cancel promotion and restore original selection */
+function cancelPromotion() {
+  const from = staging.value.promotionFrom
+  
+  staging.value = {
+    hexchess: null,
+    promotionEl: null,
+    promotionFrom: null,
+    promotionTo: null,
+    selected: null,
+  }
+  
+  // Keep the original piece selected
+  if (typeof from === 'number') {
+    selected.value = from
+    targets.value = props.hexchess?.movesFrom(from).map(san => san.to) ?? []
+  }
+  
+  mousedownPosition.value = null
 }
 
 /** pointerdown on position */

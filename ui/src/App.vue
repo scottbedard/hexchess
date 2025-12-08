@@ -42,9 +42,9 @@
       :playing
       @click-position="onClickPosition"
       @move="onMove">
-      <template #promotion="{ file, promote, b, n, q, r }">
+      <template #promotion="{ cancel, file, promote, b, n, q, r }">
         <div
-          class="absolute inset-0 shadow-lg"
+          class="absolute inset-0"
           ref="promotionEl">
           <div
             ref="promotionContentEl"
@@ -73,15 +73,21 @@
               </button>
 
               <button
-                class="border-r border-gray-500/50 cursor-pointer p-2 size-14 dark:hover:bg-gray-700"
+                class="cursor-pointer p-2 size-14 dark:hover:bg-gray-700"
                 @click="promote('b')">
                 <Component :is="b" />
               </button>
 
               <button
-                class="cursor-pointer rounded-r-lg p-2 size-14 dark:hover:bg-gray-700"
+                class="border-r border-gray-500/50 cursor-pointer rounded-r-lg p-2 size-14 dark:hover:bg-gray-700"
                 @click="promote('n')">
                 <Component :is="n" />
+              </button>
+
+              <button
+                class="cursor-pointer flex items-center justify-center rounded-r-lg p-2 size-14 dark:hover:bg-gray-700"
+                @click="cancel">
+                <svg class="size-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
               </button>
             </div>
           </div>
