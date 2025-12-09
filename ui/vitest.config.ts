@@ -26,6 +26,7 @@ export default defineConfig({
       ],
     },
     environment: 'jsdom',
+    testTimeout: 3000,
   },
   resolve: {
     alias: {
