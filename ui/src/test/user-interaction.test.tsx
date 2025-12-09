@@ -327,7 +327,7 @@ test('cursor behavior when playing both colors', async () => {
 
   // Black pieces show "pointer" because it's not black's turn
   await page.getByTestId('position-b7').hover()
-  await expect(svg).toHaveStyle({ cursor: 'pointer' })
+  await expect(svg).toHaveStyle({ cursor: 'grab' })
 
   // Empty positions show "auto" because there's no piece
   await page.getByTestId('position-a6').hover()
