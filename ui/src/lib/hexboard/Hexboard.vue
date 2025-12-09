@@ -74,6 +74,8 @@
         v-for="piece, index in currentHexchess.board">
         <Component
           v-if="piece && index !== mousedownPosition"
+          :data-piece-type="piece"
+          :data-testid="`piece-${indexToPosition(index)}`"
           :height="pieceSize"
           :is="pieces"
           :style="{ pointerEvents: 'none' }"
@@ -146,12 +148,10 @@
         :rank="Number(indexToPosition(staging.selected).slice(1))" />
     </div>
 
-    <Teleport to="body">
-      <pre class="fixed left-0 bottom-0 z-10 text-sm leading-loose text-gray-300 p-6">{{ {
-        selected,
-        targets,
-      } }}</pre>
-    </Teleport>
+    <pre class="fixed left-0 bottom-0 z-10 text-sm leading-loose text-gray-300 p-6">{{ {
+      selected,
+      targets,
+    } }}</pre>
   </div>
 </template>
 
@@ -431,14 +431,12 @@ function attemptMove(
 ) {
   // Check if target is valid
   if (!targets.value.includes(san.to)) {
-    console.log('target not found', san.to)
     return
   }
 
   const piece = props.hexchess?.board[san.from]
   
   if (!piece) {
-    console.log('piece not found', san.from)
     return
   }
 
@@ -571,14 +569,26 @@ function onPieceMove(san: San) {
 function onMouseupPosition(index: number, evt: MouseEvent) {
   evt.stopPropagation()
 
-  // Check if we're dropping a piece on a valid target
+  // Check if we're dropping a piece on a valid target (drag and drop)
   if (mousedownPosition.value !== null) {
     const san = new San({ from: mousedownPosition.value, to: index })
+    attemptMove(san, evt)
+  }
+  // Check if clicking on a target while a piece is selected (click to move)
+  else if (selected.value !== null && targets.value.includes(index)) {
+    const san = new San({ from: selected.value, to: index })
     attemptMove(san, evt)
   }
 
   /** do nothing if staging is set */
   if (staging.value.hexchess) {
+    return
+  }
+
+  // If clicking on a piece the user is playing, keep the selection
+  if (isPlayingPosition(index)) {
+    mousedownPosition.value = null
+    svgRect.value = new DOMRect()
     return
   }
 

@@ -550,20 +550,26 @@ test('cannot move piece of other turn color', async () => {
 })
 
 test('promotion', async () => {
-  const onMove = vi.fn()
-
   setup(() => {
     const hexchess = ref(Hexchess.parse('1/1P1/5/7/9/11/11/11/11/11/11 w - 0 1'))
+    
     return () => <>
       <Hexboard
         active
         autoselect
         playing={'w'}
         hexchess={hexchess.value}
-        onMove={onMove}
-      />
+        onMove={san => hexchess.value.applyMoveUnsafe(san)}>{{
+        promotion: ({ promote }: any) => <button
+          data-testid="promote"
+          onClick={() => promote('q')}>
+          q
+        </button>
+      }}</Hexboard>
     </>
   })
 
   await movePiece(page, 'f10', 'f11')
+  await page.getByTestId('promote').click()
+  await expect(page.getByTestId('piece-f11')).toHaveAttribute('data-piece-type', 'Q')
 })
