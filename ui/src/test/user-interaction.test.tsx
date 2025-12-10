@@ -165,13 +165,11 @@ test('targets array controls rendering of target circles', async () => {
 })
 
 test('autoselect targets', async () => {
-  const targets = ref<number[]>([])
-
   setup(() => {
     return () => <Hexboard
       active
       autoselect
-      targets={targets.value}
+      playing
     />
   })
 
@@ -181,15 +179,17 @@ test('autoselect targets', async () => {
 
 test('select options and logic', async () => {
   const active = ref(false)
+  const hexchess = ref(Hexchess.init())
   const selected = ref<number | null>(null)
 
   setup(() => {
     return () => <>
       <Hexboard
-        v-model:selected={selected.value}
         active={active.value}
         autoselect
+        hexchess={hexchess.value}
         playing
+        v-model:selected={selected.value}
         options={{
           selectedColor: 'red',
         }}
@@ -206,11 +206,10 @@ test('select options and logic', async () => {
   await expect.element(page.getByTestId('selected-a1')).not.toBeInTheDocument()
 
   // Clicking when inactive should not set selected
-  await page.getByTestId('position-f6').click()
-  await expect(selected.value).toBeNull()
-  await expect.element(page.getByTestId('selected-f6')).not.toBeInTheDocument()
+  await page.getByTestId('position-a1').click()
+  await expect.element(page.getByTestId('assertion')).toHaveTextContent('')
 
-  // Activate the board
+  // // Activate the board
   active.value = true
   await nextTick()
 

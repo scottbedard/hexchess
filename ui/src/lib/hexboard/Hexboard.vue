@@ -151,6 +151,7 @@
     <pre class="fixed left-0 bottom-0 z-10 text-sm leading-loose text-gray-300 p-6">{{ {
       selected,
       targets,
+      playing,
     } }}</pre>
   </div>
 </template>
@@ -184,6 +185,7 @@ const props = withDefaults(
     active: false,
     autoselect: false,
     flipped: false,
+    hexchess: () => Hexchess.init(),
     highlight: () => [],
     options: () => ({}),
     pieces: () => GiocoPieces,
@@ -508,8 +510,8 @@ function listen() {
   mouseCoords.value = { x: 0, y: 0 }
 
   window.addEventListener('keyup', onKeyupWindow)
-  window.addEventListener('pointermove', onMousemoveWindow)
-  window.addEventListener('pointerup', onMouseupWindow)
+  window.addEventListener('pointermove', onPointermoveWindow)
+  window.addEventListener('pointerup', onPointerupWindow)
   window.addEventListener('resize', measurePromotionRect)
   window.addEventListener('scroll', measurePromotionRect)
 }
@@ -533,7 +535,7 @@ function onClickPosition(index: number, evt: MouseEvent) {
   }
 
   // If autoselect is enabled and clicking an unoccupied position, deselect
-  if (props.autoselect && !props.hexchess?.board[index]) {
+  if (props.autoselect && !props.hexchess.board[index]) {
     selected.value = null
     targets.value = []
   }
@@ -585,30 +587,10 @@ function onMouseupPosition(index: number, evt: MouseEvent) {
     return
   }
 
-  // If clicking on a piece the user is playing, keep the selection
-  if (isPlayingPosition(index)) {
+  // If clicking on any piece, keep the selection (it was set in pointerdown)
+  if (props.hexchess?.board[index]) {
     mousedownPosition.value = null
     svgRect.value = new DOMRect()
-    return
-  }
-
-  resetState()
-}
-
-/** mousemove window */
-function onMousemoveWindow(evt: MouseEvent) {
-  if (!props.active) {
-    return
-  }
-
-  mouseCoords.value = { x: evt.clientX, y: evt.clientY }
-}
-
-/** mouseup window */
-function onMouseupWindow() {
-  // If staging a promotion, cancel it but keep the original piece selected
-  if (staging.value.hexchess) {
-    cancelPromotion()
     return
   }
 
@@ -630,7 +612,7 @@ function cancelPromotion() {
   // Keep the original piece selected
   if (typeof from === 'number') {
     selected.value = from
-    targets.value = props.hexchess?.movesFrom(from).map(san => san.to) ?? []
+    targets.value = props.hexchess.movesFrom(from).map(san => san.to) ?? []
   }
   
   mousedownPosition.value = null
@@ -680,6 +662,26 @@ function onPointerleave() {
   mouseoverPosition.value = null
 }
 
+/** mousemove window */
+function onPointermoveWindow(evt: MouseEvent) {
+  if (!props.active) {
+    return
+  }
+
+  mouseCoords.value = { x: evt.clientX, y: evt.clientY }
+}
+
+/** mouseup window */
+function onPointerupWindow() {
+  // If staging a promotion, cancel it but keep the original piece selected
+  if (staging.value.hexchess) {
+    cancelPromotion()
+    return
+  }
+
+  resetState()
+}
+
 /** promote piece */
 function promote(promotion: 'n' | 'b' | 'r' | 'q') {
   if (
@@ -717,8 +719,8 @@ function resetState() {
 function unlisten() {
   resetState()
   window.removeEventListener('keyup', onKeyupWindow)
-  window.removeEventListener('pointermove', onMousemoveWindow)
-  window.removeEventListener('pointerup', onMouseupWindow)
+  window.removeEventListener('pointermove', onPointermoveWindow)
+  window.removeEventListener('pointerup', onPointerupWindow)
   window.removeEventListener('resize', measurePromotionRect)
   window.removeEventListener('scroll', measurePromotionRect)
 }
