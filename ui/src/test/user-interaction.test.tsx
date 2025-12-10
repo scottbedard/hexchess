@@ -572,3 +572,34 @@ test('promotion', async () => {
   await page.getByTestId('promote').click()
   await expect(page.getByTestId('piece-f11')).toHaveAttribute('data-piece-type', 'Q')
 })
+
+test('ignoreTurn allows moving pieces out of turn', async () => {
+  const ignoreTurn = ref(false)
+  const onMove = vi.fn()
+
+  setup(() => {
+    return () => <Hexboard
+      active
+      autoselect
+      ignoreTurn={ignoreTurn.value}
+      playing={true}
+      onMove={onMove}
+    />
+  })
+
+  // Initial position is white's turn, try to move black's pawn without ignoreTurn
+  await movePiece(page, 'f7', 'f6')
+  await expect(onMove).not.toHaveBeenCalled()
+
+  // Enable ignoreTurn and try again
+  ignoreTurn.value = true
+  await nextTick()
+
+  await movePiece(page, 'f7', 'f6')
+  await expect(onMove).toHaveBeenCalledOnce()
+  await expect(onMove).toHaveBeenCalledWith(expect.objectContaining({
+    from: index('f7'),
+    to: index('f6'),
+  }))
+})
+
