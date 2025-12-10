@@ -16,4 +16,5 @@ php/junit.xml
 rust/README.md
 sandbox.mjs
 target
+ui/src/test/__screenshots__
 vendor
