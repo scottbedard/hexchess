@@ -650,3 +650,40 @@ test('ignoreTurn allows moving pieces out of turn', async () => {
   }))
 })
 
+test('dragging piece to non-target position keeps selection', async () => {
+  const selected = ref<number | null>(null)
+  const targets = ref<number[]>([])
+
+  setup(() => {
+    return () => <>
+      <Hexboard
+        active
+        autoselect
+        playing={'w'}
+        v-model:selected={selected.value}
+        v-model:targets={targets.value}
+      />
+      <div data-testid="selected-value" v-text={selected.value} />
+    </>
+  })
+
+  const piecePosition = page.getByTestId('position-f5')
+  const nonTargetPosition = page.getByTestId('position-a1')
+
+  // Start dragging the piece
+  await piecePosition.element().dispatchEvent(new PointerEvent('pointerdown', { bubbles: true }))
+  await nextTick()
+
+  // Verify piece is selected
+  await expect.element(page.getByTestId('selected-f5')).toBeVisible()
+  await expect(selected.value).toBe(index('f5'))
+
+  // Release on a non-target position
+  await nonTargetPosition.element().dispatchEvent(new PointerEvent('pointerup', { bubbles: true }))
+  await nextTick()
+
+  // Piece should still be selected
+  await expect.element(page.getByTestId('selected-f5')).toBeVisible()
+  await expect(selected.value).toBe(index('f5'))
+})
+

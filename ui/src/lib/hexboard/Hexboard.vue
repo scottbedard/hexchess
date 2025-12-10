@@ -571,11 +571,30 @@ function onPointerupPosition(index: number, evt: MouseEvent) {
   if (pointerdownPosition.value !== null) {
     const san = new San({ from: pointerdownPosition.value, to: index })
     attemptMove(san, evt)
+    
+    // If staging a promotion, don't reset
+    if (staging.value.hexchess) {
+      return
+    }
+    
+    // Keep selection but reset drag state
+    pointerdownPosition.value = null
+    svgRect.value = new DOMRect()
+    return
   }
+  
   // Check if clicking on a target while a piece is selected (click to move)
-  else if (selected.value !== null && targets.value.includes(index)) {
+  if (selected.value !== null && targets.value.includes(index)) {
     const san = new San({ from: selected.value, to: index })
     attemptMove(san, evt)
+    
+    // If staging a promotion, don't reset
+    if (staging.value.hexchess) {
+      return
+    }
+    
+    // Move was made, reset state
+    return
   }
 
   /** do nothing if staging is set */
@@ -715,7 +734,6 @@ function resetState() {
   }
   svgRect.value = new DOMRect()
   targets.value = []
-  console.log('resetState')
 }
 
 /** stop listening for events */
