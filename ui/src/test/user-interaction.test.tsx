@@ -618,7 +618,48 @@ test('canceled promotion', async () => {
   await expect.element(page.getByTestId('piece-f10')).toHaveAttribute('data-piece-type', 'P')
 })
 
+test('clicking position during promotion cancels it', async () => {
+  const selected = ref<number | null>(null)
+  const onMove = vi.fn()
 
+  setup(() => {
+    const hexchess = ref(Hexchess.parse('1/1P1/5/7/9/11/11/11/11/11/11 w - 0 1'))
+    
+    return () => <>
+      <Hexboard
+        active
+        autoselect
+        playing={'w'}
+        hexchess={hexchess.value}
+        v-model:selected={selected.value}
+        onMove={onMove}>{{
+        promotion: () => <button data-testid="promote">promote</button>
+      }}</Hexboard>
+    </>
+  })
+
+  // Move pawn to promotion square
+  await movePiece(page, 'f10', 'f11')
+  
+  // Promotion UI should be visible
+  await expect.element(page.getByTestId('promote')).toBeVisible()
+  
+  // Click on a different position to cancel the promotion
+  await page.getByTestId('position-a1').click()
+  await nextTick()
+  
+  // Promotion UI should be gone
+  await expect.element(page.getByTestId('promote')).not.toBeInTheDocument()
+  
+  // Move should not have been emitted
+  await expect(onMove).not.toHaveBeenCalled()
+  
+  // Original piece should still be selected
+  await expect.element(page.getByTestId('selected-f10')).toBeVisible()
+  
+  // Pawn should still be at original position
+  await expect.element(page.getByTestId('piece-f10')).toHaveAttribute('data-piece-type', 'P')
+})
 
 test('ignoreTurn allows moving pieces out of turn', async () => {
   const ignoreTurn = ref(false)

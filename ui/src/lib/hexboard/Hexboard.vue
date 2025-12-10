@@ -15,7 +15,7 @@
       <!-- positions -->
       <path
         v-for="position, index in board"
-        v-bind="active && !staging.hexchess ? {
+        v-bind="active ? {
           onClick: evt => onClickPosition(index, evt),
           onMouseenter: () => onMouseenter(index),
           onMouseleave: () => onMouseleave(),
@@ -251,6 +251,9 @@ const svgEl = useTemplateRef('svgEl')
 
 /** rect of svg element on pointerdown */
 const svgRect = shallowRef<DOMRect>(new DOMRect())
+
+/** flag to skip click handling after promotion cancel */
+let skipNextClick = false
 
 //
 // computed
@@ -523,6 +526,20 @@ function onClickPosition(index: number, evt: MouseEvent) {
     return
   }
 
+  // Skip this click if we just canceled a promotion (handled by pointerup)
+  if (skipNextClick) {
+    skipNextClick = false
+    return
+  }
+
+  // If staging a promotion, cancel it unless clicking on the promotion position
+  if (staging.value.hexchess) {
+    if (staging.value.selected !== index) {
+      cancelPromotion()
+    }
+    return
+  }
+
   // If there's a selected piece and clicking a target, attempt to move
   if (selected.value !== null && targets.value.includes(index)) {
     const san = new San({ from: selected.value, to: index })
@@ -597,8 +614,9 @@ function onPointerupPosition(index: number, evt: MouseEvent) {
     return
   }
 
-  /** do nothing if staging is set */
+  // If staging a promotion and clicking on a non-target, cancel the promotion
   if (staging.value.hexchess) {
+    cancelPromotion()
     return
   }
 
@@ -631,11 +649,17 @@ function cancelPromotion() {
   }
   
   pointerdownPosition.value = null
+  skipNextClick = true
 }
 
 /** pointerdown on position */
 function onPointerdownPosition(index: number, evt: PointerEvent) {
   evt.preventDefault()
+
+  // Don't start new interactions during promotion
+  if (staging.value.hexchess) {
+    return
+  }
 
   const piece = props.hexchess?.board[index]
   
