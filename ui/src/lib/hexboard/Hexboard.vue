@@ -147,12 +147,6 @@
         :r="promotionPieces.r"
         :rank="Number(indexToPosition(staging.selected).slice(1))" />
     </div>
-
-    <pre class="fixed left-0 bottom-0 z-10 text-sm leading-loose text-gray-300 p-6">{{ {
-      selected,
-      targets,
-      playing,
-    } }}</pre>
   </div>
 </template>
 

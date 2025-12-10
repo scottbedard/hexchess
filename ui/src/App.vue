@@ -252,7 +252,6 @@ function onClickPosition(index: number) {
 
 /** handle move */
 function onMove(san: San) {
-  console.log({ san })
   hexchess.value.applyMoveUnsafe(san)
 }
 </script>
