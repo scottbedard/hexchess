@@ -57,23 +57,69 @@
     </div>
 
     <Hexboard
+      active
+      autoselect
+      ignore-turn
       :flipped
       :hexchess
-      :highlighted
-      :selected
-      :targets
-      @position-click="onPositionClick"
-    />
+      :highlight
+      :playing="true"
+      @move="onMove">
+      <template #promotion="{ cancel, file, promote, b, n, q, r }">
+        <div class="absolute inset-0">
+          <div
+            :class="[
+              'absolute bottom-full',
+              {
+                'left-0': 'ab'.includes(file),
+                'left-1/2 -translate-x-1/2': 'cdefghi'.includes(file),
+                'right-0': 'kl'.includes(file),
+              }
+            ]">
+            <div class="bg-gray-50 flex my-2 overflow-hidden rounded-lg shadow">
+              <button
+                class="border-r! border-gray-300! cursor-pointer flex items-center justify-center size-14 hover:bg-gray-200! dark:border-r-gray-600! dark:bg-gray-700! dark:hover:bg-gray-800!"
+                @click="promote('q')">
+                <Component class="size-3/5" :is="q" />
+              </button>
+
+              <button
+                class="border-r! border-gray-300! cursor-pointer flex items-center justify-center size-14 hover:bg-gray-200! dark:border-r-gray-600! dark:bg-gray-700! dark:hover:bg-gray-800!"
+                @click="promote('r')">
+                <Component class="size-3/5" :is="r" />
+              </button>
+
+              <button
+                class="border-r! border-gray-300! cursor-pointer flex items-center justify-center size-14 hover:bg-gray-200! dark:border-r-gray-600! dark:bg-gray-700! dark:hover:bg-gray-800!"
+                @click="promote('b')">
+                <Component class="size-3/5" :is="b" />
+              </button>
+
+              <button
+                class="border-r! border-gray-300! cursor-pointer flex items-center justify-center size-14 hover:bg-gray-200! dark:border-r-gray-600! dark:bg-gray-700! dark:hover:bg-gray-800!"
+                @click="promote('n')">
+                <Component class="size-3/5" :is="n" />
+              </button>
+
+              <button
+                class="cursor-pointer flex items-center justify-center rounded-r-lg p-2 size-14 hover:bg-gray-200! dark:bg-gray-700! dark:hover:bg-gray-800!"
+                @click="cancel">
+                <svg class="size-3/5 text-gray-500/50! dark:text-gray-200!" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </template>
+    </Hexboard>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, ref } from 'vue'
+import { computed, ref } from 'vue'
 import { Hexchess, San } from '../../js/src'
 import { useEngine } from './use-engine'
-import { useEventListener } from '@vueuse/core'
 import EvaluationResult from './EvaluationResult.vue'
-import Hexboard from '../components/hexboard/Hexboard.vue'
+import Hexboard from '../../ui/src/lib/hexboard/Hexboard.vue'
 import Input from '../components/Input.vue'
 import Spinner from '../components/Spinner.vue'
 import type { EvaluateResponse } from '../../engine/index'
@@ -88,11 +134,9 @@ const depth = ref(3)
 
 const flipped = ref(false)
 
-const highlighted = ref<number[]>([])
+const highlight = ref<number[]>([])
 
 const hexchess = ref(Hexchess.init())
-
-const selected = ref<number | null>(null)
 
 const evaluation = ref<EvaluateResponse | null>(null)
 
@@ -112,52 +156,22 @@ const fen = computed({
   }
 })
 
-const targets = computed(() => selected.value ? hexchess.value.movesFrom(selected.value) : [])
-
-//
-// lifecycle
-//
-
-onMounted(() => {
-  useEventListener(document.body, 'click', deselect)
-
-  useEventListener(window, 'keydown', (evt) => {
-    if (evt.key === 'Escape') {
-      deselect()
-    } else if ((evt.key === 'Delete' || evt.key === 'Backspace') && selected.value !== null) {
-      hexchess.value.board[selected.value] = null
-      deselect()
-    } else if (selected.value !== null && 'pbnrqkPBNRQK'.includes(evt.key)) {
-      hexchess.value.board[selected.value] = evt.key as any
-    }
-  })
-})
-
 //
 // methods
 //
 
-function deselect() {
-  highlighted.value = []
-  selected.value = null
-}
-
-async function handleMove(from: number, to: number) {
-  const san = new San({ from, to })
-
-  evaluation.value = null
-  hexchess.value.applyMoveUnsafe(san)
-  highlighted.value = []
-}
-
 function onClearClick() {
   evaluation.value = null
   hexchess.value = new Hexchess()
-  highlighted.value = []
+  highlight.value = []
 }
 
 function onFlipClick() {
   flipped.value = !flipped.value
+}
+
+function onMove(san: San) {
+  hexchess.value.applyMoveUnsafe(san)
 }
 
 async function onPlayClick() {
@@ -180,33 +194,15 @@ async function onPlayClick() {
     try {
       next.applyMoveUnsafe(san)
       hexchess.value = next
-      highlighted.value = [san.from, san.to]
+      highlight.value = [san.from, san.to]
     } catch {
       return
     }
   }
 }
 
-function onPositionClick(position: number) {
-  if (selected.value === position) {
-    deselect()
-    return
-  }
-
-  if (
-    selected.value !== null &&
-    targets.value.some(p => p.to === position)
-  ) {
-    handleMove(selected.value, position)
-    deselect()
-    return
-  }
-
-  selected.value = position
-}
-
 function onResetClick() {
   hexchess.value = Hexchess.init()
-  highlighted.value = []
+  highlight.value = []
 }
 </script>
