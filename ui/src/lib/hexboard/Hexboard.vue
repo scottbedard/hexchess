@@ -17,10 +17,10 @@
         v-for="position, index in board"
         v-bind="active && !staging.hexchess ? {
           onClick: evt => onClickPosition(index, evt),
+          onMouseenter: () => onMouseenter(index),
+          onMouseleave: () => onMouseleave(),
           onPointerdown: evt => onPointerdownPosition(index, evt),
-          onPointerenter: () => onPointerenter(index),
-          onPointerleave: () => onPointerleave(),
-          onPointerup: evt => onMouseupPosition(index, evt),
+          onPointerup: evt => onPointerupPosition(index, evt),
         } : {}"
         :d="d(flipped ? position[4] : position[3])"
         :data-hexboard-position="index"
@@ -73,7 +73,7 @@
         v-if="currentHexchess"
         v-for="piece, index in currentHexchess.board">
         <Component
-          v-if="piece && index !== mousedownPosition"
+          v-if="piece && index !== pointerdownPosition"
           :data-piece-type="piece"
           :data-testid="`piece-${indexToPosition(index)}`"
           :height="pieceSize"
@@ -222,11 +222,11 @@ const targets = defineModel<number[]>('targets', {
 // state
 //
 
-/** current mouse coordinates */
-const mouseCoords = shallowRef({ x: 0, y: 0 })
+/** current pointer coordinates */
+const pointerCoords = shallowRef({ x: 0, y: 0 })
 
-/** fen position of mousedown */
-const mousedownPosition = shallowRef<number | null>(null)
+/** fen position of pointerdown */
+const pointerdownPosition = shallowRef<number | null>(null)
 
 /** rect of promotion anchor element */
 const promotionRect = shallowRef<DOMRect>(new DOMRect())
@@ -249,7 +249,7 @@ const staging = shallowRef<{
 /** svg rect */
 const svgEl = useTemplateRef('svgEl')
 
-/** rect of svg element on mousedown */
+/** rect of svg element on pointerdown */
 const svgRect = shallowRef<DOMRect>(new DOMRect())
 
 //
@@ -338,8 +338,8 @@ const cursor = computed(() => {
 /** coordinates of drag transformation */
 const dragCoords = computed(() => {
   return {
-    x: mouseCoords.value.x - (svgRect.value.width / 2),
-    y: mouseCoords.value.y - (svgRect.value.height / 2),
+    x: pointerCoords.value.x - (svgRect.value.width / 2),
+    y: pointerCoords.value.y - (svgRect.value.height / 2),
   }
 })
 
@@ -348,12 +348,12 @@ const dragPiece = computed(() => {
   if (
     !props.hexchess ||
     staging.value.hexchess ||
-    mousedownPosition.value === null
+    pointerdownPosition.value === null
   ) {
     return null
   }
 
-  return props.hexchess.board[mousedownPosition.value]
+  return props.hexchess.board[pointerdownPosition.value]
 })
 
 /** normalized options */
@@ -503,7 +503,7 @@ function getLabelFill(text: string) {
 
 /** listen for events */
 function listen() {
-  mouseCoords.value = { x: 0, y: 0 }
+  pointerCoords.value = { x: 0, y: 0 }
 
   window.addEventListener('keyup', onKeyupWindow)
   window.addEventListener('pointermove', onPointermoveWindow)
@@ -563,13 +563,13 @@ function onPieceMove(san: San) {
   resetState()
 }
 
-/** mouseup position */
-function onMouseupPosition(index: number, evt: MouseEvent) {
+/** pointerup position */
+function onPointerupPosition(index: number, evt: MouseEvent) {
   evt.stopPropagation()
 
   // Check if we're dropping a piece on a valid target (drag and drop)
-  if (mousedownPosition.value !== null) {
-    const san = new San({ from: mousedownPosition.value, to: index })
+  if (pointerdownPosition.value !== null) {
+    const san = new San({ from: pointerdownPosition.value, to: index })
     attemptMove(san, evt)
   }
   // Check if clicking on a target while a piece is selected (click to move)
@@ -585,7 +585,7 @@ function onMouseupPosition(index: number, evt: MouseEvent) {
 
   // If clicking on any piece, keep the selection (it was set in pointerdown)
   if (props.hexchess?.board[index]) {
-    mousedownPosition.value = null
+    pointerdownPosition.value = null
     svgRect.value = new DOMRect()
     return
   }
@@ -611,7 +611,7 @@ function cancelPromotion() {
     targets.value = props.hexchess.movesFrom(from).map(san => san.to) ?? []
   }
   
-  mousedownPosition.value = null
+  pointerdownPosition.value = null
 }
 
 /** pointerdown on position */
@@ -641,7 +641,7 @@ function onPointerdownPosition(index: number, evt: PointerEvent) {
     return
   }
 
-  mousedownPosition.value = index
+  pointerdownPosition.value = index
 
   if (svgEl.value instanceof Element) {
     svgRect.value = svgEl.value.getBoundingClientRect()
@@ -649,25 +649,25 @@ function onPointerdownPosition(index: number, evt: PointerEvent) {
 }
 
 /** mouseenter position */
-function onPointerenter(index: number) {
+function onMouseenter(index: number) {
   mouseoverPosition.value = index
 }
 
 /** mouseleave position */
-function onPointerleave() {
+function onMouseleave() {
   mouseoverPosition.value = null
 }
 
-/** mousemove window */
+/** pointermove window */
 function onPointermoveWindow(evt: MouseEvent) {
   if (!props.active) {
     return
   }
 
-  mouseCoords.value = { x: evt.clientX, y: evt.clientY }
+  pointerCoords.value = { x: evt.clientX, y: evt.clientY }
 }
 
-/** mouseup window */
+/** pointerup window */
 function onPointerupWindow() {
   // If staging a promotion, cancel it but keep the original piece selected
   if (staging.value.hexchess) {
@@ -676,8 +676,8 @@ function onPointerupWindow() {
   }
 
   // If dragging a piece, keep the selection but reset drag state
-  if (mousedownPosition.value !== null) {
-    mousedownPosition.value = null
+  if (pointerdownPosition.value !== null) {
+    pointerdownPosition.value = null
     svgRect.value = new DOMRect()
     return
   }
@@ -704,7 +704,7 @@ function promote(promotion: 'n' | 'b' | 'r' | 'q') {
 /** reset state */
 function resetState() {
   document.body.style.setProperty('cursor', null)
-  mousedownPosition.value = null
+  pointerdownPosition.value = null
   selected.value = null
   staging.value = {
     hexchess: null,
