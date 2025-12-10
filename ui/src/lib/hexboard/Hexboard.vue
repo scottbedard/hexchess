@@ -470,8 +470,8 @@ function attemptMove(
     return
   }
   
-  // Only call onPieceMove if playing both colors, or playing this color and it's their turn
-  if (isPlayingPosition(san.from) && (props.playing === true || isCurrentTurn)) {
+  // Only call onPieceMove if playing this color and it's their turn
+  if (isPlayingPosition(san.from) && isCurrentTurn) {
     onPieceMove(san)
   }
 }
@@ -637,11 +637,11 @@ function onPointerdownPosition(index: number, evt: PointerEvent) {
     return
   }
 
-  // Only allow dragging if playing both colors, or if it's the piece's turn
+  // Only allow dragging if it's the piece's turn
   const pieceColor: Color = piece === piece.toLowerCase() ? 'b' : 'w'
   const isCurrentTurn = props.hexchess?.turn === pieceColor
   
-  if (props.playing !== true && !isCurrentTurn) {
+  if (!isCurrentTurn) {
     return
   }
 
