@@ -679,6 +679,13 @@ function onPointerupWindow() {
     return
   }
 
+  // If dragging a piece, keep the selection but reset drag state
+  if (mousedownPosition.value !== null) {
+    mousedownPosition.value = null
+    svgRect.value = new DOMRect()
+    return
+  }
+
   resetState()
 }
 

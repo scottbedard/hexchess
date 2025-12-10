@@ -412,19 +412,19 @@ test('dragging piece off board results in selection only, dragging state resets'
 
   const whitePiecePosition = page.getByTestId('position-f5')
 
-  // Start dragging the piece (mousedown)
-  await whitePiecePosition.element().dispatchEvent(new MouseEvent('mousedown', { bubbles: true }))
+  // Start dragging the piece (pointerdown)
+  await whitePiecePosition.element().dispatchEvent(new PointerEvent('pointerdown', { bubbles: true }))
   await nextTick()
 
   // Verify dragging started - draggable piece SVG should be visible
   await expect.element(page.getByTestId('drag-piece')).toBeVisible()
 
-  // Move mouse off the board (simulate mousemove on window)
-  window.dispatchEvent(new MouseEvent('mousemove', { clientX: 0, clientY: 0, bubbles: true }))
+  // Move pointer off the board (simulate pointermove on window)
+  window.dispatchEvent(new PointerEvent('pointermove', { clientX: 0, clientY: 0, bubbles: true }))
   await nextTick()
 
-  // Release mouse (mouseup on window) - this should reset dragging state
-  window.dispatchEvent(new MouseEvent('mouseup', { bubbles: true }))
+  // Release pointer (pointerup on window) - this should reset dragging state
+  window.dispatchEvent(new PointerEvent('pointerup', { bubbles: true }))
   await nextTick()
 
   // Verify piece is still selected (autoselect should have set it on mousedown)
@@ -456,15 +456,15 @@ test('drag and drop piece emits move event', async () => {
   const fromPosition = page.getByTestId('position-f5')
   const toPosition = page.getByTestId('position-f6')
 
-  // Start dragging the piece (mousedown)
-  await fromPosition.element().dispatchEvent(new MouseEvent('mousedown', { bubbles: true }))
+  // Start dragging the piece (pointerdown)
+  await fromPosition.element().dispatchEvent(new PointerEvent('pointerdown', { bubbles: true }))
   await nextTick()
 
   // Verify dragging started
   await expect.element(page.getByTestId('drag-piece')).toBeVisible()
 
-  // Move mouse to target position and release (mouseup)
-  await toPosition.element().dispatchEvent(new MouseEvent('mouseup', { bubbles: true }))
+  // Move pointer to target position and release (pointerup)
+  await toPosition.element().dispatchEvent(new PointerEvent('pointerup', { bubbles: true }))
   await nextTick()
 
   // Verify move event was emitted with correct San object
