@@ -26,8 +26,6 @@
       </div>
     </div>
 
-    <div class="h-200" />
-
     <Hexboard
       v-model:selected="selected"
       class="max-w-3xl mx-auto"
@@ -79,7 +77,7 @@
               </button>
 
               <button
-                class="border-r border-gray-500/50 cursor-pointer rounded-r-lg p-2 size-14 dark:hover:bg-gray-700"
+                class="border-r border-gray-500/50 cursor-pointer p-2 size-14 dark:hover:bg-gray-700"
                 @click="promote('n')">
                 <Component :is="n" />
               </button>
@@ -94,8 +92,6 @@
         </div>
       </template>
     </Hexboard>
-
-    <div class="h-200" />
   </div>
 </template>
 
