@@ -1,5 +1,6 @@
 {
   "devDependencies": {
+    "@bedard/hexchess": "link:js",
     "@tailwindcss/vite": "^4.1.16",
     "@types/node": "^24.9.1",
     "@vueuse/core": "^14.0.0",
