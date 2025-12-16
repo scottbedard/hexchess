@@ -8,6 +8,9 @@ importers:
 
   .:
     devDependencies:
+      '@bedard/hexboard':
+        specifier: ^0.0.3
+        version: 0.0.3(@bedard/hexchess@2.5.1)(vue@3.5.22(typescript@5.9.3))
       '@tailwindcss/vite':
         specifier: ^4.1.16
         version: 4.1.16(vite@7.1.12(@types/node@24.9.1)(jiti@2.6.1)(lightningcss@1.30.2))
@@ -69,6 +72,15 @@ packages:
   '@babel/types@7.28.5':
     resolution: {integrity: sha512-qQ5m48eI/MFLQ5PxQj4PFaprjyCTLI37ElWMmNs0K8Lk3dVeOdNpB3ks8jc7yM5CDmVC73eMVk/trk3fgmrUpA==}
     engines: {node: '>=6.9.0'}
+
+  '@bedard/hexboard@0.0.3':
+    resolution: {integrity: sha512-FQ9J6gIwtgAv/zVb1AfMlidkGwD2Kg/8lP5Sdc9sQfDUv1F6ouy4rXhWaBzX3pGYJjSD9Lm3JrAhzYsVbHWQ/w==}
+    peerDependencies:
+      '@bedard/hexchess': ^2.5.0
+      vue: ^3.5.0
+
+  '@bedard/hexchess@2.5.1':
+    resolution: {integrity: sha512-vuuL1CmGWL/kPrGPSi2wZcZahabp7cF2O6f0azsSHnc5YJxsDO8m5dRRyv/qNjCxF7L9An+TIFO2tExOA5YEJA==}
 
   '@docsearch/css@4.2.0':
     resolution: {integrity: sha512-65KU9Fw5fGsPPPlgIghonMcndyx1bszzrDQYLfierN+Ha29yotMHzVS94bPkZS6On9LS8dE4qmW4P/fGjtCf/g==}
@@ -1186,6 +1198,13 @@ snapshots:
     dependencies:
       '@babel/helper-string-parser': 7.27.1
       '@babel/helper-validator-identifier': 7.28.5
+
+  '@bedard/hexboard@0.0.3(@bedard/hexchess@2.5.1)(vue@3.5.22(typescript@5.9.3))':
+    dependencies:
+      '@bedard/hexchess': 2.5.1
+      vue: 3.5.22(typescript@5.9.3)
+
+  '@bedard/hexchess@2.5.1': {}
 
   '@docsearch/css@4.2.0': {}
 

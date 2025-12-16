@@ -57,26 +57,47 @@
     </div>
 
     <Hexboard
+      v-model:selected="selected"
+      active
+      autoselect
+      ignore-turn
       :flipped
       :hexchess
-      :highlighted
-      :selected
-      :targets
-      @position-click="onPositionClick"
-    />
+      :highlight
+      :playing="true"
+      @move="onMove"
+      @click-position="onClickPosition">
+      <template #promotion="{ b, cancel,  n, promote, q, r }">
+        <div
+          class="absolute bottom-full flex flex-row left-1/2 shadow-lg rounded-lg -translate-x-1/2 dark:bg-gray-700"
+        >
+          <PromotionPiece :piece="n" @click="promote('n')" />
+          <PromotionPiece :piece="b" @click="promote('b')" />
+          <PromotionPiece :piece="q" @click="promote('q')" />
+          <PromotionPiece :piece="r" @click="promote('r')" />
+          <button
+            @click="cancel"
+            class="cursor-pointer flex items-center justify-center h-14 rounded-r-lg w-14 dark:hover:bg-gray-600!">
+            <X class="size-8" />
+          </button>
+        </div>
+      </template>
+    </Hexboard>
   </div>
 </template>
 
 <script lang="ts" setup>
 import { computed, onMounted, ref } from 'vue'
+import { Hexboard } from '@bedard/hexboard'
 import { Hexchess, San } from '../../js/src'
 import { useEngine } from './use-engine'
 import { useEventListener } from '@vueuse/core'
 import EvaluationResult from './EvaluationResult.vue'
-import Hexboard from '../components/hexboard/Hexboard.vue'
 import Input from '../components/Input.vue'
+import PromotionPiece from '../components/PromotionPiece.vue'
 import Spinner from '../components/Spinner.vue'
 import type { EvaluateResponse } from '../../engine/index'
+import X from '../components/icons/X.vue'
 
 const { evaluate, loading } = useEngine()
 
@@ -88,7 +109,7 @@ const depth = ref(3)
 
 const flipped = ref(false)
 
-const highlighted = ref<number[]>([])
+const highlight = ref<number[]>([])
 
 const hexchess = ref(Hexchess.init())
 
@@ -112,15 +133,11 @@ const fen = computed({
   }
 })
 
-const targets = computed(() => selected.value ? hexchess.value.movesFrom(selected.value) : [])
-
 //
 // lifecycle
 //
 
 onMounted(() => {
-  useEventListener(document.body, 'click', deselect)
-
   useEventListener(window, 'keydown', (evt) => {
     if (evt.key === 'Escape') {
       deselect()
@@ -128,6 +145,7 @@ onMounted(() => {
       hexchess.value.board[selected.value] = null
       deselect()
     } else if (selected.value !== null && 'pbnrqkPBNRQK'.includes(evt.key)) {
+      evt.preventDefault()
       hexchess.value.board[selected.value] = evt.key as any
     }
   })
@@ -138,26 +156,23 @@ onMounted(() => {
 //
 
 function deselect() {
-  highlighted.value = []
+  highlight.value = []
   selected.value = null
-}
-
-async function handleMove(from: number, to: number) {
-  const san = new San({ from, to })
-
-  evaluation.value = null
-  hexchess.value.applyMoveUnsafe(san)
-  highlighted.value = []
 }
 
 function onClearClick() {
   evaluation.value = null
   hexchess.value = new Hexchess()
-  highlighted.value = []
+  highlight.value = []
 }
 
 function onFlipClick() {
   flipped.value = !flipped.value
+}
+
+function onMove(san: San) {
+  hexchess.value.applyMoveUnsafe(san)
+  highlight.value = [san.from, san.to]
 }
 
 async function onPlayClick() {
@@ -180,33 +195,19 @@ async function onPlayClick() {
     try {
       next.applyMoveUnsafe(san)
       hexchess.value = next
-      highlighted.value = [san.from, san.to]
+      highlight.value = [san.from, san.to]
     } catch {
       return
     }
   }
 }
 
-function onPositionClick(position: number) {
-  if (selected.value === position) {
-    deselect()
-    return
-  }
-
-  if (
-    selected.value !== null &&
-    targets.value.some(p => p.to === position)
-  ) {
-    handleMove(selected.value, position)
-    deselect()
-    return
-  }
-
+function onClickPosition(position: number) {
   selected.value = position
 }
 
 function onResetClick() {
   hexchess.value = Hexchess.init()
-  highlighted.value = []
+  highlight.value = []
 }
 </script>
